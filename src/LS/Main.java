@@ -30,7 +30,7 @@ public class Main extends Application {
 
         // Set two animals to target one another
 		world.getAnimalList().get(0).setTarget(world.getAnimalList().get(1).getImage());
-		world.getAnimalList().get(1).setTarget(world.getAnimalList().get(0).getImage());
+		//world.getAnimalList().get(1).setTarget(world.getAnimalList().get(0).getImage());
 
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage);

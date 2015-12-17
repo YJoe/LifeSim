@@ -100,24 +100,18 @@ public abstract class Animal {
         return false;
     }
 
-    public double getAngleTo(int tX,int tY){
-        // The following function returns the angle from the centre
-        // of the animal to the center of the target circle
-        double thisX = getImage().getCenterX() + getImage().getTranslateX(),
-                thisY = getImage().getCenterY() + getImage().getTranslateY();
-        double theta = Math.atan2(tY - thisY, tX - thisX);
-        double angle = Math.toDegrees(theta);
-        if (angle < 0) {
-            angle += 360;
-        }
-        return angle;
+    public double getAngleTo(double targetX, double targetY){
+        double thisX = getImage().getCenterX() + getImage().getTranslateX();
+        double thisY = getImage().getCenterY() + getImage().getTranslateY();
+        return Math.atan2(thisY - targetY, thisX - targetX);
     }
 
     public void directToTarget(){
-        double angle = getAngleTo((int)(getTargetCircle().getCenterX() + getTargetCircle().getTranslateX()),
-                (int)(getTargetCircle().getCenterY() + getTargetCircle().getTranslateY()));
-        setDx((Math.cos(angle) * getSpeed()));
-        setDy((Math.sin(angle) * getSpeed()));
+        double targetX = (getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
+        double targetY = (getTargetCircle().getCenterY() + getTargetCircle().getTranslateY());
+        double angle = getAngleTo(targetX, targetY);
+        setDx(-(Math.cos(angle) * getSpeed()));
+        setDy(-(Math.sin(angle) * getSpeed()));
     }
 
     public void checkCollideTarget(){
