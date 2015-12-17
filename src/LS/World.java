@@ -46,10 +46,9 @@ public class World {
     }
 
     public void addRandomFood(){
-        int x = rand.nextInt(Main.SIZE_X),
-                y = rand.nextInt(Main.SIZE_Y),
-                cal = rand.nextInt(10) + 1;
-        Food f = new Food(x, y, cal);
+        //TODO: make random food rather than just meat
+        int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
+        Meat f = new Meat(x, y);
         foodList.add(f);
     }
 
