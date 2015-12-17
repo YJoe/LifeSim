@@ -11,12 +11,9 @@ public abstract class Animal {
     private String species, name;
     private char symbol, gender;
     private int id, x, y, energy, smellRange, targetX, targetY, turnAngle, pathDistance;
-    private int lastAngle = new Random().nextInt(360);
-    private int randomAttemptTracker = 0;
-    private double speed;
-    private double dx;
-    private double dy;
-    private boolean targetbool;
+    private int lastAngle = new Random().nextInt(360), randomAttemptTracker = 0;
+    private double speed, dx, dy;
+    private boolean targetBool;
 
     // Constructor
     public Animal(String speciesIn, String nameIn, char symbolIn, int idIn, int xIn, int yIn,
@@ -103,15 +100,15 @@ public abstract class Animal {
     public double getAngleTo(double targetX, double targetY){
         double thisX = getImage().getCenterX() + getImage().getTranslateX();
         double thisY = getImage().getCenterY() + getImage().getTranslateY();
-        return Math.atan2(thisY - targetY, thisX - targetX);
+        return Math.atan2(targetY - thisY, targetX - thisX);
     }
 
     public void directToTarget(){
         double targetX = (getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
         double targetY = (getTargetCircle().getCenterY() + getTargetCircle().getTranslateY());
         double angle = getAngleTo(targetX, targetY);
-        setDx(-(Math.cos(angle) * getSpeed()));
-        setDy(-(Math.sin(angle) * getSpeed()));
+        setDx((Math.cos(angle) * getSpeed()));
+        setDy((Math.sin(angle) * getSpeed()));
     }
 
     public void checkCollideTarget(){
@@ -237,10 +234,10 @@ public abstract class Animal {
     }
 
     public boolean hasTarget() {
-        return targetbool;
+        return targetBool;
     }
     public void setTargetBool(boolean t){
-        targetbool = t;
+        targetBool = t;
     }
 
     public int getTurnAngle(){
@@ -257,7 +254,6 @@ public abstract class Animal {
         else
             setName(names_f[rand.nextInt(names_f.length)]);
     }
-
 
 
     // TARGET GET/SET FUNCTIONS

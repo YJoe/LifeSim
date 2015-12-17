@@ -11,6 +11,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.Random;
+
 public class Main extends Application {
     public static int SIZE_X = 1000, SIZE_Y = 600;
 
@@ -25,7 +27,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
 
         // Create world
-        World world = new World(2, 0);
+        World world = new World(40, 0);
         world.giveRoot(root);
 
         // Set two animals to target one another
