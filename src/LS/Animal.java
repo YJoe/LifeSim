@@ -101,10 +101,11 @@ public abstract class Animal {
     }
 
     public double getAngleTo(int tX,int tY){
+        // The following function returns the angle from the centre
+        // of the animal to the center of the target circle
         double thisX = getImage().getCenterX() + getImage().getTranslateX(),
                 thisY = getImage().getCenterY() + getImage().getTranslateY();
         double theta = Math.atan2(tY - thisY, tX - thisX);
-        //theta += Math.PI/2.0;
         double angle = Math.toDegrees(theta);
         if (angle < 0) {
             angle += 360;

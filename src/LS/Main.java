@@ -28,6 +28,10 @@ public class Main extends Application {
         World world = new World(2, 0);
         world.giveRoot(root);
 
+        // Set two animals to target one another
+		world.getAnimalList().get(0).setTarget(world.getAnimalList().get(1).getImage());
+		world.getAnimalList().get(1).setTarget(world.getAnimalList().get(0).getImage());
+
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage);
         root.getChildren().add(menu.getMenuBar());
@@ -43,7 +47,8 @@ public class Main extends Application {
             }
         });
 
-        // Create time line and set stage
+
+        // Some other stuff
         TimelineBuilder.create().cycleCount(javafx.animation.Animation.INDEFINITE).keyFrames(frame).build().play();
         primaryStage.setScene(scene);
         primaryStage.show();
