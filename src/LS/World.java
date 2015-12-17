@@ -12,7 +12,7 @@ public class World {
 
     // set up the world
     public World(int animals, int food){
-        for(int i = 0; i < animals; i++){
+        for(int i = 0; i < animals; i++) {
             addRandomAnimal();
             trackID++;
         }
@@ -42,6 +42,7 @@ public class World {
         int x = rand.nextInt(Main.SIZE_X),
                 y = rand.nextInt(Main.SIZE_Y);
         Animal a = new Ant(x, y, trackID);
+        a.setFoodList(foodList);
         animalList.add(a);
     }
 

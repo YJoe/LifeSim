@@ -1,5 +1,6 @@
 package LS;
 
+import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -14,6 +15,7 @@ public abstract class Animal {
     private int lastAngle = new Random().nextInt(360), randomAttemptTracker = 0;
     private double speed, dx, dy;
     private boolean targetBool;
+    private ArrayList<Food> foodList = new ArrayList<>();
 
     // Constructor
     public Animal(String speciesIn, String nameIn, char symbolIn, int idIn, int xIn, int yIn,
@@ -45,6 +47,7 @@ public abstract class Animal {
 
     // Main functions
     public void update(){
+        checkFood();
         target();
         move();
         getTargetLocation().setTranslateX(getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
@@ -58,6 +61,26 @@ public abstract class Animal {
         // smell
         this.getSmellCircle().setTranslateX(this.getSmellCircle().getTranslateX() + this.getDx());
         this.getSmellCircle().setTranslateY(this.getSmellCircle().getTranslateY() + this.getDy());
+    }
+
+    public void checkFood(){
+        for(int i = 0; i < foodList.size(); i++){
+            int x1pos = (int) (this.getSmellCircle().getCenterX() + this.getSmellCircle().getTranslateX());
+            int y1pos = (int) (this.getSmellCircle().getCenterY() + this.getSmellCircle().getTranslateY());
+
+            int x2pos = (int) (foodList.get(i).getImage().getCenterX() + foodList.get(i).getImage().getTranslateX());
+            int y2pos = (int) (foodList.get(i).getImage().getCenterY() + foodList.get(i).getImage().getTranslateY());
+
+            //      a            b             c
+            // |(x2-x1)^2| + |(y1-y2)| <= |(r1+r2)^2|
+            int a = Math.abs(x1pos - x2pos);
+            int b = Math.abs(y1pos - y2pos);
+            int c =  (int) Math.abs(this.getSmellCircle().getRadius() + foodList.get(i).getImage().getRadius());
+
+            if (a + b <= c){
+                foodList.get(i).getImage().setFill(Color.rgb(0, 255, 0));
+            }
+        }
     }
 
     public void target(){
@@ -118,11 +141,11 @@ public abstract class Animal {
         int x2pos = (int) (getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
         int y2pos = (int) (getTargetCircle().getCenterY() + getTargetCircle().getTranslateY());
 
-        //      a         b             c
-        // (x2-x1)^2 + (y1-y2)^2 <= (r1+r2)^2
-        float a = (float) Math.pow((x1pos - x2pos), 2);
-        float b = (float) Math.pow((y1pos - y2pos), 2);
-        float c = (float) Math.pow(getImage().getRadius() + getTargetCircle().getRadius(), 2);
+        //      a            b             c
+        // |(x2-x1)^2| + |(y1-y2)| <= |(r1+r2)^2|
+        float a = (float) Math.abs(x1pos - x2pos);
+        float b = (float) Math.abs(y1pos - y2pos);
+        float c = (float) Math.abs(getImage().getRadius() + getTargetCircle().getRadius());
 
         if (a + b <= c){
             removeTarget();
@@ -142,6 +165,10 @@ public abstract class Animal {
 
 
     // SELF GET/SET FUNCTIONS
+    public void setFoodList(ArrayList<Food> f){
+        foodList = f;
+    }
+
     public int getX(){
         return x;
     }
