@@ -27,11 +27,10 @@ public class Main extends Application {
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
 
         // Create world
-        World world = new World(root, 20, 100);
-
-        // Set two animals to target one another
-		//world.getAnimalList().get(0).setTarget(world.getAnimalList().get(1).getImage());
-		//world.getAnimalList().get(1).setTarget(world.getAnimalList().get(0).getImage());
+        World world = new World(root, 3, 100);
+        // Display Features
+        //world.toggleSmellCircles();
+        //world.toggleTargetSquare();
 
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage);
@@ -41,9 +40,8 @@ public class Main extends Application {
         KeyFrame frame = new KeyFrame(Duration.millis(16), new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event){
-                if (!menu.isPaused()){
+                if (!menu.isPaused()) {
                     world.update();
-                    //System.out.println(world.getAnimalList().get(0).posString());
                 }
             }
         });

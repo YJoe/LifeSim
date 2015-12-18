@@ -7,13 +7,13 @@ import java.util.ArrayList;
 public class World {
     private Random rand = new Random();
     private int trackID = 0;
+    private boolean visibleSmellCircle = true, visibleTargetSquare = true;
     private ArrayList<Animal> animalList = new ArrayList<>();
     private ArrayList<Food> foodList = new ArrayList<>();
     private Group animalGroup = new Group();
     private Group animalSmellGroup = new Group();
     private Group animalTargetGroup = new Group();
     private Group foodGroup = new Group();
-
     private Group rootRef;
 
     // set up the world
@@ -54,7 +54,6 @@ public class World {
         foodGroup.getChildren().add(f.getImage());
     }
 
-
     // get lists
     public ArrayList<Animal> getAnimalList(){
         return animalList;
@@ -63,7 +62,6 @@ public class World {
     public ArrayList<Food> getFoodList(){
         return foodList;
     }
-
 
     // run world
     public void update(){
@@ -76,4 +74,14 @@ public class World {
     }
 
 
+    // display features
+    public void toggleSmellCircles(){
+        visibleSmellCircle = !visibleSmellCircle;
+        animalSmellGroup.setVisible(visibleSmellCircle);
+    }
+
+    public void toggleTargetSquare(){
+        visibleTargetSquare = !visibleTargetSquare;
+        animalTargetGroup.setVisible(visibleTargetSquare);
+    }
 }
