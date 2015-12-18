@@ -9,48 +9,49 @@ public class World {
     private int trackID = 0;
     private ArrayList<Animal> animalList = new ArrayList<>();
     private ArrayList<Food> foodList = new ArrayList<>();
+    private Group animalGroup = new Group();
+    private Group animalSmellGroup = new Group();
+    private Group animalTargetGroup = new Group();
+    private Group foodGroup = new Group();
+
+    private Group rootRef;
 
     // set up the world
-    public World(int animals, int food){
+    public World(Group root, int animals, int food){
+        rootRef = root;
+        root.getChildren().add(foodGroup);
+        root.getChildren().add(animalSmellGroup);
+        root.getChildren().add(animalGroup);
+        root.getChildren().add(animalTargetGroup);
         for(int i = 0; i < animals; i++) {
             addRandomAnimal();
             trackID++;
         }
         for(int i = 0; i < food; i++){
             addRandomFood();
-        }
-    }
-
-    public void giveRoot(Group root){
-        for(int i = 0; i < animalList.size(); i++){
-            root.getChildren().add(animalList.get(i).getSmellCircle());
-        }
-        for(int i = 0; i < animalList.size(); i++){
-            root.getChildren().add(animalList.get(i).getImage());
-        }
-        for(int i = 0; i < animalList.size(); i++){
-            root.getChildren().add(animalList.get(i).getTargetLocation());
-        }
-        for(int i = 0; i < foodList.size(); i++){
-            root.getChildren().add(foodList.get(i).getImage());
+            trackID++;
         }
     }
 
     // add to the world
     public void addRandomAnimal(){
         //TODO: Make random Animals not just ants
-        int x = rand.nextInt(Main.SIZE_X),
-                y = rand.nextInt(Main.SIZE_Y);
-        Animal a = new Ant(x, y, trackID);
+        int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
+        Animal a = new Ant(x, y, trackID, foodGroup, animalGroup);
         a.setFoodList(foodList);
         animalList.add(a);
+        trackID++;
+        animalGroup.getChildren().add(a.getImage());
+        animalSmellGroup.getChildren().add(a.getSmellCircle());
+        animalTargetGroup.getChildren().add(a.getTargetLocation());
     }
 
     public void addRandomFood(){
         //TODO: make random food rather than just meat
         int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
-        Meat f = new Meat(x, y);
+        Meat f = new Meat(x, y, trackID);
         foodList.add(f);
+        foodGroup.getChildren().add(f.getImage());
     }
 
 

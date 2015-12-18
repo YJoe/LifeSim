@@ -27,8 +27,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
 
         // Create world
-        World world = new World(1, 1000);
-        world.giveRoot(root);
+        World world = new World(root, 20, 100);
 
         // Set two animals to target one another
 		//world.getAnimalList().get(0).setTarget(world.getAnimalList().get(1).getImage());
