@@ -158,16 +158,21 @@ public abstract class Animal {
 
         if (a + b <= c){
             if (isTargetFood()){
-                setTargetingFood(false);
-                for(int i = 0; i < foodList.size(); i++){
-                    if(getTargetFoodID() == foodList.get(i).getID()){
-                        foodGroupRef.getChildren().remove(i);
-                        foodList.remove(i);
-                        break;
-                    }
-                }
+                eatFood();
             }
             removeTarget();
+        }
+    }
+
+    public void eatFood(){
+        setTargetingFood(false);
+        for(int i = 0; i < foodList.size(); i++){
+            if(getTargetFoodID() == foodList.get(i).getID()){
+                foodGroupRef.getChildren().remove(i);
+                setEnergy(getEnergy() + foodList.get(i).getCal());
+                foodList.remove(i);
+                break;
+            }
         }
     }
 
