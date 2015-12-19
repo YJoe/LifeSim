@@ -30,7 +30,7 @@ public class Main extends Application {
         World world = new World(root, 1, 100);
         // Display Features
         //world.toggleSmellCircles();
-        //world.toggleTargetSquare();
+        world.toggleTargetSquare();
 
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage);

@@ -91,14 +91,14 @@ public abstract class Animal {
 
     public void target(){
         if (hasTarget()){
+            if (!isTargetFood()){
+                checkFood();
+            }
             directToTarget();
             checkCollideTarget();
         }
         else{
-            checkFood();
-            if (!hasTarget()) {
-                getRandomTarget();
-            }
+            getRandomTarget();
         }
     }
 
