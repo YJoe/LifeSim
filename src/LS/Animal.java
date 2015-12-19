@@ -24,26 +24,27 @@ public abstract class Animal {
     public Animal(String speciesIn, String nameIn, char symbolIn, int idIn, int xIn, int yIn,
                   int energyIn, int smellIn, int sizeIn, double speedIn, int turnAngleIn,
                   Group foodGroup, Group animalGroup){
-        species = speciesIn;
-        name = nameIn;
-        symbol = symbolIn;
-        id = idIn;
-        x = xIn;
-        y = yIn;
-        energy = energyIn;
-        speed = speedIn;
+
+        // set basic attributes
+        setSpecies(speciesIn); setName(nameIn); setSymbol(symbolIn); setID(idIn);
+        setX(xIn); setY(yIn); setEnergy(energyIn); setSpeed(speedIn); setTurnAngle(turnAngleIn);
+        setPathDistance(smellIn); setFoodGroupRef(foodGroup); setAnimalGroupRef(animalGroup);
+
+        // create body
         image = new Circle(x, y, sizeIn);
+
+        // create smell circle
         smellCircle = new Circle(x, y, smellIn);
         smellCircle.setFill(Color.rgb(0, 100, 100));
         smellCircle.setOpacity(0.5);
+
+        // create target indicator
         Rectangle r = new Rectangle(0, 0, 5, 5);
         r.setFill(Color.rgb(255, 0, 0));
         setTargetLocation(r);
         setSmellRange(smellIn);
-        turnAngle = turnAngleIn;
-        pathDistance = smellIn;
-        foodGroupRef = foodGroup;
-        animalGroupRef = animalGroup;
+
+        // give a gender
         Random rand = new Random();
         if (rand.nextInt(2) == 1)
             gender = 'M';
@@ -290,6 +291,14 @@ public abstract class Animal {
     }
     public void setTurnAngle(int t){
         turnAngle = t;
+    }
+
+    public void setAnimalGroupRef(Group a){
+        animalGroupRef = a;
+    }
+
+    public void setFoodGroupRef(Group f){
+        foodGroupRef = f;
     }
 
     public void giveName(String [] names_m, String [] names_f){
