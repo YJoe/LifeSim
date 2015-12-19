@@ -15,11 +15,9 @@ public class World {
     private Group animalSmellGroup = new Group();
     private Group animalTargetGroup = new Group();
     private Group foodGroup = new Group();
-    private Group rootRef;
 
     // set up the world
     public World(Group root, int animals, int food){
-        rootRef = root;
         root.getChildren().add(foodGroup);
         root.getChildren().add(animalSmellGroup);
         root.getChildren().add(animalGroup);
@@ -41,7 +39,6 @@ public class World {
         Animal a = new Ant(x, y, trackID, foodGroup, animalGroup);
         a.setFoodList(foodList);
         animalList.add(a);
-        trackID++;
         animalGroup.getChildren().add(a.getImage());
         animalSmellGroup.getChildren().add(a.getSmellCircle());
         animalTargetGroup.getChildren().add(a.getTargetLocation());
@@ -70,14 +67,11 @@ public class World {
         for(int i = 0; i < animalList.size(); i++){
             animalList.get(i).update();
             if(animalList.get(i).getEnergy() < 0){
-                animalGroup.getChildren().remove(i);
                 animalSmellGroup.getChildren().remove(i);
                 animalTargetGroup.getChildren().remove(i);
                 animalList.remove(i);
             }
         }
-
-        //
     }
 
 
