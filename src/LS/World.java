@@ -70,14 +70,10 @@ public class World {
         for(int i = 0; i < animalList.size(); i++){
             animalList.get(i).update();
             if(animalList.get(i).getEnergy() < 0){
-                for(int j = 0; j < animalList.size(); j++) {
-                    if (animalList.get(i).getID() == animalList.get(j).getID()) {
-                        animalGroup.getChildren().remove(i);
-                        animalSmellGroup.getChildren().remove(i);
-                        animalTargetGroup.getChildren().remove(i);
-                        animalList.remove(i);
-                    }
-                }
+                animalGroup.getChildren().remove(i);
+                animalSmellGroup.getChildren().remove(i);
+                animalTargetGroup.getChildren().remove(i);
+                animalList.remove(i);
             }
         }
 
