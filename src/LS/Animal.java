@@ -14,6 +14,7 @@ public abstract class Animal {
     private Group foodGroupRef, animalGroupRef;
     private String species, name;
     private char symbol, gender;
+    private float size;
     private int id, x, y, energy, smellRange, targetX, targetY, turnAngle, pathDistance;
     private int lastAngle = new Random().nextInt(360), randomAttemptTracker = 0, targetFoodID;
     private double speed, dx, dy;
@@ -21,35 +22,11 @@ public abstract class Animal {
     private ArrayList<Food> foodList = new ArrayList<>();
 
     // Constructor
-    public Animal(String speciesIn, String nameIn, char symbolIn, int idIn, int xIn, int yIn,
-                  int energyIn, int smellIn, int sizeIn, double speedIn, int turnAngleIn,
-                  Group foodGroup, Group animalGroup){
-
-        // set basic attributes
-        setSpecies(speciesIn); setName(nameIn); setSymbol(symbolIn); setID(idIn);
-        setX(xIn); setY(yIn); setEnergy(energyIn); setSpeed(speedIn); setTurnAngle(turnAngleIn);
-        setPathDistance(smellIn); setFoodGroupRef(foodGroup); setAnimalGroupRef(animalGroup);
-
-        // create body
-        image = new Circle(x, y, sizeIn);
-
-        // create smell circle
-        smellCircle = new Circle(x, y, smellIn);
-        smellCircle.setFill(Color.rgb(0, 100, 100));
-        smellCircle.setOpacity(0.5);
-
-        // create target indicator
-        Rectangle r = new Rectangle(0, 0, 5, 5);
-        r.setFill(Color.rgb(255, 0, 0));
-        setTargetLocation(r);
-        setSmellRange(smellIn);
-
-        // give a gender
-        Random rand = new Random();
-        if (rand.nextInt(2) == 1)
-            gender = 'M';
-        else
-            gender = 'F';
+    public Animal(String speciesIn, char symbolIn, int IDIn, int energyIn, int xIn, int yIn, Group food, Group animal){
+        setSpecies(speciesIn); setSymbol(symbolIn); setID(IDIn); setEnergy(energyIn);
+        setX(xIn); setY(yIn); setFoodGroupRef(food); setAnimalGroupRef(animal);
+        // as all other attributes are determined by random variables based on the animal subclass, other
+        // values are set in the constructor of said subclass after the suepr constructor is called
     }
 
     // Main functions
@@ -251,6 +228,13 @@ public abstract class Animal {
         this.smellRange = smellRange;
     }
 
+    public float getSize(){
+        return size;
+    }
+    public void setSize(float size){
+        this.size = size;
+    }
+
     public Circle getImage() {
         return image;
     }
@@ -293,12 +277,27 @@ public abstract class Animal {
         turnAngle = t;
     }
 
+    public char getGender(){
+        return gender;
+    }
+    public void setGender(char gender){
+        this.gender = gender;
+    }
+
     public void setAnimalGroupRef(Group a){
         animalGroupRef = a;
     }
 
     public void setFoodGroupRef(Group f){
         foodGroupRef = f;
+    }
+
+    public void giveGender(){
+        Random rand = new Random();
+        if (rand.nextInt(2) == 1)
+            setGender('M');
+        else
+            setGender('F');
     }
 
     public void giveName(String [] names_m, String [] names_f){
