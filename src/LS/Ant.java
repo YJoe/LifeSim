@@ -8,7 +8,7 @@ public class Ant extends Animal{
     private static Random rand = new Random();
     public Ant(int x, int y, int id, Group foodGroup, Group animalGroup){
         //  species, name, symbol, id, x, y, energy, smell, size, speed, turnAngle
-        super("Ant", "Joe", 'A', id, x, y, 100, (rand.nextInt(30) + 50 - 15), 5, 0.3 + (rand.nextInt(10) * 0.1), 50,
+        super("Ant", "Joe", 'A', id, x, y, 1000, (rand.nextInt(30) + 50 - 15), 5, 0.3 + (rand.nextInt(10) * 0.1), 50,
                 foodGroup, animalGroup);
         String [] names_m = {"Antdrew", "Anty", "Antain", "Antanas", "Antar", "Anturas", "Antavas"};
         String [] names_f = {"Anttoinette", "Antalia", "Anta", "Anthia", "Antalia", "Antandra", "Antia", "Antheemia"};

@@ -61,11 +61,13 @@ public abstract class Animal {
 
     public void move(){
         // body
-        this.getImage().setTranslateX(this.getImage().getTranslateX() + this.getDx());
-        this.getImage().setTranslateY(this.getImage().getTranslateY() + this.getDy());
+        getImage().setTranslateX(getImage().getTranslateX() + getDx());
+        getImage().setTranslateY(getImage().getTranslateY() + getDy());
         // smell
-        this.getSmellCircle().setTranslateX(this.getSmellCircle().getTranslateX() + this.getDx());
-        this.getSmellCircle().setTranslateY(this.getSmellCircle().getTranslateY() + this.getDy());
+        getSmellCircle().setTranslateX(getSmellCircle().getTranslateX() + getDx());
+        getSmellCircle().setTranslateY(getSmellCircle().getTranslateY() + getDy());
+        // energy
+        setEnergy(getEnergy() - 1);
     }
 
     public void checkFood(){
