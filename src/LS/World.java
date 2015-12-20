@@ -10,6 +10,7 @@ public class World {
     private int trackID = 0;
     private boolean visibleSmellCircle = true, visibleTargetSquare = true;
     private ArrayList<Animal> animalList = new ArrayList<>();
+    private ArrayList<Animal> animalRank = new ArrayList<>();
     private ArrayList<Food> foodList = new ArrayList<>();
     private Group animalGroup = new Group();
     private Group animalSmellGroup = new Group();
@@ -72,21 +73,34 @@ public class World {
 
     // run world
     public void update(){
-        // call update for all animals
-        for(int i = 0; i < animalList.size(); i++){
-            animalList.get(i).update();
-            if(animalList.get(i).getEnergy() < 0){
-                animalGroup.getChildren().remove(i);
-                animalSmellGroup.getChildren().remove(i);
-                animalTargetGroup.getChildren().remove(i);
-                animalBackBarGroup.getChildren().remove(i);
-                animalHungerBarGroup.getChildren().remove(i);
-                animalEnergyBarGroup.getChildren().remove(i);
-                animalList.remove(i);
+        if (animalList.size() > 0) {
+            // call update for all animals
+            for (int i = 0; i < animalList.size(); i++) {
+                animalList.get(i).update();
+                if (animalList.get(i).getEnergy() < 0) {
+                    animalRank.add(animalList.get(i));
+                    animalGroup.getChildren().remove(i);
+                    animalSmellGroup.getChildren().remove(i);
+                    animalTargetGroup.getChildren().remove(i);
+                    animalBackBarGroup.getChildren().remove(i);
+                    animalHungerBarGroup.getChildren().remove(i);
+                    animalEnergyBarGroup.getChildren().remove(i);
+                    animalList.remove(i);
+                }
             }
+        }
+        else{
+            printRank();
         }
     }
 
+    public void printRank(){
+        for(int i = animalRank.size() - 1; i > 0 ; i--){
+            System.out.println("Rank " + (animalRank.size() - i));
+            System.out.println(animalRank.get(i).statistics());
+            System.out.println();
+        }
+    }
 
     // display features
     public void toggleSmellCircles(){

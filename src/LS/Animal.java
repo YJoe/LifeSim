@@ -87,7 +87,7 @@ public abstract class Animal {
 
         if (getHunger() > 0 && getHunger() < 10){
             if (getEnergy() < 1000) {
-                setEnergy(getEnergy() + 1);
+                setEnergy(getEnergy() + 2);
             }
         }else {
             if (getHunger() >= 10) {
@@ -463,6 +463,13 @@ public abstract class Animal {
     }
 
     // INFORMATIONAL
+    public String statistics(){
+        return ("Name: " + getName() + "\n" +
+                "Species: " + getSpecies() + "\n" +
+                "Speed: " + getSpeed() + "\n" +
+                "Smell Range: " + getSmellRange() + "\n" +
+                "Metabolism: " + getMetabolism());
+    }
     public String toString(){
         return ("Name: " + getName() + "\n" +
                 "Xpos: " + getX() + "\n" +
