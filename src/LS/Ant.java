@@ -10,6 +10,7 @@ import java.util.Random;
 public class Ant extends Animal{
     private Random rand = new Random();
     private float baseSpeed = (float)(0.1);
+    private float baseMetabolism = (float)(0.001);
     private int baseSize = 3;
     private int baseTurnAngle = 30;
     private Color bodyColour = Color.rgb(50, 50, 50);
@@ -36,8 +37,11 @@ public class Ant extends Animal{
         // Set a random speed
         setSpeed(baseSpeed + (rand.nextInt(10) * 0.1));
 
-        // set a random turning angle
+        // Set a random turning angle
         setTurnAngle(baseTurnAngle + (rand.nextInt(20)));
+
+        // Set a random metabolism
+        setMetabolism((float)(baseMetabolism + (rand.nextInt(5) * 0.001)));
 
         // Set a random gender
         giveGender();

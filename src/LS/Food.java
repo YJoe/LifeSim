@@ -11,13 +11,10 @@ public abstract class Food {
     private int cal;
     private Circle image;
 
-    public Food(int xIn, int yIn, int id, int calIn, Color colour, int size){
+    public Food(int xIn, int yIn, int id){
         setX(xIn);
         setY(yIn);
-        setCal(calIn);
         setID(id);
-        setImage(new Circle(getX(), getY(), size));
-        getImage().setFill(colour);
     }
 
     public int getX() {

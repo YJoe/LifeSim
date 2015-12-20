@@ -14,7 +14,7 @@ public abstract class Animal {
     private Group foodGroupRef, animalGroupRef;
     private String species, name;
     private char symbol, gender;
-    private float size;
+    private float size, metabolism, hunger = 0;
     private int id, x, y, energy, smellRange, targetX, targetY, turnAngle, pathDistance;
     private int lastAngle = new Random().nextInt(360), randomAttemptTracker = 0, targetFoodID;
     private double speed, dx, dy;
@@ -44,8 +44,29 @@ public abstract class Animal {
         // smell
         getSmellCircle().setTranslateX(getSmellCircle().getTranslateX() + getDx());
         getSmellCircle().setTranslateY(getSmellCircle().getTranslateY() + getDy());
-        // energy
-        setEnergy(getEnergy() - 1);
+
+        // decay hunger or energy depending on how much hungry the animal is
+        hungerEnergyDecay();
+    }
+
+    public void hungerEnergyDecay(){
+        // add to hunger using metabolism higher metabolism means getting hungry quicker
+        setHunger(getHunger() + getMetabolism());
+
+        if (getHunger() > 0 && getHunger() < 10){
+            if (getEnergy() < 1000) {
+                setEnergy(getEnergy() + 1);
+            }
+        }else {
+            if (getHunger() >= 10) {
+                setHunger(10);
+                setEnergy(getEnergy() - 1);
+            } else {
+                if (getHunger() < 0) {
+                    setHunger(0);
+                }
+            }
+        }
     }
 
     public void checkFood(){
@@ -149,7 +170,7 @@ public abstract class Animal {
         for(int i = 0; i < foodList.size(); i++){
             if(getTargetFoodID() == foodList.get(i).getID()){
                 foodGroupRef.getChildren().remove(i);
-                setEnergy(getEnergy() + foodList.get(i).getCal());
+                setHunger(getHunger() - foodList.get(i).getCal());
                 foodList.remove(i);
                 break;
             }
@@ -275,6 +296,20 @@ public abstract class Animal {
     }
     public void setTurnAngle(int t){
         turnAngle = t;
+    }
+
+    public float getHunger(){
+        return hunger;
+    }
+    public void setHunger(float hunger){
+        this.hunger = hunger;
+    }
+
+    public float getMetabolism(){
+        return metabolism;
+    }
+    public void setMetabolism(float metabolism){
+        this.metabolism = metabolism;
     }
 
     public char getGender(){
