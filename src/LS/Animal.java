@@ -4,19 +4,21 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.scene.Group;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public abstract class Animal {
     private Circle image, smellCircle, targetCircle;
-    private Rectangle targetLocation;
+    private Rectangle targetLocation, hungerBar, energyBar, backBar;
     private Group foodGroupRef, animalGroupRef;
     private String species, name;
     private char symbol, gender;
     private float size, metabolism, hunger = 0;
     private int id, x, y, energy, smellRange, targetX, targetY, turnAngle, pathDistance;
     private int lastAngle = new Random().nextInt(360), randomAttemptTracker = 0, targetFoodID;
+    private int statBarHeight = 4, statBarWidth = 50, statBarSpacing = 2;
     private double speed, dx, dy;
     private boolean targetBool, targetingFood;
     private ArrayList<Food> foodList = new ArrayList<>();
@@ -25,7 +27,28 @@ public abstract class Animal {
     public Animal(String speciesIn, char symbolIn, int IDIn, int energyIn, int xIn, int yIn, Group food, Group animal){
         setSpecies(speciesIn); setSymbol(symbolIn); setID(IDIn); setEnergy(energyIn);
         setX(xIn); setY(yIn); setFoodGroupRef(food); setAnimalGroupRef(animal);
-        // as all other attributes are determined by random variables based on the animal subclass, other
+
+        // Create bar background
+        setBackBar(new Rectangle(x, y, statBarWidth + 4, (statBarHeight * 2) + statBarSpacing + 4));
+        getBackBar().setFill(Color.rgb(50, 50, 50));
+        getBackBar().setX(getBackBar().getX() - (statBarWidth/2) - 2);
+        getBackBar().setY(getBackBar().getY() + 8);
+
+        // Create hunger bar
+        setHungerBar(new Rectangle(x, y, statBarWidth, statBarHeight));
+        // Centre and colour hunger bar
+        getHungerBar().setFill(Color.rgb(255, 0, 0));
+        getHungerBar().setX(getHungerBar().getX() - (statBarWidth/2));
+        getHungerBar().setY(getHungerBar().getY() + 10);
+
+        // Create energy bar
+        setEnergyBar(new Rectangle(x, y, statBarWidth, statBarHeight));
+        // Centre and colour energy bar
+        getEnergyBar().setFill(Color.rgb(0, 255, 0));
+        getEnergyBar().setX(getEnergyBar().getX() - (statBarWidth / 2));
+        getEnergyBar().setY(getHungerBar().getY() + statBarHeight + statBarSpacing);
+
+        // As all other attributes are determined by random variables based on the animal subclass, other
         // values are set in the constructor of said subclass after the suepr constructor is called
     }
 
@@ -44,6 +67,15 @@ public abstract class Animal {
         // smell
         getSmellCircle().setTranslateX(getSmellCircle().getTranslateX() + getDx());
         getSmellCircle().setTranslateY(getSmellCircle().getTranslateY() + getDy());
+        // hunger bar
+        getHungerBar().setTranslateX(getHungerBar().getTranslateX() + getDx());
+        getHungerBar().setTranslateY(getHungerBar().getTranslateY() + getDy());
+        // energy bar
+        getEnergyBar().setTranslateX(getEnergyBar().getTranslateX() + getDx());
+        getEnergyBar().setTranslateY(getEnergyBar().getTranslateY() + getDy());
+        // back bar
+        getBackBar().setTranslateX(getBackBar().getTranslateX() + getDx());
+        getBackBar().setTranslateY(getBackBar().getTranslateY() + getDy());
 
         // decay hunger or energy depending on how much hungry the animal is
         hungerEnergyDecay();
@@ -67,6 +99,10 @@ public abstract class Animal {
                 }
             }
         }
+
+        getHungerBar().setWidth(getHunger() * (statBarWidth/10));
+        getEnergyBar().setWidth(getEnergy() * (statBarWidth/1000.0));
+
     }
 
     public void checkFood(){
@@ -317,6 +353,27 @@ public abstract class Animal {
     }
     public void setGender(char gender){
         this.gender = gender;
+    }
+
+    public Rectangle getHungerBar(){
+        return hungerBar;
+    }
+    public void setHungerBar(Rectangle hungerBar){
+        this.hungerBar = hungerBar;
+    }
+
+    public Rectangle getEnergyBar(){
+        return energyBar;
+    }
+    public void setEnergyBar(Rectangle energyBar){
+        this.energyBar = energyBar;
+    }
+
+    public Rectangle getBackBar(){
+        return backBar;
+    }
+    public void setBackBar(Rectangle backBar){
+        this.backBar = backBar;
     }
 
     public void setAnimalGroupRef(Group a){

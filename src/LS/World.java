@@ -14,6 +14,9 @@ public class World {
     private Group animalGroup = new Group();
     private Group animalSmellGroup = new Group();
     private Group animalTargetGroup = new Group();
+    private Group animalHungerBarGroup = new Group();
+    private Group animalEnergyBarGroup = new Group();
+    private Group animalBackBarGroup = new Group();
     private Group foodGroup = new Group();
 
     // set up the world
@@ -21,6 +24,9 @@ public class World {
         root.getChildren().add(foodGroup);
         root.getChildren().add(animalSmellGroup);
         root.getChildren().add(animalGroup);
+        root.getChildren().add(animalBackBarGroup);
+        root.getChildren().add(animalHungerBarGroup);
+        root.getChildren().add(animalEnergyBarGroup);
         root.getChildren().add(animalTargetGroup);
         for(int i = 0; i < animals; i++) {
             addRandomAnimal();
@@ -42,6 +48,9 @@ public class World {
         animalGroup.getChildren().add(a.getImage());
         animalSmellGroup.getChildren().add(a.getSmellCircle());
         animalTargetGroup.getChildren().add(a.getTargetLocation());
+        animalHungerBarGroup.getChildren().add(a.getHungerBar());
+        animalEnergyBarGroup.getChildren().add(a.getEnergyBar());
+        animalBackBarGroup.getChildren().add(a.getBackBar());
     }
 
     public void addRandomFood(){
@@ -70,6 +79,9 @@ public class World {
                 animalGroup.getChildren().remove(i);
                 animalSmellGroup.getChildren().remove(i);
                 animalTargetGroup.getChildren().remove(i);
+                animalBackBarGroup.getChildren().remove(i);
+                animalHungerBarGroup.getChildren().remove(i);
+                animalEnergyBarGroup.getChildren().remove(i);
                 animalList.remove(i);
             }
         }
