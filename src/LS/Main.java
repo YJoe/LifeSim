@@ -27,7 +27,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
 
         // Create world
-        World world = new World(root, 10, 200);
+        World world = new World(root, 20, 100);
 
         //world.toggleSmellCircles();
         //world.toggleTargetSquare();

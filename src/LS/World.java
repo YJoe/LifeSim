@@ -31,11 +31,9 @@ public class World {
         root.getChildren().add(animalTargetGroup);
         for(int i = 0; i < animals; i++) {
             addRandomAnimal();
-            trackID++;
         }
         for(int i = 0; i < food; i++){
             addRandomFood();
-            trackID++;
         }
     }
 
@@ -52,6 +50,7 @@ public class World {
         animalHungerBarGroup.getChildren().add(a.getHungerBar());
         animalEnergyBarGroup.getChildren().add(a.getEnergyBar());
         animalBackBarGroup.getChildren().add(a.getBackBar());
+        trackID++;
     }
 
     public void addRandomFood(){
@@ -60,6 +59,14 @@ public class World {
         Meat f = new Meat(x, y, trackID);
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());
+        trackID++;
+    }
+
+    public void addFood(int x, int y, int size){
+        Meat f = new Meat(x, y, trackID, size);
+        foodList.add(f);
+        foodGroup.getChildren().add(f.getImage());
+        trackID++;
     }
 
     // get lists
@@ -78,6 +85,9 @@ public class World {
             for (int i = 0; i < animalList.size(); i++) {
                 animalList.get(i).update();
                 if (animalList.get(i).getEnergy() < 0) {
+                    addFood((int)(animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
+                            (int)(animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
+                            (int)(animalList.get(i).getImage().getRadius()));
                     animalRank.add(animalList.get(i));
                     animalGroup.getChildren().remove(i);
                     animalSmellGroup.getChildren().remove(i);

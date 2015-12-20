@@ -16,4 +16,11 @@ public class Meat extends Food{
         getImage().setFill(colour);
         setCal((int)(getImage().getRadius()));
     }
+
+    public Meat(int x, int y, int id, int size){
+        super(x, y, id);
+        setImage(new Circle(getX(), getY(), size));
+        getImage().setFill(colour);
+        setCal((int)(getImage().getRadius()));
+    }
 }
