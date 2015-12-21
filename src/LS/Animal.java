@@ -128,22 +128,31 @@ public abstract class Animal {
 
     public void checkFood(){
         for(int i = 0; i < foodList.size(); i++){
-            int x1pos = (int) (this.getSmellCircle().getCenterX() + this.getSmellCircle().getTranslateX());
-            int y1pos = (int) (this.getSmellCircle().getCenterY() + this.getSmellCircle().getTranslateY());
-
-            int x2pos = (int) (foodList.get(i).getImage().getCenterX() + foodList.get(i).getImage().getTranslateX());
-            int y2pos = (int) (foodList.get(i).getImage().getCenterY() + foodList.get(i).getImage().getTranslateY());
-
-            int a = Math.abs(x1pos - x2pos);
-            int b = Math.abs(y1pos - y2pos);
-            int c =  (int)(this.getSmellCircle().getRadius() + foodList.get(i).getImage().getRadius());
-
-            // |(x2-x1)| + |(y1-y2)| <= (r1+r2)
-            if (a + b <= c){
+            if (checkCollide(this.getSmellCircle(), foodList.get(i).getImage())){
                 setTargetingFood(true);
                 setTargetFoodID(foodList.get(i).getID());
                 setTarget(foodList.get(i).getImage());
             }
+        }
+    }
+
+    public boolean checkCollide(Circle C1, Circle C2){
+        int x1pos = (int) (C1.getCenterX() + C1.getTranslateX());
+        int y1pos = (int) (C1.getCenterY() + C1.getTranslateY());
+
+        int x2pos = (int) (C2.getCenterX() + C2.getTranslateX());
+        int y2pos = (int) (C2.getCenterY() + C2.getTranslateY());
+
+        int a = Math.abs(x1pos - x2pos);
+        int b = Math.abs(y1pos - y2pos);
+        int c =  (int)(C1.getRadius() + C2.getRadius());
+
+        // |(x2-x1)| + |(y1-y2)| <= (r1+r2)
+        if (a + b <= c){
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
@@ -202,19 +211,7 @@ public abstract class Animal {
     }
 
     public void checkCollideTarget(){
-        int x1pos = (int) (this.getImage().getCenterX() + this.getImage().getTranslateX());
-        int y1pos = (int) (this.getImage().getCenterY() + this.getImage().getTranslateY());
-
-        int x2pos = (int) (getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
-        int y2pos = (int) (getTargetCircle().getCenterY() + getTargetCircle().getTranslateY());
-
-        //      a          b           c
-        // |(x2-x1)| + |(y1-y2)| <= (r1+r2)
-        float a = (float) Math.abs(x1pos - x2pos);
-        float b = (float) Math.abs(y1pos - y2pos);
-        float c = (float) Math.abs(getImage().getRadius() + getTargetCircle().getRadius());
-
-        if (a + b <= c){
+        if (checkCollide(this.getImage(), this.getTargetCircle())){
             if (isTargetFood()){
                 eatFood();
             }
