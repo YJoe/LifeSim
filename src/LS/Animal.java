@@ -11,12 +11,13 @@ import javafx.scene.shape.Rectangle;
 
 public abstract class Animal {
     private Circle image, smellCircle, targetCircle;
-    private Rectangle targetLocation, hungerBar, energyBar, backBar;
+    private Rectangle targetLocation, hungerBar, energyBar, backBar, homeLocation;
     private Group foodGroupRef, animalGroupRef;
     private String species, name;
     private char symbol, gender;
     private float size, metabolism, hunger = 0;
     private int id, x, y, energy, smellRange, targetX, targetY, turnAngle, pathDistance;
+    private int homeX, homeY, memory, memoryBiasX, memoryBiasY;
     private int lastAngle = new Random().nextInt(360), randomAttemptTracker = 0, targetFoodID;
     private int statBarHeight = 4, statBarWidth = 50, statBarSpacing = 2;
     private double speed, dx, dy;
@@ -48,14 +49,33 @@ public abstract class Animal {
         getEnergyBar().setX(getEnergyBar().getX() - (statBarWidth / 2));
         getEnergyBar().setY(getHungerBar().getY() + statBarHeight + statBarSpacing);
 
+        // Set a random gender
+        giveGender();
+
+        // Create target indicator
+        Rectangle r = new Rectangle(0, 0, 5, 5);
+        r.setFill(Color.rgb(255, 0, 0));
+        setTargetLocation(r);
+
+        // Create home locator
+        Rectangle h = new Rectangle(0, 0, 5, 5);
+        h.setFill(Color.rgb(0, 0, 255));
+        setHomeLocation(h);
+
+        // Create memory direction bias
+        Random rand = new Random();
+        setMemoryBiasX(rand.nextInt(2));
+        setMemoryBiasY(rand.nextInt(2));
+
         // As all other attributes are determined by random variables based on the animal subclass, other
-        // values are set in the constructor of said subclass after the suepr constructor is called
+        // values are set in the constructor of said subclass after the super constructor is called
     }
 
     // Main functions
     public void update(){
         target();
         move();
+        forget();
         getTargetLocation().setTranslateX(getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
         getTargetLocation().setTranslateY(getTargetCircle().getCenterY() + getTargetCircle().getTranslateY());
     }
@@ -224,6 +244,61 @@ public abstract class Animal {
         setTargetBool(true);
     }
 
+    public void forget(){
+        Random rand = new Random();
+
+        // A higher memory provides more chances to avoid forgetting
+        if(rand.nextInt(getMemory()) == 1) {
+            // Distort home values using the memoryBiasX
+            if (memoryBiasX == 1){
+                if (rand.nextInt(3) == 1)
+                    setHomeX(getHomeX() - 1);
+                else
+                    setHomeX(getHomeX() + 1);
+            } else {
+                if (rand.nextInt(3) == 1)
+                    setHomeX(getHomeX() + 1);
+                else
+                    setHomeX(getHomeX() - 1);
+            }
+
+            // Distort home values using the memoryBiasY
+            if (memoryBiasY == 1) {
+                if (rand.nextInt(3) == 1)
+                    setHomeY(getHomeY() - 1);
+                else
+                    setHomeY(getHomeY() + 1);
+            } else {
+                if (rand.nextInt(3) == 1)
+                    setHomeY(getHomeY() + 1);
+                else
+                    setHomeY(getHomeY() - 1);
+            }
+
+            // Ensure the coordinates aren't going off screen
+            if(getHomeX() > Main.SIZE_X){
+                setHomeX(Main.SIZE_X);
+            } else {
+                if (getHomeX() < 0) {
+                    setHomeX(0);
+                }
+            }
+
+            if (getHomeY() > Main.SIZE_Y){
+                setHomeY(Main.SIZE_Y);
+            }else{
+                if(getHomeY() < 0) {
+                    setHomeY(0);
+                }
+            }
+
+        }
+
+        getHomeLocation().setX(getHomeX());
+        getHomeLocation().setY(getHomeY());
+
+    }
+
     // SELF GET/SET FUNCTIONS
     public void setFoodList(ArrayList<Food> f){
         foodList = f;
@@ -334,6 +409,20 @@ public abstract class Animal {
         turnAngle = t;
     }
 
+    public int getHomeX(){
+        return homeX;
+    }
+    public void setHomeX(int homeX){
+        this.homeX = homeX;
+    }
+
+    public int getHomeY(){
+        return homeY;
+    }
+    public void setHomeY(int homeY){
+        this.homeY = homeY;
+    }
+
     public float getHunger(){
         return hunger;
     }
@@ -346,6 +435,27 @@ public abstract class Animal {
     }
     public void setMetabolism(float metabolism){
         this.metabolism = metabolism;
+    }
+
+    public int getMemory(){
+        return memory;
+    }
+    public void setMemory(int memory){
+        this.memory = memory;
+    }
+
+    public int getMemoryBiasX(){
+        return memoryBiasX;
+    }
+    public void setMemoryBiasX(int memoryBiasX){
+        this.memoryBiasX = memoryBiasX;
+    }
+
+    public int getMemoryBiasY(){
+        return memoryBiasY;
+    }
+    public void setMemoryBiasY(int memoryBiasY){
+        this.memoryBiasY = memoryBiasY;
     }
 
     public char getGender(){
@@ -374,6 +484,13 @@ public abstract class Animal {
     }
     public void setBackBar(Rectangle backBar){
         this.backBar = backBar;
+    }
+
+    public Rectangle getHomeLocation(){
+        return homeLocation;
+    }
+    public void setHomeLocation(Rectangle homeLocation){
+        this.homeLocation = homeLocation;
     }
 
     public void setAnimalGroupRef(Group a){

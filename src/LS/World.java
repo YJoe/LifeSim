@@ -18,6 +18,7 @@ public class World {
     private Group animalHungerBarGroup = new Group();
     private Group animalEnergyBarGroup = new Group();
     private Group animalBackBarGroup = new Group();
+    private Group animalHomeLocationGroup = new Group();
     private Group foodGroup = new Group();
 
     // set up the world
@@ -29,6 +30,7 @@ public class World {
         root.getChildren().add(animalHungerBarGroup);
         root.getChildren().add(animalEnergyBarGroup);
         root.getChildren().add(animalTargetGroup);
+        root.getChildren().add(animalHomeLocationGroup);
         for(int i = 0; i < animals; i++) {
             addRandomAnimal();
         }
@@ -50,6 +52,7 @@ public class World {
         animalHungerBarGroup.getChildren().add(a.getHungerBar());
         animalEnergyBarGroup.getChildren().add(a.getEnergyBar());
         animalBackBarGroup.getChildren().add(a.getBackBar());
+        animalHomeLocationGroup.getChildren().add(a.getHomeLocation());
         trackID++;
     }
 
@@ -73,7 +76,6 @@ public class World {
     public ArrayList<Animal> getAnimalList(){
         return animalList;
     }
-
     public ArrayList<Food> getFoodList(){
         return foodList;
     }

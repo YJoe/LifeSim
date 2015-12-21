@@ -9,10 +9,8 @@ import java.util.Random;
 
 public class Ant extends Animal{
     private Random rand = new Random();
-    private float baseSpeed = (float)(0.1);
-    private float baseMetabolism = (float)(0.002);
-    private int baseSize = 3;
-    private int baseTurnAngle = 30;
+    private float baseSpeed = (float)(0.1), baseMetabolism = (float)(0.002);
+    private int baseSize = 3, baseTurnAngle = 30, baseStrength = 3, baseMemory = 30;
     private Color bodyColour = Color.rgb(50, 50, 50);
     private Color smellColour = Color.rgb(0, 100, 100);
 
@@ -43,12 +41,7 @@ public class Ant extends Animal{
         // Set a random metabolism
         setMetabolism((float)(baseMetabolism + (rand.nextInt(4) * 0.0005)));
 
-        // Set a random gender
-        giveGender();
-
-        // Create target indicator
-        Rectangle r = new Rectangle(0, 0, 5, 5);
-        r.setFill(Color.rgb(255, 0, 0));
-        setTargetLocation(r);
+        // Set a random memory
+        setMemory(baseMemory + (rand.nextInt(50)));
     }
 }
