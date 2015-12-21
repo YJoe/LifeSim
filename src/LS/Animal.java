@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.scene.Group;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -58,9 +57,11 @@ public abstract class Animal {
         setTargetLocation(r);
 
         // Create home locator
-        Rectangle h = new Rectangle(0, 0, 5, 5);
+        Rectangle h = new Rectangle(Main.SIZE_X/2, Main.SIZE_Y/2, 5, 5);
         h.setFill(Color.rgb(0, 0, 255));
         setHomeLocation(h);
+        setHomeX((int)h.getX());
+        setHomeY((int)h.getY());
 
         // Create memory direction bias
         Random rand = new Random();

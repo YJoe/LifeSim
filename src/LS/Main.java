@@ -27,10 +27,11 @@ public class Main extends Application {
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
 
         // Create world
-        World world = new World(root, 20, 100);
+        World world = new World(root, 20, 100, 1);
 
         //world.toggleSmellCircles();
         //world.toggleTargetSquare();
+        world.toggleHomeSquares();
 
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage);

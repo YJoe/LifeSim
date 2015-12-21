@@ -8,10 +8,11 @@ import java.util.ArrayList;
 public class World {
     private Random rand = new Random();
     private int trackID = 0;
-    private boolean visibleSmellCircle = true, visibleTargetSquare = true;
+    private boolean visibleSmellCircles = true, visibleTargetSquares = true, visibleHomeSquares = true;
     private ArrayList<Animal> animalList = new ArrayList<>();
     private ArrayList<Animal> animalRank = new ArrayList<>();
     private ArrayList<Food> foodList = new ArrayList<>();
+    private ArrayList<Shelter> shelterList = new ArrayList<>();
     private Group animalGroup = new Group();
     private Group animalSmellGroup = new Group();
     private Group animalTargetGroup = new Group();
@@ -19,10 +20,12 @@ public class World {
     private Group animalEnergyBarGroup = new Group();
     private Group animalBackBarGroup = new Group();
     private Group animalHomeLocationGroup = new Group();
+    private Group shelterGroup = new Group();
     private Group foodGroup = new Group();
 
     // set up the world
-    public World(Group root, int animals, int food){
+    public World(Group root, int animals, int food, int shelters){
+        root.getChildren().add(shelterGroup);
         root.getChildren().add(foodGroup);
         root.getChildren().add(animalSmellGroup);
         root.getChildren().add(animalGroup);
@@ -31,11 +34,15 @@ public class World {
         root.getChildren().add(animalEnergyBarGroup);
         root.getChildren().add(animalTargetGroup);
         root.getChildren().add(animalHomeLocationGroup);
+
         for(int i = 0; i < animals; i++) {
             addRandomAnimal();
         }
         for(int i = 0; i < food; i++){
             addRandomFood();
+        }
+        for(int i = 0; i < shelters; i++){
+            addShelter();
         }
     }
 
@@ -72,6 +79,29 @@ public class World {
         trackID++;
     }
 
+    public void addShelter(){
+        // TODO: Make random shelters
+        int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
+        Shelter s = new AntHill(x, y);
+        shelterList.add(s);
+        shelterGroup.getChildren().add(s.getImage());
+    }
+
+    // remove from the world
+    public void killAnimal(int i){
+        addFood((int)(animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
+                (int)(animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
+                (int)(animalList.get(i).getImage().getRadius()));
+        animalRank.add(animalList.get(i));
+        animalGroup.getChildren().remove(i);
+        animalSmellGroup.getChildren().remove(i);
+        animalTargetGroup.getChildren().remove(i);
+        animalBackBarGroup.getChildren().remove(i);
+        animalHungerBarGroup.getChildren().remove(i);
+        animalEnergyBarGroup.getChildren().remove(i);
+        animalList.remove(i);
+    }
+
     // get lists
     public ArrayList<Animal> getAnimalList(){
         return animalList;
@@ -87,17 +117,7 @@ public class World {
             for (int i = 0; i < animalList.size(); i++) {
                 animalList.get(i).update();
                 if (animalList.get(i).getEnergy() < 0) {
-                    addFood((int)(animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
-                            (int)(animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
-                            (int)(animalList.get(i).getImage().getRadius()));
-                    animalRank.add(animalList.get(i));
-                    animalGroup.getChildren().remove(i);
-                    animalSmellGroup.getChildren().remove(i);
-                    animalTargetGroup.getChildren().remove(i);
-                    animalBackBarGroup.getChildren().remove(i);
-                    animalHungerBarGroup.getChildren().remove(i);
-                    animalEnergyBarGroup.getChildren().remove(i);
-                    animalList.remove(i);
+                    killAnimal(i);
                 }
             }
         }
@@ -116,12 +136,18 @@ public class World {
 
     // display features
     public void toggleSmellCircles(){
-        visibleSmellCircle = !visibleSmellCircle;
-        animalSmellGroup.setVisible(visibleSmellCircle);
+        visibleSmellCircles = !visibleSmellCircles;
+        animalSmellGroup.setVisible(visibleSmellCircles);
     }
 
-    public void toggleTargetSquare(){
-        visibleTargetSquare = !visibleTargetSquare;
-        animalTargetGroup.setVisible(visibleTargetSquare);
+    public void toggleTargetSquares(){
+        visibleTargetSquares = !visibleTargetSquares;
+        animalTargetGroup.setVisible(visibleTargetSquares);
     }
+
+    public void toggleHomeSquares(){
+        visibleHomeSquares = !visibleHomeSquares;
+        animalHomeLocationGroup.setVisible(visibleHomeSquares);
+    }
+
 }
