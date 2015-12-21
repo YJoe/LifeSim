@@ -1,10 +1,10 @@
 package LS;
 
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Circle;
 
 public abstract class Shelter {
     private int x, y, capacity;
-    private Rectangle image;
+    private Circle image;
 
     public Shelter(int x, int y, int capacity){
         setX(x);
@@ -12,7 +12,7 @@ public abstract class Shelter {
         setCapacity(capacity);
 
         // Create rectangle for shelter
-        setImage(new Rectangle(getX(), getY(), 30, 30));
+        setImage(new Circle(getX(), getY(), 30));
     }
 
     // Getters and setters
@@ -37,10 +37,10 @@ public abstract class Shelter {
         this.capacity = capacity;
     }
 
-    public Rectangle getImage(){
+    public Circle getImage(){
         return image;
     }
-    public void setImage(Rectangle image){
+    public void setImage(Circle image){
         this.image = image;
     }
 }

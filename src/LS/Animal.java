@@ -22,6 +22,7 @@ public abstract class Animal {
     private double speed, dx, dy;
     private boolean targetBool, targetingFood;
     private ArrayList<Food> foodList = new ArrayList<>();
+    private ArrayList<Shelter> shelterList = new ArrayList<>();
 
     // Constructor
     public Animal(String speciesIn, char symbolIn, int IDIn, int energyIn, int xIn, int yIn, Group food, Group animal){
@@ -132,6 +133,14 @@ public abstract class Animal {
                 setTargetingFood(true);
                 setTargetFoodID(foodList.get(i).getID());
                 setTarget(foodList.get(i).getImage());
+            }
+        }
+    }
+
+    public void checkShelters(){
+        for(int i = 0; i < shelterList.size(); i++){
+            if(checkCollide(getSmellCircle(), shelterList.get(i).getImage())){
+                // TODO: decide what to do when a shelter is found
             }
         }
     }
