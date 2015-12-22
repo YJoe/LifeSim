@@ -1,7 +1,5 @@
 package LS;
 
-import javafx.scene.Group;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public abstract class Food {
@@ -9,6 +7,7 @@ public abstract class Food {
     private int y;
     private int id;
     private int cal;
+    private int size;
     private Circle image;
 
     public Food(int xIn, int yIn, int id){
@@ -43,6 +42,13 @@ public abstract class Food {
     }
     public void setCal(int cal) {
         this.cal = cal;
+    }
+
+    public int getSize(){
+        return size;
+    }
+    public void setSize(int size){
+        this.size = size;
     }
 
     public Circle getImage() {
