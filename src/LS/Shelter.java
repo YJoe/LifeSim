@@ -2,9 +2,12 @@ package LS;
 
 import javafx.scene.shape.Circle;
 
+import java.util.ArrayList;
+
 public abstract class Shelter {
     private int x, y, capacity;
     private Circle image;
+    protected ArrayList<Animal> shelteredAnimals = new ArrayList<>();
 
     public Shelter(int x, int y, int capacity){
         setX(x);
@@ -13,6 +16,41 @@ public abstract class Shelter {
 
         // Create rectangle for shelter
         setImage(new Circle(getX(), getY(), 30));
+    }
+
+    // Main functions
+    public void update(){
+        for (int i = 0; i < shelteredAnimals.size(); i++){
+            System.out.println(shelteredAnimals.get(i).getWaitAtHome());
+            shelteredAnimals.get(i).setWaitAtHome(shelteredAnimals.get(i).getWaitAtHome() - 1);
+            if (shelteredAnimals.get(i).getWaitAtHome() <= 0){
+                shelteredAnimals.get(i).exitShelter();
+                shelteredAnimals.remove(i);
+                // get the worlds list and add the animal to it
+                // find and set the node to visible
+                // remove the animal from sheltered list
+            }
+        }
+    }
+
+    public boolean checkRoom(){
+        if (shelteredAnimals.size() < getCapacity()){
+            return true;
+        }
+        return false;
+    }
+
+    public void addAnimal(Animal a){
+        shelteredAnimals.add(a);
+        System.out.println("An animal is here!");
+    }
+
+    public void removeAnimal(int ID){
+        for(int i = 0; i < shelteredAnimals.size(); i++){
+            if (ID == shelteredAnimals.get(i).getID()){
+                shelteredAnimals.remove(i);
+            }
+        }
     }
 
     // Getters and setters

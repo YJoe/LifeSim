@@ -16,11 +16,11 @@ public abstract class Animal {
     private char symbol, gender;
     private float size, metabolism, hunger = 0;
     private int id, x, y, energy, smellRange, targetX, targetY, turnAngle, pathDistance;
-    private int homeX, homeY, memory, memoryBiasX, memoryBiasY;
+    private int homeX, homeY, memory, memoryBiasX, memoryBiasY, waitAtHome;
     private int lastAngle = new Random().nextInt(360), randomAttemptTracker = 0, targetFoodID;
     private int statBarHeight = 4, statBarWidth = 50, statBarSpacing = 2;
     private double speed, dx, dy;
-    private boolean targetBool, targetingFood;
+    private boolean targetBool, targetingFood, targetingHome, update;
     private ArrayList<Food> foodList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
 
@@ -69,17 +69,21 @@ public abstract class Animal {
         setMemoryBiasX(rand.nextInt(2));
         setMemoryBiasY(rand.nextInt(2));
 
+        setShouldUpdate(true);
+
         // As all other attributes are determined by random variables based on the animal subclass, other
         // values are set in the constructor of said subclass after the super constructor is called
     }
 
     // Main functions
     public void update(){
-        target();
-        move();
-        forget();
-        getTargetLocation().setTranslateX(getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
-        getTargetLocation().setTranslateY(getTargetCircle().getCenterY() + getTargetCircle().getTranslateY());
+        if (shouldUpdate()){
+            target();
+            move();
+            forget();
+            getTargetLocation().setTranslateX(getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
+            getTargetLocation().setTranslateY(getTargetCircle().getCenterY() + getTargetCircle().getTranslateY());
+        }
     }
 
     public void move(){
@@ -139,10 +143,25 @@ public abstract class Animal {
 
     public void checkShelters(){
         for(int i = 0; i < shelterList.size(); i++){
-            if(checkCollide(getSmellCircle(), shelterList.get(i).getImage())){
-                // TODO: decide what to do when a shelter is found
+            if(checkCollide(getImage(), shelterList.get(i).getImage())){
+                Random rand = new Random();
+                setWaitAtHome(500);
+                enterShelter(i);
             }
         }
+    }
+
+    public void enterShelter(int i){
+        if (shelterList.get(i).checkRoom()){
+            shelterList.get(i).addAnimal(this);
+            //animalGroupRef.getChildren().get(i).setVisible(false);
+            setShouldUpdate(false);
+        }
+    }
+
+    public void exitShelter(){
+        setShouldUpdate(true);
+        setTargetingHome(false);
     }
 
     public boolean checkCollide(Circle C1, Circle C2){
@@ -167,8 +186,12 @@ public abstract class Animal {
 
     public void target(){
         if (hasTarget()){
-            if (!isTargetFood()){
-                checkFood();
+            if (!isTargetingHome()) {
+                if (!isTargetFood()) {
+                    checkFood();
+                }
+            } else{
+                checkShelters();
             }
             directToTarget();
             checkCollideTarget();
@@ -246,6 +269,12 @@ public abstract class Animal {
         setDy(0);
     }
 
+    public void targetHome(){
+        setTargetingHome(true);
+        Circle c = new Circle(getHomeX(), getHomeY(), 5);
+        setTarget(c);
+    }
+
     public void setTarget(Circle c){
         this.targetCircle = c;
         setTargetBool(true);
@@ -257,7 +286,7 @@ public abstract class Animal {
         // A higher memory provides more chances to avoid forgetting
         if(rand.nextInt(getMemory()) == 1) {
             // Distort home values using the memoryBiasX
-            if (memoryBiasX == 1){
+            if (getMemoryBiasX() == 1){
                 if (rand.nextInt(3) == 1)
                     setHomeX(getHomeX() - 1);
                 else
@@ -270,7 +299,7 @@ public abstract class Animal {
             }
 
             // Distort home values using the memoryBiasY
-            if (memoryBiasY == 1) {
+            if (getMemoryBiasY() == 1) {
                 if (rand.nextInt(3) == 1)
                     setHomeY(getHomeY() - 1);
                 else
@@ -309,6 +338,10 @@ public abstract class Animal {
     // SELF GET/SET FUNCTIONS
     public void setFoodList(ArrayList<Food> f){
         foodList = f;
+    }
+
+    public void setShelterList(ArrayList<Shelter> s){
+        shelterList = s;
     }
 
     public int getX(){
@@ -437,6 +470,13 @@ public abstract class Animal {
         this.hunger = hunger;
     }
 
+    public int getWaitAtHome(){
+        return waitAtHome;
+    }
+    public void setWaitAtHome(int waitAtHome){
+        this.waitAtHome = waitAtHome;
+    }
+
     public float getMetabolism(){
         return metabolism;
     }
@@ -470,6 +510,13 @@ public abstract class Animal {
     }
     public void setGender(char gender){
         this.gender = gender;
+    }
+
+    public boolean shouldUpdate(){
+        return update;
+    }
+    public void setShouldUpdate(boolean update){
+        this.update = update;
     }
 
     public Rectangle getHungerBar(){
@@ -577,6 +624,13 @@ public abstract class Animal {
     }
     public void setTargetingFood(boolean t){
         targetingFood = t;
+    }
+
+    public boolean isTargetingHome(){
+        return targetingHome;
+    }
+    public void setTargetingHome(boolean targetingHome){
+        this.targetingHome = targetingHome;
     }
 
     public int getTargetFoodID(){

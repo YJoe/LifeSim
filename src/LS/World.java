@@ -52,6 +52,7 @@ public class World {
         int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
         Animal a = new Ant(x, y, trackID, foodGroup, animalGroup);
         a.setFoodList(foodList);
+        a.setShelterList(shelterList);
         animalList.add(a);
         animalGroup.getChildren().add(a.getImage());
         animalSmellGroup.getChildren().add(a.getSmellCircle());
@@ -109,20 +110,23 @@ public class World {
     public ArrayList<Food> getFoodList(){
         return foodList;
     }
+    public ArrayList<Shelter> getShelterList() {
+        return shelterList;
+    }
 
     // run world
     public void update(){
-        if (animalList.size() > 0) {
-            // call update for all animals
-            for (int i = 0; i < animalList.size(); i++) {
-                animalList.get(i).update();
-                if (animalList.get(i).getEnergy() < 0) {
-                    killAnimal(i);
-                }
+        // call update for all animals
+        for (int i = 0; i < animalList.size(); i++) {
+            animalList.get(i).update();
+            if (animalList.get(i).getEnergy() < 0) {
+                killAnimal(i);
             }
         }
-        else{
-            printRank();
+
+        // call update for all shelters
+        for (int i = 0; i < shelterList.size(); i++){
+            shelterList.get(i).update();
         }
     }
 
