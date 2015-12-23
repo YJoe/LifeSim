@@ -21,7 +21,6 @@ public abstract class Shelter {
     // Main functions
     public void update(){
         for (int i = 0; i < shelteredAnimals.size(); i++){
-            System.out.println(shelteredAnimals.get(i).getWaitAtHome());
             shelteredAnimals.get(i).setWaitAtHome(shelteredAnimals.get(i).getWaitAtHome() - 1);
             if (shelteredAnimals.get(i).getWaitAtHome() <= 0){
                 shelteredAnimals.get(i).exitShelter();
