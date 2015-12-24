@@ -156,6 +156,9 @@ public class SimulationMenu {
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
     }
 
+    public void togglePaused(){
+        isPaused = !isPaused;
+    }
     public boolean isPaused(){
         return isPaused;
     }

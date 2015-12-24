@@ -7,7 +7,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -37,6 +41,15 @@ public class Main extends Application {
         SimulationMenu menu = new SimulationMenu(primaryStage);
         root.getChildren().add(menu.getMenuBar());
 
+        // Create key press handler for scene
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent ke) {
+                if (ke.getCode() == KeyCode.SPACE) {
+                    menu.togglePaused();
+                }
+            }
+        });
+
         // Create keyFrame
         KeyFrame frame = new KeyFrame(Duration.millis(16), new EventHandler<ActionEvent>(){
             @Override
@@ -46,7 +59,6 @@ public class Main extends Application {
                 }
             }
         });
-
 
         // Some other stuff
         TimelineBuilder.create().cycleCount(javafx.animation.Animation.INDEFINITE).keyFrames(frame).build().play();
