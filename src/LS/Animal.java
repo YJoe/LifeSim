@@ -23,6 +23,8 @@ public abstract class Animal {
     private boolean targetBool, targetingFood, targetingHome, update;
     private ArrayList<Food> foodList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
+    //                            f  w  h
+    private int[] taskPriority = { 0, 0, 0 };
 
     // Constructor
     public Animal(String speciesIn, char symbolIn, int IDIn, int energyIn, int xIn, int yIn, Group food, Group animal){
@@ -78,12 +80,28 @@ public abstract class Animal {
     // Main functions
     public void update(){
         if (shouldUpdate()){
+            prioritiseTasks();
+            getTask();
             target();
             move();
             forget();
             getTargetLocation().setTranslateX(getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
             getTargetLocation().setTranslateY(getTargetCircle().getCenterY() + getTargetCircle().getTranslateY());
         }
+    }
+
+    public void prioritiseTasks(){
+        taskPriority[0] = (int)(getHunger()*10);
+    }
+
+    public void getTask(){
+        int highest = 0;
+        for (int i = 0; i < 3; i++){
+            if (taskPriority[i] > taskPriority[highest]) {
+                highest = i;
+            }
+        }
+        System.out.println("Prioritise task[" + highest + "]");
     }
 
     public void move(){
@@ -186,10 +204,8 @@ public abstract class Animal {
 
     public void target(){
         if (hasTarget()){
-            if (!isTargetingHome()) {
-                if (!isTargetFood()) {
-                    checkFood();
-                }
+            if (!isTargetFood()) {
+                checkFood();
             } else{
                 checkShelters();
             }
