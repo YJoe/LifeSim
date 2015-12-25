@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class World {
     private Random rand = new Random();
     private int trackID = 0;
-    private boolean visibleSmellCircles = true, visibleTargetSquares = true, visibleHomeSquares = true;
     private ArrayList<Animal> animalList = new ArrayList<>();
     private ArrayList<Animal> animalRank = new ArrayList<>();
     private ArrayList<Food> foodList = new ArrayList<>();
@@ -140,18 +139,21 @@ public class World {
 
     // display features
     public void toggleSmellCircles(){
-        visibleSmellCircles = !visibleSmellCircles;
-        animalSmellGroup.setVisible(visibleSmellCircles);
+        animalSmellGroup.setVisible(!animalSmellGroup.isVisible());
     }
 
     public void toggleTargetSquares(){
-        visibleTargetSquares = !visibleTargetSquares;
-        animalTargetGroup.setVisible(visibleTargetSquares);
+        animalTargetGroup.setVisible(!animalTargetGroup.isVisible());
+    }
+
+    public void toggleStatBars(){
+        animalEnergyBarGroup.setVisible(!animalEnergyBarGroup.isVisible());
+        animalHungerBarGroup.setVisible(!animalHungerBarGroup.isVisible());
+        animalBackBarGroup.setVisible(!animalBackBarGroup.isVisible());
     }
 
     public void toggleHomeSquares(){
-        visibleHomeSquares = !visibleHomeSquares;
-        animalHomeLocationGroup.setVisible(visibleHomeSquares);
+        animalHomeLocationGroup.setVisible(!animalHomeLocationGroup.isVisible());
     }
 
 }

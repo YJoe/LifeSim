@@ -33,9 +33,10 @@ public class Main extends Application {
         // Create world
         World world = new World(root, 1, 1, 1);
 
-        //world.toggleSmellCircles();
-        //world.toggleTargetSquare();
-        //world.toggleHomeSquares();
+        world.toggleSmellCircles();
+        world.toggleTargetSquares();
+        world.toggleHomeSquares();
+        world.toggleStatBars();
 
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage);
@@ -46,6 +47,22 @@ public class Main extends Application {
             public void handle(KeyEvent ke) {
                 if (ke.getCode() == KeyCode.SPACE) {
                     menu.togglePaused();
+                }else{
+                    if (ke.getCode() == KeyCode.DIGIT1){
+                        world.toggleSmellCircles();
+                    }else {
+                        if (ke.getCode() == KeyCode.DIGIT2) {
+                            world.toggleTargetSquares();
+                        } else {
+                            if (ke.getCode() == KeyCode.DIGIT3) {
+                                world.toggleHomeSquares();
+                            } else {
+                                if (ke.getCode() == KeyCode.DIGIT4) {
+                                    world.toggleStatBars();
+                                }
+                            }
+                        }
+                    }
                 }
             }
         });

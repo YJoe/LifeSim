@@ -101,7 +101,7 @@ public abstract class Animal {
                 highest = i;
             }
         }
-        System.out.println("Prioritise task[" + highest + "]");
+        //System.out.println("Prioritise task[" + highest + "]");
     }
 
     public void move(){
