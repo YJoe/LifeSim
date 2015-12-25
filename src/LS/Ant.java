@@ -42,6 +42,6 @@ public class Ant extends Animal{
         setMetabolism((float)(baseMetabolism + (rand.nextInt(4) * 0.0005)));
 
         // Set a random memory
-        setMemory(baseMemory + (rand.nextInt(50)));
+        setMemory(baseMemory + (rand.nextInt(30)));
     }
 }

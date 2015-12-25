@@ -303,28 +303,36 @@ public abstract class Animal {
         if(rand.nextInt(getMemory()) == 1) {
             // Distort home values using the memoryBiasX
             if (getMemoryBiasX() == 1){
-                if (rand.nextInt(3) == 1)
-                    setHomeX(getHomeX() - 1);
-                else
-                    setHomeX(getHomeX() + 1);
+                if (rand.nextInt(2) == 1) {
+                    if (rand.nextInt(3) == 1)
+                        setHomeX(getHomeX() - 1);
+                    else
+                        setHomeX(getHomeX() + 1);
+                }
             } else {
-                if (rand.nextInt(3) == 1)
-                    setHomeX(getHomeX() + 1);
-                else
-                    setHomeX(getHomeX() - 1);
+                if (rand.nextInt(2) == 1) {
+                    if (rand.nextInt(3) == 1)
+                        setHomeX(getHomeX() + 1);
+                    else
+                        setHomeX(getHomeX() - 1);
+                }
             }
 
             // Distort home values using the memoryBiasY
             if (getMemoryBiasY() == 1) {
-                if (rand.nextInt(3) == 1)
-                    setHomeY(getHomeY() - 1);
-                else
-                    setHomeY(getHomeY() + 1);
+                if (rand.nextInt(2) == 1) {
+                    if (rand.nextInt(3) == 1)
+                        setHomeY(getHomeY() - 1);
+                    else
+                        setHomeY(getHomeY() + 1);
+                }
             } else {
-                if (rand.nextInt(3) == 1)
-                    setHomeY(getHomeY() + 1);
-                else
-                    setHomeY(getHomeY() - 1);
+                if (rand.nextInt(2) == 1) {
+                    if (rand.nextInt(3) == 1)
+                        setHomeY(getHomeY() + 1);
+                    else
+                        setHomeY(getHomeY() - 1);
+                }
             }
 
             // Ensure the coordinates aren't going off screen
