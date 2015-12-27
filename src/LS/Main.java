@@ -7,15 +7,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.util.Random;
 
 public class Main extends Application {
     public static int SIZE_X = 1000, SIZE_Y = 600;
@@ -31,7 +27,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
 
         // Create world
-        World world = new World(root, 1, 1, 1);
+        World world = new World(root, 20, 10, 0);
 
         world.toggleSmellCircles();
         world.toggleTargetSquares();
