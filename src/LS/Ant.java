@@ -10,7 +10,7 @@ import java.util.Random;
 public class Ant extends Animal{
     private Random rand = new Random();
     private float baseSpeed = (float)(0.1), baseMetabolism = (float)(0.002);
-    private int baseSize = 3, baseTurnAngle = 30, baseStrength = 3, baseMemory = 30;
+    private int baseSize = 3, baseTurnAngle = 30, baseStrength = 3, baseMemory = 10;
     private Color bodyColour = Color.rgb(50, 50, 50);
     private Color smellColour = Color.rgb(0, 100, 100);
 

@@ -23,7 +23,9 @@ public abstract class Animal {
     private boolean targetBool, targetingFood, targetingHome, update;
     private ArrayList<Food> foodList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
-    //                            f  w  h
+    private ArrayList<Obstacle> obstacleList = new ArrayList<>();
+
+    //                             f  w  h
     private int[] taskPriority = { 0, 0, 0 };
 
     // Constructor
@@ -202,6 +204,18 @@ public abstract class Animal {
         }
     }
 
+    public static boolean checkCollide(Circle C1, int x, int y){
+        x = Math.abs(x);
+        y = Math.abs(y);
+        int radius = (int)(C1.getRadius());
+
+        if((x^2 + y^2) < (radius^2)){
+            System.out.println("Intersects");
+            return true;
+        }
+        return false;
+    }
+
     public void target(){
         if (hasTarget()){
             if (!isTargetFood()) {
@@ -237,7 +251,7 @@ public abstract class Animal {
         setLastAngle(anAngle);
     }
 
-    public static boolean isValidTarget(int x, int y){
+    public boolean isValidTarget(int x, int y){
         if(x < Main.SIZE_X && x >= 0 && y < Main.SIZE_Y && y >= 0){
             return true;
         }
@@ -366,6 +380,10 @@ public abstract class Animal {
 
     public void setShelterList(ArrayList<Shelter> s){
         shelterList = s;
+    }
+
+    public void setObstacleList(ArrayList<Obstacle> o){
+        obstacleList = o;
     }
 
     public int getX(){

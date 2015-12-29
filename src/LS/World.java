@@ -12,6 +12,7 @@ public class World {
     private ArrayList<Animal> animalRank = new ArrayList<>();
     private ArrayList<Food> foodList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
+    private ArrayList<Obstacle> obstacleList = new ArrayList<>();
     private Group animalGroup = new Group();
     private Group animalSmellGroup = new Group();
     private Group animalTargetGroup = new Group();
@@ -21,9 +22,10 @@ public class World {
     private Group animalHomeLocationGroup = new Group();
     private Group shelterGroup = new Group();
     private Group foodGroup = new Group();
+    private Group obstacleGroup = new Group();
 
     // set up the world
-    public World(Group root, int animals, int food, int shelters){
+    public World(Group root, int animals, int food, int shelters, int obstacles){
         root.getChildren().add(shelterGroup);
         root.getChildren().add(foodGroup);
         root.getChildren().add(animalSmellGroup);
@@ -33,6 +35,7 @@ public class World {
         root.getChildren().add(animalEnergyBarGroup);
         root.getChildren().add(animalTargetGroup);
         root.getChildren().add(animalHomeLocationGroup);
+        root.getChildren().add(obstacleGroup);
 
         for(int i = 0; i < animals; i++) {
             addRandomAnimal();
@@ -43,6 +46,9 @@ public class World {
         for(int i = 0; i < shelters; i++){
             addShelter();
         }
+        for(int i = 0; i < obstacles; i++){
+            addObstacle();
+        }
     }
 
     // add to the world
@@ -52,6 +58,7 @@ public class World {
         Animal a = new Ant(x, y, trackID, foodGroup, animalGroup);
         a.setFoodList(foodList);
         a.setShelterList(shelterList);
+        a.setObstacleList(obstacleList);
         animalList.add(a);
         animalGroup.getChildren().add(a.getImage());
         animalSmellGroup.getChildren().add(a.getSmellCircle());
@@ -87,6 +94,12 @@ public class World {
         shelterGroup.getChildren().add(s.getImage());
     }
 
+    public void addObstacle(){
+        Obstacle o = new Rock(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y));
+        obstacleList.add(o);
+        obstacleGroup.getChildren().add(o.getImage());
+    }
+
     // remove from the world
     public void killAnimal(int i){
         addFood((int)(animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
@@ -111,6 +124,9 @@ public class World {
     }
     public ArrayList<Shelter> getShelterList() {
         return shelterList;
+    }
+    public ArrayList<Obstacle> getObstacleList(){
+        return obstacleList;
     }
 
     // run world
