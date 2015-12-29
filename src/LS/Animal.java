@@ -121,8 +121,8 @@ public abstract class Animal {
         getBackBar().setTranslateY(getBackBar().getTranslateY() + getDy());
 
         // move target indicator
-        getTargetLocation().setTranslateX(getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
-        getTargetLocation().setTranslateY(getTargetCircle().getCenterY() + getTargetCircle().getTranslateY());
+        getTargetLocation().setTranslateX(getLocalTarget().getCircle().getCenterX() + getLocalTarget().getCircle().getTranslateX());
+        getTargetLocation().setTranslateY(getLocalTarget().getCircle().getCenterY() + getLocalTarget().getCircle().getTranslateY());
 
         // decay hunger or energy depending on how much hungry the animal is
         hungerEnergyDecay();
@@ -253,7 +253,7 @@ public abstract class Animal {
             tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + getPathDistance() * Math.cos(angle));
             tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + getPathDistance() * Math.sin(angle));
         } while(!isValidTarget(tX, tY));
-        setLocalTarget(new Circle(tX, tY, 1));
+        setLocalTarget(new Target(tX, tY));
         setLastAngle(anAngle);
     }
 
@@ -271,15 +271,15 @@ public abstract class Animal {
     }
 
     public void directDxDy(){
-        double targetX = (getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
-        double targetY = (getTargetCircle().getCenterY() + getTargetCircle().getTranslateY());
+        double targetX = (getLocalTarget().getCircle().getCenterX() + getLocalTarget().getCircle().getTranslateX());
+        double targetY = (getLocalTarget().getCircle().getCenterY() + getLocalTarget().getCircle().getTranslateY());
         double angle = getAngleTo(targetX, targetY);
         setDx((Math.cos(angle) * getSpeed()));
         setDy((Math.sin(angle) * getSpeed()));
     }
 
     public void checkCollideTarget(){
-        if (checkCollide(getImage(), getTargetCircle())){
+        if (checkCollide(getImage(), getLocalTarget().getCircle())){
             if (isTargetFood()){
                 eatFood();
             }
@@ -309,11 +309,6 @@ public abstract class Animal {
         setTargetingHome(true);
         Circle c = new Circle(getHomeX(), getHomeY(), 5);
         //setLTarget(c);
-    }
-
-    public void setLocalTarget(Circle c){
-        this.targetCircle = c;
-        setLocalTargetBool(true);
     }
 
     public void forget(){
@@ -716,6 +711,11 @@ public abstract class Animal {
     }
     public void setLocalTarget(Target localTarget) {
         this.localTarget = localTarget;
+        setLocalTargetBool(true);
+    }
+    public void setLocalTarget(Circle circle) {
+        this.localTarget = new Target(circle);
+        setLocalTargetBool(true);
     }
 
     public Target getMainTarget() {

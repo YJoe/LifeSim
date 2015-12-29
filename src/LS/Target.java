@@ -12,6 +12,11 @@ public class Target {
         setY(y);
         setCircle(new Circle(getX(), getY(), 2));
     }
+    public Target(Circle circle){
+        setCircle(circle);
+        setX((int)getCircle().getCenterX());
+        setY((int)getCircle().getCenterY());
+    }
 
     public int getX(){
         return x;
