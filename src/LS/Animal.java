@@ -11,16 +11,19 @@ import javafx.scene.shape.Rectangle;
 public abstract class Animal {
     private Circle image, smellCircle, targetCircle;
     private Rectangle targetLocation, hungerBar, energyBar, backBar, homeLocation;
-    private Group foodGroupRef, animalGroupRef;
+    private Group foodGroupRef;
+    private Group animalGroupRef;
     private String species, name;
     private char symbol, gender;
     private float size, metabolism, hunger = 0;
-    private int id, x, y, energy, smellRange, targetX, targetY, turnAngle, pathDistance;
+    private int id, x, y, energy, smellRange, turnAngle, pathDistance;
     private int homeX, homeY, memory, memoryBiasX, memoryBiasY, waitAtHome;
     private int lastAngle = new Random().nextInt(360), randomAttemptTracker = 0, targetFoodID;
     private int statBarHeight = 4, statBarWidth = 50, statBarSpacing = 2;
     private double speed, dx, dy;
-    private boolean targetBool, targetingFood, targetingHome, update;
+    private boolean localTargetBool, mainTargetBool, targetingFood, targetingHome, update;
+    private Target localTarget;
+    private Target mainTarget;
     private ArrayList<Food> foodList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
     private ArrayList<Obstacle> obstacleList = new ArrayList<>();
@@ -81,15 +84,9 @@ public abstract class Animal {
 
     // Main functions
     public void update(){
-        if (shouldUpdate()){
-            prioritiseTasks();
-            getTask();
-            target();
-            move();
-            forget();
-            getTargetLocation().setTranslateX(getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
-            getTargetLocation().setTranslateY(getTargetCircle().getCenterY() + getTargetCircle().getTranslateY());
-        }
+        target();
+        directDxDy();
+        move();
     }
 
     public void prioritiseTasks(){
@@ -122,6 +119,10 @@ public abstract class Animal {
         // back bar
         getBackBar().setTranslateX(getBackBar().getTranslateX() + getDx());
         getBackBar().setTranslateY(getBackBar().getTranslateY() + getDy());
+
+        // move target indicator
+        getTargetLocation().setTranslateX(getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
+        getTargetLocation().setTranslateY(getTargetCircle().getCenterY() + getTargetCircle().getTranslateY());
 
         // decay hunger or energy depending on how much hungry the animal is
         hungerEnergyDecay();
@@ -156,7 +157,7 @@ public abstract class Animal {
             if (checkCollide(this.getSmellCircle(), foodList.get(i).getImage())){
                 setTargetingFood(true);
                 setTargetFoodID(foodList.get(i).getID());
-                setTarget(foodList.get(i).getImage());
+                setLocalTarget(foodList.get(i).getImage());
             }
         }
     }
@@ -217,21 +218,26 @@ public abstract class Animal {
     }
 
     public void target(){
-        if (hasTarget()){
-            if (!isTargetFood()) {
-                checkFood();
-            } else{
-                checkShelters();
-            }
-            directToTarget();
+        if (hasLocalTarget()) {
             checkCollideTarget();
         }
-        else{
-            getRandomTarget();
+        else {
+            if (hasMainTarget()) {
+                // target in desired main target location
+                // work out the direction needed
+            }
+            else{
+                getRandomLocalTarget();
+            }
         }
+
+        // check that direction for obstacles
+        // if obstacles found
+        //      correct target +/- 90 deg of desired direction
+        // else who cares
     }
 
-    public void getRandomTarget(){
+    public void getRandomLocalTarget(){
         Random rand = new Random();
         randomAttemptTracker = 0;
         int anAngle, tX, tY;
@@ -247,7 +253,7 @@ public abstract class Animal {
             tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + getPathDistance() * Math.cos(angle));
             tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + getPathDistance() * Math.sin(angle));
         } while(!isValidTarget(tX, tY));
-        setTarget(new Circle(tX, tY, 1));
+        setLocalTarget(new Circle(tX, tY, 1));
         setLastAngle(anAngle);
     }
 
@@ -264,7 +270,7 @@ public abstract class Animal {
         return Math.atan2(targetY - thisY, targetX - thisX);
     }
 
-    public void directToTarget(){
+    public void directDxDy(){
         double targetX = (getTargetCircle().getCenterX() + getTargetCircle().getTranslateX());
         double targetY = (getTargetCircle().getCenterY() + getTargetCircle().getTranslateY());
         double angle = getAngleTo(targetX, targetY);
@@ -273,7 +279,7 @@ public abstract class Animal {
     }
 
     public void checkCollideTarget(){
-        if (checkCollide(this.getImage(), this.getTargetCircle())){
+        if (checkCollide(getImage(), getTargetCircle())){
             if (isTargetFood()){
                 eatFood();
             }
@@ -285,7 +291,7 @@ public abstract class Animal {
         setTargetingFood(false);
         for(int i = 0; i < foodList.size(); i++){
             if(getTargetFoodID() == foodList.get(i).getID()){
-                foodGroupRef.getChildren().remove(i);
+                getFoodGroupRef().getChildren().remove(i);
                 setHunger(getHunger() - foodList.get(i).getCal());
                 foodList.remove(i);
                 break;
@@ -294,7 +300,7 @@ public abstract class Animal {
     }
 
     public void removeTarget(){
-        setTargetBool(false);
+        setLocalTargetBool(false);
         setDx(0);
         setDy(0);
     }
@@ -302,12 +308,12 @@ public abstract class Animal {
     public void targetHome(){
         setTargetingHome(true);
         Circle c = new Circle(getHomeX(), getHomeY(), 5);
-        setTarget(c);
+        //setLTarget(c);
     }
 
-    public void setTarget(Circle c){
+    public void setLocalTarget(Circle c){
         this.targetCircle = c;
-        setTargetBool(true);
+        setLocalTargetBool(true);
     }
 
     public void forget(){
@@ -633,20 +639,6 @@ public abstract class Animal {
         this.pathDistance = pathDistance;
     }
 
-    public int getTargetX() {
-        return targetX;
-    }
-    public void setTargetX(int targetX) {
-        this.targetX = targetX;
-    }
-
-    public int getTargetY() {
-        return targetY;
-    }
-    public void setTargetY(int targetY) {
-        this.targetY = targetY;
-    }
-
     public Rectangle getTargetLocation() {
         return targetLocation;
     }
@@ -654,11 +646,11 @@ public abstract class Animal {
         this.targetLocation = targetLocation;
     }
 
-    public boolean hasTarget() {
-        return targetBool;
+    public boolean hasLocalTarget() {
+        return localTargetBool;
     }
-    public void setTargetBool(boolean t){
-        targetBool = t;
+    public void setLocalTargetBool(boolean t){
+        localTargetBool = t;
     }
 
     public boolean isTargetFood(){
@@ -680,6 +672,13 @@ public abstract class Animal {
     }
     public void setTargetFoodID(int f){
         targetFoodID = f;
+    }
+
+    public boolean hasMainTarget(){
+        return mainTargetBool;
+    }
+    public void setHasMainTarget(boolean mainTargetBool){
+        this.mainTargetBool = mainTargetBool;
     }
 
     // INFORMATIONAL
@@ -708,5 +707,22 @@ public abstract class Animal {
                 + ", dx: " + getDx() + ", dy: " + getDy());
     }
 
+    public Group getFoodGroupRef() {
+        return foodGroupRef;
+    }
+
+    public Target getLocalTarget() {
+        return localTarget;
+    }
+    public void setLocalTarget(Target localTarget) {
+        this.localTarget = localTarget;
+    }
+
+    public Target getMainTarget() {
+        return mainTarget;
+    }
+    public void setMainTarget(Target mainTarget) {
+        this.mainTarget = mainTarget;
+    }
 }
 
