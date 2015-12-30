@@ -16,7 +16,7 @@ public abstract class Animal {
     private String species, name;
     private char symbol, gender;
     private float size, metabolism, hunger = 0;
-    private int id, x, y, energy, smellRange, turnAngle, pathDistance;
+    private int id, x, y, energy, smellRange, turnAngle, pathDistance, foodSearchCoolDown;
     private int homeX, homeY, memory, memoryBiasX, memoryBiasY, waitAtHome;
     private int lastAngle = new Random().nextInt(360), targetFoodID;
     private int statBarHeight = 4, statBarWidth = 50, statBarSpacing = 2;
@@ -72,6 +72,9 @@ public abstract class Animal {
         setHomeX(0);
         setHomeY(0);
 
+        // set a food cool down value
+        setFoodSearchCoolDown(100);
+
         // Create memory direction bias
         Random rand = new Random();
         setMemoryBiasX(rand.nextInt(2));
@@ -109,8 +112,8 @@ public abstract class Animal {
         // check move calls getDx()*2 and getDy()*2 to account for imperfections in the calculation
         // this overestimates the movement and checks against it, ensuring that a smaller movement is
         // safe to occur.
-        if (checkMove((int)(getImage().getTranslateX() + getImage().getCenterX() + (getDx()*2)),
-                (int)(getImage().getTranslateY() + getImage().getCenterY() + (getDy()*2)))) {
+        if (checkMove((int)(getImage().getTranslateX() + getImage().getCenterX() + (getDx())),
+                (int)(getImage().getTranslateY() + getImage().getCenterY() + (getDy())))) {
 
             // body
             getImage().setTranslateX(getImage().getTranslateX() + getDx());
@@ -132,7 +135,10 @@ public abstract class Animal {
             getTargetLocation().setTranslateX(getLocalTarget().getCircle().getCenterX() + getLocalTarget().getCircle().getTranslateX());
             getTargetLocation().setTranslateY(getLocalTarget().getCircle().getCenterY() + getLocalTarget().getCircle().getTranslateY());
         } else {
+            // remove any local target bounds and pick a new one
+            setTargetingFood(false);
             getRandomLocalTarget360();
+            setFoodSearchCoolDown(100);
         }
         // decay hunger or energy depending on how much hungry the animal is
         hungerEnergyDecay();
@@ -211,8 +217,7 @@ public abstract class Animal {
     }
 
     public void target(){
-        boolean validTarget = true;
-        int tries = 0;
+        coolDownFood();
         if (hasMainTarget()) {
             checkCollideMainTarget();
             if (hasLocalTarget()) {
@@ -222,6 +227,9 @@ public abstract class Animal {
             }
         } else {
             if (hasLocalTarget()) {
+                if (!isTargetFood() && getFoodSearchCoolDown() < 10){
+                    checkFood();
+                }
                 checkCollideLocalTarget();
             } else {
                 getRandomLocalTarget();
@@ -761,6 +769,21 @@ public abstract class Animal {
     }
     public void setHomeTarget(Target homeTarget) {
         this.homeTarget = homeTarget;
+    }
+
+    public int getFoodSearchCoolDown() {
+        return foodSearchCoolDown;
+    }
+
+    public void setFoodSearchCoolDown(int foodSearchCoolDown) {
+        this.foodSearchCoolDown = foodSearchCoolDown;
+    }
+
+    public void coolDownFood(){
+        setFoodSearchCoolDown(getFoodSearchCoolDown() - 1);
+        if (getFoodSearchCoolDown() < 0){
+            setFoodSearchCoolDown(0);
+        }
     }
 }
 
