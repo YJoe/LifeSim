@@ -18,11 +18,13 @@ public abstract class Animal {
     private float size, metabolism, hunger = 0;
     private int id, x, y, energy, smellRange, turnAngle, pathDistance;
     private int homeX, homeY, memory, memoryBiasX, memoryBiasY, waitAtHome;
-    private int lastAngle = new Random().nextInt(360), randomAttemptTracker = 0, targetFoodID;
+    private int lastAngle = new Random().nextInt(360), targetFoodID;
     private int statBarHeight = 4, statBarWidth = 50, statBarSpacing = 2;
     private double speed, dx, dy;
     private boolean localTargetBool, mainTargetBool, targetingFood, targetingHome, update;
-    private Target localTarget, mainTarget;
+    private Target localTarget;
+    private Target mainTarget;
+    private Target homeTarget;
     private ArrayList<Food> foodList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
     private ArrayList<Obstacle> obstacleList = new ArrayList<>();
@@ -64,11 +66,11 @@ public abstract class Animal {
         setTargetLocation(r);
 
         // Create home locator
-        Rectangle h = new Rectangle(Main.SIZE_X/2, Main.SIZE_Y/2, 5, 5);
+        Rectangle h = new Rectangle(0, 0, 5, 5);
         h.setFill(Color.rgb(0, 0, 255));
         setHomeLocation(h);
-        setHomeX((int)h.getX());
-        setHomeY((int)h.getY());
+        setHomeX(0);
+        setHomeY(0);
 
         // Create memory direction bias
         Random rand = new Random();
@@ -86,6 +88,7 @@ public abstract class Animal {
         target();
         directDxDy();
         move();
+        forget();
     }
 
     public void prioritiseTasks(){
@@ -207,13 +210,7 @@ public abstract class Animal {
             if (hasLocalTarget()) {
                 checkCollideLocalTarget();
             } else {
-                double x = getMainTarget().getCircle().getCenterX() + getMainTarget().getCircle().getTranslateX();
-                double y = getMainTarget().getCircle().getCenterY() + getMainTarget().getCircle().getTranslateY();
-                double angle = getAngleTo(x, y);
-                int tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + getPathDistance() * Math.cos(angle));
-                int tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + getPathDistance() * Math.sin(angle));
-                System.out.println(" " + x + " " + y + " " + tX + " " + tY);
-                setLocalTarget(new Target(tX, tY));
+                createLocalTargetDirectedToMain();
             }
         } else {
             if (hasLocalTarget()) {
@@ -233,9 +230,19 @@ public abstract class Animal {
         //} while(!validTarget && (tries < 5));
     }
 
+    public void createLocalTargetDirectedToMain(){
+        double x = getMainTarget().getCircle().getCenterX() + getMainTarget().getCircle().getTranslateX();
+        double y = getMainTarget().getCircle().getCenterY() + getMainTarget().getCircle().getTranslateY();
+        double angle = getAngleTo(x, y);
+        int tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + getPathDistance() * Math.cos(angle));
+        int tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + getPathDistance() * Math.sin(angle));
+        setLocalTarget(new Target(tX, tY));
+        setLastAngle((int)Math.toDegrees(angle));
+    }
+
     public void getRandomLocalTarget(){
         Random rand = new Random();
-        randomAttemptTracker = 0;
+        int randomAttemptTracker = 0;
         int anAngle, tX, tY;
         do{
             if (randomAttemptTracker < getTurnAngle() * 2){
@@ -312,9 +319,7 @@ public abstract class Animal {
     }
 
     public void targetHome(){
-        setTargetingHome(true);
-        Circle c = new Circle(getHomeX(), getHomeY(), 5);
-        //setLTarget(c);
+        setMainTarget(getHomeTarget());
     }
 
     public void forget(){
@@ -326,16 +331,16 @@ public abstract class Animal {
             if (getMemoryBiasX() == 1){
                 if (rand.nextInt(2) == 1) {
                     if (rand.nextInt(3) == 1)
-                        setHomeX(getHomeX() - 1);
+                        getHomeTarget().setX(getHomeTarget().getX() - 1);
                     else
-                        setHomeX(getHomeX() + 1);
+                        getHomeTarget().setX(getHomeTarget().getX() + 1);
                 }
             } else {
                 if (rand.nextInt(2) == 1) {
                     if (rand.nextInt(3) == 1)
-                        setHomeX(getHomeX() + 1);
+                        getHomeTarget().setX(getHomeTarget().getX() + 1);
                     else
-                        setHomeX(getHomeX() - 1);
+                        getHomeTarget().setX(getHomeTarget().getX() - 1);
                 }
             }
 
@@ -343,41 +348,38 @@ public abstract class Animal {
             if (getMemoryBiasY() == 1) {
                 if (rand.nextInt(2) == 1) {
                     if (rand.nextInt(3) == 1)
-                        setHomeY(getHomeY() - 1);
+                        getHomeTarget().setY(getHomeTarget().getY() - 1);
                     else
-                        setHomeY(getHomeY() + 1);
+                        getHomeTarget().setY(getHomeTarget().getY() + 1);
                 }
             } else {
                 if (rand.nextInt(2) == 1) {
                     if (rand.nextInt(3) == 1)
-                        setHomeY(getHomeY() + 1);
+                        getHomeTarget().setY(getHomeTarget().getY() + 1);
                     else
-                        setHomeY(getHomeY() - 1);
+                        getHomeTarget().setY(getHomeTarget().getY() - 1);
                 }
             }
 
             // Ensure the coordinates aren't going off screen
-            if(getHomeX() > Main.SIZE_X){
-                setHomeX(Main.SIZE_X);
+            if(getHomeTarget().getX() > Main.SIZE_X){
+                getHomeTarget().setX(Main.SIZE_X);
             } else {
-                if (getHomeX() < 0) {
-                    setHomeX(0);
+                if (getHomeTarget().getX() < 0) {
+                    getHomeTarget().setX(0);
                 }
             }
 
-            if (getHomeY() > Main.SIZE_Y){
-                setHomeY(Main.SIZE_Y);
+            if (getHomeTarget().getY() > Main.SIZE_Y){
+                getHomeTarget().setY(Main.SIZE_Y);
             }else{
-                if(getHomeY() < 0) {
-                    setHomeY(0);
+                if(getHomeTarget().getY() < 0) {
+                    getHomeTarget().setY(0);
                 }
             }
-
         }
-
-        getHomeLocation().setX(getHomeX());
-        getHomeLocation().setY(getHomeY());
-
+        getHomeLocation().setX(getHomeTarget().getX());
+        getHomeLocation().setY(getHomeTarget().getY());
     }
 
     // SELF GET/SET FUNCTIONS
@@ -596,6 +598,10 @@ public abstract class Animal {
         this.homeLocation = homeLocation;
     }
 
+    public void setHome(Target home){
+        setHomeTarget(home);
+    }
+
     public void setAnimalGroupRef(Group a){
         animalGroupRef = a;
     }
@@ -622,10 +628,6 @@ public abstract class Animal {
 
 
     // TARGET GET/SET FUNCTIONS
-    public Circle getTargetCircle() {
-        return targetCircle;
-    }
-
     public int getLastAngle() {
         return lastAngle;
     }
@@ -730,6 +732,13 @@ public abstract class Animal {
     public void setMainTarget(Target mainTarget) {
         this.mainTarget = mainTarget;
         setHasMainTarget(true);
+    }
+
+    public Target getHomeTarget() {
+        return homeTarget;
+    }
+    public void setHomeTarget(Target homeTarget) {
+        this.homeTarget = homeTarget;
     }
 }
 
