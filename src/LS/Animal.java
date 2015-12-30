@@ -106,26 +106,34 @@ public abstract class Animal {
     }
 
     public void move(){
-        // body
-        getImage().setTranslateX(getImage().getTranslateX() + getDx());
-        getImage().setTranslateY(getImage().getTranslateY() + getDy());
-        // smell
-        getSmellCircle().setTranslateX(getSmellCircle().getTranslateX() + getDx());
-        getSmellCircle().setTranslateY(getSmellCircle().getTranslateY() + getDy());
-        // hunger bar
-        getHungerBar().setTranslateX(getHungerBar().getTranslateX() + getDx());
-        getHungerBar().setTranslateY(getHungerBar().getTranslateY() + getDy());
-        // energy bar
-        getEnergyBar().setTranslateX(getEnergyBar().getTranslateX() + getDx());
-        getEnergyBar().setTranslateY(getEnergyBar().getTranslateY() + getDy());
-        // back bar
-        getBackBar().setTranslateX(getBackBar().getTranslateX() + getDx());
-        getBackBar().setTranslateY(getBackBar().getTranslateY() + getDy());
+        // check move calls getDx()*2 and getDy()*2 to account for imperfections in the calculation
+        // this overestimates the movement and checks against it, ensuring that a smaller movement is
+        // safe to occur.
+        if (checkMove((int)(getImage().getTranslateX() + getImage().getCenterX() + (getDx()*2)),
+                (int)(getImage().getTranslateY() + getImage().getCenterY() + (getDy()*2)))) {
 
-        // move target indicator
-        getTargetLocation().setTranslateX(getLocalTarget().getCircle().getCenterX() + getLocalTarget().getCircle().getTranslateX());
-        getTargetLocation().setTranslateY(getLocalTarget().getCircle().getCenterY() + getLocalTarget().getCircle().getTranslateY());
+            // body
+            getImage().setTranslateX(getImage().getTranslateX() + getDx());
+            getImage().setTranslateY(getImage().getTranslateY() + getDy());
+            // smell
+            getSmellCircle().setTranslateX(getSmellCircle().getTranslateX() + getDx());
+            getSmellCircle().setTranslateY(getSmellCircle().getTranslateY() + getDy());
+            // hunger bar
+            getHungerBar().setTranslateX(getHungerBar().getTranslateX() + getDx());
+            getHungerBar().setTranslateY(getHungerBar().getTranslateY() + getDy());
+            // energy bar
+            getEnergyBar().setTranslateX(getEnergyBar().getTranslateX() + getDx());
+            getEnergyBar().setTranslateY(getEnergyBar().getTranslateY() + getDy());
+            // back bar
+            getBackBar().setTranslateX(getBackBar().getTranslateX() + getDx());
+            getBackBar().setTranslateY(getBackBar().getTranslateY() + getDy());
 
+            // move target indicator
+            getTargetLocation().setTranslateX(getLocalTarget().getCircle().getCenterX() + getLocalTarget().getCircle().getTranslateX());
+            getTargetLocation().setTranslateY(getLocalTarget().getCircle().getCenterY() + getLocalTarget().getCircle().getTranslateY());
+        } else {
+            getRandomLocalTarget360();
+        }
         // decay hunger or energy depending on how much hungry the animal is
         hungerEnergyDecay();
     }
@@ -220,14 +228,6 @@ public abstract class Animal {
                 checkFood();
             }
         }
-
-        //do {
-            // check that direction for obstacles
-            // if obstacles found
-            //      correct target +/- 90 deg of desired direction
-            // stop the do while
-        //    tries += 1;
-        //} while(!validTarget && (tries < 5));
     }
 
     public void createLocalTargetDirectedToMain(){
@@ -256,6 +256,16 @@ public abstract class Animal {
             tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + getPathDistance() * Math.cos(angle));
             tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + getPathDistance() * Math.sin(angle));
         } while(!isValidTarget(tX, tY));
+        setLocalTarget(new Target(tX, tY));
+        setLastAngle(anAngle);
+    }
+
+    public void getRandomLocalTarget360(){
+        Random rand = new Random();
+        int anAngle = rand.nextInt(360);
+        double angleRad = Math.toRadians(anAngle);
+        int tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + getPathDistance() * Math.cos(angleRad));
+        int tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + getPathDistance() * Math.sin(angleRad));
         setLocalTarget(new Target(tX, tY));
         setLastAngle(anAngle);
     }
@@ -322,64 +332,76 @@ public abstract class Animal {
         setMainTarget(getHomeTarget());
     }
 
-    public void forget(){
-        Random rand = new Random();
+    public void forget() {
+        if (homeTarget != null) {
+            Random rand = new Random();
 
-        // A higher memory provides more chances to avoid forgetting
-        if(rand.nextInt(getMemory()) == 1) {
-            // Distort home values using the memoryBiasX
-            if (getMemoryBiasX() == 1){
-                if (rand.nextInt(2) == 1) {
-                    if (rand.nextInt(3) == 1)
-                        getHomeTarget().setX(getHomeTarget().getX() - 1);
-                    else
-                        getHomeTarget().setX(getHomeTarget().getX() + 1);
+            // A higher memory provides more chances to avoid forgetting
+            if (rand.nextInt(getMemory()) == 1) {
+                // Distort home values using the memoryBiasX
+                if (getMemoryBiasX() == 1) {
+                    if (rand.nextInt(2) == 1) {
+                        if (rand.nextInt(3) == 1)
+                            getHomeTarget().setX(getHomeTarget().getX() - 1);
+                        else
+                            getHomeTarget().setX(getHomeTarget().getX() + 1);
+                    }
+                } else {
+                    if (rand.nextInt(2) == 1) {
+                        if (rand.nextInt(3) == 1)
+                            getHomeTarget().setX(getHomeTarget().getX() + 1);
+                        else
+                            getHomeTarget().setX(getHomeTarget().getX() - 1);
+                    }
                 }
-            } else {
-                if (rand.nextInt(2) == 1) {
-                    if (rand.nextInt(3) == 1)
-                        getHomeTarget().setX(getHomeTarget().getX() + 1);
-                    else
-                        getHomeTarget().setX(getHomeTarget().getX() - 1);
+
+                // Distort home values using the memoryBiasY
+                if (getMemoryBiasY() == 1) {
+                    if (rand.nextInt(2) == 1) {
+                        if (rand.nextInt(3) == 1)
+                            getHomeTarget().setY(getHomeTarget().getY() - 1);
+                        else
+                            getHomeTarget().setY(getHomeTarget().getY() + 1);
+                    }
+                } else {
+                    if (rand.nextInt(2) == 1) {
+                        if (rand.nextInt(3) == 1)
+                            getHomeTarget().setY(getHomeTarget().getY() + 1);
+                        else
+                            getHomeTarget().setY(getHomeTarget().getY() - 1);
+                    }
+                }
+
+                // Ensure the coordinates aren't going off screen
+                if (getHomeTarget().getX() > Main.SIZE_X) {
+                    getHomeTarget().setX(Main.SIZE_X);
+                } else {
+                    if (getHomeTarget().getX() < 0) {
+                        getHomeTarget().setX(0);
+                    }
+                }
+
+                if (getHomeTarget().getY() > Main.SIZE_Y) {
+                    getHomeTarget().setY(Main.SIZE_Y);
+                } else {
+                    if (getHomeTarget().getY() < 0) {
+                        getHomeTarget().setY(0);
+                    }
                 }
             }
+            getHomeLocation().setX(getHomeTarget().getX());
+            getHomeLocation().setY(getHomeTarget().getY());
+        }
+    }
 
-            // Distort home values using the memoryBiasY
-            if (getMemoryBiasY() == 1) {
-                if (rand.nextInt(2) == 1) {
-                    if (rand.nextInt(3) == 1)
-                        getHomeTarget().setY(getHomeTarget().getY() - 1);
-                    else
-                        getHomeTarget().setY(getHomeTarget().getY() + 1);
-                }
-            } else {
-                if (rand.nextInt(2) == 1) {
-                    if (rand.nextInt(3) == 1)
-                        getHomeTarget().setY(getHomeTarget().getY() + 1);
-                    else
-                        getHomeTarget().setY(getHomeTarget().getY() - 1);
-                }
-            }
-
-            // Ensure the coordinates aren't going off screen
-            if(getHomeTarget().getX() > Main.SIZE_X){
-                getHomeTarget().setX(Main.SIZE_X);
-            } else {
-                if (getHomeTarget().getX() < 0) {
-                    getHomeTarget().setX(0);
-                }
-            }
-
-            if (getHomeTarget().getY() > Main.SIZE_Y){
-                getHomeTarget().setY(Main.SIZE_Y);
-            }else{
-                if(getHomeTarget().getY() < 0) {
-                    getHomeTarget().setY(0);
-                }
+    public boolean checkMove(int posX, int posY){
+        for(int i = 0; i < obstacleList.size(); i++){
+            if((obstacleList.get(i).getX() - 10 < posX && posX < obstacleList.get(i).getX() + 10) &&
+                    (obstacleList.get(i).getY() - 10 < posY && posY < obstacleList.get(i).getY() + 10)){
+                return false;
             }
         }
-        getHomeLocation().setX(getHomeTarget().getX());
-        getHomeLocation().setY(getHomeTarget().getY());
+        return true;
     }
 
     // SELF GET/SET FUNCTIONS

@@ -30,9 +30,9 @@ public class Main extends Application {
         int animalCount = 1;
         int foodCount = 0;
         int shelterCount = 1;
-        int obstacleCount = 0;
+        int obstacleCount = 100;
         World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount);
-
+        world.getAnimalList().get(0).setSpeed(1.2);
         world.toggleSmellCircles();
         world.toggleTargetSquares();
         world.toggleHomeSquares();
