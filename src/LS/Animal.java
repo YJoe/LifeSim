@@ -22,8 +22,7 @@ public abstract class Animal {
     private int statBarHeight = 4, statBarWidth = 50, statBarSpacing = 2;
     private double speed, dx, dy;
     private boolean localTargetBool, mainTargetBool, targetingFood, targetingHome, update;
-    private Target localTarget;
-    private Target mainTarget;
+    private Target localTarget, mainTarget;
     private ArrayList<Food> foodList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
     private ArrayList<Obstacle> obstacleList = new ArrayList<>();
@@ -197,44 +196,41 @@ public abstract class Animal {
         int c =  (int)(C1.getRadius() + C2.getRadius());
 
         // |(x2-x1)| + |(y1-y2)| <= (r1+r2)
-        if (a + b <= c){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    public static boolean checkCollide(Circle C1, int x, int y){
-        x = Math.abs(x);
-        y = Math.abs(y);
-        int radius = (int)(C1.getRadius());
-
-        if((x^2 + y^2) < (radius^2)){
-            System.out.println("Intersects");
-            return true;
-        }
-        return false;
+        return (a + b <= c);
     }
 
     public void target(){
-        if (hasLocalTarget()) {
-            checkCollideTarget();
-        }
-        else {
-            if (hasMainTarget()) {
-                // target in desired main target location
-                // work out the direction needed
+        boolean validTarget = true;
+        int tries = 0;
+        if (hasMainTarget()) {
+            checkCollideMainTarget();
+            if (hasLocalTarget()) {
+                checkCollideLocalTarget();
+            } else {
+                double x = getMainTarget().getCircle().getCenterX() + getMainTarget().getCircle().getTranslateX();
+                double y = getMainTarget().getCircle().getCenterY() + getMainTarget().getCircle().getTranslateY();
+                double angle = getAngleTo(x, y);
+                int tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + getPathDistance() * Math.cos(angle));
+                int tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + getPathDistance() * Math.sin(angle));
+                System.out.println(" " + x + " " + y + " " + tX + " " + tY);
+                setLocalTarget(new Target(tX, tY));
             }
-            else{
+        } else {
+            if (hasLocalTarget()) {
+                checkCollideLocalTarget();
+            } else {
                 getRandomLocalTarget();
+                checkFood();
             }
         }
 
-        // check that direction for obstacles
-        // if obstacles found
-        //      correct target +/- 90 deg of desired direction
-        // else who cares
+        //do {
+            // check that direction for obstacles
+            // if obstacles found
+            //      correct target +/- 90 deg of desired direction
+            // stop the do while
+        //    tries += 1;
+        //} while(!validTarget && (tries < 5));
     }
 
     public void getRandomLocalTarget(){
@@ -278,12 +274,19 @@ public abstract class Animal {
         setDy((Math.sin(angle) * getSpeed()));
     }
 
-    public void checkCollideTarget(){
+    public void checkCollideLocalTarget(){
         if (checkCollide(getImage(), getLocalTarget().getCircle())){
             if (isTargetFood()){
                 eatFood();
             }
-            removeTarget();
+            removeLocalTarget();
+        }
+    }
+
+    public void checkCollideMainTarget(){
+        if (checkCollide(getImage(), getMainTarget().getCircle())){
+            removeMainTarget();
+            removeLocalTarget();
         }
     }
 
@@ -299,10 +302,13 @@ public abstract class Animal {
         }
     }
 
-    public void removeTarget(){
+    public void removeLocalTarget(){
         setLocalTargetBool(false);
         setDx(0);
         setDy(0);
+    }
+    public void removeMainTarget(){
+        setHasMainTarget(false);
     }
 
     public void targetHome(){
@@ -723,6 +729,7 @@ public abstract class Animal {
     }
     public void setMainTarget(Target mainTarget) {
         this.mainTarget = mainTarget;
+        setHasMainTarget(true);
     }
 }
 
