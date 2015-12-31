@@ -2,6 +2,7 @@ package LS;
 
 import java.util.Random;
 import javafx.scene.Group;
+import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ public class World {
 
     // set up the world
     public World(Group root, int animals, int food, int shelters, int obstacles){
+        System.out.println("Creating world");
         root.getChildren().add(shelterGroup);
         root.getChildren().add(foodGroup);
         root.getChildren().add(animalSmellGroup);
@@ -44,18 +46,22 @@ public class World {
             addRandomFood();
         }
         for(int i = 0; i < shelters; i++){
-            addShelter();
+            addRandomShelter();
         }
         for(int i = 0; i < obstacles; i++){
-            addObstacle();
+            addRandomObstacle();
         }
+        System.out.println("World created and populated");
     }
 
     // add to the world
     public void addRandomAnimal(){
         //TODO: Make random Animals not just ants
-        int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
-        Animal a = new Ant(x, y, trackID, foodGroup, animalGroup);
+        Animal a;
+        do {
+            int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
+            a = new Ant(x, y, trackID, foodGroup, animalGroup);
+        } while(overlapsAnything(a.getImage()));
         a.setFoodList(foodList);
         a.setShelterList(shelterList);
         a.setObstacleList(obstacleList);
@@ -72,8 +78,11 @@ public class World {
 
     public void addRandomFood(){
         //TODO: make random food rather than just meat
-        int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
-        Meat f = new Meat(x, y, trackID);
+        Meat f;
+        do {
+            int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
+            f = new Meat(x, y, trackID);
+        }while(overlapsAnything(f.getImage()));
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());
         trackID++;
@@ -86,18 +95,43 @@ public class World {
         trackID++;
     }
 
-    public void addShelter(){
+    public void addRandomShelter(){
         // TODO: Make random shelters
-        int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
-        Shelter s = new AntHill(x, y);
+        Shelter s;
+        do {
+            int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
+            s = new AntHill(x, y);
+        } while(overlapsAnything(s.getImage()));
         shelterList.add(s);
         shelterGroup.getChildren().add(s.getImage());
     }
 
-    public void addObstacle(){
-        Obstacle o = new Rock(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y));
+    public void addRandomObstacle(){
+        Obstacle o;
+        do {
+            o = new Rock(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y));
+        } while(overlapsAnything(o.getImage()));
         obstacleList.add(o);
         obstacleGroup.getChildren().add(o.getImage());
+    }
+
+    public boolean overlapsAnything(Circle c1){
+        for(int i = 0; i < animalList.size(); i++){
+            if (Collision.overlapsEfficient(c1, animalList.get(i).getImage())){
+                return true;
+            }
+        }
+        for(int i = 0; i < obstacleList.size(); i++){
+            if (Collision.overlapsEfficient(c1, obstacleList.get(i).getImage())){
+                return true;
+            }
+        }
+        for(int i = 0; i < foodList.size(); i++){
+            if (Collision.overlapsEfficient(c1, foodList.get(i).getImage())){
+                return true;
+            }
+        }
+        return false;
     }
 
     // remove from the world

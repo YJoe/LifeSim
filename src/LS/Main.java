@@ -28,12 +28,11 @@ public class Main extends Application {
 
         // Create world
         int animalCount = 10;
-        int foodCount = 100;
-        int shelterCount = 1;
-        int obstacleCount = 10;
+        int foodCount = 0;
+        int shelterCount = 0;
+        int obstacleCount = 1000;
         World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount);
         world.getAnimalList().get(0).setSpeed(1.2);
-        world.getAnimalList().get(0).setHome(new Target(world.getShelterList().get(0).getX(), world.getShelterList().get(0).getY()));
 
         world.toggleSmellCircles();
         world.toggleTargetSquares();
