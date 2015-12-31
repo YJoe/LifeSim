@@ -172,7 +172,7 @@ public abstract class Animal {
 
     public void checkFood(){
         for(int i = 0; i < foodList.size(); i++){
-            if (checkCollide(this.getSmellCircle(), foodList.get(i).getImage())){
+            if (Collision.overlapsAccurate(this.getSmellCircle(), foodList.get(i).getImage())){
                 setTargetingFood(true);
                 setTargetFoodID(foodList.get(i).getID());
                 setLocalTarget(foodList.get(i).getImage());
@@ -182,7 +182,7 @@ public abstract class Animal {
 
     public void checkShelters(){
         for(int i = 0; i < shelterList.size(); i++){
-            if(checkCollide(getImage(), shelterList.get(i).getImage())){
+            if(Collision.overlapsAccurate(getImage(), shelterList.get(i).getImage())){
                 Random rand = new Random();
                 setWaitAtHome(500);
                 enterShelter(i);
@@ -201,21 +201,6 @@ public abstract class Animal {
     public void exitShelter(){
         setShouldUpdate(true);
         setTargetingHome(false);
-    }
-
-    public boolean checkCollide(Circle C1, Circle C2){
-        int x1pos = (int) (C1.getCenterX() + C1.getTranslateX());
-        int y1pos = (int) (C1.getCenterY() + C1.getTranslateY());
-
-        int x2pos = (int) (C2.getCenterX() + C2.getTranslateX());
-        int y2pos = (int) (C2.getCenterY() + C2.getTranslateY());
-
-        int a = Math.abs(x1pos - x2pos);
-        int b = Math.abs(y1pos - y2pos);
-        int c =  (int)(C1.getRadius() + C2.getRadius());
-
-        // |(x2-x1)| + |(y1-y2)| <= (r1+r2)
-        return (a + b <= c);
     }
 
     public void target(){
@@ -303,7 +288,7 @@ public abstract class Animal {
     }
 
     public void checkCollideLocalTarget(){
-        if (checkCollide(getImage(), getLocalTarget().getCircle())){
+        if (Collision.overlapsAccurate(getImage(), getLocalTarget().getCircle())){
             if (isTargetFood()){
                 eatFood();
             }
@@ -312,7 +297,7 @@ public abstract class Animal {
     }
 
     public void checkCollideMainTarget(){
-        if (checkCollide(getImage(), getMainTarget().getCircle())){
+        if (Collision.overlapsAccurate(getImage(), getMainTarget().getCircle())){
             removeMainTarget();
             removeLocalTarget();
         }
