@@ -139,8 +139,8 @@ public abstract class Animal {
             // remove any local target bounds and pick a new one
             setTargetingFood(false);
             getRandomLocalTarget360();
-            setFoodSearchCoolDown(100);
-            setFollowMainCoolDown(100);
+            setFoodSearchCoolDown(50);
+            setFollowMainCoolDown(50);
         }
         // decay hunger or energy depending on how much hungry the animal is
         hungerEnergyDecay();
@@ -407,9 +407,12 @@ public abstract class Animal {
 
     public boolean checkMove(int posX, int posY){
         for(int i = 0; i < obstacleList.size(); i++){
-            if((obstacleList.get(i).getX() - 10 < posX && posX < obstacleList.get(i).getX() + 10) &&
-                    (obstacleList.get(i).getY() - 10 < posY && posY < obstacleList.get(i).getY() + 10)){
+            if(obstacleList.get(i).getX() - (getImage().getRadius() + obstacleList.get(i).getImage().getRadius()) < posX &&
+                    posX < obstacleList.get(i).getX() + (getImage().getRadius() + obstacleList.get(i).getImage().getRadius()) &&
+                    obstacleList.get(i).getY() - (getImage().getRadius() + obstacleList.get(i).getImage().getRadius()) < posY &&
+                    posY < obstacleList.get(i).getY() + (getImage().getRadius() + obstacleList.get(i).getImage().getRadius())){
                 return false;
+
             }
         }
         return true;
@@ -799,6 +802,10 @@ public abstract class Animal {
         setFollowMainCoolDown(getFollowMainCoolDown() - 1);
         if(getFollowMainCoolDown() < 0){
             setFollowMainCoolDown(0);
+            getSmellCircle().setFill(Color.rgb(0, 100, 0));
+        }
+        else {
+            getSmellCircle().setFill(Color.rgb(0, 100, 100));
         }
     }
 
