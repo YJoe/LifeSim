@@ -29,6 +29,7 @@ public class World {
     public World(Group root, int animals, int food, int shelters, int obstacles){
         System.out.println("Creating world");
         root.getChildren().add(shelterGroup);
+        root.getChildren().add(obstacleGroup);
         root.getChildren().add(foodGroup);
         root.getChildren().add(animalSmellGroup);
         root.getChildren().add(animalGroup);
@@ -37,7 +38,6 @@ public class World {
         root.getChildren().add(animalEnergyBarGroup);
         root.getChildren().add(animalTargetGroup);
         root.getChildren().add(animalHomeLocationGroup);
-        root.getChildren().add(obstacleGroup);
 
         for(int i = 0; i < animals; i++) {
             addRandomAnimal();

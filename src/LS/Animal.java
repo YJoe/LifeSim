@@ -239,7 +239,7 @@ public abstract class Animal {
     public void getRandomLocalTarget(){
         Random rand = new Random();
         int randomAttemptTracker = 0;
-        int anAngle, tX, tY;
+        int anAngle, tX, tY, path = getPathDistance();
         do{
             if (randomAttemptTracker < getTurnAngle() * 2){
                 anAngle = rand.nextInt(getTurnAngle() * 2) + getLastAngle() - getTurnAngle();
@@ -247,10 +247,11 @@ public abstract class Animal {
             } else{
                 // Too many attempts at picking an angle within the turn range were made
                 anAngle = rand.nextInt(360);
+                path = rand.nextInt(getPathDistance());
             }
             double angle = Math.toRadians(anAngle);
-            tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + getPathDistance() * Math.cos(angle));
-            tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + getPathDistance() * Math.sin(angle));
+            tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + path * Math.cos(angle));
+            tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + path * Math.sin(angle));
         } while(!isValidTarget(tX, tY));
         setLocalTarget(new Target(tX, tY));
         setLastAngle(anAngle);
@@ -258,10 +259,14 @@ public abstract class Animal {
 
     public void getRandomLocalTarget360(){
         Random rand = new Random();
-        int anAngle = rand.nextInt(360);
-        double angleRad = Math.toRadians(anAngle);
-        int tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + getPathDistance() * Math.cos(angleRad));
-        int tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + getPathDistance() * Math.sin(angleRad));
+        int tX, tY, anAngle;
+        do {
+            anAngle = rand.nextInt(360);
+            double angleRad = Math.toRadians(anAngle);
+            int path = rand.nextInt(getPathDistance());
+            tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + path * Math.cos(angleRad));
+            tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + path * Math.sin(angleRad));
+        }while (!isValidTarget(tX, tY));
         setLocalTarget(new Target(tX, tY));
         setLastAngle(anAngle);
     }
@@ -320,6 +325,7 @@ public abstract class Animal {
         setDx(0);
         setDy(0);
     }
+
     public void removeMainTarget(){
         setHasMainTarget(false);
     }
@@ -787,10 +793,10 @@ public abstract class Animal {
         setFollowMainCoolDown(getFollowMainCoolDown() - 1);
         if(getFollowMainCoolDown() < 0){
             setFollowMainCoolDown(0);
-            getSmellCircle().setFill(Color.rgb(0, 100, 0));
+            getSmellCircle().setFill(Color.rgb(0, 100, 100));
         }
         else {
-            getSmellCircle().setFill(Color.rgb(0, 100, 100));
+            getSmellCircle().setFill(Color.rgb(100, 0, 0));
         }
     }
 
