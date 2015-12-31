@@ -16,7 +16,7 @@ public abstract class Animal {
     private String species, name;
     private char symbol, gender;
     private float size, metabolism, hunger = 0;
-    private int id, x, y, energy, smellRange, turnAngle, pathDistance, foodSearchCoolDown;
+    private int id, x, y, energy, smellRange, turnAngle, pathDistance, foodSearchCoolDown, followMainCoolDown;
     private int homeX, homeY, memory, memoryBiasX, memoryBiasY, waitAtHome;
     private int lastAngle = new Random().nextInt(360), targetFoodID;
     private int statBarHeight = 4, statBarWidth = 50, statBarSpacing = 2;
@@ -73,7 +73,8 @@ public abstract class Animal {
         setHomeY(0);
 
         // set a food cool down value
-        setFoodSearchCoolDown(100);
+        setFoodSearchCoolDown(0);
+        setFollowMainCoolDown(0);
 
         // Create memory direction bias
         Random rand = new Random();
@@ -139,6 +140,7 @@ public abstract class Animal {
             setTargetingFood(false);
             getRandomLocalTarget360();
             setFoodSearchCoolDown(100);
+            setFollowMainCoolDown(100);
         }
         // decay hunger or energy depending on how much hungry the animal is
         hungerEnergyDecay();
@@ -218,6 +220,7 @@ public abstract class Animal {
 
     public void target(){
         coolDownFood();
+        coolDownFollowMain();
         if (hasMainTarget()) {
             checkCollideMainTarget();
             if (hasLocalTarget()) {
@@ -785,5 +788,19 @@ public abstract class Animal {
             setFoodSearchCoolDown(0);
         }
     }
+
+    public int getFollowMainCoolDown(){
+        return followMainCoolDown;
+    }
+    public void setFollowMainCoolDown(int followMainCoolDown){
+        this.followMainCoolDown = followMainCoolDown;
+    }
+    public void coolDownFollowMain(){
+        setFollowMainCoolDown(getFollowMainCoolDown() - 1);
+        if(getFollowMainCoolDown() < 0){
+            setFollowMainCoolDown(0);
+        }
+    }
+
 }
 

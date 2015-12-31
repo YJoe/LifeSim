@@ -27,12 +27,13 @@ public class Main extends Application {
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
 
         // Create world
-        int animalCount = 4;
+        int animalCount = 1;
         int foodCount = 100;
         int shelterCount = 1;
         int obstacleCount = 100;
         World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount);
         world.getAnimalList().get(0).setSpeed(1.2);
+        world.getAnimalList().get(0).setHome(new Target(world.getShelterList().get(0).getX(), world.getShelterList().get(0).getY()));
 
         world.toggleSmellCircles();
         world.toggleTargetSquares();
@@ -60,6 +61,10 @@ public class Main extends Application {
                             } else {
                                 if (ke.getCode() == KeyCode.DIGIT4) {
                                     world.toggleStatBars();
+                                } else {
+                                    if (ke.getCode() == KeyCode.DIGIT5) {
+                                        world.getAnimalList().get(0).targetHome();
+                                    }
                                 }
                             }
                         }
