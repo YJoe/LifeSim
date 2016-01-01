@@ -83,7 +83,7 @@ public abstract class Animal {
         setMemoryBiasY(rand.nextInt(2));
 
         // Create food inventory
-        setFoodInventory(new Inventory(5, 7));
+        setFoodInventory(new Inventory(10, 3));
 
         setShouldUpdate(true);
 
@@ -114,9 +114,6 @@ public abstract class Animal {
     }
 
     public void move(){
-        // check move calls getDx()*2 and getDy()*2 to account for imperfections in the calculation
-        // this overestimates the movement and checks against it, ensuring that a smaller movement is
-        // safe to occur.
         if (checkMove((int)(getImage().getTranslateX() + getImage().getCenterX() + (getDx())),
                 (int)(getImage().getTranslateY() + getImage().getCenterY() + (getDy())))) {
 
@@ -143,8 +140,8 @@ public abstract class Animal {
             // remove any local target bounds and pick a new one
             setTargetingFood(false);
             getRandomLocalTarget360();
-            setFoodSearchCoolDown(50);
-            setFollowMainCoolDown(50);
+            setFoodSearchCoolDown(10);
+            setFollowMainCoolDown(10);
         }
         // decay hunger or energy depending on how much hungry the animal is
         hungerEnergyDecay();
@@ -219,13 +216,15 @@ public abstract class Animal {
             }
         } else {
             if (hasLocalTarget()) {
-                if (!isTargetFood() && getFoodSearchCoolDown() < 10){
+                if (!isTargetFood() && getFoodSearchCoolDown() == 0){
                     checkFood();
                 }
                 checkCollideLocalTarget();
             } else {
                 getRandomLocalTarget();
-                checkFood();
+                if (getFoodSearchCoolDown() == 0){
+                    checkFood();
+                }
             }
         }
     }
@@ -326,27 +325,31 @@ public abstract class Animal {
 
     public void storeFood(){
         setTargetingFood(false);
-        setFoodSearchCoolDown(1000);
+        boolean shouldAvoidFood = false;
         for(int i = 0; i < foodList.size(); i++){
             if(getTargetFoodID() == foodList.get(i).getID()){
                 if(foodInventory.getSlotMax() > foodList.get(i).getSize()){
                     if (foodInventory.add(foodList.get(i).getSize())){
                         getFoodGroupRef().getChildren().remove(i);
                         foodList.remove(i);
-                    } else{
-                        System.out.println("No room. " + foodInventory.getCapacity() + " " + foodInventory.getSize());
-                    }
+                    } else{ shouldAvoidFood = true; }
                 } else{
-                    //TODO: divide food into slots
-                    System.out.println("It's too big for slots. " + foodInventory.getSlotMax() + "<" + foodList.get(i).getSize());
+                    do {
+                        if (foodInventory.add(foodInventory.getSlotMax())){
+                            foodList.get(i).getImage().setRadius(foodList.get(i).getImage().getRadius() - foodInventory.getSlotMax());
+                        }
+                    } while(foodInventory.size < foodInventory.getCapacity() && foodList.get(i).getImage().getRadius() > -1);
+                    if (foodList.get(i).getImage().getRadius() < 1){
+                        getFoodGroupRef().getChildren().remove(i);
+                        foodList.remove(i);
+                    }
+                    else{ shouldAvoidFood = true; }
                 }
-                System.out.println("Inventory");
-                for(int j = 0; j < foodInventory.getSize(); j++){
-                    System.out.print(foodInventory.getElement(j) + " ");
-                }
-                System.out.println();
                 break;
             }
+        }
+        if (shouldAvoidFood){
+            setFoodSearchCoolDown(100);
         }
     }
 
@@ -810,6 +813,10 @@ public abstract class Animal {
         setFoodSearchCoolDown(getFoodSearchCoolDown() - 1);
         if (getFoodSearchCoolDown() < 0){
             setFoodSearchCoolDown(0);
+            getSmellCircle().setFill(Color.rgb(0, 100, 100));
+        }
+        else{
+            getSmellCircle().setFill(Color.rgb(100, 0, 0));
         }
     }
 
@@ -823,10 +830,6 @@ public abstract class Animal {
         setFollowMainCoolDown(getFollowMainCoolDown() - 1);
         if(getFollowMainCoolDown() < 0){
             setFollowMainCoolDown(0);
-            getSmellCircle().setFill(Color.rgb(0, 100, 100));
-        }
-        else {
-            getSmellCircle().setFill(Color.rgb(100, 0, 0));
         }
     }
 

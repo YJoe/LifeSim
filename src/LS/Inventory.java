@@ -11,7 +11,7 @@ public class Inventory extends FLArray{
     @Override
     public boolean add(int value){
         if(size < capacity){
-            if (value < slotMax) {
+            if (value <= slotMax) {
                 array[size] = value;
                 size++;
                 return true;
