@@ -28,6 +28,7 @@ public abstract class Animal {
     private ArrayList<Food> foodList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
     private ArrayList<Obstacle> obstacleList = new ArrayList<>();
+    private Inventory foodInventory;
 
     //                             f  w  h
     private int[] taskPriority = { 0, 0, 0 };
@@ -80,6 +81,9 @@ public abstract class Animal {
         Random rand = new Random();
         setMemoryBiasX(rand.nextInt(2));
         setMemoryBiasY(rand.nextInt(2));
+
+        // Create food inventory
+        setFoodInventory(new Inventory(5, 7));
 
         setShouldUpdate(true);
 
@@ -295,7 +299,7 @@ public abstract class Animal {
     public void checkCollideLocalTarget(){
         if (Collision.overlapsAccurate(getImage(), getLocalTarget().getCircle())){
             if (isTargetFood()){
-                eatFood();
+                storeFood();
             }
             removeLocalTarget();
         }
@@ -315,6 +319,32 @@ public abstract class Animal {
                 getFoodGroupRef().getChildren().remove(i);
                 setHunger(getHunger() - foodList.get(i).getCal());
                 foodList.remove(i);
+                break;
+            }
+        }
+    }
+
+    public void storeFood(){
+        setTargetingFood(false);
+        setFoodSearchCoolDown(1000);
+        for(int i = 0; i < foodList.size(); i++){
+            if(getTargetFoodID() == foodList.get(i).getID()){
+                if(foodInventory.getSlotMax() > foodList.get(i).getSize()){
+                    if (foodInventory.add(foodList.get(i).getSize())){
+                        getFoodGroupRef().getChildren().remove(i);
+                        foodList.remove(i);
+                    } else{
+                        System.out.println("No room. " + foodInventory.getCapacity() + " " + foodInventory.getSize());
+                    }
+                } else{
+                    //TODO: divide food into slots
+                    System.out.println("It's too big for slots. " + foodInventory.getSlotMax() + "<" + foodList.get(i).getSize());
+                }
+                System.out.println("Inventory");
+                for(int j = 0; j < foodInventory.getSize(); j++){
+                    System.out.print(foodInventory.getElement(j) + " ");
+                }
+                System.out.println();
                 break;
             }
         }
@@ -798,6 +828,13 @@ public abstract class Animal {
         else {
             getSmellCircle().setFill(Color.rgb(100, 0, 0));
         }
+    }
+
+    public void setFoodInventory(Inventory foodInventory){
+        this.foodInventory = foodInventory;
+    }
+    public Inventory getFoodInventory(){
+        return foodInventory;
     }
 
 }

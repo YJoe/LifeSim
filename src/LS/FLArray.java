@@ -1,9 +1,9 @@
 package LS;
 
 public class FLArray {
-    private int capacity;
-    private int size;
-    private int [] array;
+    protected int capacity;
+    protected int size;
+    protected int [] array;
 
     public FLArray(int capacity){
         this.capacity = capacity;
@@ -27,6 +27,10 @@ public class FLArray {
         size -= 1;
     }
 
+    public int getElement(int index){
+        return array[index];
+    }
+
     public int getSize(){
         return this.size;
     }
@@ -34,4 +38,5 @@ public class FLArray {
     public int getCapacity(){
         return capacity;
     }
+
 }
