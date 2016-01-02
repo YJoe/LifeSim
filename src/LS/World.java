@@ -12,6 +12,7 @@ public class World {
     private ArrayList<Animal> animalList = new ArrayList<>();
     private ArrayList<Animal> animalRank = new ArrayList<>();
     private ArrayList<Food> foodList = new ArrayList<>();
+    private ArrayList<Water> waterList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
     private ArrayList<Obstacle> obstacleList = new ArrayList<>();
     private Group animalGroup = new Group();
@@ -23,12 +24,14 @@ public class World {
     private Group animalHomeLocationGroup = new Group();
     private Group shelterGroup = new Group();
     private Group foodGroup = new Group();
+    private Group waterGroup = new Group();
     private Group obstacleGroup = new Group();
 
     // set up the world
-    public World(Group root, int animals, int food, int shelters, int obstacles){
+    public World(Group root, int animals, int food, int shelters, int obstacles, int pools){
         System.out.println("Creating world");
         root.getChildren().add(shelterGroup);
+        root.getChildren().add(waterGroup);
         root.getChildren().add(obstacleGroup);
         root.getChildren().add(foodGroup);
         root.getChildren().add(animalSmellGroup);
@@ -39,6 +42,9 @@ public class World {
         root.getChildren().add(animalTargetGroup);
         root.getChildren().add(animalHomeLocationGroup);
 
+        for(int i = 0; i < pools; i++){
+            addRandomPool();
+        }
         for(int i = 0; i < animals; i++) {
             addRandomAnimal();
         }
@@ -93,6 +99,42 @@ public class World {
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());
         trackID++;
+    }
+
+    public void addRandomPool(){
+        // TODO: make this wowrk with more than one pool
+        int waterCount = rand.nextInt(2) + 5;
+        // add one water to base other water positions on
+        waterList.add(new Water(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y)));
+        waterGroup.getChildren().add(waterList.get(0).getCircle());
+        int angleDeg = rand.nextInt(360);
+
+        for(int i = 0; i < waterCount; i++){
+            waterList.add(createWater(waterList.get(i).getX(), waterList.get(i).getY(),
+                    (int)waterList.get(i).getCircle().getRadius(), angleDeg));
+            angleDeg += rand.nextInt(100) - 50;
+
+            if(angleDeg > 360){
+                angleDeg -= 360;
+            } else{
+                if (angleDeg < 0){
+                    angleDeg += 360;
+                }
+            }
+            waterGroup.getChildren().add(waterList.get(i + 1).getCircle());
+        }
+        for(int i = 0; i < waterList.size(); i++){
+            System.out.println(waterList.get(i).getX() + ", " + waterList.get(i).getY());
+        }
+    }
+
+    public Water createWater(int centerX, int centerY, int radius, int angleDeg){
+        // a function to place a new circle center within another
+        double angleRad = Math.toRadians(angleDeg);
+        int newX = (int) (centerX + radius * Math.cos(angleRad));
+        int newY = (int) (centerY + radius * Math.sin(angleRad));
+
+        return new Water(newX, newY);
     }
 
     public void addRandomShelter(){
@@ -155,6 +197,9 @@ public class World {
     }
     public ArrayList<Food> getFoodList(){
         return foodList;
+    }
+    public ArrayList<Water> getWaterList(){
+        return waterList;
     }
     public ArrayList<Shelter> getShelterList() {
         return shelterList;

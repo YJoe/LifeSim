@@ -27,12 +27,13 @@ public class Main extends Application {
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
 
         // Create world
-        int animalCount = 1;
-        int foodCount = 100;
+        int animalCount = 0;
+        int foodCount = 0;
         int shelterCount = 0;
         int obstacleCount = 0;
-        World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount);
-        world.getAnimalList().get(0).setSpeed(1.2);
+        int poolCount = 1;
+        World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount, poolCount);
+        //world.getAnimalList().get(0).setSpeed(1.2);
 
         //world.toggleSmellCircles();
         world.toggleTargetSquares();
