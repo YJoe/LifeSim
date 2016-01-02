@@ -30,8 +30,13 @@ public abstract class Animal {
     private ArrayList<Obstacle> obstacleList = new ArrayList<>();
     private Inventory foodInventory;
 
-    //                             f  w  h
-    private int[] taskPriority = { 0, 0, 0 };
+    private int[] taskPriority = {  0, // Find food
+                                    0, // Eat Food
+                                    0, // Find Water
+                                    0, // Drink Water
+                                    0, // Find Home
+                                    0  // Go Home
+                                        };
 
     // Constructor
     public Animal(String speciesIn, char symbolIn, int IDIn, int energyIn, int xIn, int yIn, Group food, Group animal){
@@ -93,6 +98,8 @@ public abstract class Animal {
 
     // Main functions
     public void update(){
+        prioritiseTasks();
+        getTask();
         target();
         directDxDy();
         move();
@@ -100,17 +107,26 @@ public abstract class Animal {
     }
 
     public void prioritiseTasks(){
-        taskPriority[0] = (int)(getHunger()*10);
+        // food tasks
+        if (foodInventory.getSize() == 0) {
+            taskPriority[0] = (int) (getHunger() * 10);
+        } else {
+            // eat food stored in inventory
+            taskPriority[0] = (0);
+            taskPriority[1] = (int) (getHunger() * 10);
+        }
+
+        // water tasks
     }
 
     public void getTask(){
         int highest = 0;
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 2; i++){
             if (taskPriority[i] > taskPriority[highest]) {
                 highest = i;
             }
         }
-        //System.out.println("Prioritise task[" + highest + "]");
+        System.out.println("Prioritise task[" + highest + "]");
     }
 
     public void move(){
