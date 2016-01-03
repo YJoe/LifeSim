@@ -11,15 +11,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public abstract class Animal {
-    public void setTask(Task task) {
-        this.task = task;
-    }
-
-    public Task getTask() {
-        return task;
-    }
-
-    public enum Task {FIND_FOOD, EAT_FOOD, FIND_WATER, DRINK_WATER, FIND_HOME, GO_HOME, NOTHING};
     private Circle image, smellCircle, targetCircle;
     private Rectangle targetLocation, hungerBar, energyBar, backBar, homeLocation;
     private Group foodGroupRef;
@@ -40,15 +31,6 @@ public abstract class Animal {
     private ArrayList<Shelter> shelterList = new ArrayList<>();
     private ArrayList<Obstacle> obstacleList = new ArrayList<>();
     private Inventory foodInventory;
-    private Task task = Task.NOTHING;
-
-    private int[] taskPriority = {  0, // Find food    0
-                                    0, // Eat Food     1
-                                    0, // Find Water   2
-                                    0, // Drink Water  3
-                                    0, // Find Home    4
-                                    0  // Go Home      5
-                                        };
 
     // Constructor
     public Animal(String speciesIn, char symbolIn, int IDIn, int energyIn, int xIn, int yIn, Group food, Group animal){
@@ -107,42 +89,25 @@ public abstract class Animal {
 
     // Main functions
     public void update(){
-        prioritiseTasks();
-        giveTask();
+        //System.out.println("INVENTORY " + foodInventory.getSize() + "/" + foodInventory.getCapacity());
+        //for(int i = 0; i < foodInventory.getSize(); i++){
+        //    System.out.print(foodInventory.getElement(i) + " ");
+        //}
+        //System.out.println();
+        checkHungerThirst();
         target();
         directDxDy();
         move();
         forget();
     }
 
-    public void prioritiseTasks(){
-        // Food tasks
-        if (foodInventory.getSize() == 0) {
-            taskPriority[0] = (int) (getHunger() * 100);
-        } else {
-            // eat food stored in inventory
-            taskPriority[0] = (0);
-            taskPriority[1] = (int) (getHunger() * 100);
-        }
-
-        // Home tasks
-        if (getHomeTarget() == null){
-            if (taskPriority[4] < 100) {
-                taskPriority[4] += 1;
+    public void checkHungerThirst(){
+        if (foodInventory.getSize() > 0) {
+            // check that eating food wont be wasteful
+            if (getHunger() > (double)foodInventory.getElement(0)) {
+                eatFood();
             }
         }
-
-    }
-
-    public void giveTask(){
-        int highest = 0;
-        for (int i = 0; i < 6; i++){
-            if (taskPriority[i] > taskPriority[highest]) {
-                highest = i;
-            }
-        }
-        setTask(Task.values()[highest]);
-        System.out.println("Task: " + getTask() + "(" + taskPriority[highest] + ")");
     }
 
     public void move(){
@@ -247,23 +212,14 @@ public abstract class Animal {
             }
         } else {
             if (hasLocalTarget()) {
-                switch(getTask()) {
-                    case FIND_FOOD:
-                        if (!isTargetFood() && getFoodSearchCoolDown() == 0) {
-                            checkFood();
-                            break;
-                        }
-                    case FIND_HOME:
-                        checkShelters();
-                        break;
+                if (!isTargetFood() && getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
+                    checkFood();
                 }
                 checkCollideLocalTarget();
             } else {
                 getRandomLocalTarget();
-                if (getFoodSearchCoolDown() == 0){
-                    if (getTask() == Task.FIND_FOOD) {
-                        checkFood();
-                    }
+                if (getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
+                    checkFood();
                 }
             }
         }
@@ -352,15 +308,8 @@ public abstract class Animal {
     }
 
     public void eatFood(){
-        setTargetingFood(false);
-        for(int i = 0; i < foodList.size(); i++){
-            if(getTargetFoodID() == foodList.get(i).getID()){
-                getFoodGroupRef().getChildren().remove(i);
-                setHunger(getHunger() - foodList.get(i).getCal());
-                foodList.remove(i);
-                break;
-            }
-        }
+        setHunger(getHunger() - (foodInventory.getElement(0)));
+        foodInventory.remove(0);
     }
 
     public void storeFood(){
@@ -700,7 +649,6 @@ public abstract class Animal {
 
     public void setHome(Target home){
         setHomeTarget(home);
-        taskPriority[4] = 0;
     }
 
     public void setAnimalGroupRef(Group a){

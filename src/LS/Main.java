@@ -28,17 +28,17 @@ public class Main extends Application {
 
         // Create world
         int animalCount = 1;
-        int foodCount = 20;
-        int shelterCount = 20;
+        int foodCount = 100;
+        int shelterCount = 0;
         int obstacleCount = 0;
         int poolCount = 0;
         World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount, poolCount);
-        //world.getAnimalList().get(0).setSpeed(1.2);
+        world.getAnimalList().get(0).setSpeed(1.2);
 
         //world.toggleSmellCircles();
-        world.toggleTargetSquares();
-        world.toggleHomeSquares();
-        world.toggleStatBars();
+        //world.toggleTargetSquares();
+        //world.toggleHomeSquares();
+        //world.toggleStatBars();
 
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage);
