@@ -12,12 +12,21 @@ import javafx.scene.shape.Rectangle;
 
 public abstract class Animal {
     private Circle image, smellCircle, targetCircle;
-    private Rectangle targetLocation, hungerBar, energyBar, backBar, homeLocation;
+    private Rectangle targetLocation;
+    private Rectangle hungerBar;
+    private Rectangle energyBar;
+    private Rectangle thirstBar;
+    private Rectangle backBar;
+    private Rectangle homeLocation;
     private Group foodGroupRef;
+    private Group waterGroupRef;
     private Group animalGroupRef;
     private String species, name;
     private char symbol, gender;
-    private float size, metabolism, hunger = 0;
+    private float size;
+    private float metabolism;
+    private float hunger = 0;
+    private float thirst = 0;
     private int id, x, y, energy, smellRange, turnAngle, pathDistance, foodSearchCoolDown, followMainCoolDown;
     private int homeX, homeY, memory, memoryBiasX, memoryBiasY, waitAtHome;
     private int lastAngle = new Random().nextInt(360), targetFoodID;
@@ -31,14 +40,15 @@ public abstract class Animal {
     private ArrayList<Shelter> shelterList = new ArrayList<>();
     private ArrayList<Obstacle> obstacleList = new ArrayList<>();
     private Inventory foodInventory;
+    private Inventory waterInventory;
 
     // Constructor
-    public Animal(String speciesIn, char symbolIn, int IDIn, int energyIn, int xIn, int yIn, Group food, Group animal){
+    public Animal(String speciesIn, char symbolIn, int IDIn, int energyIn, int xIn, int yIn, Group food, Group animal, Group water){
         setSpecies(speciesIn); setSymbol(symbolIn); setID(IDIn); setEnergy(energyIn);
-        setX(xIn); setY(yIn); setFoodGroupRef(food); setAnimalGroupRef(animal);
+        setX(xIn); setY(yIn); setFoodGroupRef(food); setAnimalGroupRef(animal); setWaterGroupRef(water);
 
         // Create bar background
-        setBackBar(new Rectangle(x, y, statBarWidth + 4, (statBarHeight * 2) + statBarSpacing + 4));
+        setBackBar(new Rectangle(x, y, statBarWidth + 4, (statBarHeight * 3) + statBarSpacing + 6));
         getBackBar().setFill(Color.rgb(50, 50, 50));
         getBackBar().setX(getBackBar().getX() - (statBarWidth/2) - 2);
         getBackBar().setY(getBackBar().getY() + 8);
@@ -50,12 +60,19 @@ public abstract class Animal {
         getHungerBar().setX(getHungerBar().getX() - (statBarWidth/2));
         getHungerBar().setY(getHungerBar().getY() + 10);
 
+        // Create thirstBar
+        setThirstBar(new Rectangle(x, y, statBarWidth, statBarHeight));
+        // center and colour thirst bar
+        getThirstBar().setFill(Color.rgb(0, 255, 255));
+        getThirstBar().setX(getThirstBar().getX() - (statBarWidth/2));
+        getThirstBar().setY(getThirstBar().getY() + 10 + statBarHeight + statBarSpacing);
+
         // Create energy bar
         setEnergyBar(new Rectangle(x, y, statBarWidth, statBarHeight));
         // Centre and colour energy bar
         getEnergyBar().setFill(Color.rgb(0, 255, 0));
         getEnergyBar().setX(getEnergyBar().getX() - (statBarWidth / 2));
-        getEnergyBar().setY(getHungerBar().getY() + statBarHeight + statBarSpacing);
+        getEnergyBar().setY(getHungerBar().getY() + (statBarHeight * 2) + (statBarSpacing * 2));
 
         // Set a random gender
         giveGender();
@@ -99,6 +116,7 @@ public abstract class Animal {
         directDxDy();
         move();
         forget();
+        hungerEnergyWaterDecay();
     }
 
     public void checkHungerThirst(){
@@ -123,6 +141,9 @@ public abstract class Animal {
             // hunger bar
             getHungerBar().setTranslateX(getHungerBar().getTranslateX() + getDx());
             getHungerBar().setTranslateY(getHungerBar().getTranslateY() + getDy());
+            // thirst bar
+            getThirstBar().setTranslateX(getThirstBar().getTranslateX() + getDx());
+            getThirstBar().setTranslateY(getThirstBar().getTranslateY() + getDy());
             // energy bar
             getEnergyBar().setTranslateX(getEnergyBar().getTranslateX() + getDx());
             getEnergyBar().setTranslateY(getEnergyBar().getTranslateY() + getDy());
@@ -140,30 +161,40 @@ public abstract class Animal {
             setFoodSearchCoolDown(10);
             setFollowMainCoolDown(10);
         }
-        // decay hunger or energy depending on how much hungry the animal is
-        hungerEnergyDecay();
     }
 
-    public void hungerEnergyDecay(){
+    public void hungerEnergyWaterDecay(){
         // add to hunger using metabolism higher metabolism means getting hungry quicker
-        setHunger(getHunger() + getMetabolism());
+        setHunger(getHunger() + (getMetabolism() * 4));
+        // do the same but make thirst grow slightly faster
+        setThirst(getThirst() + (float)(getMetabolism() * 1.3));
 
-        if (getHunger() > 0 && getHunger() < 10){
-            if (getEnergy() < 1000) {
-                setEnergy(getEnergy() + 2);
-            }
-        }else {
-            if (getHunger() >= 10) {
-                setHunger(10);
-                setEnergy(getEnergy() - 1);
-            } else {
-                if (getHunger() < 0) {
-                    setHunger(0);
-                }
-            }
+        // if both fields are satisfied add to energy
+        if (getThirst() < 10 && getHunger() < 10 && getEnergy() < 1000){
+            setEnergy(getEnergy() + 2);
+        }
+
+        // if hunger reaches max keep it there
+        if (getHunger() >= 10){
+            setHunger(10);
+        }
+        // if hunger reaches 0 keep it that way
+        else if (getHunger() < 0){
+            setHunger(0);
+        }
+
+        // if thirst reaches max, lose energy
+        if (getThirst() >= 10){
+            setThirst(10);
+            setEnergy(getEnergy() - 1);
+        }
+        // if thirst reaches 0 keep it that way
+        else if (getThirst() < 0){
+            setThirst(0);
         }
 
         getHungerBar().setWidth(getHunger() * (statBarWidth/10));
+        getThirstBar().setWidth(getThirst() * (statBarWidth/10));
         getEnergyBar().setWidth(getEnergy() * (statBarWidth/1000.0));
 
     }
@@ -340,6 +371,18 @@ public abstract class Animal {
         if (shouldAvoidFood){
             setFoodSearchCoolDown(100);
         }
+    }
+
+    public void drinkWater(){
+
+    }
+
+    public void storeWater(){
+
+    }
+
+    public void checkWater(){
+
     }
 
     public void removeLocalTarget(){
@@ -829,5 +872,40 @@ public abstract class Animal {
         return foodInventory;
     }
 
+    public Inventory getWaterInventory() {
+        return waterInventory;
+    }
+
+    public void setWaterInventory(Inventory waterInventory) {
+        this.waterInventory = waterInventory;
+    }
+
+    public Group getAnimalGroupRef() {
+        return animalGroupRef;
+    }
+
+    public Group getWaterGroupRef() {
+        return waterGroupRef;
+    }
+
+    public void setWaterGroupRef(Group waterGroupRef) {
+        this.waterGroupRef = waterGroupRef;
+    }
+
+    public float getThirst() {
+        return thirst;
+    }
+
+    public void setThirst(float thirst) {
+        this.thirst = thirst;
+    }
+
+    public Rectangle getThirstBar() {
+        return thirstBar;
+    }
+
+    public void setThirstBar(Rectangle thirstBar) {
+        this.thirstBar = thirstBar;
+    }
 }
 

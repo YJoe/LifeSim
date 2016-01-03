@@ -14,8 +14,8 @@ public class Ant extends Animal{
     private Color bodyColour = Color.rgb(50, 50, 50);
     private Color smellColour = Color.rgb(0, 100, 100);
 
-    public Ant(int x, int y, int id, Group foodGroup, Group animalGroup){
-        super("Ant", 'A', id, 1000, x, y, foodGroup, animalGroup);
+    public Ant(int x, int y, int id, Group foodGroup, Group animalGroup, Group waterGroup){
+        super("Ant", 'A', id, 1000, x, y, foodGroup, animalGroup, waterGroup);
         String [] names_m = {"Antdrew", "Anty", "Antain", "Antanas", "Antar", "Anturas", "Antavas"};
         String [] names_f = {"Anttoinette", "Antalia", "Anta", "Anthia", "Antalia", "Antandra", "Antia", "Antheemia"};
         giveName(names_m, names_f);
@@ -24,7 +24,7 @@ public class Ant extends Animal{
         setSmellRange(rand.nextInt(30) + 50 - 15);
         setSmellCircle(new Circle(x, y, getSmellRange()));
         getSmellCircle().setFill(smellColour);
-        getSmellCircle().setOpacity(0.5);
+        getSmellCircle().setOpacity(0.3);
         setPathDistance(getSmellRange());
 
         // Create body attributes
@@ -46,5 +46,8 @@ public class Ant extends Animal{
 
         // Create food inventory
         setFoodInventory(new Inventory(baseStrength + rand.nextInt(2), baseStrength + (rand.nextInt(2))));
+
+        // Create water inventory
+        setWaterInventory(new Inventory(baseStrength + rand.nextInt(2), baseStrength + (rand.nextInt(2))));
     }
 }

@@ -19,6 +19,7 @@ public class World {
     private Group animalSmellGroup = new Group();
     private Group animalTargetGroup = new Group();
     private Group animalHungerBarGroup = new Group();
+    private Group animalThirstBarGroup = new Group();
     private Group animalEnergyBarGroup = new Group();
     private Group animalBackBarGroup = new Group();
     private Group animalHomeLocationGroup = new Group();
@@ -38,6 +39,7 @@ public class World {
         root.getChildren().add(animalGroup);
         root.getChildren().add(animalBackBarGroup);
         root.getChildren().add(animalHungerBarGroup);
+        root.getChildren().add(animalThirstBarGroup);
         root.getChildren().add(animalEnergyBarGroup);
         root.getChildren().add(animalTargetGroup);
         root.getChildren().add(animalHomeLocationGroup);
@@ -66,7 +68,7 @@ public class World {
         Animal a;
         do {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
-            a = new Ant(x, y, trackID, foodGroup, animalGroup);
+            a = new Ant(x, y, trackID, foodGroup, animalGroup, waterGroup);
         } while(overlapsAnything(a.getImage()));
         a.setFoodList(foodList);
         a.setShelterList(shelterList);
@@ -76,6 +78,7 @@ public class World {
         animalSmellGroup.getChildren().add(a.getSmellCircle());
         animalTargetGroup.getChildren().add(a.getTargetLocation());
         animalHungerBarGroup.getChildren().add(a.getHungerBar());
+        animalThirstBarGroup.getChildren().add(a.getThirstBar());
         animalEnergyBarGroup.getChildren().add(a.getEnergyBar());
         animalBackBarGroup.getChildren().add(a.getBackBar());
         animalHomeLocationGroup.getChildren().add(a.getHomeLocation());
@@ -244,6 +247,7 @@ public class World {
     public void toggleStatBars(){
         animalEnergyBarGroup.setVisible(!animalEnergyBarGroup.isVisible());
         animalHungerBarGroup.setVisible(!animalHungerBarGroup.isVisible());
+        animalThirstBarGroup.setVisible(!animalThirstBarGroup.isVisible());
         animalBackBarGroup.setVisible(!animalBackBarGroup.isVisible());
     }
 
