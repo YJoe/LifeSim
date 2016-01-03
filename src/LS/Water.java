@@ -15,9 +15,9 @@ public class Water {
         Random rand = new Random();
         this.x = x;
         this.y = y;
-        this.setSize(rand.nextInt(50) + 50);
+        this.setSize(rand.nextInt(20) + 70);
         this.setCircle(new Circle(x, y, size));
-        getCircle().setFill(Color.rgb(0, 100, 200));
+        getCircle().setFill(Color.rgb(120, 120, 255));
     }
 
 

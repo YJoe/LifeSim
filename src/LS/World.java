@@ -106,16 +106,31 @@ public class World {
     }
 
     public void addRandomPool(){
-        // TODO: make this wowrk with more than one pool
-        int waterCount = rand.nextInt(2) + 5;
+        // TODO: make this work with more than one pool
+        int waterCount = rand.nextInt(3) + 2;
         // add one water to base other water positions on
         waterList.add(new Water(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y)));
         waterGroup.getChildren().add(waterList.get(0).getCircle());
         int angleDeg = rand.nextInt(360);
 
         for(int i = 0; i < waterCount; i++){
-            waterList.add(createWater(waterList.get(i).getX(), waterList.get(i).getY(),
-                    (int)waterList.get(i).getCircle().getRadius(), angleDeg));
+            int attempt = 0, newX, newY;
+            do {
+                if (attempt > 0){
+                    angleDeg = rand.nextInt(360);
+                } else attempt ++;
+
+                double angleRad = Math.toRadians(angleDeg);
+                newX = (int) (  waterList.get(i).getCircle().getCenterX() +
+                                waterList.get(i).getCircle().getRadius() *
+                                Math.cos(angleRad));
+                newY = (int) (  waterList.get(i).getCircle().getCenterY() +
+                                waterList.get(i).getCircle().getRadius() *
+                                Math.sin(angleRad));
+
+            } while(newX > Main.SIZE_X || newX < 0 || newY > Main.SIZE_Y || newY < 0);
+            waterList.add(new Water(newX, newY));
+
             angleDeg += rand.nextInt(100) - 50;
 
             if(angleDeg > 360){
@@ -127,18 +142,6 @@ public class World {
             }
             waterGroup.getChildren().add(waterList.get(i + 1).getCircle());
         }
-        for(int i = 0; i < waterList.size(); i++){
-            System.out.println(waterList.get(i).getX() + ", " + waterList.get(i).getY());
-        }
-    }
-
-    public Water createWater(int centerX, int centerY, int radius, int angleDeg){
-        // a function to place a new circle center within another
-        double angleRad = Math.toRadians(angleDeg);
-        int newX = (int) (centerX + radius * Math.cos(angleRad));
-        int newY = (int) (centerY + radius * Math.sin(angleRad));
-
-        return new Water(newX, newY);
     }
 
     public void addRandomShelter(){
@@ -196,6 +199,7 @@ public class World {
         animalTargetGroup.getChildren().remove(i);
         animalBackBarGroup.getChildren().remove(i);
         animalHungerBarGroup.getChildren().remove(i);
+        animalThirstBarGroup.getChildren().remove(i);
         animalEnergyBarGroup.getChildren().remove(i);
         animalList.remove(i);
     }

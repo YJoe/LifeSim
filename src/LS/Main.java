@@ -27,8 +27,8 @@ public class Main extends Application {
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
 
         // Create world
-        int animalCount = 1;
-        int foodCount = 0;
+        int animalCount = 30;
+        int foodCount = 100;
         int shelterCount = 0;
         int obstacleCount = 0;
         int poolCount = 1;
