@@ -29,18 +29,26 @@ public abstract class Animal {
     private float thirst = 0;
     private int id, x, y, energy, smellRange, turnAngle, pathDistance, foodSearchCoolDown, followMainCoolDown;
     private int homeX, homeY, memory, memoryBiasX, memoryBiasY, waitAtHome;
-    private int lastAngle = new Random().nextInt(360), targetFoodID;
+    private int lastAngle = new Random().nextInt(360);
+    private int targetFoodID;
+    private int targetWaterID;
     private int statBarHeight = 4, statBarWidth = 50, statBarSpacing = 2;
     private double speed, dx, dy;
-    private boolean localTargetBool, mainTargetBool, targetingFood, targetingHome, update;
+    private boolean localTargetBool;
+    private boolean mainTargetBool;
+    private boolean targetingFood;
+    private boolean targetingWater;
+    private boolean targetingHome;
+    private boolean update;
     private Target localTarget;
     private Target mainTarget;
     private Target homeTarget;
     private ArrayList<Food> foodList = new ArrayList<>();
+    private ArrayList<Water> waterList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
     private ArrayList<Obstacle> obstacleList = new ArrayList<>();
     private Inventory foodInventory;
-    private Inventory waterInventory;
+    public Inventory waterInventory;
 
     // Constructor
     public Animal(String speciesIn, char symbolIn, int IDIn, int energyIn, int xIn, int yIn, Group food, Group animal, Group water){
@@ -106,11 +114,6 @@ public abstract class Animal {
 
     // Main functions
     public void update(){
-        //System.out.println("INVENTORY " + foodInventory.getSize() + "/" + foodInventory.getCapacity());
-        //for(int i = 0; i < foodInventory.getSize(); i++){
-        //    System.out.print(foodInventory.getElement(i) + " ");
-        //}
-        //System.out.println();
         checkHungerThirst();
         target();
         directDxDy();
@@ -124,6 +127,12 @@ public abstract class Animal {
             // check that eating food wont be wasteful
             if (getHunger() > (double)foodInventory.getElement(0)) {
                 eatFood();
+            }
+        }
+        if (waterInventory.getSize() > 0) {
+            // check that drinking water wont be wasteful/
+            if (getThirst() > (double)waterInventory.getElement(0)){
+                drinkWater();
             }
         }
     }
@@ -165,7 +174,7 @@ public abstract class Animal {
 
     public void hungerEnergyWaterDecay(){
         // add to hunger using metabolism higher metabolism means getting hungry quicker
-        setHunger(getHunger() + (getMetabolism() * 4));
+        setHunger(getHunger() + getMetabolism());
         // do the same but make thirst grow slightly faster
         setThirst(getThirst() + (float)(getMetabolism() * 1.3));
 
@@ -197,16 +206,6 @@ public abstract class Animal {
         getThirstBar().setWidth(getThirst() * (statBarWidth/10));
         getEnergyBar().setWidth(getEnergy() * (statBarWidth/1000.0));
 
-    }
-
-    public void checkFood(){
-        for(int i = 0; i < foodList.size(); i++){
-            if (Collision.overlapsAccurate(this.getSmellCircle(), foodList.get(i).getImage())){
-                setTargetingFood(true);
-                setTargetFoodID(foodList.get(i).getID());
-                setLocalTarget(foodList.get(i).getImage());
-            }
-        }
     }
 
     public void checkShelters(){
@@ -245,6 +244,9 @@ public abstract class Animal {
             if (hasLocalTarget()) {
                 if (!isTargetFood() && getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
                     checkFood();
+                }
+                if (!isTargetingWater() && waterInventory.getSize() < waterInventory.getCapacity()){
+                    checkWater();
                 }
                 checkCollideLocalTarget();
             } else {
@@ -327,6 +329,9 @@ public abstract class Animal {
             if (isTargetFood()){
                 storeFood();
             }
+            if (isTargetingWater()){
+                storeWater();
+            }
             removeLocalTarget();
         }
     }
@@ -338,21 +343,30 @@ public abstract class Animal {
         }
     }
 
+    public void checkFood(){
+        for(Food food : foodList){
+            if (Collision.overlapsAccurate(this.getSmellCircle(), food.getImage())){
+                setTargetingFood(true);
+                setTargetFoodID(food.getID());
+                setLocalTarget(food.getImage());
+            }
+        }
+    }
+
     public void eatFood(){
-        setHunger(getHunger() - (foodInventory.getElement(0)));
+        setHunger(getHunger() - foodInventory.getElement(0));
         foodInventory.remove(0);
     }
 
     public void storeFood(){
         setTargetingFood(false);
-        boolean shouldAvoidFood = false;
         for(int i = 0; i < foodList.size(); i++){
             if(getTargetFoodID() == foodList.get(i).getID()){
                 if(foodInventory.getSlotMax() > foodList.get(i).getSize()){
-                    if (foodInventory.add(foodList.get(i).getSize())){
+                    if (foodInventory.add(foodList.get(i).getSize())) {
                         getFoodGroupRef().getChildren().remove(i);
                         foodList.remove(i);
-                    } else{ shouldAvoidFood = true; }
+                    }
                 } else{
                     do {
                         if (foodInventory.add(foodInventory.getSlotMax())){
@@ -363,26 +377,33 @@ public abstract class Animal {
                         getFoodGroupRef().getChildren().remove(i);
                         foodList.remove(i);
                     }
-                    else{ shouldAvoidFood = true; }
                 }
                 break;
             }
         }
-        if (shouldAvoidFood){
-            setFoodSearchCoolDown(100);
-        }
     }
 
     public void drinkWater(){
-
+        setThirst(getThirst() - waterInventory.getElement(0));
+        waterInventory.remove(0);
     }
 
     public void storeWater(){
-
+        // all water is the same so there is no need to check against the correct one
+        setTargetingWater(false);
+        // fill the entire inventory with water
+        for(int i = 0; i < waterInventory.getCapacity(); i++){
+            waterInventory.add(waterInventory.getSlotMax());
+        }
     }
 
     public void checkWater(){
-
+        for (Water water : waterList){
+            if (Collision.overlapsAccurate(this.getSmellCircle(), water.getCircle())){
+                setTargetingWater(true);
+                setLocalTarget(water.getCircle());
+            }
+        }
     }
 
     public void removeLocalTarget(){
@@ -477,6 +498,10 @@ public abstract class Animal {
     // SELF GET/SET FUNCTIONS
     public void setFoodList(ArrayList<Food> f){
         foodList = f;
+    }
+
+    public void setWaterList(ArrayList<Water> w){
+        waterList = w;
     }
 
     public void setShelterList(ArrayList<Shelter> s){
@@ -906,6 +931,22 @@ public abstract class Animal {
 
     public void setThirstBar(Rectangle thirstBar) {
         this.thirstBar = thirstBar;
+    }
+
+    public boolean isTargetingWater() {
+        return targetingWater;
+    }
+
+    public void setTargetingWater(boolean targetingWater) {
+        this.targetingWater = targetingWater;
+    }
+
+    public int getTargetWaterID() {
+        return targetWaterID;
+    }
+
+    public void setTargetWaterID(int targetWaterID) {
+        this.targetWaterID = targetWaterID;
     }
 }
 

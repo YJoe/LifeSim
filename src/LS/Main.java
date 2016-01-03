@@ -28,7 +28,7 @@ public class Main extends Application {
 
         // Create world
         int animalCount = 1;
-        int foodCount = 100;
+        int foodCount = 0;
         int shelterCount = 0;
         int obstacleCount = 0;
         int poolCount = 1;
@@ -63,7 +63,13 @@ public class Main extends Application {
                                     world.toggleStatBars();
                                 } else {
                                     if (ke.getCode() == KeyCode.DIGIT5) {
-                                        world.getAnimalList().get(0).targetHome();
+                                        System.out.println("WATER INVENTORY " + world.getAnimalList().get(0).waterInventory.getSize()
+                                                + "/" + world.getAnimalList().get(0).waterInventory.getCapacity());
+                                        for(int i = 0; i < world.getAnimalList().get(0).waterInventory.getSize(); i++){
+                                            System.out.print(world.getAnimalList().get(0).waterInventory.getElement(i) + " ");
+                                        }
+                                        System.out.println();
+
                                     }
                                 }
                             }

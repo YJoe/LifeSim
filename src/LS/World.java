@@ -72,6 +72,7 @@ public class World {
         } while(overlapsAnything(a.getImage()));
         a.setFoodList(foodList);
         a.setShelterList(shelterList);
+        a.setWaterList(waterList);
         a.setObstacleList(obstacleList);
         animalList.add(a);
         animalGroup.getChildren().add(a.getImage());
