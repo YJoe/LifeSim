@@ -161,18 +161,23 @@ public class World {
     }
 
     public boolean overlapsAnything(Circle c1){
-        for(int i = 0; i < animalList.size(); i++){
-            if (Collision.overlapsEfficient(c1, animalList.get(i).getImage())){
+        for(Animal animal : animalList){
+            if (Collision.overlapsEfficient(c1, animal.getImage())){
                 return true;
             }
         }
-        for(int i = 0; i < obstacleList.size(); i++){
-            if (Collision.overlapsEfficient(c1, obstacleList.get(i).getImage())){
+        for(Obstacle obstacle : obstacleList){
+            if (Collision.overlapsEfficient(c1, obstacle.getImage())){
                 return true;
             }
         }
-        for(int i = 0; i < foodList.size(); i++){
-            if (Collision.overlapsEfficient(c1, foodList.get(i).getImage())){
+        for(Food food : foodList){
+            if (Collision.overlapsEfficient(c1, food.getImage())){
+                return true;
+            }
+        }
+        for(Water water : waterList){
+            if (Collision.overlapsEfficient(c1, water.getCircle())){
                 return true;
             }
         }
