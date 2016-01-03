@@ -28,8 +28,8 @@ public class Main extends Application {
 
         // Create world
         int animalCount = 1;
-        int foodCount = 10;
-        int shelterCount = 0;
+        int foodCount = 20;
+        int shelterCount = 20;
         int obstacleCount = 0;
         int poolCount = 0;
         World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount, poolCount);

@@ -1,6 +1,8 @@
 package LS;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import javafx.scene.Group;
@@ -9,6 +11,15 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public abstract class Animal {
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public enum Task {FIND_FOOD, EAT_FOOD, FIND_WATER, DRINK_WATER, FIND_HOME, GO_HOME, NOTHING};
     private Circle image, smellCircle, targetCircle;
     private Rectangle targetLocation, hungerBar, energyBar, backBar, homeLocation;
     private Group foodGroupRef;
@@ -29,13 +40,14 @@ public abstract class Animal {
     private ArrayList<Shelter> shelterList = new ArrayList<>();
     private ArrayList<Obstacle> obstacleList = new ArrayList<>();
     private Inventory foodInventory;
+    private Task task = Task.NOTHING;
 
-    private int[] taskPriority = {  0, // Find food
-                                    0, // Eat Food
-                                    0, // Find Water
-                                    0, // Drink Water
-                                    0, // Find Home
-                                    0  // Go Home
+    private int[] taskPriority = {  0, // Find food    0
+                                    0, // Eat Food     1
+                                    0, // Find Water   2
+                                    0, // Drink Water  3
+                                    0, // Find Home    4
+                                    0  // Go Home      5
                                         };
 
     // Constructor
@@ -96,7 +108,7 @@ public abstract class Animal {
     // Main functions
     public void update(){
         prioritiseTasks();
-        getTask();
+        giveTask();
         target();
         directDxDy();
         move();
@@ -104,26 +116,33 @@ public abstract class Animal {
     }
 
     public void prioritiseTasks(){
-        // food tasks
+        // Food tasks
         if (foodInventory.getSize() == 0) {
-            taskPriority[0] = (int) (getHunger() * 10);
+            taskPriority[0] = (int) (getHunger() * 100);
         } else {
             // eat food stored in inventory
             taskPriority[0] = (0);
-            taskPriority[1] = (int) (getHunger() * 10);
+            taskPriority[1] = (int) (getHunger() * 100);
         }
 
-        // water tasks
+        // Home tasks
+        if (getHomeTarget() == null){
+            if (taskPriority[4] < 100) {
+                taskPriority[4] += 1;
+            }
+        }
+
     }
 
-    public void getTask(){
+    public void giveTask(){
         int highest = 0;
-        for (int i = 0; i < 2; i++){
+        for (int i = 0; i < 6; i++){
             if (taskPriority[i] > taskPriority[highest]) {
                 highest = i;
             }
         }
-        System.out.println("Prioritise task[" + highest + "]");
+        setTask(Task.values()[highest]);
+        System.out.println("Task: " + getTask() + "(" + taskPriority[highest] + ")");
     }
 
     public void move(){
@@ -196,10 +215,9 @@ public abstract class Animal {
 
     public void checkShelters(){
         for(int i = 0; i < shelterList.size(); i++){
-            if(Collision.overlapsAccurate(getImage(), shelterList.get(i).getImage())){
-                Random rand = new Random();
-                setWaitAtHome(500);
-                enterShelter(i);
+            if(Collision.overlapsAccurate(getSmellCircle(), shelterList.get(i).getImage())){
+                setHome(new Target(shelterList.get(i).getX(), shelterList.get(i).getY()));
+                break;
             }
         }
     }
@@ -229,14 +247,23 @@ public abstract class Animal {
             }
         } else {
             if (hasLocalTarget()) {
-                if (!isTargetFood() && getFoodSearchCoolDown() == 0){
-                    checkFood();
+                switch(getTask()) {
+                    case FIND_FOOD:
+                        if (!isTargetFood() && getFoodSearchCoolDown() == 0) {
+                            checkFood();
+                            break;
+                        }
+                    case FIND_HOME:
+                        checkShelters();
+                        break;
                 }
                 checkCollideLocalTarget();
             } else {
                 getRandomLocalTarget();
                 if (getFoodSearchCoolDown() == 0){
-                    checkFood();
+                    if (getTask() == Task.FIND_FOOD) {
+                        checkFood();
+                    }
                 }
             }
         }
@@ -673,6 +700,7 @@ public abstract class Animal {
 
     public void setHome(Target home){
         setHomeTarget(home);
+        taskPriority[4] = 0;
     }
 
     public void setAnimalGroupRef(Group a){
