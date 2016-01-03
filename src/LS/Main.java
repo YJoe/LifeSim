@@ -27,11 +27,11 @@ public class Main extends Application {
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
 
         // Create world
-        int animalCount = 0;
-        int foodCount = 0;
+        int animalCount = 1;
+        int foodCount = 10;
         int shelterCount = 0;
         int obstacleCount = 0;
-        int poolCount = 1;
+        int poolCount = 0;
         World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount, poolCount);
         //world.getAnimalList().get(0).setSpeed(1.2);
 

@@ -43,5 +43,8 @@ public class Ant extends Animal{
 
         // Set a random memory
         setMemory(baseMemory + (rand.nextInt(30)));
+
+        // Create food inventory
+        setFoodInventory(new Inventory(baseStrength + rand.nextInt(2), baseStrength + (rand.nextInt(2))));
     }
 }

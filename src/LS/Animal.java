@@ -87,9 +87,6 @@ public abstract class Animal {
         setMemoryBiasX(rand.nextInt(2));
         setMemoryBiasY(rand.nextInt(2));
 
-        // Create food inventory
-        setFoodInventory(new Inventory(10, 3));
-
         setShouldUpdate(true);
 
         // As all other attributes are determined by random variables based on the animal subclass, other
