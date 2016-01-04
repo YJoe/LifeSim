@@ -7,11 +7,11 @@ public class Collision {
         int x1pos = (int) (c1.getCenterX() + c1.getTranslateX()), y1pos = (int) (c1.getCenterY() + c1.getTranslateY());
         int x2pos = (int) (c2.getCenterX() + c2.getTranslateX()), y2pos = (int) (c2.getCenterY() + c2.getTranslateY());
 
-        int a = Math.abs(x1pos - x2pos);
-        int b = Math.abs(y1pos - y2pos);
-        int c =  (int)(c1.getRadius() + c2.getRadius());
+        double a = Math.pow(x1pos - x2pos, 2);
+        double b = Math.pow(y1pos - y2pos, 2);
+        double c = Math.pow(c1.getRadius() + c2.getRadius(), 2);
 
-        // |(x2-x1)| + |(y1-y2)| <= (r1+r2)
+        // (x2-x1)^2 + (y1-y2)^2 <= (r1+r2)^2
         return (a + b <= c);
     }
 
