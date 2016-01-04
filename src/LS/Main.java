@@ -28,11 +28,11 @@ public class Main extends Application {
         scene.setFill(Color.rgb(150, 200, 150));
 
         // Create world
-        int animalCount = 0;
-        int foodCount = 0;
+        int animalCount = 10;
+        int foodCount = 100;
         int shelterCount = 1;
         int obstacleCount = 0;
-        int poolCount = 0;
+        int poolCount = 1;
         World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount, poolCount);
         //world.getAnimalList().get(0).setSpeed(1.2);
 
@@ -64,21 +64,6 @@ public class Main extends Application {
                             } else {
                                 if (ke.getCode() == KeyCode.DIGIT4) {
                                     world.toggleStatBars();
-                                } else {
-                                    if (ke.getCode() == KeyCode.DIGIT5) {
-                                        System.out.println("WATER INVENTORY " + world.getAnimalList().get(0).waterInventory.getSize()
-                                                + "/" + world.getAnimalList().get(0).waterInventory.getCapacity());
-                                        for(int i = 0; i < world.getAnimalList().get(0).waterInventory.getSize(); i++){
-                                            System.out.print(world.getAnimalList().get(0).waterInventory.getElement(i) + " ");
-                                        }
-                                        System.out.println();
-                                        System.out.println("FOOD INVENTORY " + world.getAnimalList().get(0).foodInventory.getSize()
-                                                + "/" + world.getAnimalList().get(0).foodInventory.getCapacity());
-                                        for(int i = 0; i < world.getAnimalList().get(0).foodInventory.getSize(); i++){
-                                            System.out.print(world.getAnimalList().get(0).foodInventory.getElement(i) + " ");
-                                        }
-                                        System.out.println();
-                                    }
                                 }
                             }
                         }

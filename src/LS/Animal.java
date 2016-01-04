@@ -30,21 +30,13 @@ public abstract class Animal {
     private int targetFoodID;
     private int targetWaterID;
     private double speed, dx, dy;
-    private boolean localTargetBool;
-    private boolean mainTargetBool;
-    private boolean targetingFood;
-    private boolean targetingWater;
-    private boolean targetingHome;
-    private boolean update;
-    private Target localTarget;
-    private Target mainTarget;
-    private Target homeTarget;
+    private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, update;
+    private Target localTarget, mainTarget, homeTarget;
     private ArrayList<Food> foodList = new ArrayList<>();
     private ArrayList<Water> waterList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
     private ArrayList<Obstacle> obstacleList = new ArrayList<>();
-    public Inventory foodInventory;
-    public Inventory waterInventory;
+    public Inventory foodInventory, waterInventory;
 
     // Constructor
     public Animal(String speciesIn, char symbolIn, int IDIn, int energyIn, int xIn, int yIn, Group food, Group animal, Group water){
@@ -312,6 +304,13 @@ public abstract class Animal {
         if (Collision.overlapsAccurate(getImage(), getMainTarget().getCircle())){
             if (isTargetingHome()){
                 setTargetingHome(false);
+                // TODO: store into correct shelter
+                for(int i = 0; i < foodInventory.getSize(); i++) {
+                    shelterList.get(0).getFoodInventory().add(foodInventory.getElement(i));
+                }
+                for(int i = 0; i < waterInventory.getSize(); i++){
+                    shelterList.get(0).getWaterInventory().add(waterInventory.getElement(i));
+                }
                 foodInventory.empty();
                 waterInventory.empty();
             }

@@ -45,6 +45,11 @@ public class World {
             addRandomPool();
             System.out.println(i+1 + "/" + pools);
         }
+        System.out.println("Creating shelters");
+        for(int i = 0; i < shelters; i++){
+            addRandomShelter();
+            System.out.println(i+1 + "/" + shelters);
+        }
         System.out.println("Creating animals");
         for(int i = 0; i < animals; i++) {
             addRandomAnimal();
@@ -54,11 +59,6 @@ public class World {
         for(int i = 0; i < food; i++){
             addRandomFood();
             System.out.println(i+1 + "/" + food);
-        }
-        System.out.println("Creating shelters");
-        for(int i = 0; i < shelters; i++){
-            addRandomShelter();
-            System.out.println(i+1 + "/" + shelters);
         }
         System.out.println("Creating obstacles");
         for(int i = 0; i < obstacles; i++){
