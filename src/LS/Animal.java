@@ -12,11 +12,8 @@ import javafx.scene.shape.Rectangle;
 
 public abstract class Animal {
     private Circle image, smellCircle, targetCircle;
+    private StatsBar statsBar;
     private Rectangle targetLocation;
-    private Rectangle hungerBar;
-    private Rectangle energyBar;
-    private Rectangle thirstBar;
-    private Rectangle backBar;
     private Rectangle homeLocation;
     private Group foodGroupRef;
     private Group waterGroupRef;
@@ -32,7 +29,6 @@ public abstract class Animal {
     private int lastAngle = new Random().nextInt(360);
     private int targetFoodID;
     private int targetWaterID;
-    private int statBarHeight = 4, statBarWidth = 50, statBarSpacing = 2;
     private double speed, dx, dy;
     private boolean localTargetBool;
     private boolean mainTargetBool;
@@ -55,32 +51,11 @@ public abstract class Animal {
         setSpecies(speciesIn); setSymbol(symbolIn); setID(IDIn); setEnergy(energyIn);
         setX(xIn); setY(yIn); setFoodGroupRef(food); setAnimalGroupRef(animal); setWaterGroupRef(water);
 
-        // Create bar background
-        setBackBar(new Rectangle(x, y, statBarWidth + 4, (statBarHeight * 3) + statBarSpacing + 6));
-        getBackBar().setFill(Color.rgb(50, 50, 50));
-        getBackBar().setX(getBackBar().getX() - (statBarWidth/2) - 2);
-        getBackBar().setY(getBackBar().getY() + 8);
-
-        // Create hunger bar
-        setHungerBar(new Rectangle(x, y, statBarWidth, statBarHeight));
-        // Centre and colour hunger bar
-        getHungerBar().setFill(Color.rgb(255, 0, 0));
-        getHungerBar().setX(getHungerBar().getX() - (statBarWidth/2));
-        getHungerBar().setY(getHungerBar().getY() + 10);
-
-        // Create thirstBar
-        setThirstBar(new Rectangle(x, y, statBarWidth, statBarHeight));
-        // center and colour thirst bar
-        getThirstBar().setFill(Color.rgb(0, 255, 255));
-        getThirstBar().setX(getThirstBar().getX() - (statBarWidth/2));
-        getThirstBar().setY(getThirstBar().getY() + 10 + statBarHeight + statBarSpacing);
-
-        // Create energy bar
-        setEnergyBar(new Rectangle(x, y, statBarWidth, statBarHeight));
-        // Centre and colour energy bar
-        getEnergyBar().setFill(Color.rgb(0, 255, 0));
-        getEnergyBar().setX(getEnergyBar().getX() - (statBarWidth / 2));
-        getEnergyBar().setY(getHungerBar().getY() + (statBarHeight * 2) + (statBarSpacing * 2));
+        // Create stats bars
+        setStatsBar(new StatsBar(x, y, 3));
+        getStatsBar().getBar(0).setFill(Color.rgb(255, 50, 50));
+        getStatsBar().getBar(1).setFill(Color.rgb(50, 50, 200));
+        getStatsBar().getBar(2).setFill(Color.rgb(50, 255, 50));
 
         // Set a random gender
         giveGender();
@@ -148,17 +123,17 @@ public abstract class Animal {
             getSmellCircle().setTranslateX(getSmellCircle().getTranslateX() + getDx());
             getSmellCircle().setTranslateY(getSmellCircle().getTranslateY() + getDy());
             // hunger bar
-            getHungerBar().setTranslateX(getHungerBar().getTranslateX() + getDx());
-            getHungerBar().setTranslateY(getHungerBar().getTranslateY() + getDy());
+            getStatsBar().getBar(0).setTranslateX(getStatsBar().getBar(0).getTranslateX() + getDx());
+            getStatsBar().getBar(0).setTranslateY(getStatsBar().getBar(0).getTranslateY() + getDy());
             // thirst bar
-            getThirstBar().setTranslateX(getThirstBar().getTranslateX() + getDx());
-            getThirstBar().setTranslateY(getThirstBar().getTranslateY() + getDy());
+            getStatsBar().getBar(1).setTranslateX(getStatsBar().getBar(1).getTranslateX() + getDx());
+            getStatsBar().getBar(1).setTranslateY(getStatsBar().getBar(1).getTranslateY() + getDy());
             // energy bar
-            getEnergyBar().setTranslateX(getEnergyBar().getTranslateX() + getDx());
-            getEnergyBar().setTranslateY(getEnergyBar().getTranslateY() + getDy());
+            getStatsBar().getBar(2).setTranslateX(getStatsBar().getBar(2).getTranslateX() + getDx());
+            getStatsBar().getBar(2).setTranslateY(getStatsBar().getBar(2).getTranslateY() + getDy());
             // back bar
-            getBackBar().setTranslateX(getBackBar().getTranslateX() + getDx());
-            getBackBar().setTranslateY(getBackBar().getTranslateY() + getDy());
+            getStatsBar().getBackBar().setTranslateX(getStatsBar().getBackBar().getTranslateX() + getDx());
+            getStatsBar().getBackBar().setTranslateY(getStatsBar().getBackBar().getTranslateY() + getDy());
 
             // move target indicator
             getTargetLocation().setTranslateX(getLocalTarget().getCircle().getCenterX() + getLocalTarget().getCircle().getTranslateX());
@@ -202,10 +177,9 @@ public abstract class Animal {
             setThirst(0);
         }
 
-        getHungerBar().setWidth(getHunger() * (statBarWidth/10));
-        getThirstBar().setWidth(getThirst() * (statBarWidth/10));
-        getEnergyBar().setWidth(getEnergy() * (statBarWidth/1000.0));
-
+        getStatsBar().getBar(0).setWidth(getHunger() * (getStatsBar().getStatBarWidth()/10));
+        getStatsBar().getBar(1).setWidth(getThirst() * (getStatsBar().getStatBarWidth()/10));
+        getStatsBar().getBar(2).setWidth(getEnergy() * (getStatsBar().getStatBarWidth()/1000.0));
     }
 
     public void exitShelter(){
@@ -711,27 +685,6 @@ public abstract class Animal {
         this.update = update;
     }
 
-    public Rectangle getHungerBar(){
-        return hungerBar;
-    }
-    public void setHungerBar(Rectangle hungerBar){
-        this.hungerBar = hungerBar;
-    }
-
-    public Rectangle getEnergyBar(){
-        return energyBar;
-    }
-    public void setEnergyBar(Rectangle energyBar){
-        this.energyBar = energyBar;
-    }
-
-    public Rectangle getBackBar(){
-        return backBar;
-    }
-    public void setBackBar(Rectangle backBar){
-        this.backBar = backBar;
-    }
-
     public Rectangle getHomeLocation(){
         return homeLocation;
     }
@@ -949,14 +902,6 @@ public abstract class Animal {
         this.thirst = thirst;
     }
 
-    public Rectangle getThirstBar() {
-        return thirstBar;
-    }
-
-    public void setThirstBar(Rectangle thirstBar) {
-        this.thirstBar = thirstBar;
-    }
-
     public boolean isTargetingWater() {
         return targetingWater;
     }
@@ -971,6 +916,14 @@ public abstract class Animal {
 
     public void setTargetWaterID(int targetWaterID) {
         this.targetWaterID = targetWaterID;
+    }
+
+    public StatsBar getStatsBar() {
+        return statsBar;
+    }
+
+    public void setStatsBar(StatsBar statsBar) {
+        this.statsBar = statsBar;
     }
 }
 

@@ -18,10 +18,7 @@ public class World {
     private Group animalGroup = new Group();
     private Group animalSmellGroup = new Group();
     private Group animalTargetGroup = new Group();
-    private Group animalHungerBarGroup = new Group();
-    private Group animalThirstBarGroup = new Group();
-    private Group animalEnergyBarGroup = new Group();
-    private Group animalBackBarGroup = new Group();
+    private Group animalStatsGroup = new Group();
     private Group animalHomeLocationGroup = new Group();
     private Group shelterGroup = new Group();
     private Group foodGroup = new Group();
@@ -37,10 +34,7 @@ public class World {
         root.getChildren().add(foodGroup);
         root.getChildren().add(animalSmellGroup);
         root.getChildren().add(animalGroup);
-        root.getChildren().add(animalBackBarGroup);
-        root.getChildren().add(animalHungerBarGroup);
-        root.getChildren().add(animalThirstBarGroup);
-        root.getChildren().add(animalEnergyBarGroup);
+        root.getChildren().add(animalStatsGroup);
         root.getChildren().add(animalTargetGroup);
         root.getChildren().add(animalHomeLocationGroup);
 
@@ -88,10 +82,7 @@ public class World {
         animalGroup.getChildren().add(a.getImage());
         animalSmellGroup.getChildren().add(a.getSmellCircle());
         animalTargetGroup.getChildren().add(a.getTargetLocation());
-        animalHungerBarGroup.getChildren().add(a.getHungerBar());
-        animalThirstBarGroup.getChildren().add(a.getThirstBar());
-        animalEnergyBarGroup.getChildren().add(a.getEnergyBar());
-        animalBackBarGroup.getChildren().add(a.getBackBar());
+        animalStatsGroup.getChildren().add(a.getStatsBar().getGroup());
         animalHomeLocationGroup.getChildren().add(a.getHomeLocation());
         trackID++;
     }
@@ -116,7 +107,7 @@ public class World {
     }
 
     public void addRandomPool(){
-        int waterCount = rand.nextInt(3) + 2;
+        int waterCount = rand.nextInt(5) + 2;
         // add one water to base other water positions on
         waterList.add(new Water(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y)));
         int PSize = waterList.size();
@@ -148,7 +139,7 @@ public class World {
                             waterList.get(i + PSize).getY(),
                             waterList.get(i + PSize).getSize() - 10);
 
-            angleDeg += rand.nextInt(100) - 50;
+            angleDeg += rand.nextInt(120) - 60;
 
             if(angleDeg > 360){
                 angleDeg -= 360;
@@ -228,10 +219,7 @@ public class World {
         animalGroup.getChildren().remove(i);
         animalSmellGroup.getChildren().remove(i);
         animalTargetGroup.getChildren().remove(i);
-        animalBackBarGroup.getChildren().remove(i);
-        animalHungerBarGroup.getChildren().remove(i);
-        animalThirstBarGroup.getChildren().remove(i);
-        animalEnergyBarGroup.getChildren().remove(i);
+        animalStatsGroup.getChildren().remove(i);
         animalList.remove(i);
     }
 
@@ -286,10 +274,7 @@ public class World {
     }
 
     public void toggleStatBars(){
-        animalEnergyBarGroup.setVisible(!animalEnergyBarGroup.isVisible());
-        animalHungerBarGroup.setVisible(!animalHungerBarGroup.isVisible());
-        animalThirstBarGroup.setVisible(!animalThirstBarGroup.isVisible());
-        animalBackBarGroup.setVisible(!animalBackBarGroup.isVisible());
+        animalStatsGroup.setVisible(!animalStatsGroup.isVisible());
     }
 
     public void toggleHomeSquares(){
