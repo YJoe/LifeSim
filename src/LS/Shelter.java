@@ -7,12 +7,14 @@ import java.util.ArrayList;
 public abstract class Shelter {
     private int x, y, capacity;
     private Circle image;
+    private Inventory inventory;
     protected ArrayList<Animal> shelteredAnimals = new ArrayList<>();
 
-    public Shelter(int x, int y, int capacity){
+    public Shelter(int x, int y, int capacity, int inventorySizeC, int inventorySizeS){
         setX(x);
         setY(y);
         setCapacity(capacity);
+        setInventory(new Inventory(inventorySizeC, inventorySizeS));
 
         // Create rectangle for shelter
         setImage(new Circle(getX(), getY(), 30));
@@ -79,5 +81,13 @@ public abstract class Shelter {
     }
     public void setImage(Circle image){
         this.image = image;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 }
