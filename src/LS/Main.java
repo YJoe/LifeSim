@@ -28,13 +28,13 @@ public class Main extends Application {
         scene.setFill(Color.rgb(150, 200, 150));
 
         // Create world
-        int animalCount = 50;
-        int foodCount = 100;
+        int animalCount = 1;
+        int foodCount = 10;
         int shelterCount = 3;
-        int obstacleCount = 100;
+        int obstacleCount = 0;
         int poolCount = 1;
         World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount, poolCount);
-        //world.getAnimalList().get(0).setSpeed(1.2);
+        world.getAnimalList().get(0).setSpeed(1.2);
 
         //world.toggleSmellCircles();
         //world.toggleTargetSquares();
@@ -71,7 +71,12 @@ public class Main extends Application {
                                             System.out.print(world.getAnimalList().get(0).waterInventory.getElement(i) + " ");
                                         }
                                         System.out.println();
-
+                                        System.out.println("FOOD INVENTORY " + world.getAnimalList().get(0).foodInventory.getSize()
+                                                + "/" + world.getAnimalList().get(0).foodInventory.getCapacity());
+                                        for(int i = 0; i < world.getAnimalList().get(0).foodInventory.getSize(); i++){
+                                            System.out.print(world.getAnimalList().get(0).foodInventory.getElement(i) + " ");
+                                        }
+                                        System.out.println();
                                     }
                                 }
                             }

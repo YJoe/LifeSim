@@ -47,7 +47,7 @@ public abstract class Animal {
     private ArrayList<Water> waterList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
     private ArrayList<Obstacle> obstacleList = new ArrayList<>();
-    private Inventory foodInventory;
+    public Inventory foodInventory;
     public Inventory waterInventory;
 
     // Constructor
@@ -208,23 +208,6 @@ public abstract class Animal {
 
     }
 
-    public void checkShelters(){
-        for(int i = 0; i < shelterList.size(); i++){
-            if(Collision.overlapsAccurate(getSmellCircle(), shelterList.get(i).getImage())){
-                setHome(new Target(shelterList.get(i).getX(), shelterList.get(i).getY()));
-                break;
-            }
-        }
-    }
-
-    public void enterShelter(int i){
-        if (shelterList.get(i).checkRoom()){
-            shelterList.get(i).addAnimal(this);
-            //animalGroupRef.getChildren().get(i).setVisible(false);
-            setShouldUpdate(false);
-        }
-    }
-
     public void exitShelter(){
         setShouldUpdate(true);
         setTargetingHome(false);
@@ -248,11 +231,26 @@ public abstract class Animal {
                 if (!isTargetingWater() && waterInventory.getSize() < waterInventory.getCapacity()){
                     checkWater();
                 }
+                if (homeTarget == null){
+                    checkShelters();
+                }
+                if (homeTarget != null && (waterInventory.getSize() > 1 || foodInventory.getSize() > 1)){
+                    targetHome();
+                }
                 checkCollideLocalTarget();
             } else {
                 getRandomLocalTarget();
                 if (getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
                     checkFood();
+                }
+                if (!isTargetingWater() && waterInventory.getSize() < waterInventory.getCapacity()){
+                    checkWater();
+                }
+                if (homeTarget == null){
+                    checkShelters();
+                }
+                if (homeTarget != null && (waterInventory.getSize() > 1 || foodInventory.getSize() > 1)){
+                    targetHome();
                 }
             }
         }
@@ -338,6 +336,11 @@ public abstract class Animal {
 
     public void checkCollideMainTarget(){
         if (Collision.overlapsAccurate(getImage(), getMainTarget().getCircle())){
+            if (isTargetingHome()){
+                setTargetingHome(false);
+                foodInventory.empty();
+                waterInventory.empty();
+            }
             removeMainTarget();
             removeLocalTarget();
         }
@@ -416,7 +419,27 @@ public abstract class Animal {
         setHasMainTarget(false);
     }
 
+    public void checkShelters(){
+        for(int i = 0; i < shelterList.size(); i++){
+            if(Collision.overlapsEfficient(getSmellCircle(), shelterList.get(i).getImage())) {
+                if (Collision.overlapsAccurate(getSmellCircle(), shelterList.get(i).getImage())) {
+                    setHome(new Target(shelterList.get(i).getX(), shelterList.get(i).getY()));
+                    break;
+                }
+            }
+        }
+    }
+
+    public void enterShelter(int i){
+        if (shelterList.get(i).checkRoom()){
+            shelterList.get(i).addAnimal(this);
+            //animalGroupRef.getChildren().get(i).setVisible(false);
+            setShouldUpdate(false);
+        }
+    }
+
     public void targetHome(){
+        setTargetingHome(true);
         setMainTarget(getHomeTarget());
     }
 

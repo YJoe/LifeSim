@@ -20,6 +20,13 @@ public class Inventory extends FLArray{
         return false;
     }
 
+    public void empty(){
+        for(int i = 0; i < size; i++){
+            remove(i);
+        }
+        size = 0;
+    }
+
     public int getSlotMax(){
         return slotMax;
     }
