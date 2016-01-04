@@ -32,7 +32,7 @@ public class Main extends Application {
         int foodCount = 10;
         int shelterCount = 3;
         int obstacleCount = 0;
-        int poolCount = 1;
+        int poolCount = 3;
         World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount, poolCount);
         world.getAnimalList().get(0).setSpeed(1.2);
 

@@ -116,12 +116,15 @@ public class World {
     }
 
     public void addRandomPool(){
-        // TODO: make this work with more than one pool
         int waterCount = rand.nextInt(3) + 2;
         // add one water to base other water positions on
         waterList.add(new Water(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y)));
-        waterGroup.getChildren().add(waterList.get(0).getCircle());
-        addWaterHazard(waterList.get(0).getX(), waterList.get(0).getY(), waterList.get(0).getSize() - 10);
+        int PSize = waterList.size();
+        waterGroup.getChildren().add(waterList.get(PSize - 1).getCircle());
+        addWaterHazard( waterList.get(PSize - 1).getX(),
+                        waterList.get(PSize - 1).getY(),
+                        waterList.get(PSize - 1).getSize() - 10);
+
         int angleDeg = rand.nextInt(360);
 
         for(int i = 0; i < waterCount; i++){
@@ -132,16 +135,18 @@ public class World {
                 } else attempt ++;
 
                 double angleRad = Math.toRadians(angleDeg);
-                newX = (int) (  waterList.get(i).getCircle().getCenterX() +
-                                waterList.get(i).getCircle().getRadius() *
+                newX = (int) (  waterList.get(i + PSize - 1).getCircle().getCenterX() +
+                                waterList.get(i + PSize - 1).getCircle().getRadius() *
                                 Math.cos(angleRad));
-                newY = (int) (  waterList.get(i).getCircle().getCenterY() +
-                                waterList.get(i).getCircle().getRadius() *
+                newY = (int) (  waterList.get(i + PSize - 1).getCircle().getCenterY() +
+                                waterList.get(i + PSize - 1).getCircle().getRadius() *
                                 Math.sin(angleRad));
 
             } while(newX > Main.SIZE_X || newX < 0 || newY > Main.SIZE_Y || newY < 0);
             waterList.add(new Water(newX, newY));
-            addWaterHazard(waterList.get(i+1).getX(), waterList.get(i+1).getY(), waterList.get(i+1).getSize() - 10);
+            addWaterHazard( waterList.get(i + PSize).getX(),
+                            waterList.get(i + PSize).getY(),
+                            waterList.get(i + PSize).getSize() - 10);
 
             angleDeg += rand.nextInt(100) - 50;
 
@@ -152,7 +157,7 @@ public class World {
                     angleDeg += 360;
                 }
             }
-            waterGroup.getChildren().add(waterList.get(i + 1).getCircle());
+            waterGroup.getChildren().add(waterList.get(i + PSize).getCircle());
         }
     }
 
