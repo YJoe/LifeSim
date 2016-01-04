@@ -9,8 +9,8 @@ public class Rock extends Obstacle{
     private Random rand = new Random();
     public Rock(int x, int y){
         super(x, y);
-        setSize(rand.nextInt(5) + 5);
+        setSize(rand.nextInt(8) + 3);
         setImage(new Circle(getX(), getY(), getSize()));
-        getImage().setFill(Color.rgb(150, 150, 170));
+        getImage().setFill(Color.rgb(50, 50, 70));
     }
 }

@@ -44,20 +44,30 @@ public class World {
         root.getChildren().add(animalTargetGroup);
         root.getChildren().add(animalHomeLocationGroup);
 
+        System.out.println("Creating pools");
         for(int i = 0; i < pools; i++){
             addRandomPool();
+            System.out.println(i+1 + "/" + pools);
         }
+        System.out.println("Creating animals");
         for(int i = 0; i < animals; i++) {
             addRandomAnimal();
+            System.out.println(i+1 + "/" + animals);
         }
+        System.out.println("Creating food");
         for(int i = 0; i < food; i++){
             addRandomFood();
+            System.out.println(i+1 + "/" + food);
         }
+        System.out.println("Creating shelters");
         for(int i = 0; i < shelters; i++){
             addRandomShelter();
+            System.out.println(i+1 + "/" + shelters);
         }
+        System.out.println("Creating obstacles");
         for(int i = 0; i < obstacles; i++){
             addRandomObstacle();
+            System.out.println(i+1 + "/" + obstacles);
         }
         System.out.println("World created and populated");
     }
@@ -111,7 +121,7 @@ public class World {
         // add one water to base other water positions on
         waterList.add(new Water(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y)));
         waterGroup.getChildren().add(waterList.get(0).getCircle());
-        addWaterHazard(waterList.get(0).getX(), waterList.get(0).getY(), waterList.get(0).getSize() - 7);
+        addWaterHazard(waterList.get(0).getX(), waterList.get(0).getY(), waterList.get(0).getSize() - 10);
         int angleDeg = rand.nextInt(360);
 
         for(int i = 0; i < waterCount; i++){
@@ -131,7 +141,7 @@ public class World {
 
             } while(newX > Main.SIZE_X || newX < 0 || newY > Main.SIZE_Y || newY < 0);
             waterList.add(new Water(newX, newY));
-            addWaterHazard(waterList.get(i+1).getX(), waterList.get(i+1).getY(), waterList.get(i+1).getSize() - 7);
+            addWaterHazard(waterList.get(i+1).getX(), waterList.get(i+1).getY(), waterList.get(i+1).getSize() - 10);
 
             angleDeg += rand.nextInt(100) - 50;
 
@@ -175,22 +185,30 @@ public class World {
     public boolean overlapsAnything(Circle c1){
         for(Animal animal : animalList){
             if (Collision.overlapsEfficient(c1, animal.getImage())){
-                return true;
+                if (Collision.overlapsAccurate(c1, animal.getImage())) {
+                    return true;
+                }
             }
         }
         for(Obstacle obstacle : obstacleList){
             if (Collision.overlapsEfficient(c1, obstacle.getImage())){
-                return true;
+                if (Collision.overlapsAccurate(c1, obstacle.getImage())) {
+                    return true;
+                }
             }
         }
         for(Food food : foodList){
             if (Collision.overlapsEfficient(c1, food.getImage())){
-                return true;
+                if (Collision.overlapsAccurate(c1, food.getImage())) {
+                    return true;
+                }
             }
         }
         for(Water water : waterList){
             if (Collision.overlapsEfficient(c1, water.getCircle())){
-                return true;
+                if (Collision.overlapsAccurate(c1, water.getCircle())) {
+                    return true;
+                }
             }
         }
         return false;

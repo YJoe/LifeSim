@@ -25,15 +25,16 @@ public class Main extends Application {
         // Create root group
         Group root = new Group();
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
+        scene.setFill(Color.rgb(150, 200, 150));
 
         // Create world
-        int animalCount = 30;
+        int animalCount = 50;
         int foodCount = 100;
-        int shelterCount = 0;
-        int obstacleCount = 0;
+        int shelterCount = 3;
+        int obstacleCount = 100;
         int poolCount = 1;
         World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount, poolCount);
-        world.getAnimalList().get(0).setSpeed(1.2);
+        //world.getAnimalList().get(0).setSpeed(1.2);
 
         //world.toggleSmellCircles();
         //world.toggleTargetSquares();
@@ -42,6 +43,7 @@ public class Main extends Application {
 
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage);
+        menu.togglePaused();
         root.getChildren().add(menu.getMenuBar());
 
         // Create key press handler for scene
