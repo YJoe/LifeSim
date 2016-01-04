@@ -28,18 +28,19 @@ public class Main extends Application {
         scene.setFill(Color.rgb(150, 200, 150));
 
         // Create world
-        int animalCount = 1;
-        int foodCount = 10;
-        int shelterCount = 3;
+        int animalCount = 0;
+        int foodCount = 0;
+        int shelterCount = 1;
         int obstacleCount = 0;
-        int poolCount = 3;
+        int poolCount = 0;
         World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount, poolCount);
-        world.getAnimalList().get(0).setSpeed(1.2);
+        //world.getAnimalList().get(0).setSpeed(1.2);
 
         //world.toggleSmellCircles();
         //world.toggleTargetSquares();
         //world.toggleHomeSquares();
         //world.toggleStatBars();
+        //world.toggleShelterStatBars();
 
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage);

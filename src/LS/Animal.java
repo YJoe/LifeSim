@@ -53,9 +53,9 @@ public abstract class Animal {
 
         // Create stats bars
         setStatsBar(new StatsBar(x, y, 3));
-        getStatsBar().getBar(0).setFill(Color.rgb(255, 50, 50));
-        getStatsBar().getBar(1).setFill(Color.rgb(50, 50, 200));
-        getStatsBar().getBar(2).setFill(Color.rgb(50, 255, 50));
+        getStatsBar().getBar(0).setFill(Color.rgb(255, 100, 100));
+        getStatsBar().getBar(1).setFill(Color.rgb(100, 100, 255));
+        getStatsBar().getBar(2).setFill(Color.rgb(100, 255, 100));
 
         // Set a random gender
         giveGender();

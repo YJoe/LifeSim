@@ -1,27 +1,39 @@
 package LS;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 
 public abstract class Shelter {
     private int x, y, capacity;
+    private StatsBar statsBar;
     private Circle image;
-    private Inventory inventory;
+    private Inventory foodInventory, waterInventory;
     protected ArrayList<Animal> shelteredAnimals = new ArrayList<>();
 
     public Shelter(int x, int y, int capacity, int inventorySizeC, int inventorySizeS){
         setX(x);
         setY(y);
         setCapacity(capacity);
-        setInventory(new Inventory(inventorySizeC, inventorySizeS));
+        setFoodInventory(new Inventory(inventorySizeC, inventorySizeS));
+        setWaterInventory(new Inventory(inventorySizeC, inventorySizeS));
 
-        // Create rectangle for shelter
+        // Create stats bar to display shelter information
+        setStatsBar(new StatsBar(x, y, 3));
+        getStatsBar().getBar(0).setFill(Color.rgb(255, 100, 100));
+        getStatsBar().getBar(1).setFill(Color.rgb(100, 100, 255));
+        getStatsBar().getBar(2).setFill(Color.rgb(100, 255, 100));
+
+        // Create Circle for shelter
         setImage(new Circle(getX(), getY(), 30));
     }
 
     // Main functions
     public void update(){
+        getStatsBar().getBar(0).setWidth(getFoodInventory().getSize() * ((float)getStatsBar().getStatBarWidth() / (float)getFoodInventory().getCapacity()));
+        getStatsBar().getBar(1).setWidth(getWaterInventory().getSize() * ((float)getStatsBar().getStatBarWidth() / (float)getWaterInventory().getCapacity()));
+
         for (int i = 0; i < shelteredAnimals.size(); i++){
             shelteredAnimals.get(i).setWaitAtHome(shelteredAnimals.get(i).getWaitAtHome() - 1);
             if (shelteredAnimals.get(i).getWaitAtHome() <= 0){
@@ -83,11 +95,27 @@ public abstract class Shelter {
         this.image = image;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public Inventory getFoodInventory() {
+        return foodInventory;
     }
 
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
+    public void setFoodInventory(Inventory foodInventory) {
+        this.foodInventory = foodInventory;
+    }
+
+    public Inventory getWaterInventory() {
+        return waterInventory;
+    }
+
+    public void setWaterInventory(Inventory waterInventory) {
+        this.waterInventory = waterInventory;
+    }
+
+    public StatsBar getStatsBar() {
+        return statsBar;
+    }
+
+    public void setStatsBar(StatsBar statsBar) {
+        this.statsBar = statsBar;
     }
 }

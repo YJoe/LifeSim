@@ -21,6 +21,7 @@ public class World {
     private Group animalStatsGroup = new Group();
     private Group animalHomeLocationGroup = new Group();
     private Group shelterGroup = new Group();
+    private Group shelterStatsGroup = new Group();
     private Group foodGroup = new Group();
     private Group waterGroup = new Group();
     private Group obstacleGroup = new Group();
@@ -29,6 +30,7 @@ public class World {
     public World(Group root, int animals, int food, int shelters, int obstacles, int pools){
         System.out.println("Creating world");
         root.getChildren().add(shelterGroup);
+        root.getChildren().add(shelterStatsGroup);
         root.getChildren().add(waterGroup);
         root.getChildren().add(obstacleGroup);
         root.getChildren().add(foodGroup);
@@ -161,6 +163,7 @@ public class World {
         } while(overlapsAnything(s.getImage()));
         shelterList.add(s);
         shelterGroup.getChildren().add(s.getImage());
+        shelterStatsGroup.getChildren().add(s.getStatsBar().getGroup());
     }
 
     public void addRandomObstacle(){
@@ -281,4 +284,7 @@ public class World {
         animalHomeLocationGroup.setVisible(!animalHomeLocationGroup.isVisible());
     }
 
+    public void toggleShelterStatBars(){
+        shelterStatsGroup.setVisible(!shelterStatsGroup.isVisible());
+    }
 }
