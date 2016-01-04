@@ -9,6 +9,12 @@ public abstract class Obstacle {
     public Obstacle(int x, int y){
         setX(x); setY(y);
     }
+    public Obstacle(int x, int y, int size){
+        setX(x);
+        setY(y);
+        setSize(size);
+        setImage(new Circle(getX(), getY(), getSize()));
+    }
 
     public int getX(){
         return x;

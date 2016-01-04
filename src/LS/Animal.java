@@ -488,8 +488,9 @@ public abstract class Animal {
                     posX < obstacleList.get(i).getX() + (getImage().getRadius() + obstacleList.get(i).getImage().getRadius()) &&
                     obstacleList.get(i).getY() - (getImage().getRadius() + obstacleList.get(i).getImage().getRadius()) < posY &&
                     posY < obstacleList.get(i).getY() + (getImage().getRadius() + obstacleList.get(i).getImage().getRadius())){
-                return false;
-
+                if (Collision.overlapsAccurate(obstacleList.get(i).getImage(), new Circle(posX, posY, getSize()))) {
+                    return false;
+                }
             }
         }
         return true;

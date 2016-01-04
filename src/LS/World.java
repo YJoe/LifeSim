@@ -111,6 +111,7 @@ public class World {
         // add one water to base other water positions on
         waterList.add(new Water(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y)));
         waterGroup.getChildren().add(waterList.get(0).getCircle());
+        addWaterHazard(waterList.get(0).getX(), waterList.get(0).getY(), waterList.get(0).getSize() - 7);
         int angleDeg = rand.nextInt(360);
 
         for(int i = 0; i < waterCount; i++){
@@ -130,6 +131,7 @@ public class World {
 
             } while(newX > Main.SIZE_X || newX < 0 || newY > Main.SIZE_Y || newY < 0);
             waterList.add(new Water(newX, newY));
+            addWaterHazard(waterList.get(i+1).getX(), waterList.get(i+1).getY(), waterList.get(i+1).getSize() - 7);
 
             angleDeg += rand.nextInt(100) - 50;
 
@@ -160,6 +162,12 @@ public class World {
         do {
             o = new Rock(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y));
         } while(overlapsAnything(o.getImage()));
+        obstacleList.add(o);
+        obstacleGroup.getChildren().add(o.getImage());
+    }
+
+    public void addWaterHazard(int x, int y, int size){
+        WaterHazard o = new WaterHazard(x, y, size);
         obstacleList.add(o);
         obstacleGroup.getChildren().add(o.getImage());
     }
