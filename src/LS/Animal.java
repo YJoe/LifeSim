@@ -350,6 +350,7 @@ public abstract class Animal {
                 }
                 removeMainTarget();
                 removeLocalTarget();
+                getRandomLocalTarget360();
             }
         }
     }

@@ -11,6 +11,7 @@ public class World {
     private int trackID = 0;
     private ArrayList<Animal> animalList = new ArrayList<>();
     private ArrayList<Animal> animalRank = new ArrayList<>();
+    private ArrayList<FoodTree> foodTreeList = new ArrayList<>();
     private ArrayList<Food> foodList = new ArrayList<>();
     private ArrayList<Water> waterList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
@@ -26,6 +27,9 @@ public class World {
     private Group foodGroup = new Group();
     private Group waterGroup = new Group();
     private Group obstacleGroup = new Group();
+    private Group foodTreeLeafGroup = new Group();
+    private Group foodTreeTrunkGroup = new Group();
+
 
     // set up the world
     public World(Group root, int animals, int food, int shelters, int obstacles, int pools){
@@ -41,6 +45,8 @@ public class World {
         root.getChildren().add(animalTargetGroup);
         root.getChildren().add(animalHomeLocationGroup);
         root.getChildren().add(animalLabelGroup);
+        root.getChildren().add(foodTreeTrunkGroup);
+        root.getChildren().add(foodTreeLeafGroup);
 
         System.out.println("Creating pools");
         for(int i = 0; i < pools; i++){
@@ -125,6 +131,13 @@ public class World {
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());
         trackID++;
+    }
+
+    public void addFoodTree(int x, int y){
+        FoodTree f = new FoodTree(x, y, foodList, trackID, foodGroup);
+        foodTreeList.add(f);
+        foodTreeLeafGroup.getChildren().add(f.getLeafCircle());
+        foodTreeTrunkGroup.getChildren().add(f.getTrunkCircle());
     }
 
     public void addRandomPool(){
@@ -270,12 +283,18 @@ public class World {
             animalList.get(i).update();
             if (animalList.get(i).getEnergy() < 0) {
                 killAnimal(i);
+                System.out.println("Only " + animalList.size() + " remain :( !");
             }
         }
 
         // call update for all shelters
         for (int i = 0; i < shelterList.size(); i++){
             shelterList.get(i).update();
+        }
+
+        // call update for all food trees
+        for (FoodTree foodTree : foodTreeList){
+            foodTree.update();
         }
     }
 
