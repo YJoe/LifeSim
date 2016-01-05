@@ -334,30 +334,34 @@ public abstract class Animal {
     }
 
     public void checkCollideMainTarget(){
-        if (Collision.overlapsAccurate(getImage(), getMainTarget().getCircle())){
-            if (isTargetingHome()){
-                setTargetingHome(false);
-                // TODO: store into correct shelter
-                for(int i = 0; i < foodInventory.getSize(); i++) {
-                    shelterList.get(0).getFoodInventory().add(foodInventory.getElement(i));
+        if (Collision.overlapsEfficient(getImage(), getMainTarget().getCircle())) {
+            if (Collision.overlapsAccurate(getImage(), getMainTarget().getCircle())) {
+                if (isTargetingHome()) {
+                    setTargetingHome(false);
+                    // TODO: store into correct shelter
+                    for (int i = 0; i < foodInventory.getSize(); i++) {
+                        shelterList.get(0).getFoodInventory().add(foodInventory.getElement(i));
+                    }
+                    for (int i = 0; i < waterInventory.getSize(); i++) {
+                        shelterList.get(0).getWaterInventory().add(waterInventory.getElement(i));
+                    }
+                    foodInventory.empty();
+                    waterInventory.empty();
                 }
-                for(int i = 0; i < waterInventory.getSize(); i++){
-                    shelterList.get(0).getWaterInventory().add(waterInventory.getElement(i));
-                }
-                foodInventory.empty();
-                waterInventory.empty();
+                removeMainTarget();
+                removeLocalTarget();
             }
-            removeMainTarget();
-            removeLocalTarget();
         }
     }
 
     public void checkFood(){
         for(Food food : foodList){
-            if (Collision.overlapsAccurate(this.getSmellCircle(), food.getImage())){
-                setTargetingFood(true);
-                setTargetFoodID(food.getID());
-                setLocalTarget(food.getImage());
+            if (Collision.overlapsEfficient(this.getSmellCircle(), food.getImage())) {
+                if (Collision.overlapsAccurate(this.getSmellCircle(), food.getImage())) {
+                    setTargetingFood(true);
+                    setTargetFoodID(food.getID());
+                    setLocalTarget(food.getImage());
+                }
             }
         }
     }
@@ -408,9 +412,11 @@ public abstract class Animal {
 
     public void checkWater(){
         for (Water water : waterList){
-            if (Collision.overlapsAccurate(this.getSmellCircle(), water.getCircle())){
-                setTargetingWater(true);
-                setLocalTarget(water.getCircle());
+            if (Collision.overlapsEfficient(this.getSmellCircle(), water.getCircle())) {
+                if (Collision.overlapsAccurate(this.getSmellCircle(), water.getCircle())) {
+                    setTargetingWater(true);
+                    setLocalTarget(water.getCircle());
+                }
             }
         }
     }
