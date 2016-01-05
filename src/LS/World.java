@@ -20,6 +20,7 @@ public class World {
     private Group animalTargetGroup = new Group();
     private Group animalStatsGroup = new Group();
     private Group animalHomeLocationGroup = new Group();
+    private Group animalLabelGroup = new Group();
     private Group shelterGroup = new Group();
     private Group shelterStatsGroup = new Group();
     private Group foodGroup = new Group();
@@ -39,6 +40,7 @@ public class World {
         root.getChildren().add(animalStatsGroup);
         root.getChildren().add(animalTargetGroup);
         root.getChildren().add(animalHomeLocationGroup);
+        root.getChildren().add(animalLabelGroup);
 
         System.out.println("Creating pools");
         for(int i = 0; i < pools; i++){
@@ -86,6 +88,23 @@ public class World {
         animalTargetGroup.getChildren().add(a.getTargetLocation());
         animalStatsGroup.getChildren().add(a.getStatsBar().getGroup());
         animalHomeLocationGroup.getChildren().add(a.getHomeLocation());
+        animalLabelGroup.getChildren().add(a.getText());
+        trackID++;
+    }
+
+    public void addAnimal(int x, int y){
+        Animal a = new Ant(x, y, trackID, foodGroup, animalGroup, waterGroup);
+        a.setFoodList(foodList);
+        a.setShelterList(shelterList);
+        a.setWaterList(waterList);
+        a.setObstacleList(obstacleList);
+        animalList.add(a);
+        animalGroup.getChildren().add(a.getImage());
+        animalSmellGroup.getChildren().add(a.getSmellCircle());
+        animalTargetGroup.getChildren().add(a.getTargetLocation());
+        animalStatsGroup.getChildren().add(a.getStatsBar().getGroup());
+        animalHomeLocationGroup.getChildren().add(a.getHomeLocation());
+        animalLabelGroup.getChildren().add(a.getText());
         trackID++;
     }
 
@@ -223,6 +242,7 @@ public class World {
         animalSmellGroup.getChildren().remove(i);
         animalTargetGroup.getChildren().remove(i);
         animalStatsGroup.getChildren().remove(i);
+        animalLabelGroup.getChildren().remove(i);
         animalList.remove(i);
     }
 
@@ -286,5 +306,9 @@ public class World {
 
     public void toggleShelterStatBars(){
         shelterStatsGroup.setVisible(!shelterStatsGroup.isVisible());
+    }
+
+    public void toggleAnimalLabels(){
+        animalLabelGroup.setVisible(!animalLabelGroup.isVisible());
     }
 }

@@ -10,7 +10,7 @@ public class Target {
     public Target(int x, int y){
         setX(x);
         setY(y);
-        setCircle(new Circle(getX(), getY(), 2));
+        setCircle(new Circle(getX(), getY(), 5));
     }
     public Target(Circle circle){
         setCircle(circle);

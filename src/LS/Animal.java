@@ -6,12 +6,16 @@ import java.util.Arrays;
 import java.util.Random;
 
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public abstract class Animal {
     private Circle image, smellCircle, targetCircle;
+    private Text text;
     private StatsBar statsBar;
     private Rectangle targetLocation;
     private Rectangle homeLocation;
@@ -73,6 +77,13 @@ public abstract class Animal {
         setMemoryBiasX(rand.nextInt(2));
         setMemoryBiasY(rand.nextInt(2));
 
+        // Create label
+        setText(new Text());
+        getText().setTranslateX(getX());
+        getText().setTranslateY(getY());
+        getText().setFont(Font.font ("Arial", 12));
+        getText().setFill(Color.rgb(0, 200, 0));
+
         setShouldUpdate(true);
 
         // As all other attributes are determined by random variables based on the animal subclass, other
@@ -81,6 +92,7 @@ public abstract class Animal {
 
     // Main functions
     public void update(){
+        updateText();
         checkHungerThirst();
         target();
         directDxDy();
@@ -126,6 +138,9 @@ public abstract class Animal {
             // back bar
             getStatsBar().getBackBar().setTranslateX(getStatsBar().getBackBar().getTranslateX() + getDx());
             getStatsBar().getBackBar().setTranslateY(getStatsBar().getBackBar().getTranslateY() + getDy());
+            // label
+            getText().setTranslateX(getText().getTranslateX() + getDx());
+            getText().setTranslateY(getText().getTranslateY() + getDy());
 
             // move target indicator
             getTargetLocation().setTranslateX(getLocalTarget().getCircle().getCenterX() + getLocalTarget().getCircle().getTranslateX());
@@ -490,6 +505,16 @@ public abstract class Animal {
             }
         }
         return true;
+    }
+
+    public void updateText(){
+        getText().setText(  "Food: " + getFoodInventory().getSize() + "/" + getFoodInventory().getCapacity() + "\n"
+                            + "Water: " + getWaterInventory().getSize() + "/" + getWaterInventory().getCapacity() + "\n"
+                            + "Targeting Home: " + isTargetingHome() + "\n"
+                            + "Targeting Food: " + isTargetFood() + "\n"
+                            + "Targeting Water: " + isTargetingWater() + "\n"
+                            + "Local Target: " + hasLocalTarget() + "\n"
+                            + "Main Target: " + hasMainTarget());
     }
 
     // SELF GET/SET FUNCTIONS
@@ -923,6 +948,14 @@ public abstract class Animal {
 
     public void setStatsBar(StatsBar statsBar) {
         this.statsBar = statsBar;
+    }
+
+    public Text getText() {
+        return text;
+    }
+
+    public void setText(Text text) {
+        this.text = text;
     }
 }
 

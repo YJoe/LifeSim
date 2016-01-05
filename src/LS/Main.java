@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
@@ -25,7 +26,6 @@ public class Main extends Application {
         // Create root group
         Group root = new Group();
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
-        scene.setFill(Color.rgb(150, 200, 150));
 
         // Create world
         int animalCount = 10;
@@ -34,7 +34,6 @@ public class Main extends Application {
         int obstacleCount = 0;
         int poolCount = 1;
         World world = new World(root, animalCount, foodCount, shelterCount, obstacleCount, poolCount);
-        //world.getAnimalList().get(0).setSpeed(1.2);
 
         //world.toggleSmellCircles();
         //world.toggleTargetSquares();
@@ -64,6 +63,10 @@ public class Main extends Application {
                             } else {
                                 if (ke.getCode() == KeyCode.DIGIT4) {
                                     world.toggleStatBars();
+                                } else {
+                                    if (ke.getCode() == KeyCode.DIGIT5) {
+                                        world.toggleAnimalLabels();
+                                    }
                                 }
                             }
                         }
