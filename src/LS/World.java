@@ -311,4 +311,8 @@ public class World {
     public void toggleAnimalLabels(){
         animalLabelGroup.setVisible(!animalLabelGroup.isVisible());
     }
+
+    public void toggleAnimals(){
+        animalGroup.setVisible(!animalGroup.isVisible());
+    }
 }

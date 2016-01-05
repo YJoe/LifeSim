@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -28,7 +29,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
 
         // Create world
-        int animalCount = 10;
+        int animalCount = 100;
         int foodCount = 100;
         int shelterCount = 1;
         int obstacleCount = 0;
@@ -66,6 +67,16 @@ public class Main extends Application {
                                 } else {
                                     if (ke.getCode() == KeyCode.DIGIT5) {
                                         world.toggleAnimalLabels();
+                                    } else {
+                                        if (ke.getCode() == KeyCode.DIGIT6) {
+                                            world.toggleAnimals();
+                                        } else {
+                                            if (ke.getCode() == KeyCode.DIGIT7) {
+                                                for(int i = 0; i < world.getAnimalList().size(); i++){
+                                                    world.getAnimalList().get(i).removeLocalTarget();
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }

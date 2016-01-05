@@ -224,7 +224,7 @@ public abstract class Animal {
                 if (getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
                     checkFood();
                 }
-                if (!isTargetingWater() && waterInventory.getSize() < waterInventory.getCapacity()){
+                if (waterInventory.getSize() < waterInventory.getCapacity()){
                     checkWater();
                 }
                 if (homeTarget == null){
@@ -303,15 +303,33 @@ public abstract class Animal {
         setDy((Math.sin(angle) * getSpeed()));
     }
 
+    public boolean foodIsStillThere(){
+        for(Food food : foodList){
+            if (food.getID() == targetFoodID){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void checkCollideLocalTarget(){
-        if (Collision.overlapsAccurate(getImage(), getLocalTarget().getCircle())){
-            if (isTargetFood()){
-                storeFood();
+        // check the food is still there to collide with
+        if (isTargetFood()) {
+            if (!foodIsStillThere()) {
+                removeLocalTarget();
             }
-            if (isTargetingWater()){
-                storeWater();
+        }
+        if (Collision.overlapsEfficient(getImage(), getLocalTarget().getCircle())) {
+            if (Collision.overlapsAccurate(getImage(), getLocalTarget().getCircle())) {
+                if (isTargetFood()) {
+                    storeFood();
+                } else {
+                    if (isTargetingWater()) {
+                        storeWater();
+                    }
+                }
+                removeLocalTarget();
             }
-            removeLocalTarget();
         }
     }
 
@@ -399,6 +417,8 @@ public abstract class Animal {
 
     public void removeLocalTarget(){
         setLocalTargetBool(false);
+        setTargetingFood(false);
+        setTargetingWater(false);
         setDx(0);
         setDy(0);
     }
