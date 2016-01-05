@@ -41,7 +41,6 @@ public class FoodTree {
     }
 
     public void createFood(){
-        // TODO: stop food trees from spawning meat... its weird. Make an apple class or something
         int xMin = (int)(getLeafCircle().getCenterX() - getLeafCircle().getRadius());
         int yMin = (int)(getLeafCircle().getCenterY() - getLeafCircle().getRadius());
 
@@ -50,7 +49,7 @@ public class FoodTree {
 
         Food f;
         do {
-            f = new Meat(rand.nextInt(xRange) + xMin, rand.nextInt(yRange) + yMin, getTrackID(), 4);
+            f = new Fruit(rand.nextInt(xRange) + xMin, rand.nextInt(yRange) + yMin, getTrackID());
         } while (!Collision.overlapsAccurate(f.getImage(), getLeafCircle()) || Collision.overlapsAccurate(f.getImage(), getTrunkCircle()));
         setTrackID(getTrackID() + 1);
         getFoodGroup().getChildren().add(f.getImage());
