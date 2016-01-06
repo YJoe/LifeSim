@@ -162,13 +162,14 @@ public abstract class Animal {
 
         // if both fields are satisfied add to energy
         if (getThirst() < 10 && getHunger() < 10 && getEnergy() < 1000){
-            setEnergy(getEnergy() + 2);
+            setEnergy(getEnergy() + 4);
         }
 
         // if hunger reaches max keep it there
         if (getHunger() >= 10){
             setHunger(10);
             setSpeed(getOriginalSpeed()/1.5);
+            setEnergy(getEnergy() - 1);
         }
         // if hunger reaches 0 keep it that way
         else {
@@ -181,7 +182,7 @@ public abstract class Animal {
         // if thirst reaches max, lose energy
         if (getThirst() >= 10){
             setThirst(10);
-            setEnergy(getEnergy() - 1);
+            setEnergy(getEnergy() - 2);
         }
         // if thirst reaches 0 keep it that way
         else if (getThirst() < 0){
@@ -190,7 +191,7 @@ public abstract class Animal {
 
         getStatsBar().getBar(0).setWidth(getHunger() * (getStatsBar().getStatBarWidth()/10));
         getStatsBar().getBar(1).setWidth(getThirst() * (getStatsBar().getStatBarWidth()/10));
-        getStatsBar().getBar(2).setWidth(getEnergy() * (getStatsBar().getStatBarWidth()/1000.0));
+        getStatsBar().getBar(2).setWidth(getEnergy() * (getStatsBar().getStatBarWidth()/2000.0));
     }
 
     public void exitShelter(){

@@ -15,7 +15,7 @@ public class Ant extends Animal{
     private Color smellColour = Color.rgb(0, 100, 100);
 
     public Ant(int x, int y, int id, Group foodGroup, Group animalGroup, Group waterGroup){
-        super("Ant", 'A', id, 1000, x, y, foodGroup, animalGroup, waterGroup);
+        super("Ant", 'A', id, 2000, x, y, foodGroup, animalGroup, waterGroup);
         String [] names_m = {"Antdrew", "Anty", "Antain", "Antanas", "Antar", "Anturas", "Antavas"};
         String [] names_f = {"Anttoinette", "Antalia", "Anta", "Anthia", "Antalia", "Antandra", "Antia", "Antheemia"};
         giveName(names_m, names_f);
