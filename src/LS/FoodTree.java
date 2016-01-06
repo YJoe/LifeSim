@@ -9,19 +9,23 @@ import java.util.Random;
 public class FoodTree {
     private Circle leafCircle, trunkCircle;
     private ArrayList<Food> foodList;
+    private ArrayList<Water> waterList;
     private Group foodGroup;
     private int trackID, foodRate;
     private Random rand = new Random();
 
-    public FoodTree(int x, int y, ArrayList<Food> foodList, int trackID, Group foodGroup){
+    public FoodTree(int x, int y, ArrayList<Food> foodList, int trackID, Group foodGroup, ArrayList<Water> waterList){
         // Create leaf circle
-        setLeafCircle(new Circle(x, y, 100));
+        setLeafCircle(new Circle(x, y, rand.nextInt(60) + 70));
         getLeafCircle().setFill(Color.rgb(0, 200, 0));
-        getLeafCircle().setOpacity(0.3);
+        getLeafCircle().setOpacity(0.15);
 
         // Create trunk circle
         setTrunkCircle(new Circle(x, y, 10));
         getTrunkCircle().setFill(Color.rgb(100, 50, 0));
+
+        // Set water list reference
+        setWaterList(waterList);
 
         // Set food list reference
         setFoodList(foodList);
@@ -53,10 +57,21 @@ public class FoodTree {
         Food f;
         do {
             f = new Fruit(rand.nextInt(xRange) + xMin, rand.nextInt(yRange) + yMin, getTrackID());
-        } while (!Collision.overlapsAccurate(f.getImage(), getLeafCircle()) || Collision.overlapsAccurate(f.getImage(), getTrunkCircle()));
+        } while (   !Collision.overlapsAccurate(f.getImage(), getLeafCircle()) ||
+                    Collision.overlapsAccurate(f.getImage(), getTrunkCircle()) ||
+                    collidesWithWater(f.getImage()));
         setTrackID(getTrackID() + 1);
         getFoodGroup().getChildren().add(f.getImage());
         foodList.add(f);
+    }
+
+    public boolean collidesWithWater(Circle c1){
+        for(int i = 0; i < waterList.size(); i++){
+            if (Collision.overlapsAccurate(c1, waterList.get(i).getCircle())){
+                return true;
+            }
+        }
+        return false;
     }
 
     //
@@ -106,5 +121,13 @@ public class FoodTree {
 
     public void setFoodRate(int foodRate) {
         this.foodRate = foodRate;
+    }
+
+    public ArrayList<Water> getWaterList() {
+        return waterList;
+    }
+
+    public void setWaterList(ArrayList<Water> waterList) {
+        this.waterList = waterList;
     }
 }
