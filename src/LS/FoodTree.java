@@ -10,7 +10,7 @@ public class FoodTree {
     private Circle leafCircle, trunkCircle;
     private ArrayList<Food> foodList;
     private Group foodGroup;
-    private int trackID;
+    private int trackID, foodRate;
     private Random rand = new Random();
 
     public FoodTree(int x, int y, ArrayList<Food> foodList, int trackID, Group foodGroup){
@@ -31,11 +31,14 @@ public class FoodTree {
 
         // Set ID tracked reference
         setTrackID(trackID);
+
+        // Set a food production rate
+        setFoodRate(rand.nextInt(500) + 900);
     }
 
     //
     public void update(){
-        if (rand.nextInt(500) == 1){
+        if (rand.nextInt(getFoodRate()) == 1){
             createFood();
         }
     }
@@ -95,5 +98,13 @@ public class FoodTree {
 
     public void setTrackID(int trackID) {
         this.trackID = trackID;
+    }
+
+    public int getFoodRate() {
+        return foodRate;
+    }
+
+    public void setFoodRate(int foodRate) {
+        this.foodRate = foodRate;
     }
 }

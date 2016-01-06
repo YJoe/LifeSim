@@ -32,7 +32,7 @@ public class World {
 
 
     // set up the world
-    public World(Group root, int animals, int food, int shelters, int obstacles, int pools){
+    public World(Group root, int animals, int foodTrees, int food, int shelters, int obstacles, int pools){
         System.out.println("Creating world");
         root.getChildren().add(shelterGroup);
         root.getChildren().add(shelterStatsGroup);
@@ -52,6 +52,11 @@ public class World {
         for(int i = 0; i < pools; i++){
             addRandomPool();
             System.out.println(i+1 + "/" + pools);
+        }
+        System.out.println("Creating food trees");
+        for(int i = 0; i < foodTrees; i++){
+            addRandomFoodTree();
+            System.out.println(i+1 + "/" + foodTrees);
         }
         System.out.println("Creating shelters");
         for(int i = 0; i < shelters; i++){
@@ -131,6 +136,17 @@ public class World {
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());
         trackID++;
+    }
+
+    public void addRandomFoodTree(){
+        int x, y;
+        FoodTree f;
+        do {
+            f = new FoodTree(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y), foodList, trackID, foodGroup);
+        } while(overlapsAnything(f.getTrunkCircle()));
+        foodTreeList.add(f);
+        foodTreeLeafGroup.getChildren().add(f.getLeafCircle());
+        foodTreeTrunkGroup.getChildren().add(f.getTrunkCircle());
     }
 
     public void addFoodTree(int x, int y){
