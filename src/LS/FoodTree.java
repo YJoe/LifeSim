@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class FoodTree {
-    private Circle leafCircle, trunkCircle;
+    private Circle leafCircle;
+    private TreeTrunk treeTrunk;
     private ArrayList<Food> foodList;
     private ArrayList<Water> waterList;
     private Group foodGroup;
@@ -20,9 +21,8 @@ public class FoodTree {
         getLeafCircle().setFill(Color.rgb(0, 200, 0));
         getLeafCircle().setOpacity(0.15);
 
-        // Create trunk circle
-        setTrunkCircle(new Circle(x, y, 10));
-        getTrunkCircle().setFill(Color.rgb(100, 50, 0));
+        // Create trunk
+        setTreeTrunk(new TreeTrunk(x, y, 10));
 
         // Set water list reference
         setWaterList(waterList);
@@ -58,7 +58,7 @@ public class FoodTree {
         do {
             f = new Fruit(rand.nextInt(xRange) + xMin, rand.nextInt(yRange) + yMin, getTrackID());
         } while (   !Collision.overlapsAccurate(f.getImage(), getLeafCircle()) ||
-                    Collision.overlapsAccurate(f.getImage(), getTrunkCircle()) ||
+                    Collision.overlapsAccurate(f.getImage(), getTreeTrunk().getImage()) ||
                     collidesWithWater(f.getImage()));
         setTrackID(getTrackID() + 1);
         getFoodGroup().getChildren().add(f.getImage());
@@ -83,13 +83,7 @@ public class FoodTree {
         this.leafCircle = leafCircle;
     }
 
-    public Circle getTrunkCircle() {
-        return trunkCircle;
-    }
 
-    public void setTrunkCircle(Circle trunkCircle) {
-        this.trunkCircle = trunkCircle;
-    }
 
     public ArrayList<Food> getFoodList() {
         return foodList;
@@ -129,5 +123,13 @@ public class FoodTree {
 
     public void setWaterList(ArrayList<Water> waterList) {
         this.waterList = waterList;
+    }
+
+    public TreeTrunk getTreeTrunk() {
+        return treeTrunk;
+    }
+
+    public void setTreeTrunk(TreeTrunk treeTrunk) {
+        this.treeTrunk = treeTrunk;
     }
 }

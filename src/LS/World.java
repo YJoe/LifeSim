@@ -2,6 +2,7 @@ package LS;
 
 import java.util.Random;
 import javafx.scene.Group;
+import javafx.scene.control.TreeTableCell;
 import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
@@ -143,17 +144,21 @@ public class World {
         FoodTree f;
         do {
             f = new FoodTree(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y), foodList, trackID, foodGroup, waterList);
-        } while(overlapsAnything(f.getTrunkCircle()));
+        } while(overlapsAnything(f.getTreeTrunk().getImage()));
         foodTreeList.add(f);
         foodTreeLeafGroup.getChildren().add(f.getLeafCircle());
-        foodTreeTrunkGroup.getChildren().add(f.getTrunkCircle());
+        foodTreeTrunkGroup.getChildren().add(f.getLeafCircle());
+
+        obstacleList.add(f.getTreeTrunk());
+        foodTreeTrunkGroup.getChildren().add(f.getTreeTrunk().getImage());
     }
 
     public void addFoodTree(int x, int y){
         FoodTree f = new FoodTree(x, y, foodList, trackID, foodGroup, waterList);
         foodTreeList.add(f);
         foodTreeLeafGroup.getChildren().add(f.getLeafCircle());
-        foodTreeTrunkGroup.getChildren().add(f.getTrunkCircle());
+        obstacleList.add(f.getTreeTrunk());
+        foodTreeTrunkGroup.getChildren().add(f.getTreeTrunk().getImage());
     }
 
     public void addRandomPool(){
@@ -254,6 +259,13 @@ public class World {
         for(Water water : waterList){
             if (Collision.overlapsEfficient(c1, water.getCircle())){
                 if (Collision.overlapsAccurate(c1, water.getCircle())) {
+                    return true;
+                }
+            }
+        }
+        for(FoodTree foodTree : foodTreeList){
+            if (Collision.overlapsEfficient(c1, foodTree.getTreeTrunk().getImage())){
+                if (Collision.overlapsAccurate(c1, foodTree.getTreeTrunk().getImage())){
                     return true;
                 }
             }

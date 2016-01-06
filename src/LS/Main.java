@@ -42,6 +42,7 @@ public class Main extends Application {
         //world.toggleHomeSquares();
         //world.toggleStatBars();
         //world.toggleShelterStatBars();
+        world.toggleAnimalLabels();
 
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage);
