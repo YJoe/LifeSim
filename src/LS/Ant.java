@@ -34,6 +34,7 @@ public class Ant extends Animal{
 
         // Set a random speed
         setSpeed(baseSpeed + (rand.nextInt(10) * 0.1));
+        setOriginalSpeed(getSpeed());
 
         // Set a random turning angle
         setTurnAngle(baseTurnAngle + (rand.nextInt(20)));

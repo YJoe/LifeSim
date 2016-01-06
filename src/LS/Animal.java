@@ -33,7 +33,7 @@ public abstract class Animal {
     private int lastAngle = new Random().nextInt(360);
     private int targetFoodID;
     private int targetWaterID;
-    private double speed, dx, dy;
+    private double speed, originalSpeed, dx, dy;
     private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, update;
     private Target localTarget, mainTarget, homeTarget;
     private ArrayList<Food> foodList = new ArrayList<>();
@@ -168,10 +168,14 @@ public abstract class Animal {
         // if hunger reaches max keep it there
         if (getHunger() >= 10){
             setHunger(10);
+            setSpeed(getOriginalSpeed()/1.5);
         }
         // if hunger reaches 0 keep it that way
-        else if (getHunger() < 0){
-            setHunger(0);
+        else {
+            setSpeed(getOriginalSpeed());
+            if (getHunger() < 0) {
+                setHunger(0);
+            }
         }
 
         // if thirst reaches max, lose energy
@@ -983,6 +987,14 @@ public abstract class Animal {
 
     public void setText(Text text) {
         this.text = text;
+    }
+
+    public double getOriginalSpeed() {
+        return originalSpeed;
+    }
+
+    public void setOriginalSpeed(double originalSpeed) {
+        this.originalSpeed = originalSpeed;
     }
 }
 
