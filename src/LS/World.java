@@ -175,6 +175,7 @@ public class World {
 
         for(int i = 0; i < waterCount; i++){
             int attempt = 0, newX, newY;
+            Water w;
             do {
                 if (attempt > 0){
                     angleDeg = rand.nextInt(360);
@@ -187,9 +188,9 @@ public class World {
                 newY = (int) (  waterList.get(i + PSize - 1).getCircle().getCenterY() +
                                 waterList.get(i + PSize - 1).getCircle().getRadius() *
                                 Math.sin(angleRad));
-
-            } while(newX > Main.SIZE_X || newX < 0 || newY > Main.SIZE_Y || newY < 0);
-            waterList.add(new Water(newX, newY));
+                w = new Water(newX, newY);
+            } while(newX > Main.SIZE_X || newX < 0 || newY > Main.SIZE_Y || newY < 0 || !overlapsAnything(w.getCircle()));
+            waterList.add(w);
             addWaterHazard( waterList.get(i + PSize).getX(),
                             waterList.get(i + PSize).getY(),
                             waterList.get(i + PSize).getSize() - 10);
