@@ -346,7 +346,6 @@ public abstract class Animal {
                         if (shelterList.get(i).getID() == getHomeID()) {
                             setTargetingHome(false);
                             // Drop all food/ water off
-                            // TODO: store into correct shelter
                             for (int j = 0; j < foodInventory.getSize(); j++) {
                                 shelterList.get(i).getFoodInventory().add(foodInventory.getElement(j));
                             }
