@@ -350,48 +350,6 @@ public abstract class Animal {
             if (Collision.overlapsAccurate(getImage(), getMainTarget().getCircle())) {
                 if (isTargetingHome()) {
                     enterShelter();
-                    for (int i = 0; i < shelterList.size(); i++) {
-                        if (shelterList.get(i).getID() == getHomeID()) {
-                            setTargetingHome(false);
-                            // Drop all food/ water off
-                            for (int j = 0; j < foodInventory.getSize(); j++) {
-                                shelterList.get(i).getFoodInventory().add(foodInventory.getElement(j));
-                            }
-                            for (int j = 0; j < waterInventory.getSize(); j++) {
-                                shelterList.get(i).getWaterInventory().add(waterInventory.getElement(j));
-                            }
-                            foodInventory.empty();
-                            waterInventory.empty();
-
-                            // take some food and/or water
-                            if (waterInventory.getSize() == 0 && getThirst() >= 10) {
-                                setFollowMainCoolDown(1000);
-                                for (int j = 0; j < getWaterInventory().getCapacity() / 2; j++) {
-                                    if (shelterList.get(i).getWaterInventory().getSize() > 1) {
-                                        if (shelterList.get(i).getWaterInventory().getElement(0) > getWaterInventory().getSlotMax()) {
-                                            getWaterInventory().add(getWaterInventory().getSlotMax());
-                                        } else {
-                                            getWaterInventory().add(shelterList.get(i).getWaterInventory().getElement(0));
-                                        }
-                                        shelterList.get(i).getWaterInventory().remove(0);
-                                    }
-                                }
-                            }
-                            if (foodInventory.getSize() == 0 && getHunger() >= 10) {
-                                setFollowMainCoolDown(1000);
-                                for (int j = 0; j < getFoodInventory().getCapacity() / 2; j++) {
-                                    if (shelterList.get(i).getFoodInventory().getSize() > 1) {
-                                        if (shelterList.get(i).getFoodInventory().getElement(0) > getFoodInventory().getSlotMax()) {
-                                            getFoodInventory().add(getFoodInventory().getSlotMax());
-                                        } else {
-                                            getFoodInventory().add(shelterList.get(i).getFoodInventory().getElement(0));
-                                        }
-                                        shelterList.get(i).getFoodInventory().remove(0);
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
                 removeMainTarget();
                 removeLocalTarget();
@@ -494,17 +452,55 @@ public abstract class Animal {
         setWaitAtHome(100 + new Random().nextInt(500));
         setInShelter(true);
         setSelfVisibility(false);
-        System.out.println("In shelter");
 
-        // remove self from animal group
+        for (int i = 0; i < shelterList.size(); i++) {
+            if (shelterList.get(i).getID() == getHomeID()) {
+                setTargetingHome(false);
+                // Drop all food/ water off
+                for (int j = 0; j < foodInventory.getSize(); j++) {
+                    shelterList.get(i).getFoodInventory().add(foodInventory.getElement(j));
+                }
+                for (int j = 0; j < waterInventory.getSize(); j++) {
+                    shelterList.get(i).getWaterInventory().add(waterInventory.getElement(j));
+                }
+                foodInventory.empty();
+                waterInventory.empty();
+
+                // take some food and/or water
+                if (waterInventory.getSize() == 0 && getThirst() >= 10) {
+                    setFollowMainCoolDown(1000);
+                    for (int j = 0; j < getWaterInventory().getCapacity() / 2; j++) {
+                        if (shelterList.get(i).getWaterInventory().getSize() > 1) {
+                            if (shelterList.get(i).getWaterInventory().getElement(0) > getWaterInventory().getSlotMax()) {
+                                getWaterInventory().add(getWaterInventory().getSlotMax());
+                            } else {
+                                getWaterInventory().add(shelterList.get(i).getWaterInventory().getElement(0));
+                            }
+                            shelterList.get(i).getWaterInventory().remove(0);
+                        }
+                    }
+                }
+                if (foodInventory.getSize() == 0 && getHunger() >= 10) {
+                    setFollowMainCoolDown(1000);
+                    for (int j = 0; j < getFoodInventory().getCapacity() / 2; j++) {
+                        if (shelterList.get(i).getFoodInventory().getSize() > 1) {
+                            if (shelterList.get(i).getFoodInventory().getElement(0) > getFoodInventory().getSlotMax()) {
+                                getFoodInventory().add(getFoodInventory().getSlotMax());
+                            } else {
+                                getFoodInventory().add(shelterList.get(i).getFoodInventory().getElement(0));
+                            }
+                            shelterList.get(i).getFoodInventory().remove(0);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void exitShelter(){
         setWaitAtHome(0);
         setInShelter(false);
-        System.out.println("Out of shelter");
         setSelfVisibility(true);
-        // add self to animal group again
     }
 
     public void targetHome(){

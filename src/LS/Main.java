@@ -29,10 +29,10 @@ public class Main extends Application {
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
 
         // Create world
-        int animalCount = 4;
+        int animalCount = 100;
         int foodCount = 0;
         int foodTrees = 20;
-        int shelterCount = 1;
+        int shelterCount = 5;
         int obstacleCount = 0;
         int poolCount = 1;
         World world = new World(root, animalCount, foodTrees, foodCount, shelterCount, obstacleCount, poolCount);
