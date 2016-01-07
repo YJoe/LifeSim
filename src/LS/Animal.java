@@ -220,7 +220,12 @@ public abstract class Animal {
                 if (homeTarget == null){
                     checkShelters();
                 }
-                if (homeTarget != null && (waterInventory.getSize() > 1 || foodInventory.getSize() > 1)){
+                if (homeTarget != null && (waterInventory.getSize() == waterInventory.getCapacity()/2
+                        || foodInventory.getSize() == foodInventory.getCapacity()/2)){
+                    targetHome();
+                }
+                if (homeTarget != null && ((waterInventory.getSize() == 0 && getThirst() == 10)
+                        || (foodInventory.getSize() == 0 && getHunger() == 10))){
                     targetHome();
                 }
                 checkCollideLocalTarget();
@@ -235,7 +240,12 @@ public abstract class Animal {
                 if (homeTarget == null){
                     checkShelters();
                 }
-                if (homeTarget != null && (waterInventory.getSize() > 1 || foodInventory.getSize() > 1)){
+                if (homeTarget != null && (waterInventory.getSize() > waterInventory.getCapacity()/2
+                        || foodInventory.getSize() == foodInventory.getCapacity()/2)){
+                    targetHome();
+                }
+                if (homeTarget != null && ((waterInventory.getSize() == 0 && getThirst() == 10)
+                        || (foodInventory.getSize() == 0 && getHunger() == 10))){
                     targetHome();
                 }
             }
@@ -343,6 +353,7 @@ public abstract class Animal {
             if (Collision.overlapsAccurate(getImage(), getMainTarget().getCircle())) {
                 if (isTargetingHome()) {
                     setTargetingHome(false);
+                    // Drop all food/ water off
                     // TODO: store into correct shelter
                     for (int i = 0; i < foodInventory.getSize(); i++) {
                         shelterList.get(0).getFoodInventory().add(foodInventory.getElement(i));
@@ -352,6 +363,17 @@ public abstract class Animal {
                     }
                     foodInventory.empty();
                     waterInventory.empty();
+
+                    // take some food and water
+                    // TODO: stop giving them free food. maybe fill entire inventory (if there are sufficient resources)
+                    if (waterInventory.getSize() == 0 && getThirst() >= 10) {
+                        System.out.println("I just took some water");
+                        getWaterInventory().add(getWaterInventory().getSlotMax());
+                    }
+                    if (foodInventory.getSize() == 0 && getHunger() >= 10) {
+                        System.out.println("I just took some food");
+                        getFoodInventory().add(getFoodInventory().getSlotMax());
+                    }
                 }
                 removeMainTarget();
                 removeLocalTarget();

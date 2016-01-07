@@ -29,14 +29,14 @@ public class Main extends Application {
         Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
 
         // Create world
-        int animalCount = 1;
+        int animalCount = 100;
         int foodCount = 0;
-        int foodTrees = 0;
-        int shelterCount = 0;
+        int foodTrees = 10;
+        int shelterCount = 1;
         int obstacleCount = 0;
-        int poolCount = 2;
+        int poolCount = 1;
         World world = new World(root, animalCount, foodTrees, foodCount, shelterCount, obstacleCount, poolCount);
-
+        world.getAnimalList().get(0).setHome(new Target(world.getShelterList().get(0).getX(), world.getShelterList().get(0).getY()));
         //world.toggleSmellCircles();
         //world.toggleTargetSquares();
         //world.toggleHomeSquares();
