@@ -32,7 +32,7 @@ public class Main extends Application {
         int animalCount = 10;
         int foodCount = 0;
         int foodTrees = 5;
-        int shelterCount = 1;
+        int shelterCount = 4;
         int obstacleCount = 0;
         int poolCount = 1;
         World world = new World(root, animalCount, foodTrees, foodCount, shelterCount, obstacleCount, poolCount);

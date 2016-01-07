@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class World {
     private Random rand = new Random();
-    private int trackID = 0;
+    private int trackID = 0, shelterID = 0;
     private ArrayList<Animal> animalList = new ArrayList<>();
     private ArrayList<Animal> animalRank = new ArrayList<>();
     private ArrayList<FoodTree> foodTreeList = new ArrayList<>();
@@ -213,8 +213,9 @@ public class World {
         Shelter s;
         do {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
-            s = new AntHill(x, y);
+            s = new AntHill(x, y, shelterID);
         } while(overlapsAnything(s.getImage()));
+        shelterID++;
         shelterList.add(s);
         shelterGroup.getChildren().add(s.getImage());
         shelterStatsGroup.getChildren().add(s.getStatsBar().getGroup());

@@ -6,13 +6,13 @@ import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 
 public abstract class Shelter {
-    private int x, y, capacity;
+    private int x, y, capacity, ID;
     private StatsBar statsBar;
     private Circle image;
     private Inventory foodInventory, waterInventory;
     protected ArrayList<Animal> shelteredAnimals = new ArrayList<>();
 
-    public Shelter(int x, int y, int capacity, int inventorySizeC, int inventorySizeS){
+    public Shelter(int x, int y, int capacity, int inventorySizeC, int inventorySizeS, int ID){
         setX(x);
         setY(y);
         setCapacity(capacity);
@@ -27,6 +27,9 @@ public abstract class Shelter {
 
         // Create Circle for shelter
         setImage(new Circle(getX(), getY(), 30));
+
+        // Set the unique ID of the shelter
+        setID(ID);
     }
 
     // Main functions
@@ -117,5 +120,13 @@ public abstract class Shelter {
 
     public void setStatsBar(StatsBar statsBar) {
         this.statsBar = statsBar;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }
