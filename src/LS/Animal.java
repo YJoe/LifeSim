@@ -210,44 +210,28 @@ public abstract class Animal {
                 createLocalTargetDirectedToMain();
             }
         } else {
-            if (hasLocalTarget()) {
-                if (!isTargetFood() && getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
-                    checkFood();
-                }
-                if (!isTargetingWater() && waterInventory.getSize() < waterInventory.getCapacity()){
-                    checkWater();
-                }
-                if (homeTarget == null){
-                    checkShelters();
-                }
-                if (homeTarget != null && (waterInventory.getSize() == waterInventory.getCapacity()/2
-                        || foodInventory.getSize() == foodInventory.getCapacity()/2)){
-                    targetHome();
-                }
-                if (homeTarget != null && ((waterInventory.getSize() == 0 && getThirst() == 10)
-                        || (foodInventory.getSize() == 0 && getHunger() == 10))){
-                    targetHome();
-                }
-                checkCollideLocalTarget();
-            } else {
+            if (!hasLocalTarget()){
                 getRandomLocalTarget();
-                if (getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
-                    checkFood();
-                }
-                if (waterInventory.getSize() < waterInventory.getCapacity()){
-                    checkWater();
-                }
-                if (homeTarget == null){
-                    checkShelters();
-                }
-                if (homeTarget != null && (waterInventory.getSize() > waterInventory.getCapacity()/2
-                        || foodInventory.getSize() == foodInventory.getCapacity()/2)){
-                    targetHome();
-                }
-                if (homeTarget != null && ((waterInventory.getSize() == 0 && getThirst() == 10)
-                        || (foodInventory.getSize() == 0 && getHunger() == 10))){
-                    targetHome();
-                }
+            }
+            if (!isTargetFood() && getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
+                checkFood();
+            }
+            if (!isTargetingWater() && waterInventory.getSize() < waterInventory.getCapacity()){
+                checkWater();
+            }
+            if (homeTarget == null){
+                checkShelters();
+            }
+            if (homeTarget != null && (waterInventory.getSize() == waterInventory.getCapacity()/2
+                    || foodInventory.getSize() == foodInventory.getCapacity()/2)){
+                targetHome();
+            }
+            if (homeTarget != null && ((waterInventory.getSize() == 0 && getThirst() == 10)
+                    || (foodInventory.getSize() == 0 && getHunger() == 10))){
+                targetHome();
+            }
+            if (hasLocalTarget()){
+                checkCollideLocalTarget();
             }
         }
     }
