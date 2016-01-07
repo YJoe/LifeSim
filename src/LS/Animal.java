@@ -29,7 +29,7 @@ public abstract class Animal {
     private float hunger = 0;
     private float thirst = 0;
     private int id, x, y, energy, smellRange, turnAngle, pathDistance, foodSearchCoolDown, followMainCoolDown;
-    private int homeX, homeY, memory, memoryBiasX, memoryBiasY, waitAtHome;
+    private int homeX, homeY, memory, memoryBiasX, memoryBiasY, waitAtHome, homeID;
     private int lastAngle = new Random().nextInt(360);
     private int targetFoodID;
     private int targetWaterID;
@@ -472,7 +472,7 @@ public abstract class Animal {
         for(int i = 0; i < shelterList.size(); i++){
             if(Collision.overlapsEfficient(getSmellCircle(), shelterList.get(i).getImage())) {
                 if (Collision.overlapsAccurate(getSmellCircle(), shelterList.get(i).getImage())) {
-                    setHome(new Target(shelterList.get(i).getX(), shelterList.get(i).getY()));
+                    setHome(new Target(shelterList.get(i).getX(), shelterList.get(i).getY()), shelterList.get(i).getID());
                     break;
                 }
             }
@@ -777,8 +777,9 @@ public abstract class Animal {
         this.homeLocation = homeLocation;
     }
 
-    public void setHome(Target home){
+    public void setHome(Target home, int ID){
         setHomeTarget(home);
+        setHomeID(ID);
     }
 
     public void setAnimalGroupRef(Group a){
@@ -1025,6 +1026,14 @@ public abstract class Animal {
 
     public void setOriginalSpeed(double originalSpeed) {
         this.originalSpeed = originalSpeed;
+    }
+
+    public int getHomeID() {
+        return homeID;
+    }
+
+    public void setHomeID(int homeID) {
+        this.homeID = homeID;
     }
 }
 
