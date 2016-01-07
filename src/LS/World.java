@@ -9,7 +9,9 @@ import java.util.ArrayList;
 
 public class World {
     private Random rand = new Random();
-    private int trackID = 0, shelterID = 0;
+    public static int trackFoodID = 0;
+    public static int trackAnimalID = 0;
+    private int shelterID = 0;
     private ArrayList<Animal> animalList = new ArrayList<>();
     private ArrayList<Animal> animalRank = new ArrayList<>();
     private ArrayList<FoodTree> foodTreeList = new ArrayList<>();
@@ -30,7 +32,6 @@ public class World {
     private Group obstacleGroup = new Group();
     private Group foodTreeLeafGroup = new Group();
     private Group foodTreeTrunkGroup = new Group();
-
 
     // set up the world
     public World(Group root, int animals, int foodTrees, int food, int shelters, int obstacles, int pools){
@@ -88,7 +89,7 @@ public class World {
         Animal a;
         do {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
-            a = new Ant(x, y, trackID, foodGroup, animalGroup, waterGroup);
+            a = new Ant(x, y, trackAnimalID, foodGroup, animalGroup, waterGroup);
         } while(overlapsAnything(a.getImage()));
         a.setFoodList(foodList);
         a.setShelterList(shelterList);
@@ -101,11 +102,11 @@ public class World {
         animalStatsGroup.getChildren().add(a.getStatsBar().getGroup());
         animalHomeLocationGroup.getChildren().add(a.getHomeLocation());
         animalLabelGroup.getChildren().add(a.getText());
-        trackID++;
+        trackAnimalID++;
     }
 
     public void addAnimal(int x, int y){
-        Animal a = new Ant(x, y, trackID, foodGroup, animalGroup, waterGroup);
+        Animal a = new Ant(x, y, trackAnimalID, foodGroup, animalGroup, waterGroup);
         a.setFoodList(foodList);
         a.setShelterList(shelterList);
         a.setWaterList(waterList);
@@ -117,7 +118,7 @@ public class World {
         animalStatsGroup.getChildren().add(a.getStatsBar().getGroup());
         animalHomeLocationGroup.getChildren().add(a.getHomeLocation());
         animalLabelGroup.getChildren().add(a.getText());
-        trackID++;
+        trackAnimalID++;
     }
 
     public void addRandomFood(){
@@ -125,25 +126,25 @@ public class World {
         Meat f;
         do {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
-            f = new Meat(x, y, trackID);
+            f = new Meat(x, y, trackFoodID);
         }while(overlapsAnything(f.getImage()));
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());
-        trackID++;
+        trackFoodID++;
     }
 
     public void addFood(int x, int y, int size){
-        Meat f = new Meat(x, y, trackID, size);
+        Meat f = new Meat(x, y, trackFoodID, size);
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());
-        trackID++;
+        trackFoodID++;
     }
 
     public void addRandomFoodTree(){
         int x, y;
         FoodTree f;
         do {
-            f = new FoodTree(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y), foodList, trackID, foodGroup, waterList);
+            f = new FoodTree(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y), foodList, foodGroup, waterList);
         } while(overlapsAnything(f.getTreeTrunk().getImage()));
         foodTreeList.add(f);
         foodTreeLeafGroup.getChildren().add(f.getLeafCircle());
@@ -154,7 +155,7 @@ public class World {
     }
 
     public void addFoodTree(int x, int y){
-        FoodTree f = new FoodTree(x, y, foodList, trackID, foodGroup, waterList);
+        FoodTree f = new FoodTree(x, y, foodList, foodGroup, waterList);
         foodTreeList.add(f);
         foodTreeLeafGroup.getChildren().add(f.getLeafCircle());
         obstacleList.add(f.getTreeTrunk());

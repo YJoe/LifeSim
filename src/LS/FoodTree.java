@@ -12,10 +12,10 @@ public class FoodTree {
     private ArrayList<Food> foodList;
     private ArrayList<Water> waterList;
     private Group foodGroup;
-    private int trackID, foodRate;
+    private int foodRate;
     private Random rand = new Random();
 
-    public FoodTree(int x, int y, ArrayList<Food> foodList, int trackID, Group foodGroup, ArrayList<Water> waterList){
+    public FoodTree(int x, int y, ArrayList<Food> foodList, Group foodGroup, ArrayList<Water> waterList){
         // Create leaf circle
         setLeafCircle(new Circle(x, y, rand.nextInt(60) + 70));
         getLeafCircle().setFill(Color.rgb(0, 200, 0));
@@ -33,11 +33,8 @@ public class FoodTree {
         // Set food group reference
         setFoodGroup(foodGroup);
 
-        // Set ID tracked reference
-        setTrackID(trackID);
-
         // Set a food production rate
-        setFoodRate(rand.nextInt(500) + 900);
+        setFoodRate(2);//rand.nextInt(500) + 900);
     }
 
     //
@@ -56,11 +53,11 @@ public class FoodTree {
 
         Food f;
         do {
-            f = new Fruit(rand.nextInt(xRange) + xMin, rand.nextInt(yRange) + yMin, getTrackID());
+            f = new Fruit(rand.nextInt(xRange) + xMin, rand.nextInt(yRange) + yMin, World.trackFoodID);
         } while (   !Collision.overlapsAccurate(f.getImage(), getLeafCircle()) ||
                     Collision.overlapsAccurate(f.getImage(), getTreeTrunk().getImage()) ||
                     collidesWithWater(f.getImage()));
-        setTrackID(getTrackID() + 1);
+        World.trackFoodID++;
         getFoodGroup().getChildren().add(f.getImage());
         foodList.add(f);
     }
@@ -99,14 +96,6 @@ public class FoodTree {
 
     public void setFoodGroup(Group foodGroup) {
         this.foodGroup = foodGroup;
-    }
-
-    public int getTrackID() {
-        return trackID;
-    }
-
-    public void setTrackID(int trackID) {
-        this.trackID = trackID;
     }
 
     public int getFoodRate() {

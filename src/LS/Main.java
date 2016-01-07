@@ -74,8 +74,9 @@ public class Main extends Application {
                                             world.toggleAnimals();
                                         } else {
                                             if (ke.getCode() == KeyCode.DIGIT7) {
-                                                for(int i = 0; i < world.getAnimalList().size(); i++){
-                                                    world.getAnimalList().get(i).removeLocalTarget();
+                                                System.out.println("_______________");
+                                                for(int i = 0; i < world.getFoodList().size(); i++){
+                                                    System.out.println(world.getFoodList().get(i).getID());
                                                 }
                                             }
                                         }
