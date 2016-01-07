@@ -359,10 +359,12 @@ public abstract class Animal {
                         setFollowMainCoolDown(1000);
                         for (int i = 0; i < getWaterInventory().getCapacity() / 2; i++) {
                             if (shelterList.get(0).getWaterInventory().getSize() > 1){
-                                // this assumes that the element is <= to the animals slotMax (should be fine)
-                                getWaterInventory().add(shelterList.get(0).getWaterInventory().getElement(0));
+                                if (shelterList.get(0).getWaterInventory().getElement(0) > getWaterInventory().getSlotMax()) {
+                                    getWaterInventory().add(getWaterInventory().getSlotMax());
+                                } else {
+                                    getWaterInventory().add(shelterList.get(0).getWaterInventory().getElement(0));
+                                }
                                 shelterList.get(0).getWaterInventory().remove(0);
-                                System.out.println("Bitches be stealing water");
                             }
                         }
                     }
@@ -370,10 +372,12 @@ public abstract class Animal {
                         setFollowMainCoolDown(1000);
                         for (int i = 0; i < getFoodInventory().getCapacity() / 2; i++){
                             if (shelterList.get(0).getFoodInventory().getSize() > 1){
-                                // same thing as up there bucko
-                                getFoodInventory().add(shelterList.get(0).getFoodInventory().getElement(0));
+                                if (shelterList.get(0).getFoodInventory().getElement(0) > getFoodInventory().getSlotMax()) {
+                                    getFoodInventory().add(getFoodInventory().getSlotMax());
+                                } else {
+                                    getFoodInventory().add(shelterList.get(0).getFoodInventory().getElement(0));
+                                }
                                 shelterList.get(0).getFoodInventory().remove(0);
-                                System.out.println("Bitches be stealing food");
                             }
                         }
                     }
