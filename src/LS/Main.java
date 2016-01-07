@@ -31,7 +31,7 @@ public class Main extends Application {
         // Create world
         int animalCount = 10;
         int foodCount = 0;
-        int foodTrees = 5;
+        int foodTrees = 20;
         int shelterCount = 4;
         int obstacleCount = 0;
         int poolCount = 1;

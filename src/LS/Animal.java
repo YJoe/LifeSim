@@ -342,42 +342,46 @@ public abstract class Animal {
         if (Collision.overlapsEfficient(getImage(), getMainTarget().getCircle())) {
             if (Collision.overlapsAccurate(getImage(), getMainTarget().getCircle())) {
                 if (isTargetingHome()) {
-                    setTargetingHome(false);
-                    // Drop all food/ water off
-                    // TODO: store into correct shelter
-                    for (int i = 0; i < foodInventory.getSize(); i++) {
-                        shelterList.get(0).getFoodInventory().add(foodInventory.getElement(i));
-                    }
-                    for (int i = 0; i < waterInventory.getSize(); i++) {
-                        shelterList.get(0).getWaterInventory().add(waterInventory.getElement(i));
-                    }
-                    foodInventory.empty();
-                    waterInventory.empty();
-
-                    // take some food and/or water
-                    if (waterInventory.getSize() == 0 && getThirst() >= 10) {
-                        setFollowMainCoolDown(1000);
-                        for (int i = 0; i < getWaterInventory().getCapacity() / 2; i++) {
-                            if (shelterList.get(0).getWaterInventory().getSize() > 1){
-                                if (shelterList.get(0).getWaterInventory().getElement(0) > getWaterInventory().getSlotMax()) {
-                                    getWaterInventory().add(getWaterInventory().getSlotMax());
-                                } else {
-                                    getWaterInventory().add(shelterList.get(0).getWaterInventory().getElement(0));
-                                }
-                                shelterList.get(0).getWaterInventory().remove(0);
+                    for (int i = 0; i < shelterList.size(); i++) {
+                        if (shelterList.get(i).getID() == getHomeID()) {
+                            setTargetingHome(false);
+                            // Drop all food/ water off
+                            // TODO: store into correct shelter
+                            for (int j = 0; j < foodInventory.getSize(); j++) {
+                                shelterList.get(i).getFoodInventory().add(foodInventory.getElement(j));
                             }
-                        }
-                    }
-                    if (foodInventory.getSize() == 0 && getHunger() >= 10) {
-                        setFollowMainCoolDown(1000);
-                        for (int i = 0; i < getFoodInventory().getCapacity() / 2; i++){
-                            if (shelterList.get(0).getFoodInventory().getSize() > 1){
-                                if (shelterList.get(0).getFoodInventory().getElement(0) > getFoodInventory().getSlotMax()) {
-                                    getFoodInventory().add(getFoodInventory().getSlotMax());
-                                } else {
-                                    getFoodInventory().add(shelterList.get(0).getFoodInventory().getElement(0));
+                            for (int j = 0; j < waterInventory.getSize(); j++) {
+                                shelterList.get(i).getWaterInventory().add(waterInventory.getElement(j));
+                            }
+                            foodInventory.empty();
+                            waterInventory.empty();
+
+                            // take some food and/or water
+                            if (waterInventory.getSize() == 0 && getThirst() >= 10) {
+                                setFollowMainCoolDown(1000);
+                                for (int j = 0; j < getWaterInventory().getCapacity() / 2; j++) {
+                                    if (shelterList.get(i).getWaterInventory().getSize() > 1) {
+                                        if (shelterList.get(i).getWaterInventory().getElement(0) > getWaterInventory().getSlotMax()) {
+                                            getWaterInventory().add(getWaterInventory().getSlotMax());
+                                        } else {
+                                            getWaterInventory().add(shelterList.get(i).getWaterInventory().getElement(0));
+                                        }
+                                        shelterList.get(i).getWaterInventory().remove(0);
+                                    }
                                 }
-                                shelterList.get(0).getFoodInventory().remove(0);
+                            }
+                            if (foodInventory.getSize() == 0 && getHunger() >= 10) {
+                                setFollowMainCoolDown(1000);
+                                for (int j = 0; j < getFoodInventory().getCapacity() / 2; j++) {
+                                    if (shelterList.get(i).getFoodInventory().getSize() > 1) {
+                                        if (shelterList.get(i).getFoodInventory().getElement(0) > getFoodInventory().getSlotMax()) {
+                                            getFoodInventory().add(getFoodInventory().getSlotMax());
+                                        } else {
+                                            getFoodInventory().add(shelterList.get(i).getFoodInventory().getElement(0));
+                                        }
+                                        shelterList.get(i).getFoodInventory().remove(0);
+                                    }
+                                }
                             }
                         }
                     }
