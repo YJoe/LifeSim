@@ -91,10 +91,16 @@ public class World {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
             a = new Ant(x, y, trackAnimalID, foodGroup, animalGroup, waterGroup);
         } while(overlapsAnything(a.getImage()));
+        a.setAnimalList(animalList);
         a.setFoodList(foodList);
         a.setShelterList(shelterList);
         a.setWaterList(waterList);
         a.setObstacleList(obstacleList);
+        a.setAnimalSmellRef(animalSmellGroup);
+        a.setAnimalStatsRef(animalStatsGroup);
+        a.setAnimalLabelRef(animalLabelGroup);
+        a.setAnimalTargetRef(animalTargetGroup);
+        a.setAnimalHomeLocationRef(animalHomeLocationGroup);
         animalList.add(a);
         animalGroup.getChildren().add(a.getImage());
         animalSmellGroup.getChildren().add(a.getSmellCircle());
@@ -107,10 +113,16 @@ public class World {
 
     public void addAnimal(int x, int y){
         Animal a = new Ant(x, y, trackAnimalID, foodGroup, animalGroup, waterGroup);
+        a.setAnimalList(animalList);
         a.setFoodList(foodList);
         a.setShelterList(shelterList);
         a.setWaterList(waterList);
         a.setObstacleList(obstacleList);
+        a.setAnimalSmellRef(animalSmellGroup);
+        a.setAnimalStatsRef(animalStatsGroup);
+        a.setAnimalLabelRef(animalLabelGroup);
+        a.setAnimalTargetRef(animalTargetGroup);
+        a.setAnimalHomeLocationRef(animalHomeLocationGroup);
         animalList.add(a);
         animalGroup.getChildren().add(a.getImage());
         animalSmellGroup.getChildren().add(a.getSmellCircle());

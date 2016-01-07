@@ -21,7 +21,7 @@ public abstract class Animal {
     private Rectangle homeLocation;
     private Group foodGroupRef;
     private Group waterGroupRef;
-    private Group animalGroupRef;
+    private Group animalGroupRef, animalSmellRef, animalStatsRef, animalLabelRef, animalTargetRef, animalHomeLocationRef;
     private String species, name;
     private char symbol, gender;
     private float size;
@@ -33,9 +33,12 @@ public abstract class Animal {
     private int lastAngle = new Random().nextInt(360);
     private int targetFoodID;
     private int targetWaterID;
+    private int waitInShelterTimer;
+    private boolean inShelter;
     private double speed, originalSpeed, dx, dy;
     private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, update;
     private Target localTarget, mainTarget, homeTarget;
+    private ArrayList<Animal> animalList = new ArrayList<>();
     private ArrayList<Food> foodList = new ArrayList<>();
     private ArrayList<Water> waterList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
@@ -84,7 +87,8 @@ public abstract class Animal {
         getText().setFont(Font.font ("Arial", 12));
         getText().setFill(Color.rgb(0, 200, 0));
 
-        setShouldUpdate(true);
+        setInShelter(false);
+        setWaitAtHome(0);
 
         // As all other attributes are determined by random variables based on the animal subclass, other
         // values are set in the constructor of said subclass after the super constructor is called
@@ -92,13 +96,21 @@ public abstract class Animal {
 
     // Main functions
     public void update(){
-        updateText();
-        checkHungerThirst();
-        target();
-        directDxDy();
-        move();
-        forget();
-        hungerEnergyWaterDecay();
+        if(isInShelter()){
+            setWaitAtHome(getWaitAtHome() - 1);
+            if (getWaitAtHome() <= 0){
+                exitShelter();
+            }
+        }
+        else {
+            updateText();
+            checkHungerThirst();
+            target();
+            directDxDy();
+            move();
+            forget();
+            hungerEnergyWaterDecay();
+        }
     }
 
     public void checkHungerThirst(){
@@ -192,11 +204,6 @@ public abstract class Animal {
         getStatsBar().getBar(0).setWidth(getHunger() * (getStatsBar().getStatBarWidth()/10));
         getStatsBar().getBar(1).setWidth(getThirst() * (getStatsBar().getStatBarWidth()/10));
         getStatsBar().getBar(2).setWidth(getEnergy() * (getStatsBar().getStatBarWidth()/2000.0));
-    }
-
-    public void exitShelter(){
-        setShouldUpdate(true);
-        setTargetingHome(false);
     }
 
     public void target(){
@@ -342,6 +349,7 @@ public abstract class Animal {
         if (Collision.overlapsEfficient(getImage(), getMainTarget().getCircle())) {
             if (Collision.overlapsAccurate(getImage(), getMainTarget().getCircle())) {
                 if (isTargetingHome()) {
+                    enterShelter();
                     for (int i = 0; i < shelterList.size(); i++) {
                         if (shelterList.get(i).getID() == getHomeID()) {
                             setTargetingHome(false);
@@ -482,12 +490,21 @@ public abstract class Animal {
         }
     }
 
-    public void enterShelter(int i){
-        if (shelterList.get(i).checkRoom()){
-            shelterList.get(i).addAnimal(this);
-            //animalGroupRef.getChildren().get(i).setVisible(false);
-            setShouldUpdate(false);
-        }
+    public void enterShelter(){
+        setWaitAtHome(100 + new Random().nextInt(500));
+        setInShelter(true);
+        setSelfVisibility(false);
+        System.out.println("In shelter");
+
+        // remove self from animal group
+    }
+
+    public void exitShelter(){
+        setWaitAtHome(0);
+        setInShelter(false);
+        System.out.println("Out of shelter");
+        setSelfVisibility(true);
+        // add self to animal group again
     }
 
     public void targetHome(){
@@ -579,6 +596,23 @@ public abstract class Animal {
                             + "Targeting Water: " + isTargetingWater() + "\n"
                             + "Local Target: " + hasLocalTarget() + "\n"
                             + "Main Target: " + hasMainTarget());
+    }
+
+    public void setSelfVisibility(boolean visibility){
+        int index = 0;
+        for(int i = 0; i < getAnimalList().size(); i++){
+            if (getID() == getAnimalList().get(i).getID()){
+                index = i;
+                break;
+            }
+        }
+        getAnimalGroupRef().getChildren().get(index).setVisible(visibility);
+        getAnimalHomeLocationRef().getChildren().get(index).setVisible(visibility);
+        getAnimalSmellRef().getChildren().get(index).setVisible(visibility);
+        getAnimalStatsRef().getChildren().get(index).setVisible(visibility);
+        getAnimalTargetRef().getChildren().get(index).setVisible(visibility);
+        getAnimalLabelRef().getChildren().get(index).setVisible(visibility);
+
     }
 
     // SELF GET/SET FUNCTIONS
@@ -1037,6 +1071,70 @@ public abstract class Animal {
 
     public void setHomeID(int homeID) {
         this.homeID = homeID;
+    }
+
+    public int getWaitInShelterTimer() {
+        return waitInShelterTimer;
+    }
+
+    public void setWaitInShelterTimer(int waitInShelterTimer) {
+        this.waitInShelterTimer = waitInShelterTimer;
+    }
+
+    public boolean isInShelter() {
+        return inShelter;
+    }
+
+    public void setInShelter(boolean inShelter) {
+        this.inShelter = inShelter;
+    }
+
+    public ArrayList<Animal> getAnimalList() {
+        return animalList;
+    }
+
+    public void setAnimalList(ArrayList<Animal> animalList) {
+        this.animalList = animalList;
+    }
+
+    public Group getAnimalSmellRef() {
+        return animalSmellRef;
+    }
+
+    public void setAnimalSmellRef(Group animalSmellRef) {
+        this.animalSmellRef = animalSmellRef;
+    }
+
+    public Group getAnimalStatsRef() {
+        return animalStatsRef;
+    }
+
+    public void setAnimalStatsRef(Group animalStatsRef) {
+        this.animalStatsRef = animalStatsRef;
+    }
+
+    public Group getAnimalLabelRef() {
+        return animalLabelRef;
+    }
+
+    public void setAnimalLabelRef(Group animalLabelRef) {
+        this.animalLabelRef = animalLabelRef;
+    }
+
+    public Group getAnimalTargetRef() {
+        return animalTargetRef;
+    }
+
+    public void setAnimalTargetRef(Group animalTargetRef) {
+        this.animalTargetRef = animalTargetRef;
+    }
+
+    public Group getAnimalHomeLocationRef() {
+        return animalHomeLocationRef;
+    }
+
+    public void setAnimalHomeLocationRef(Group animalHomeLocationRef) {
+        this.animalHomeLocationRef = animalHomeLocationRef;
     }
 }
 

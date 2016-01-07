@@ -34,7 +34,7 @@ public class FoodTree {
         setFoodGroup(foodGroup);
 
         // Set a food production rate
-        setFoodRate(2);//rand.nextInt(500) + 900);
+        setFoodRate(rand.nextInt(500) + 800);
     }
 
     //
@@ -87,8 +87,6 @@ public class FoodTree {
     public void setLeafCircle(Circle leafCircle) {
         this.leafCircle = leafCircle;
     }
-
-
 
     public ArrayList<Food> getFoodList() {
         return foodList;

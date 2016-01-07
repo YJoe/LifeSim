@@ -6,24 +6,22 @@ import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 
 public abstract class Shelter {
-    private int x, y, capacity, ID;
+    private int x, y, ID;
     private StatsBar statsBar;
     private Circle image;
     private Inventory foodInventory, waterInventory;
     protected ArrayList<Animal> shelteredAnimals = new ArrayList<>();
 
-    public Shelter(int x, int y, int capacity, int inventorySizeC, int inventorySizeS, int ID){
+    public Shelter(int x, int y, int inventorySizeC, int inventorySizeS, int ID){
         setX(x);
         setY(y);
-        setCapacity(capacity);
         setFoodInventory(new Inventory(inventorySizeC, inventorySizeS));
         setWaterInventory(new Inventory(inventorySizeC, inventorySizeS));
 
         // Create stats bar to display shelter information
-        setStatsBar(new StatsBar(x, y, 3));
+        setStatsBar(new StatsBar(x, y, 2));
         getStatsBar().getBar(0).setFill(Color.rgb(255, 100, 100));
         getStatsBar().getBar(1).setFill(Color.rgb(100, 100, 255));
-        getStatsBar().getBar(2).setFill(Color.rgb(100, 255, 100));
 
         // Create Circle for shelter
         setImage(new Circle(getX(), getY(), 30));
@@ -49,26 +47,6 @@ public abstract class Shelter {
         }
     }
 
-    public boolean checkRoom(){
-        if (shelteredAnimals.size() < getCapacity()){
-            return true;
-        }
-        return false;
-    }
-
-    public void addAnimal(Animal a){
-        shelteredAnimals.add(a);
-        System.out.println("An animal is here!");
-    }
-
-    public void removeAnimal(int ID){
-        for(int i = 0; i < shelteredAnimals.size(); i++){
-            if (ID == shelteredAnimals.get(i).getID()){
-                shelteredAnimals.remove(i);
-            }
-        }
-    }
-
     // Getters and setters
     public int getX(){
         return x;
@@ -82,13 +60,6 @@ public abstract class Shelter {
     }
     public void setY(int y){
         this.y = y;
-    }
-
-    public int getCapacity(){
-        return capacity;
-    }
-    public void setCapacity(int capacity){
-        this.capacity = capacity;
     }
 
     public Circle getImage(){
