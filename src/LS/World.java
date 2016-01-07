@@ -285,6 +285,13 @@ public class World {
                 }
             }
         }
+        for(Shelter shelter : shelterList){
+            if (Collision.overlapsEfficient(c1, shelter.getImage())){
+                if (Collision.overlapsAccurate(c1, shelter.getImage())){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
