@@ -56,7 +56,7 @@ public class FoodTree {
             f = new Fruit(rand.nextInt(xRange) + xMin, rand.nextInt(yRange) + yMin, World.trackFoodID);
         } while (   !Collision.overlapsAccurate(f.getImage(), getLeafCircle()) ||
                     Collision.overlapsAccurate(f.getImage(), getTreeTrunk().getImage()) ||
-                    collidesWithWater(f.getImage()));
+                    collidesWithWater(f.getImage()) || !isInScreen(f.getImage()));
         World.trackFoodID++;
         getFoodGroup().getChildren().add(f.getImage());
         foodList.add(f);
@@ -67,6 +67,14 @@ public class FoodTree {
             if (Collision.overlapsAccurate(c1, waterList.get(i).getCircle())){
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean isInScreen(Circle c1){
+        if(c1.getCenterX() < Main.SIZE_X && c1.getCenterX() > 0 &&
+                c1.getCenterY() < Main.SIZE_Y && c1.getCenterY() > 0){
+            return true;
         }
         return false;
     }
