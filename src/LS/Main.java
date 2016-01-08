@@ -26,10 +26,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         // Create root group
         Group root = new Group();
-        Scene scene = new Scene(root, SIZE_X, SIZE_Y, Color.rgb(255, 255, 255));
+        Scene scene = new Scene(root, SIZE_X, SIZE_Y + 50, Color.rgb(255, 255, 255));
 
         // Create world
-        int animalCount = 1;
+        int animalCount = 50;
         int foodCount = 0;
         int foodTrees = 20;
         int shelterCount = 3;
