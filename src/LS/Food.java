@@ -21,7 +21,7 @@ public abstract class Food {
         setY(yIn);
         setID(id);
         setDecay(0);
-        setDecayMax(new Random().nextInt(500) + 500);
+        setDecayMax(new Random().nextInt(1000) + 2000);
         setPoisonous(false);
     }
 

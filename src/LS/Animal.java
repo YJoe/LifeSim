@@ -31,6 +31,7 @@ public abstract class Animal {
     private int targetWaterID;
     private int waitInShelterTimer;
     private int poisonTime;
+    private int age;
     private boolean inShelter;
     private double speed, originalSpeed, dx, dy;
     private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, poisoned;
@@ -91,6 +92,9 @@ public abstract class Animal {
         // Set poison variables
         setPoisoned(false);
         setPoisonTime(0);
+
+        // Set age
+        setAge(0);
 
         // As all other attributes are determined by random variables based on the animal subclass, other
         // values are set in the constructor of said subclass after the super constructor is called
@@ -399,7 +403,7 @@ public abstract class Animal {
             if(getTargetFoodID() == foodList.get(i).getID()) {
                 if (foodList.get(i).isPoisonous()) {
                     setPoisoned(true);
-                    setPoisonTime(foodList.get(i).getDecay());
+                    setPoisonTime(foodList.get(i).getDecay()/4);
                     getFoodGroupRef().getChildren().remove(i);
                     foodList.remove(i);
                 } else {
@@ -1166,6 +1170,14 @@ public abstract class Animal {
 
     public void setPoisonTime(int poisonTime) {
         this.poisonTime = poisonTime;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
 

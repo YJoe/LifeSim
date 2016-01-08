@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public class World {
     private Random rand = new Random();
+    private int year;
+    private int day;
+    private int dayLength;
+    private int dayLengthCounter;
     public static int trackFoodID = 0;
     public static int trackAnimalID = 0;
     private int shelterID = 0;
@@ -36,6 +40,11 @@ public class World {
     // set up the world
     public World(Group root, int animals, int foodTrees, int food, int shelters, int obstacles, int pools){
         System.out.println("Creating world");
+        setDay(0);
+        setYear(0);
+        setDayLength(10);
+        setDayLengthCounter(0);
+
         root.getChildren().add(shelterGroup);
         root.getChildren().add(shelterStatsGroup);
         root.getChildren().add(waterGroup);
@@ -328,6 +337,8 @@ public class World {
 
     // run world
     public void update(){
+        updateClock();
+
         // call update for all animals
         for (int i = 0; i < animalList.size(); i++) {
             animalList.get(i).update();
@@ -350,6 +361,19 @@ public class World {
         // call update for all food
         for (Food food: foodList){
             food.update();
+        }
+    }
+
+    public void updateClock(){
+        setDayLengthCounter(getDayLengthCounter() + 1);
+        if (getDayLengthCounter() >= getDayLength()){
+            setDayLengthCounter(0);
+            setDay(getDay() + 1);
+            System.out.println("Date: D" + getDay() + " Y" + getYear());
+            if (getDay() > 365){
+                setDay(0);
+                setYear(getYear() + 1);
+            }
         }
     }
 
@@ -388,5 +412,37 @@ public class World {
 
     public void toggleAnimals(){
         animalGroup.setVisible(!animalGroup.isVisible());
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getDayLength() {
+        return dayLength;
+    }
+
+    public void setDayLength(int dayLength) {
+        this.dayLength = dayLength;
+    }
+
+    public int getDayLengthCounter() {
+        return dayLengthCounter;
+    }
+
+    public void setDayLengthCounter(int dayLengthCounter) {
+        this.dayLengthCounter = dayLengthCounter;
     }
 }

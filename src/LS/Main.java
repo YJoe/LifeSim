@@ -30,11 +30,11 @@ public class Main extends Application {
 
         // Create world
         int animalCount = 1;
-        int foodCount = 3;
-        int foodTrees = 1;
-        int shelterCount = 0;
+        int foodCount = 0;
+        int foodTrees = 20;
+        int shelterCount = 3;
         int obstacleCount = 0;
-        int poolCount = 1;
+        int poolCount = 2;
         World world = new World(root, animalCount, foodTrees, foodCount, shelterCount, obstacleCount, poolCount);
 
         //world.toggleSmellCircles();
