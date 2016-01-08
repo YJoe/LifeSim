@@ -346,6 +346,11 @@ public class World {
         for (FoodTree foodTree : foodTreeList){
             foodTree.update();
         }
+
+        // call update for all food
+        for (Food food: foodList){
+            food.update();
+        }
     }
 
     public void printRank(){

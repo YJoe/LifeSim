@@ -1,6 +1,9 @@
 package LS;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+
+import java.util.Random;
 
 public abstract class Food {
     private int x;
@@ -8,12 +11,29 @@ public abstract class Food {
     private int id;
     private int cal;
     private int size;
+    private int decay;
+    private int decayMax;
+    private boolean poisonous;
     private Circle image;
 
     public Food(int xIn, int yIn, int id){
         setX(xIn);
         setY(yIn);
         setID(id);
+        setDecay(0);
+        setDecayMax(new Random().nextInt(500) + 500);
+        setPoisonous(false);
+    }
+
+    public void update(){
+        if (!isPoisonous()) {
+            if (getDecay() > getDecayMax()) {
+                setPoisonous(true);
+                getImage().setFill(Color.rgb(0, 0, 0));
+            } else {
+                setDecay(getDecay() + 1);
+            }
+        }
     }
 
     public int getX() {
@@ -59,4 +79,27 @@ public abstract class Food {
         this.image = image;
     }
 
+    public int getDecay() {
+        return decay;
+    }
+
+    public void setDecay(int decay) {
+        this.decay = decay;
+    }
+
+    public boolean isPoisonous() {
+        return poisonous;
+    }
+
+    public void setPoisonous(boolean poisonous) {
+        this.poisonous = poisonous;
+    }
+
+    public int getDecayMax() {
+        return decayMax;
+    }
+
+    public void setDecayMax(int decayMax) {
+        this.decayMax = decayMax;
+    }
 }
