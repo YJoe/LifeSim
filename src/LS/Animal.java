@@ -30,9 +30,10 @@ public abstract class Animal {
     private int targetFoodID;
     private int targetWaterID;
     private int waitInShelterTimer;
+    private int poisonTime;
     private boolean inShelter;
     private double speed, originalSpeed, dx, dy;
-    private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, update;
+    private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, poisoned;
     private Target localTarget, mainTarget, homeTarget;
     private ArrayList<Animal> animalList = new ArrayList<>();
     private ArrayList<Food> foodList = new ArrayList<>();
@@ -83,8 +84,13 @@ public abstract class Animal {
         getText().setFont(Font.font ("Arial", 12));
         getText().setFill(Color.rgb(0, 200, 0));
 
+        // Set shelter variables
         setInShelter(false);
         setWaitAtHome(0);
+
+        // Set poison variables
+        setPoisoned(false);
+        setPoisonTime(0);
 
         // As all other attributes are determined by random variables based on the animal subclass, other
         // values are set in the constructor of said subclass after the super constructor is called
@@ -163,10 +169,26 @@ public abstract class Animal {
     }
 
     public void hungerEnergyWaterDecay(){
-        // add to hunger using metabolism higher metabolism means getting hungry quicker
-        setHunger(getHunger() + getMetabolism());
-        // do the same but make thirst grow slightly faster
-        setThirst(getThirst() + (float)(getMetabolism() * 1.3));
+        // when poisoned the animal's hunger and thirst will rise twice as quickly
+        if (isPoisoned()) {
+            // add to hunger using metabolism higher metabolism means getting hungry quicker
+            setHunger(getHunger() + (getMetabolism() * 2));
+            // do the same but make thirst grow slightly faster
+            setThirst(getThirst() + (float) ((getMetabolism() * 1.3) * 2));
+
+            // let the poison wear off
+            setPoisonTime(getPoisonTime() - 1);
+            if (getPoisonTime() <= 0){
+                setPoisonTime(0);
+                setPoisoned(false);
+            }
+        }
+        else {
+            // add to hunger using metabolism higher metabolism means getting hungry quicker
+            setHunger(getHunger() + getMetabolism());
+            // do the same but make thirst grow slightly faster
+            setThirst(getThirst() + (float) (getMetabolism() * 1.3));
+        }
 
         // if both fields are satisfied add to energy
         if (getThirst() < 10 && getHunger() < 10 && getEnergy() < 1000){
@@ -374,24 +396,32 @@ public abstract class Animal {
     public void storeFood(){
         setTargetingFood(false);
         for(int i = 0; i < foodList.size(); i++){
-            if(getTargetFoodID() == foodList.get(i).getID()){
-                if(foodInventory.getSlotMax() > foodList.get(i).getSize()){
-                    if (foodInventory.add(foodList.get(i).getSize())) {
-                        getFoodGroupRef().getChildren().remove(i);
-                        foodList.remove(i);
-                    }
-                } else{
-                    do {
-                        if (foodInventory.add(foodInventory.getSlotMax())){
-                            foodList.get(i).getImage().setRadius(foodList.get(i).getImage().getRadius() - foodInventory.getSlotMax());
+            if(getTargetFoodID() == foodList.get(i).getID()) {
+                if (foodList.get(i).isPoisonous()) {
+                    setPoisoned(true);
+                    setPoisonTime(foodList.get(i).getDecay());
+                    getFoodGroupRef().getChildren().remove(i);
+                    foodList.remove(i);
+                } else {
+                    if (foodInventory.getSlotMax() > foodList.get(i).getSize()) {
+                        if (foodInventory.add(foodList.get(i).getSize())) {
+                            getFoodGroupRef().getChildren().remove(i);
+                            foodList.remove(i);
                         }
-                    } while(foodInventory.size < foodInventory.getCapacity() && foodList.get(i).getImage().getRadius() > -1);
-                    if (foodList.get(i).getImage().getRadius() < 1){
-                        getFoodGroupRef().getChildren().remove(i);
-                        foodList.remove(i);
+                    } else {
+                        do {
+                            if (foodInventory.add(foodInventory.getSlotMax())) {
+                                foodList.get(i).getImage().setRadius(foodList.get(i).getImage().getRadius() - foodInventory.getSlotMax());
+                            }
+                        }
+                        while (foodInventory.size < foodInventory.getCapacity() && foodList.get(i).getImage().getRadius() > -1);
+                        if (foodList.get(i).getImage().getRadius() < 1) {
+                            getFoodGroupRef().getChildren().remove(i);
+                            foodList.remove(i);
+                        }
                     }
+                    break;
                 }
-                break;
             }
         }
     }
@@ -792,13 +822,6 @@ public abstract class Animal {
         this.gender = gender;
     }
 
-    public boolean shouldUpdate(){
-        return update;
-    }
-    public void setShouldUpdate(boolean update){
-        this.update = update;
-    }
-
     public Rectangle getHomeLocation(){
         return homeLocation;
     }
@@ -1127,6 +1150,22 @@ public abstract class Animal {
 
     public void setAnimalHomeLocationRef(Group animalHomeLocationRef) {
         this.animalHomeLocationRef = animalHomeLocationRef;
+    }
+
+    public boolean isPoisoned() {
+        return poisoned;
+    }
+
+    public void setPoisoned(boolean poisoned) {
+        this.poisoned = poisoned;
+    }
+
+    public int getPoisonTime() {
+        return poisonTime;
+    }
+
+    public void setPoisonTime(int poisonTime) {
+        this.poisonTime = poisonTime;
     }
 }
 
