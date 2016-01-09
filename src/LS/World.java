@@ -17,7 +17,7 @@ public class World {
     private int day;
     private int dayLength;
     private int dayLengthCounter;
-    private Text date;
+    private WorldStatsBar worldStatsBar;
     public static int trackFoodID = 0;
     public static int trackAnimalID = 0;
     private int shelterID = 0;
@@ -50,16 +50,6 @@ public class World {
         setDayLength(10);
         setDayLengthCounter(0);
 
-        Rectangle statsRect = new Rectangle(0, Main.SIZE_Y, Main.SIZE_X, 50);
-        statsRect.setFill(Color.rgb(50, 50, 50));
-
-        date = new Text(getDateString());
-        getDate().setFont(Font.font ("Verdana", 40));
-        getDate().setTranslateX(10);
-        getDate().setTranslateY(Main.SIZE_Y + 40);
-        getDate().setFill(Color.rgb(200, 200, 200));
-
-
         root.getChildren().add(shelterGroup);
         root.getChildren().add(shelterStatsGroup);
         root.getChildren().add(waterGroup);
@@ -73,8 +63,8 @@ public class World {
         root.getChildren().add(animalLabelGroup);
         root.getChildren().add(foodTreeTrunkGroup);
         root.getChildren().add(foodTreeLeafGroup);
-        root.getChildren().add(statsRect);
-        root.getChildren().add(date);
+
+        setWorldStatsBar(new WorldStatsBar(root));
 
         System.out.println("Creating pools");
         for(int i = 0; i < pools; i++){
@@ -386,7 +376,7 @@ public class World {
         if (getDayLengthCounter() >= getDayLength()){
             setDayLengthCounter(0);
             setDay(getDay() + 1);
-            setDate(getDateString());
+            getWorldStatsBar().setDateString(getDateString());
             if (getDay() > 365){
                 setDay(0);
                 setYear(getYear() + 1);
@@ -467,11 +457,11 @@ public class World {
         return ("Y" + getYear() + " D" + getDay());
     }
 
-    public Text getDate(){
-        return date;
+    public WorldStatsBar getWorldStatsBar() {
+        return worldStatsBar;
     }
 
-    public void setDate(String date) {
-        getDate().setText(date);
+    public void setWorldStatsBar(WorldStatsBar worldStatsBar) {
+        this.worldStatsBar = worldStatsBar;
     }
 }
