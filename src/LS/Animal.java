@@ -31,7 +31,7 @@ public abstract class Animal {
     private int targetWaterID;
     private int waitInShelterTimer;
     private int poisonTime;
-    private int age;
+    private int ageYear, ageDay, dayBorn, yearBorn;
     private boolean inShelter;
     private double speed, originalSpeed, dx, dy;
     private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, poisoned;
@@ -44,7 +44,7 @@ public abstract class Animal {
     public Inventory foodInventory, waterInventory;
 
     // Constructor
-    public Animal(String speciesIn, char symbolIn, int IDIn, int energyIn, int xIn, int yIn, Group food, Group animal, Group water){
+    public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn, Group food, Group animal, Group water){
         setSpecies(speciesIn); setSymbol(symbolIn); setID(IDIn); setEnergy(energyIn);
         setX(xIn); setY(yIn); setFoodGroupRef(food); setAnimalGroupRef(animal); setWaterGroupRef(water);
 
@@ -94,7 +94,8 @@ public abstract class Animal {
         setPoisonTime(0);
 
         // Set age
-        setAge(0);
+        setYearBorn(yearBorn);
+        setDayBorn(dayBorn);
 
         // As all other attributes are determined by random variables based on the animal subclass, other
         // values are set in the constructor of said subclass after the super constructor is called
@@ -395,6 +396,17 @@ public abstract class Animal {
     public void eatFood(){
         setHunger(getHunger() - foodInventory.getElement(0));
         foodInventory.remove(0);
+    }
+
+    public void solveAge(int year, int day){
+        int ageDay = day - getDayBorn();
+        int ageYear = year - getYearBorn();
+        if (ageDay < 0){
+            ageDay += 365;
+            ageYear -= 1;
+        }
+        setAgeYear(ageYear);
+        setAgeDay(ageDay);
     }
 
     public void storeFood(){
@@ -1172,12 +1184,36 @@ public abstract class Animal {
         this.poisonTime = poisonTime;
     }
 
-    public int getAge() {
-        return age;
+    public int getAgeDay() {
+        return ageDay;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setAgeDay(int ageDay) {
+        this.ageDay = ageDay;
+    }
+
+    public int getAgeYear() {
+        return ageYear;
+    }
+
+    public void setAgeYear(int ageYear) {
+        this.ageYear = ageYear;
+    }
+
+    public int getDayBorn() {
+        return dayBorn;
+    }
+
+    public void setDayBorn(int dayBorn) {
+        this.dayBorn = dayBorn;
+    }
+
+    public int getYearBorn() {
+        return yearBorn;
+    }
+
+    public void setYearBorn(int yearBorn) {
+        this.yearBorn = yearBorn;
     }
 }
 

@@ -110,7 +110,7 @@ public class World {
         Animal a;
         do {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
-            a = new Ant(x, y, trackAnimalID, foodGroup, animalGroup, waterGroup);
+            a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup);
         } while(overlapsAnything(a.getImage()));
         a.setAnimalList(animalList);
         a.setFoodList(foodList);
@@ -133,7 +133,7 @@ public class World {
     }
 
     public void addAnimal(int x, int y){
-        Animal a = new Ant(x, y, trackAnimalID, foodGroup, animalGroup, waterGroup);
+        Animal a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup);
         a.setAnimalList(animalList);
         a.setFoodList(foodList);
         a.setShelterList(shelterList);
@@ -351,6 +351,7 @@ public class World {
     public void update(){
         updateClock();
         updateStats();
+        ageAnimals();
 
         // call update for all animals
         for (int i = 0; i < animalList.size(); i++) {
@@ -387,6 +388,12 @@ public class World {
                 setDay(0);
                 setYear(getYear() + 1);
             }
+        }
+    }
+
+    public void ageAnimals(){
+        for(Animal animal : getAnimalList()){
+            animal.solveAge(getYear(), getDay());
         }
     }
 
