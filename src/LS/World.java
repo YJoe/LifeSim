@@ -65,6 +65,11 @@ public class World {
         root.getChildren().add(foodTreeLeafGroup);
 
         setWorldStatsBar(new WorldStatsBar(root));
+        getWorldStatsBar().setDateString(getDateString());
+        getWorldStatsBar().setAnimalCountString(animals);
+        getWorldStatsBar().setFoodCountString(food);
+        getWorldStatsBar().setShelterCountString(shelters);
+
 
         System.out.println("Creating pools");
         for(int i = 0; i < pools; i++){
@@ -345,6 +350,7 @@ public class World {
     // run world
     public void update(){
         updateClock();
+        updateStats();
 
         // call update for all animals
         for (int i = 0; i < animalList.size(); i++) {
@@ -382,6 +388,11 @@ public class World {
                 setYear(getYear() + 1);
             }
         }
+    }
+
+    public void updateStats(){
+        getWorldStatsBar().setAnimalCountString(getAnimalList().size());
+        getWorldStatsBar().setFoodCountString(getFoodList().size());
     }
 
     public void printRank(){
