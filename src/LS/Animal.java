@@ -33,6 +33,7 @@ public abstract class Animal {
     private int poisonTime;
     private int ageYear, ageDay, dayBorn, yearBorn;
     private boolean inShelter;
+    private int lastAge;
     private double speed, originalSpeed, dx, dy;
     private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, poisoned;
     private Target localTarget, mainTarget, homeTarget;
@@ -94,11 +95,9 @@ public abstract class Animal {
         setPoisonTime(0);
 
         // Set age
+        setLastAge(0);
         setYearBorn(yearBorn);
         setDayBorn(dayBorn);
-
-        // As all other attributes are determined by random variables based on the animal subclass, other
-        // values are set in the constructor of said subclass after the super constructor is called
     }
 
     // Main functions
@@ -117,6 +116,14 @@ public abstract class Animal {
             move();
             forget();
             hungerEnergyWaterDecay();
+        }
+        ageEvents();
+    }
+
+    public void ageEvents(){
+        if (getLastAge() != getAgeYear()) {
+            setLastAge(getAgeYear());
+            System.out.println("Happy Birthday " + getName() + "(" + getID() + ")! " + "Age " + getAgeYear());
         }
     }
 
@@ -1214,6 +1221,14 @@ public abstract class Animal {
 
     public void setYearBorn(int yearBorn) {
         this.yearBorn = yearBorn;
+    }
+
+    public int getLastAge() {
+        return lastAge;
+    }
+
+    public void setLastAge(int lastAge) {
+        this.lastAge = lastAge;
     }
 }
 

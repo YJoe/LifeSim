@@ -51,4 +51,20 @@ public class Ant extends Animal{
         // Create water inventory
         setWaterInventory(new Inventory(baseStrength + rand.nextInt(2), baseStrength + (rand.nextInt(2))));
     }
+
+    @Override
+    public void ageEvents(){
+        if (getLastAge() != getAgeYear()) {
+            setLastAge(getAgeYear());
+            System.out.println("Happy Birthday " + getName() + "(" + getID() + ")! " + "Age " + getAgeYear());
+            switch (getAgeYear()) {
+                case 1:
+                    setOriginalSpeed(getOriginalSpeed() / 2);
+                    break;
+                case 2:
+                    setEnergy(0);
+                    break;
+            }
+        }
+    }
 }

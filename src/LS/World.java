@@ -356,9 +356,8 @@ public class World {
         // call update for all animals
         for (int i = 0; i < animalList.size(); i++) {
             animalList.get(i).update();
-            if (animalList.get(i).getEnergy() < 0) {
+            if (animalList.get(i).getEnergy() <= 0) {
                 killAnimal(i);
-                System.out.println("Only " + animalList.size() + " remain :( !");
             }
         }
 
