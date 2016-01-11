@@ -12,6 +12,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -28,13 +29,17 @@ public class Main extends Application {
         Group root = new Group();
         Scene scene = new Scene(root, SIZE_X, SIZE_Y + 50, Color.rgb(255, 255, 255));
 
+        //FileChooser fileChooser = new FileChooser();
+        //fileChooser.setTitle("Open Resource File");
+        //fileChooser.showOpenDialog(primaryStage);
+
         // Create world
-        int animalCount = 1;
+        int animalCount = 200;
         int foodCount = 0;
-        int foodTrees = 0;
-        int shelterCount = 0;
+        int foodTrees = 50;
+        int shelterCount = 1;
         int obstacleCount = 0;
-        int poolCount = 0;
+        int poolCount = 1;
         World world = new World(root, animalCount, foodTrees, foodCount, shelterCount, obstacleCount, poolCount);
 
         //world.toggleSmellCircles();

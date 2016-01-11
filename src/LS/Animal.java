@@ -10,7 +10,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public abstract class Animal {
-    private Circle image, smellCircle, targetCircle;
+    private Circle image, smellCircle;
     private Text text;
     private StatsBar statsBar;
     private Rectangle targetLocation;
@@ -25,14 +25,14 @@ public abstract class Animal {
     private float hunger = 0;
     private float thirst = 0;
     private int id, x, y, energy, smellRange, turnAngle, pathDistance, foodSearchCoolDown, followMainCoolDown;
-    private int homeX, homeY, memory, memoryBiasX, memoryBiasY, waitAtHome, homeID;
+    private int homeX, homeY, memory, memoryBiasX, memoryBiasY, waitAtHome, homeID, breedTimer;
     private int lastAngle = new Random().nextInt(360);
     private int targetFoodID;
     private int targetWaterID;
     private int waitInShelterTimer;
     private int poisonTime;
     private int ageYear, ageDay, dayBorn, yearBorn;
-    private boolean inShelter;
+    private boolean inShelter, shouldBreed;
     private int lastAge;
     private double speed, originalSpeed, dx, dy;
     private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, poisoned;
@@ -123,7 +123,6 @@ public abstract class Animal {
     public void ageEvents(){
         if (getLastAge() != getAgeYear()) {
             setLastAge(getAgeYear());
-            System.out.println("Happy Birthday " + getName() + "(" + getID() + ")! " + "Age " + getAgeYear());
         }
     }
 
@@ -239,6 +238,7 @@ public abstract class Animal {
     public void target(){
         coolDownFood();
         coolDownFollowMain();
+        coolDownBreedTimer();
         if (hasMainTarget()) {
             checkCollideMainTarget();
             if (hasLocalTarget()) {
@@ -263,14 +263,17 @@ public abstract class Animal {
                     || foodInventory.getSize() == foodInventory.getCapacity()/2)){
                 targetHome();
             }
+            if (homeTarget != null && isShouldBreed() && getBreedTimer() == 0){
+                targetHome();
+            }
             if (homeTarget != null && getFollowMainCoolDown() == 0){
                 if (waterInventory.getSize() == 0 && getThirst() == 10){
-                    checkWater();
                     targetHome();
+                    checkWater();
                 }
                 if (foodInventory.getSize() == 0 && getHunger() == 10) {
-                    checkFood();
                     targetHome();
+                    checkFood();
                 }
             }
             if (hasLocalTarget()){
@@ -498,13 +501,39 @@ public abstract class Animal {
     }
 
     public void enterShelter(){
-        setWaitAtHome(100 + new Random().nextInt(500));
+        Random rand = new Random();
+        setWaitAtHome(100 + rand.nextInt(500));
         setInShelter(true);
         setSelfVisibility(false);
 
         for (int i = 0; i < shelterList.size(); i++) {
             if (shelterList.get(i).getID() == getHomeID()) {
                 setTargetingHome(false);
+                // Check if the opposite sex is in the shelter and is also the correct age
+                if (isShouldBreed()){
+                    setWaitInShelterTimer(10000 + rand.nextInt(500));
+                    for (Animal animal : getAnimalList()){
+                        if (animal.isInShelter()) {
+                            if (animal.getGender() != getGender()) {
+                                if (animal.isShouldBreed()) {
+                                    if (animal.getHomeID() == getHomeID()){
+                                        System.out.println("MAKE A BABY " + getAgeYear() + " " + getAgeDay());
+                                        if (rand.nextInt(2) == 1) {
+                                            animal.setShouldBreed(false);
+                                        }
+                                        if (rand.nextInt(2) == 1) {
+                                            setShouldBreed(false);
+                                        }
+                                        setBreedTimer(5000);
+                                        animal.setBreedTimer(5000);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+
                 // Drop all food/ water off
                 for (int j = 0; j < foodInventory.getSize(); j++) {
                     shelterList.get(i).getFoodInventory().add(foodInventory.getElement(j));
@@ -1229,6 +1258,30 @@ public abstract class Animal {
 
     public void setLastAge(int lastAge) {
         this.lastAge = lastAge;
+    }
+
+    public boolean isShouldBreed() {
+        return shouldBreed;
+    }
+
+    public void setShouldBreed(boolean shouldBreed) {
+        this.shouldBreed = shouldBreed;
+    }
+
+    public int getBreedTimer() {
+        return breedTimer;
+    }
+
+    public void setBreedTimer(int breedTimer) {
+        this.breedTimer = breedTimer;
+    }
+
+    public void coolDownBreedTimer(){
+        if (getBreedTimer() <= 0){
+            setBreedTimer(0);
+        } else {
+            setBreedTimer(getBreedTimer() - 1);
+        }
     }
 }
 

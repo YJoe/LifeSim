@@ -13,6 +13,7 @@ public class Ant extends Animal{
     private int baseSize = 3, baseTurnAngle = 30, baseStrength = 3, baseMemory = 10;
     private Color bodyColour = Color.rgb(50, 50, 50);
     private Color smellColour = Color.rgb(0, 100, 100);
+    private int maxAge = rand.nextInt(5) + 5, breedAge = 1, speedChangeAge = (maxAge / 2);
 
     public Ant(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup){
         super("Ant", 'A', id, dayBorn, yearBorn, 2000, x, y, foodGroup, animalGroup, waterGroup);
@@ -50,20 +51,22 @@ public class Ant extends Animal{
 
         // Create water inventory
         setWaterInventory(new Inventory(baseStrength + rand.nextInt(2), baseStrength + (rand.nextInt(2))));
+
     }
 
     @Override
     public void ageEvents(){
         if (getLastAge() != getAgeYear()) {
             setLastAge(getAgeYear());
-            System.out.println("Happy Birthday " + getName() + "(" + getID() + ")! " + "Age " + getAgeYear());
-            switch (getAgeYear()) {
-                case 1:
-                    setOriginalSpeed(getOriginalSpeed() / 2);
-                    break;
-                case 2:
-                    setEnergy(0);
-                    break;
+            if (getAgeYear() == speedChangeAge){
+                System.out.println("SpeedChanged");
+                setOriginalSpeed(getOriginalSpeed() / 2);
+            }
+            if (getAgeYear() == breedAge){
+                setShouldBreed(true);
+            }
+            if (getAgeYear() == maxAge){
+                setEnergy(0);
             }
         }
     }
