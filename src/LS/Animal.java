@@ -255,6 +255,13 @@ public abstract class Animal {
             if (!hasLocalTarget()){
                 getRandomLocalTarget();
             }
+            if (homeTarget != null && (waterInventory.getSize() == waterInventory.getCapacity()/2
+                    || foodInventory.getSize() == foodInventory.getCapacity()/2)){
+                targetHome();
+            }
+            if (homeTarget != null && isShouldBreed() && getBreedTimer() == 0){
+                targetHome();
+            }
             if (!isTargetFood() && getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
                 checkFood();
             }
@@ -263,13 +270,6 @@ public abstract class Animal {
             }
             if (homeTarget == null){
                 checkShelters();
-            }
-            if (homeTarget != null && (waterInventory.getSize() == waterInventory.getCapacity()/2
-                    || foodInventory.getSize() == foodInventory.getCapacity()/2)){
-                targetHome();
-            }
-            if (homeTarget != null && isShouldBreed() && getBreedTimer() == 0){
-                targetHome();
             }
             if (homeTarget != null && getFollowMainCoolDown() == 0){
                 if (waterInventory.getSize() == 0 && getThirst() == 10){
@@ -534,6 +534,8 @@ public abstract class Animal {
                             }
                         }
                     }
+                    setShouldBreed(false);
+                    setBreedTimer(5000);
                 }
 
 
@@ -544,8 +546,13 @@ public abstract class Animal {
                 for (int j = 0; j < waterInventory.getSize(); j++) {
                     getShelterList().get(i).getWaterInventory().add(waterInventory.getElement(j));
                 }
-                foodInventory.empty();
-                waterInventory.empty();
+
+                if (getShelterList().get(i).getFoodInventory().getSize() < getShelterList().get(i).getFoodInventory().getCapacity()) {
+                    foodInventory.empty();
+                }
+                if (getShelterList().get(i).getWaterInventory().getSize() < getShelterList().get(i).getWaterInventory().getCapacity()) {
+                    waterInventory.empty();
+                }
 
                 // take some food and/or water
                 if (waterInventory.getSize() == 0 && getThirst() >= 10) {
