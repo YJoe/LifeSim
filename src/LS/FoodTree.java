@@ -9,13 +9,14 @@ import java.util.Random;
 public class FoodTree {
     private Circle leafCircle;
     private TreeTrunk treeTrunk;
+    private ArrayList<FoodTree> treeList;
     private ArrayList<Food> foodList;
     private ArrayList<Water> waterList;
     private Group foodGroup;
     private int foodRate;
     private Random rand = new Random();
 
-    public FoodTree(int x, int y, ArrayList<Food> foodList, Group foodGroup, ArrayList<Water> waterList){
+    public FoodTree(int x, int y, ArrayList<Food> foodList, Group foodGroup, ArrayList<Water> waterList, ArrayList<FoodTree> trees){
         // Create leaf circle
         setLeafCircle(new Circle(x, y, rand.nextInt(60) + 70));
         getLeafCircle().setFill(Color.rgb(0, 200, 0));
@@ -29,6 +30,9 @@ public class FoodTree {
 
         // Set food list reference
         setFoodList(foodList);
+
+        // Set foodTree list reference
+        setTreeList(trees);
 
         // Set food group reference
         setFoodGroup(foodGroup);
@@ -56,7 +60,8 @@ public class FoodTree {
             f = new Fruit(rand.nextInt(xRange) + xMin, rand.nextInt(yRange) + yMin, World.trackFoodID);
         } while (   !Collision.overlapsAccurate(f.getImage(), getLeafCircle()) ||
                     Collision.overlapsAccurate(f.getImage(), getTreeTrunk().getImage()) ||
-                    collidesWithWater(f.getImage()) || !isInScreen(f.getImage()));
+                    collidesWithWater(f.getImage()) || !isInScreen(f.getImage()) ||
+                    isCollidingWithTrunk(f.getImage()));
         World.trackFoodID++;
         getFoodGroup().getChildren().add(f.getImage());
         foodList.add(f);
@@ -75,6 +80,17 @@ public class FoodTree {
         if(c1.getCenterX() < Main.SIZE_X && c1.getCenterX() > 0 &&
                 c1.getCenterY() < Main.SIZE_Y && c1.getCenterY() > 0){
             return true;
+        }
+        return false;
+    }
+
+    public boolean isCollidingWithTrunk(Circle c1){
+        for(FoodTree foodTree : treeList){
+            if (Collision.overlapsEfficient(c1, foodTree.getTreeTrunk().getImage())){
+                if (Collision.overlapsAccurate(c1, foodTree.getTreeTrunk().getImage())){
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -126,5 +142,13 @@ public class FoodTree {
 
     public void setTreeTrunk(TreeTrunk treeTrunk) {
         this.treeTrunk = treeTrunk;
+    }
+
+    public ArrayList<FoodTree> getTreeList() {
+        return treeList;
+    }
+
+    public void setTreeList(ArrayList<FoodTree> treeList) {
+        this.treeList = treeList;
     }
 }

@@ -177,7 +177,7 @@ public class World {
         int x, y;
         FoodTree f;
         do {
-            f = new FoodTree(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y), foodList, foodGroup, waterList);
+            f = new FoodTree(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y), foodList, foodGroup, waterList, foodTreeList);
         } while(overlapsAnything(f.getTreeTrunk().getImage()));
         foodTreeList.add(f);
         foodTreeLeafGroup.getChildren().add(f.getLeafCircle());
@@ -188,7 +188,7 @@ public class World {
     }
 
     public void addFoodTree(int x, int y){
-        FoodTree f = new FoodTree(x, y, foodList, foodGroup, waterList);
+        FoodTree f = new FoodTree(x, y, foodList, foodGroup, waterList, foodTreeList);
         foodTreeList.add(f);
         foodTreeLeafGroup.getChildren().add(f.getLeafCircle());
         obstacleList.add(f.getTreeTrunk());
