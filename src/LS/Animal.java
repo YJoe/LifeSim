@@ -10,6 +10,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public abstract class Animal {
+    private World worldRef;
     private Circle image, smellCircle;
     private Text text;
     private StatsBar statsBar;
@@ -34,6 +35,7 @@ public abstract class Animal {
     private int ageYear, ageDay, dayBorn, yearBorn;
     private boolean inShelter, shouldBreed;
     private int lastAge;
+    private int strength;
     private double speed, originalSpeed, dx, dy;
     private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, poisoned;
     private Target localTarget, mainTarget, homeTarget;
@@ -45,7 +47,7 @@ public abstract class Animal {
     public Inventory foodInventory, waterInventory;
 
     // Constructor
-    public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn, Group food, Group animal, Group water){
+    public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn, Group food, Group animal, Group water, World worldRef){
         setSpecies(speciesIn); setSymbol(symbolIn); setID(IDIn); setEnergy(energyIn);
         setX(xIn); setY(yIn); setFoodGroupRef(food); setAnimalGroupRef(animal); setWaterGroupRef(water);
 
@@ -98,6 +100,9 @@ public abstract class Animal {
         setLastAge(0);
         setYearBorn(yearBorn);
         setDayBorn(dayBorn);
+
+        // Set world ref
+        setWorldRef(worldRef);
     }
 
     // Main functions
@@ -349,7 +354,7 @@ public abstract class Animal {
     }
 
     public boolean foodIsStillThere(){
-        for(Food food : foodList){
+        for(Food food : getFoodList()){
             if (food.getID() == targetFoodID){
                 return true;
             }
@@ -392,7 +397,7 @@ public abstract class Animal {
     }
 
     public void checkFood(){
-        for(Food food : foodList){
+        for(Food food : getFoodList()){
             if (Collision.overlapsEfficient(this.getSmellCircle(), food.getImage())) {
                 if (Collision.overlapsAccurate(this.getSmellCircle(), food.getImage())) {
                     setTargetingFood(true);
@@ -421,29 +426,29 @@ public abstract class Animal {
 
     public void storeFood(){
         setTargetingFood(false);
-        for(int i = 0; i < foodList.size(); i++){
-            if(getTargetFoodID() == foodList.get(i).getID()) {
-                if (foodList.get(i).isPoisonous()) {
+        for(int i = 0; i < getFoodList().size(); i++){
+            if(getTargetFoodID() == getFoodList().get(i).getID()) {
+                if (getFoodList().get(i).isPoisonous()) {
                     setPoisoned(true);
-                    setPoisonTime(foodList.get(i).getDecay()/4);
+                    setPoisonTime(getFoodList().get(i).getDecay()/4);
                     getFoodGroupRef().getChildren().remove(i);
-                    foodList.remove(i);
+                    getFoodList().remove(i);
                 } else {
-                    if (foodInventory.getSlotMax() > foodList.get(i).getSize()) {
-                        if (foodInventory.add(foodList.get(i).getSize())) {
+                    if (foodInventory.getSlotMax() > getFoodList().get(i).getSize()) {
+                        if (foodInventory.add(getFoodList().get(i).getSize())) {
                             getFoodGroupRef().getChildren().remove(i);
-                            foodList.remove(i);
+                            getFoodList().remove(i);
                         }
                     } else {
                         do {
                             if (foodInventory.add(foodInventory.getSlotMax())) {
-                                foodList.get(i).getImage().setRadius(foodList.get(i).getImage().getRadius() - foodInventory.getSlotMax());
+                                getFoodList().get(i).getImage().setRadius(getFoodList().get(i).getImage().getRadius() - foodInventory.getSlotMax());
                             }
                         }
-                        while (foodInventory.size < foodInventory.getCapacity() && foodList.get(i).getImage().getRadius() > -1);
-                        if (foodList.get(i).getImage().getRadius() < 1) {
+                        while (foodInventory.size < foodInventory.getCapacity() && getFoodList().get(i).getImage().getRadius() > -1);
+                        if (getFoodList().get(i).getImage().getRadius() < 1) {
                             getFoodGroupRef().getChildren().remove(i);
-                            foodList.remove(i);
+                            getFoodList().remove(i);
                         }
                     }
                     break;
@@ -467,7 +472,7 @@ public abstract class Animal {
     }
 
     public void checkWater(){
-        for (Water water : waterList){
+        for (Water water : getWaterList()){
             if (Collision.overlapsEfficient(this.getSmellCircle(), water.getCircle())) {
                 if (Collision.overlapsAccurate(this.getSmellCircle(), water.getCircle())) {
                     setTargetingWater(true);
@@ -490,10 +495,10 @@ public abstract class Animal {
     }
 
     public void checkShelters(){
-        for(int i = 0; i < shelterList.size(); i++){
-            if(Collision.overlapsEfficient(getSmellCircle(), shelterList.get(i).getImage())) {
-                if (Collision.overlapsAccurate(getSmellCircle(), shelterList.get(i).getImage())) {
-                    setHome(new Target(shelterList.get(i).getX(), shelterList.get(i).getY()), shelterList.get(i).getID());
+        for(int i = 0; i < getShelterList().size(); i++){
+            if(Collision.overlapsEfficient(getSmellCircle(), getShelterList().get(i).getImage())) {
+                if (Collision.overlapsAccurate(getSmellCircle(), getShelterList().get(i).getImage())) {
+                    setHome(new Target(getShelterList().get(i).getX(), getShelterList().get(i).getY()), getShelterList().get(i).getID());
                     break;
                 }
             }
@@ -506,8 +511,8 @@ public abstract class Animal {
         setInShelter(true);
         setSelfVisibility(false);
 
-        for (int i = 0; i < shelterList.size(); i++) {
-            if (shelterList.get(i).getID() == getHomeID()) {
+        for (int i = 0; i < getShelterList().size(); i++) {
+            if (getShelterList().get(i).getID() == getHomeID()) {
                 setTargetingHome(false);
                 // Check if the opposite sex is in the shelter and is also the correct age
                 if (isShouldBreed()){
@@ -517,15 +522,13 @@ public abstract class Animal {
                             if (animal.getGender() != getGender()) {
                                 if (animal.isShouldBreed()) {
                                     if (animal.getHomeID() == getHomeID()){
-                                        System.out.println("MAKE A BABY " + getAgeYear() + " " + getAgeDay());
-                                        if (rand.nextInt(2) == 1) {
-                                            animal.setShouldBreed(false);
-                                        }
-                                        if (rand.nextInt(2) == 1) {
-                                            setShouldBreed(false);
-                                        }
+                                        animal.setShouldBreed(false);
+                                        setShouldBreed(false);
+                                        createBaby(animal);
+                                        System.out.println(getAnimalList().get(getAnimalList().size() - 1).getName() + " was just born");
                                         setBreedTimer(5000);
                                         animal.setBreedTimer(5000);
+                                        break;
                                     }
                                 }
                             }
@@ -536,10 +539,10 @@ public abstract class Animal {
 
                 // Drop all food/ water off
                 for (int j = 0; j < foodInventory.getSize(); j++) {
-                    shelterList.get(i).getFoodInventory().add(foodInventory.getElement(j));
+                    getShelterList().get(i).getFoodInventory().add(foodInventory.getElement(j));
                 }
                 for (int j = 0; j < waterInventory.getSize(); j++) {
-                    shelterList.get(i).getWaterInventory().add(waterInventory.getElement(j));
+                    getShelterList().get(i).getWaterInventory().add(waterInventory.getElement(j));
                 }
                 foodInventory.empty();
                 waterInventory.empty();
@@ -548,26 +551,26 @@ public abstract class Animal {
                 if (waterInventory.getSize() == 0 && getThirst() >= 10) {
                     setFollowMainCoolDown(1000);
                     for (int j = 0; j < getWaterInventory().getCapacity() / 2; j++) {
-                        if (shelterList.get(i).getWaterInventory().getSize() > 1) {
-                            if (shelterList.get(i).getWaterInventory().getElement(0) > getWaterInventory().getSlotMax()) {
+                        if (getShelterList().get(i).getWaterInventory().getSize() > 1) {
+                            if (getShelterList().get(i).getWaterInventory().getElement(0) > getWaterInventory().getSlotMax()) {
                                 getWaterInventory().add(getWaterInventory().getSlotMax());
                             } else {
-                                getWaterInventory().add(shelterList.get(i).getWaterInventory().getElement(0));
+                                getWaterInventory().add(getShelterList().get(i).getWaterInventory().getElement(0));
                             }
-                            shelterList.get(i).getWaterInventory().remove(0);
+                            getShelterList().get(i).getWaterInventory().remove(0);
                         }
                     }
                 }
                 if (foodInventory.getSize() == 0 && getHunger() >= 10) {
                     setFollowMainCoolDown(1000);
                     for (int j = 0; j < getFoodInventory().getCapacity() / 2; j++) {
-                        if (shelterList.get(i).getFoodInventory().getSize() > 1) {
-                            if (shelterList.get(i).getFoodInventory().getElement(0) > getFoodInventory().getSlotMax()) {
+                        if (getShelterList().get(i).getFoodInventory().getSize() > 1) {
+                            if (getShelterList().get(i).getFoodInventory().getElement(0) > getFoodInventory().getSlotMax()) {
                                 getFoodInventory().add(getFoodInventory().getSlotMax());
                             } else {
-                                getFoodInventory().add(shelterList.get(i).getFoodInventory().getElement(0));
+                                getFoodInventory().add(getShelterList().get(i).getFoodInventory().getElement(0));
                             }
-                            shelterList.get(i).getFoodInventory().remove(0);
+                            getShelterList().get(i).getFoodInventory().remove(0);
                         }
                     }
                 }
@@ -649,12 +652,12 @@ public abstract class Animal {
     }
 
     public boolean checkMove(int posX, int posY){
-        for(int i = 0; i < obstacleList.size(); i++){
-            if(obstacleList.get(i).getX() - (getImage().getRadius() + obstacleList.get(i).getImage().getRadius()) < posX &&
-                    posX < obstacleList.get(i).getX() + (getImage().getRadius() + obstacleList.get(i).getImage().getRadius()) &&
-                    obstacleList.get(i).getY() - (getImage().getRadius() + obstacleList.get(i).getImage().getRadius()) < posY &&
-                    posY < obstacleList.get(i).getY() + (getImage().getRadius() + obstacleList.get(i).getImage().getRadius())){
-                if (Collision.overlapsAccurate(obstacleList.get(i).getImage(), new Circle(posX, posY, getSize()))) {
+        for(int i = 0; i < getObstacleList().size(); i++){
+            if(getObstacleList().get(i).getX() - (getImage().getRadius() + getObstacleList().get(i).getImage().getRadius()) < posX &&
+                    posX < getObstacleList().get(i).getX() + (getImage().getRadius() + getObstacleList().get(i).getImage().getRadius()) &&
+                    getObstacleList().get(i).getY() - (getImage().getRadius() + getObstacleList().get(i).getImage().getRadius()) < posY &&
+                    posY < getObstacleList().get(i).getY() + (getImage().getRadius() + getObstacleList().get(i).getImage().getRadius())){
+                if (Collision.overlapsAccurate(getObstacleList().get(i).getImage(), new Circle(posX, posY, getSize()))) {
                     return false;
                 }
             }
@@ -686,7 +689,10 @@ public abstract class Animal {
         getAnimalStatsRef().getChildren().get(index).setVisible(visibility);
         getAnimalTargetRef().getChildren().get(index).setVisible(visibility);
         getAnimalLabelRef().getChildren().get(index).setVisible(visibility);
+    }
 
+    public void createBaby(Animal animal){
+        return;
     }
 
     // SELF GET/SET FUNCTIONS
@@ -1282,6 +1288,38 @@ public abstract class Animal {
         } else {
             setBreedTimer(getBreedTimer() - 1);
         }
+    }
+
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public World getWorldRef() {
+        return worldRef;
+    }
+
+    public void setWorldRef(World worldRef) {
+        this.worldRef = worldRef;
+    }
+
+    public ArrayList<Food> getFoodList() {
+        return foodList;
+    }
+
+    public ArrayList<Water> getWaterList() {
+        return waterList;
+    }
+
+    public ArrayList<Shelter> getShelterList() {
+        return shelterList;
+    }
+
+    public ArrayList<Obstacle> getObstacleList() {
+        return obstacleList;
     }
 }
 

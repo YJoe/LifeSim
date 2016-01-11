@@ -110,7 +110,7 @@ public class World {
         Animal a;
         do {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
-            a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup);
+            a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this);
         } while(overlapsAnything(a.getImage()));
         a.setAnimalList(animalList);
         a.setFoodList(foodList);
@@ -133,7 +133,7 @@ public class World {
     }
 
     public void addAnimal(int x, int y){
-        Animal a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup);
+        Animal a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this);
         a.setAnimalList(animalList);
         a.setFoodList(foodList);
         a.setShelterList(shelterList);

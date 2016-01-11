@@ -34,13 +34,18 @@ public class Main extends Application {
         //fileChooser.showOpenDialog(primaryStage);
 
         // Create world
-        int animalCount = 200;
+        int animalCount = 2;
         int foodCount = 0;
         int foodTrees = 50;
         int shelterCount = 1;
         int obstacleCount = 0;
         int poolCount = 1;
         World world = new World(root, animalCount, foodTrees, foodCount, shelterCount, obstacleCount, poolCount);
+        world.getAnimalList().get(0).setHome(new Target(world.getShelterList().get(0).getX(), world.getShelterList().get(0).getY()), world.getShelterList().get(0).getID());
+        world.getAnimalList().get(0).setGender('M');
+        world.getAnimalList().get(1).setHome(new Target(world.getShelterList().get(0).getX(), world.getShelterList().get(0).getY()), world.getShelterList().get(0).getID());
+        world.getAnimalList().get(1).setGender('F');
+
 
         //world.toggleSmellCircles();
         //world.toggleTargetSquares();
