@@ -513,6 +513,7 @@ public abstract class Animal {
 
         for (int i = 0; i < getShelterList().size(); i++) {
             if (getShelterList().get(i).getID() == getHomeID()) {
+                setFollowMainCoolDown(1000);
                 setTargetingHome(false);
                 // Check if the opposite sex is in the shelter and is also the correct age
                 if (isShouldBreed()){
@@ -534,7 +535,6 @@ public abstract class Animal {
                             }
                         }
                     }
-                    setShouldBreed(false);
                     setBreedTimer(5000);
                 }
 
@@ -581,6 +581,7 @@ public abstract class Animal {
                         }
                     }
                 }
+                break;
             }
         }
     }
