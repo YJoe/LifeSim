@@ -37,7 +37,7 @@ public abstract class Animal {
     private int lastAge;
     private int strength;
     private double speed, originalSpeed, dx, dy;
-    private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, poisoned;
+    private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, targetingAnimal, poisoned;
     private Target localTarget, mainTarget, homeTarget;
     private ArrayList<Animal> animalList = new ArrayList<>();
     private ArrayList<Food> foodList = new ArrayList<>();
@@ -103,6 +103,9 @@ public abstract class Animal {
 
         // Set world ref
         setWorldRef(worldRef);
+
+        // Set targeting animal default
+        setTargetingAnimal(false);
     }
 
     // Main functions
@@ -255,14 +258,7 @@ public abstract class Animal {
             if (!hasLocalTarget()){
                 getRandomLocalTarget();
             }
-            if (homeTarget != null && (waterInventory.getSize() == waterInventory.getCapacity()/2
-                    || foodInventory.getSize() == foodInventory.getCapacity()/2)){
-                targetHome();
-            }
-            if (homeTarget != null && isShouldBreed() && getBreedTimer() == 0){
-                targetHome();
-            }
-            if (!isTargetFood() && getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
+            if ((!isTargetFood() || !isTargetingAnimal()) && getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
                 checkFood();
             }
             if (!isTargetingWater() && waterInventory.getSize() < waterInventory.getCapacity()){
@@ -270,6 +266,13 @@ public abstract class Animal {
             }
             if (homeTarget == null){
                 checkShelters();
+            }
+            if (homeTarget != null && (waterInventory.getSize() == waterInventory.getCapacity()/2
+                    || foodInventory.getSize() == foodInventory.getCapacity()/2)){
+                targetHome();
+            }
+            if (homeTarget != null && isShouldBreed() && getBreedTimer() == 0){
+                targetHome();
             }
             if (homeTarget != null && getFollowMainCoolDown() == 0){
                 if (waterInventory.getSize() == 0 && getThirst() == 10){
@@ -362,6 +365,40 @@ public abstract class Animal {
         return false;
     }
 
+    public boolean animalStillThere(){
+        for(Animal animal : getAnimalList()){
+            if (animal.getID() == targetFoodID){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void fightAnimal() {
+        if (getEnergy() > 0) {
+            for (Animal animal : animalList) {
+                if (animal.getID() == getTargetFoodID()) {
+                    if (animal.getStrength() < getStrength()) {
+                        // essentially kill the animal
+                        animal.setEnergy(-10);
+                    } else {
+                        if (animal.getStrength() == getStrength()) {
+                            if (new Random().nextInt(2) == 1) {
+                                animal.setEnergy(-10);
+                            }
+                            else {
+                                setEnergy(-10);
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        removeLocalTarget();
+        setTargetingAnimal(false);
+    }
+
     public void checkCollideLocalTarget(){
         // check the food is still there to collide with
         if (isTargetFood()) {
@@ -369,13 +406,23 @@ public abstract class Animal {
                 removeLocalTarget();
             }
         }
+        if (isTargetingAnimal()){
+            if (!animalStillThere()){
+                removeLocalTarget();
+                setTargetingAnimal(false);
+            }
+        }
         if (Collision.overlapsEfficient(getImage(), getLocalTarget().getCircle())) {
             if (Collision.overlapsAccurate(getImage(), getLocalTarget().getCircle())) {
-                if (isTargetFood()) {
-                    storeFood();
+                if (isTargetingAnimal()){
+                    fightAnimal();
                 } else {
-                    if (isTargetingWater()) {
-                        storeWater();
+                    if (isTargetFood()) {
+                        storeFood();
+                    } else {
+                        if (isTargetingWater()) {
+                            storeWater();
+                        }
                     }
                 }
                 removeLocalTarget();
@@ -513,7 +560,6 @@ public abstract class Animal {
 
         for (int i = 0; i < getShelterList().size(); i++) {
             if (getShelterList().get(i).getID() == getHomeID()) {
-                setFollowMainCoolDown(1000);
                 setTargetingHome(false);
                 // Check if the opposite sex is in the shelter and is also the correct age
                 if (isShouldBreed()){
@@ -535,6 +581,7 @@ public abstract class Animal {
                             }
                         }
                     }
+                    setShouldBreed(false);
                     setBreedTimer(5000);
                 }
 
@@ -550,7 +597,7 @@ public abstract class Animal {
                 if (getShelterList().get(i).getFoodInventory().getSize() < getShelterList().get(i).getFoodInventory().getCapacity()) {
                     foodInventory.empty();
                 }
-                if (getShelterList().get(i).getWaterInventory().getSize() < getShelterList().get(i).getWaterInventory().getCapacity()) {
+                if (getShelterList().get(i).getWaterInventory().getSize() < getShelterList().get(i).getFoodInventory().getCapacity()) {
                     waterInventory.empty();
                 }
 
@@ -581,7 +628,6 @@ public abstract class Animal {
                         }
                     }
                 }
-                break;
             }
         }
     }
@@ -1328,6 +1374,14 @@ public abstract class Animal {
 
     public ArrayList<Obstacle> getObstacleList() {
         return obstacleList;
+    }
+
+    public boolean isTargetingAnimal() {
+        return targetingAnimal;
+    }
+
+    public void setTargetingAnimal(boolean targetingAnimal) {
+        this.targetingAnimal = targetingAnimal;
     }
 }
 

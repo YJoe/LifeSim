@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Ant extends Animal{
@@ -147,5 +148,21 @@ public class Ant extends Animal{
         getAnimalStatsRef().getChildren().add(a.getStatsBar().getGroup());
         getAnimalHomeLocationRef().getChildren().add(a.getHomeLocation());
         getAnimalLabelRef().getChildren().add(a.getText());
+    }
+
+    public void checkFood(){
+        for(Animal animal : getAnimalList()){
+            if (animal.getID() != getID()) {
+                if (Collision.overlapsEfficient(this.getSmellCircle(), animal.getImage())) {
+                    if (Collision.overlapsAccurate(this.getSmellCircle(), animal.getImage())) {
+                        setTargetingAnimal(true);
+                        setTargetFoodID(animal.getID());
+                        setLocalTarget(animal.getImage());
+                    }
+                }
+                break;
+            }
+        }
+        super.checkFood();
     }
 }
