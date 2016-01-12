@@ -397,7 +397,9 @@ public abstract class Animal {
     public boolean animalStillThere(){
         for(Animal animal : getAnimalList()){
             if (animal.getID() == targetFoodID){
-                return true;
+                if (Collision.overlapsEfficient(animal.getImage(), getSmellCircle())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -561,15 +563,7 @@ public abstract class Animal {
     }
 
     public void checkShelters(){
-        for(int i = 0; i < getShelterList().size(); i++){
-            System.out.println(getShelterList().get(i).getType());
-            if (Collision.overlapsEfficient(getSmellCircle(), getShelterList().get(i).getImage())) {
-                if (Collision.overlapsAccurate(getSmellCircle(), getShelterList().get(i).getImage())) {
-                    setHome(new Target(getShelterList().get(i).getX(), getShelterList().get(i).getY()), getShelterList().get(i).getID());
-                    break;
-                }
-            }
-        }
+        System.out.println("! no override found in " + getSpecies() + " !");
     }
 
     public void enterShelter(){

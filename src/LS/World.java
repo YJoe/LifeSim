@@ -43,7 +43,7 @@ public class World {
     private Group foodTreeTrunkGroup = new Group();
 
     // set up the world
-    public World(Group root, int animals, int foodTrees, int food, int shelters, int obstacles, int pools){
+    public World(Group root, int ants, int lizards, int foodTrees, int food, int shelters, int obstacles, int pools){
         System.out.println("Creating world");
         setDay(0);
         setYear(0);
@@ -66,7 +66,7 @@ public class World {
 
         setWorldStatsBar(new WorldStatsBar(root));
         getWorldStatsBar().setDateString(getDateString());
-        getWorldStatsBar().setAnimalCountString(animals);
+        getWorldStatsBar().setAnimalCountString(ants + lizards);
         getWorldStatsBar().setFoodCountString(food);
         getWorldStatsBar().setShelterCountString(shelters);
 
@@ -87,9 +87,15 @@ public class World {
             System.out.println(i+1 + "/" + shelters);
         }
         System.out.println("Creating animals");
-        for(int i = 0; i < animals; i++) {
+        System.out.println("\tCreating ants");
+        for(int i = 0; i < ants; i++) {
             addRandomAnimal("Ant");
-            System.out.println(i+1 + "/" + animals);
+            System.out.println("\t" + i+1 + "/" + ants);
+        }
+        System.out.println("\tCreating lizards");
+        for(int i = 0; i < lizards; i++){
+            addRandomAnimal("Lizard");
+            System.out.println("\t" + i+1 + "/" + lizards);
         }
         System.out.println("Creating food");
         for(int i = 0; i < food; i++){
@@ -115,6 +121,16 @@ public class World {
                         animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
             } while (overlapsAnything(a.getImage()));
             a.addSelfToLists();
+        } else {
+            if (type.equals("Lizard")) {
+                do {
+                    int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
+                    a = new Lizard(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
+                            animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
+                            animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
+                } while (overlapsAnything(a.getImage()));
+                a.addSelfToLists();
+            }
         }
         trackAnimalID++;
     }
