@@ -327,6 +327,7 @@ public class World {
         animalTargetGroup.getChildren().remove(i);
         animalStatsGroup.getChildren().remove(i);
         animalLabelGroup.getChildren().remove(i);
+        System.out.println("Animal " + animalList.get(i).getID() + " died");
         animalList.remove(i);
     }
 
@@ -356,8 +357,12 @@ public class World {
         // call update for all animals
         for (int i = 0; i < animalList.size(); i++) {
             animalList.get(i).update();
-            if (animalList.get(i).getEnergy() <= 0) {
-                killAnimal(i);
+            for(int j = 0; j < animalList.size(); j++){
+                if (animalList.get(j).getEnergy() <= 0) {
+                    killAnimal(j);
+                    j--;
+                    i--;
+                }
             }
         }
 

@@ -17,7 +17,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Main extends Application {
-    public static int SIZE_X = 1000, SIZE_Y = 600;
+    //public static int SIZE_X = 1000, SIZE_Y = 600;
+    public static int SIZE_X = 300, SIZE_Y = 200;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -29,23 +31,26 @@ public class Main extends Application {
         Group root = new Group();
         Scene scene = new Scene(root, SIZE_X, SIZE_Y + 50, Color.rgb(255, 255, 255));
 
-        //FileChooser fileChooser = new FileChooser();
-        //fileChooser.setTitle("Open Resource File");
-        //fileChooser.showOpenDialog(primaryStage);
-
         // Create world
-        int animalCount = 2;
+        int animalCount = 3;
         int foodCount = 0;
-        int foodTrees = 50;
-        int shelterCount = 1;
+        int foodTrees = 0;
+        int shelterCount = 0;
         int obstacleCount = 0;
-        int poolCount = 1;
+        int poolCount = 0;
         World world = new World(root, animalCount, foodTrees, foodCount, shelterCount, obstacleCount, poolCount);
-        world.getAnimalList().get(0).setHome(new Target(world.getShelterList().get(0).getX(), world.getShelterList().get(0).getY()), world.getShelterList().get(0).getID());
-        world.getAnimalList().get(0).setGender('M');
-        world.getAnimalList().get(1).setHome(new Target(world.getShelterList().get(0).getX(), world.getShelterList().get(0).getY()), world.getShelterList().get(0).getID());
-        world.getAnimalList().get(1).setGender('F');
 
+//        world.addAnimal(90, 100);
+//        world.getAnimalList().get(0).setStrength(0);
+//        world.addAnimal(110, 100);
+//        world.getAnimalList().get(1).setStrength(1);
+//        world.addAnimal(120, 100);
+//        world.getAnimalList().get(2).setStrength(2);
+
+
+        for(int i = 0; i < world.getAnimalList().size(); i++){
+            System.out.println(world.getAnimalList().get(i).getID());
+        }
 
         //world.toggleSmellCircles();
         //world.toggleTargetSquares();

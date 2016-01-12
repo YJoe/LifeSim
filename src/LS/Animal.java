@@ -82,11 +82,11 @@ public abstract class Animal {
         setMemoryBiasY(rand.nextInt(2));
 
         // Create label
-        setText(new Text());
+        setText(new Text(getID() + ""));
         getText().setTranslateX(getX());
         getText().setTranslateY(getY());
-        getText().setFont(Font.font ("Arial", 12));
-        getText().setFill(Color.rgb(0, 200, 0));
+        getText().setFont(Font.font ("Verdana", 12));
+        getText().setFill(Color.rgb(200, 0, 0));
 
         // Set shelter variables
         setInShelter(false);
@@ -258,7 +258,7 @@ public abstract class Animal {
             if (!hasLocalTarget()){
                 getRandomLocalTarget();
             }
-            if ((!isTargetFood() || !isTargetingAnimal()) && getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
+            if ((!isTargetFood() && !isTargetingAnimal()) && getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
                 checkFood();
             }
             if (!isTargetingWater() && waterInventory.getSize() < waterInventory.getCapacity()){
@@ -377,26 +377,14 @@ public abstract class Animal {
     public void fightAnimal() {
         if (getEnergy() > 0) {
             for (Animal animal : animalList) {
-                if (animal.getID() == getTargetFoodID()) {
-                    if (animal.getStrength() < getStrength()) {
-                        // essentially kill the animal
+                if (animal.getID() == getTargetFoodID()){
+                    if (animal.getStrength() <= getStrength()) {
                         animal.setEnergy(-10);
-                    } else {
-                        if (animal.getStrength() == getStrength()) {
-                            if (new Random().nextInt(2) == 1) {
-                                animal.setEnergy(-10);
-                            }
-                            else {
-                                setEnergy(-10);
-                            }
-                        }
+                        return;
                     }
-                    break;
                 }
             }
         }
-        removeLocalTarget();
-        setTargetingAnimal(false);
     }
 
     public void checkCollideLocalTarget(){
@@ -409,7 +397,6 @@ public abstract class Animal {
         if (isTargetingAnimal()){
             if (!animalStillThere()){
                 removeLocalTarget();
-                setTargetingAnimal(false);
             }
         }
         if (Collision.overlapsEfficient(getImage(), getLocalTarget().getCircle())) {
@@ -448,6 +435,7 @@ public abstract class Animal {
             if (Collision.overlapsEfficient(this.getSmellCircle(), food.getImage())) {
                 if (Collision.overlapsAccurate(this.getSmellCircle(), food.getImage())) {
                     setTargetingFood(true);
+                    setTargetingAnimal(false);
                     setTargetFoodID(food.getID());
                     setLocalTarget(food.getImage());
                 }
@@ -531,8 +519,10 @@ public abstract class Animal {
 
     public void removeLocalTarget(){
         setLocalTargetBool(false);
+        setTargetingAnimal(false);
         setTargetingFood(false);
         setTargetingWater(false);
+        targetFoodID = -1;
         setDx(0);
         setDy(0);
     }
@@ -720,13 +710,9 @@ public abstract class Animal {
     }
 
     public void updateText(){
-        getText().setText(  "Food: " + getFoodInventory().getSize() + "/" + getFoodInventory().getCapacity() + "\n"
-                            + "Water: " + getWaterInventory().getSize() + "/" + getWaterInventory().getCapacity() + "\n"
-                            + "Targeting Home: " + isTargetingHome() + "\n"
-                            + "Targeting Food: " + isTargetFood() + "\n"
-                            + "Targeting Water: " + isTargetingWater() + "\n"
-                            + "Local Target: " + hasLocalTarget() + "\n"
-                            + "Main Target: " + hasMainTarget());
+        getText().setText(  getID() + "\nX" + (int)(getImage().getCenterX() + getImage().getTranslateX()) + " Y" + (int)(getImage().getCenterY() + getImage().getTranslateY()) +
+                "\nFood: " + getFoodInventory().getSize() + "/" + getFoodInventory().getCapacity() + "\n"
+                            + "Water: " + getWaterInventory().getSize() + "/" + getWaterInventory().getCapacity());
     }
 
     public void setSelfVisibility(boolean visibility){
