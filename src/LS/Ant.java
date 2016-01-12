@@ -3,8 +3,6 @@ package LS;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,8 +14,14 @@ public class Ant extends Animal{
     private Color smellColour = Color.rgb(0, 100, 100);
     private int maxAge = rand.nextInt(5) + 5, breedAge = 1, speedChangeAge = (maxAge / 2);
 
-    public Ant(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup, World worldRef){
-        super("Ant", 'A', id, dayBorn, yearBorn, 2000, x, y, foodGroup, animalGroup, waterGroup, worldRef);
+    public Ant(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup,
+               World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
+               ArrayList<Obstacle> obstacleList, Group animalSmellRef, Group animalStatsRef, Group animalLabelRef,
+               Group animalTargetRef, Group animalHomeLocationRef){
+
+        super("Ant", 'A', id, dayBorn, yearBorn, 2000, x, y, foodGroup, animalGroup, waterGroup, worldRef, animalList,
+                foodList, waterList, obstacleList, animalSmellRef, animalStatsRef, animalLabelRef, animalTargetRef, animalHomeLocationRef);
+
         String [] names_m = {"Antdrew", "Anty", "Antain", "Antanas", "Antar", "Anturas", "Antavas"};
         String [] names_f = {"Anttoinette", "Antalia", "Anta", "Anthia", "Antalia", "Antandra", "Antia", "Antheemia"};
         giveName(names_m, names_f);
@@ -58,8 +62,12 @@ public class Ant extends Animal{
     }
 
     public Ant(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup,
-               int smellRange, float size, float speed, int turnAngle, float metabolism, int memory, int strength, World worldRef){
-        super("Ant", 'A', id, dayBorn, yearBorn, 2000, x, y, foodGroup, animalGroup, waterGroup, worldRef);
+               int smellRange, float size, float speed, int turnAngle, float metabolism, int memory, int strength,
+               World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
+               ArrayList<Obstacle> obstacleList, Group animalSmellRef, Group animalStatsRef, Group animalLabelRef,
+               Group animalTargetRef, Group animalHomeLocationRef){
+        super("Ant", 'A', id, dayBorn, yearBorn, 2000, x, y, foodGroup, animalGroup, waterGroup, worldRef, animalList,
+                foodList, waterList, obstacleList, animalSmellRef, animalStatsRef, animalLabelRef, animalTargetRef, animalHomeLocationRef);
         String [] names_m = {"Antdrew", "Anty", "Antain", "Antanas", "Antar", "Anturas", "Antavas"};
         String [] names_f = {"Anttoinette", "Antalia", "Anta", "Anthia", "Antalia", "Antandra", "Antia", "Antheemia"};
         giveName(names_m, names_f);
@@ -116,6 +124,7 @@ public class Ant extends Animal{
         }
     }
 
+    @Override
     public void createBaby(Animal ant){
         int x = (int)(getImage().getCenterX() + getImage().getTranslateX()), y = (int)(getImage().getCenterY() + getImage().getTranslateY()), id = World.trackAnimalID;
         int smellRange = (getSmellRange() + ant.getSmellRange()) / 2;
@@ -128,7 +137,8 @@ public class Ant extends Animal{
 
         World.trackAnimalID++;
         Ant a = new Ant(x, y, id, getWorldRef().getDay(), getWorldRef().getYear(), getFoodGroupRef(), getAnimalGroupRef(), getWaterGroupRef(),
-                smellRange, size, speed, turnAngle, metabolism, memory, strength, getWorldRef());
+                smellRange, size, speed, turnAngle, metabolism, memory, strength, getWorldRef(), getAnimalList(), getFoodList(), getWaterList(),
+                getObstacleList(), getAnimalSmellRef(), getAnimalStatsRef(), getAnimalLabelRef(), getAnimalTargetRef(), getAnimalHomeLocationRef());
 
         getAnimalList().add(a);
         a.setAnimalList(getAnimalList());
@@ -150,6 +160,7 @@ public class Ant extends Animal{
         getAnimalLabelRef().getChildren().add(a.getText());
     }
 
+    @Override
     public void checkFood(){
         for(int i = 0; i < getAnimalList().size(); i++){
             if (getAnimalList().get(i).getSpecies().equals("Ant")){

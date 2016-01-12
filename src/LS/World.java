@@ -88,7 +88,7 @@ public class World {
         }
         System.out.println("Creating animals");
         for(int i = 0; i < animals; i++) {
-            addRandomAnimal();
+            addRandomAnimal("Ant");
             System.out.println(i+1 + "/" + animals);
         }
         System.out.println("Creating food");
@@ -105,52 +105,27 @@ public class World {
     }
 
     // add to the world
-    public void addRandomAnimal(){
-        //TODO: Make random Animals not just ants
+    public void addRandomAnimal(String type){
         Animal a;
-        do {
-            int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
-            a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this);
-        } while(overlapsAnything(a.getImage()));
-        a.setAnimalList(animalList);
-        a.setFoodList(foodList);
-        a.setShelterList(shelterList);
-        a.setWaterList(waterList);
-        a.setObstacleList(obstacleList);
-        a.setAnimalSmellRef(animalSmellGroup);
-        a.setAnimalStatsRef(animalStatsGroup);
-        a.setAnimalLabelRef(animalLabelGroup);
-        a.setAnimalTargetRef(animalTargetGroup);
-        a.setAnimalHomeLocationRef(animalHomeLocationGroup);
-        animalList.add(a);
-        animalGroup.getChildren().add(a.getImage());
-        animalSmellGroup.getChildren().add(a.getSmellCircle());
-        animalTargetGroup.getChildren().add(a.getTargetLocation());
-        animalStatsGroup.getChildren().add(a.getStatsBar().getGroup());
-        animalHomeLocationGroup.getChildren().add(a.getHomeLocation());
-        animalLabelGroup.getChildren().add(a.getText());
+        if (type.equals("Ant")) {
+            do {
+                int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
+                a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
+                        animalList, foodList, waterList, obstacleList, animalSmellGroup, animalStatsGroup,
+                        animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
+            } while (overlapsAnything(a.getImage()));
+            a.addSelfToLists();
+        }
         trackAnimalID++;
     }
 
-    public void addAnimal(int x, int y){
-        Animal a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this);
-        a.setAnimalList(animalList);
-        a.setFoodList(foodList);
-        a.setShelterList(shelterList);
-        a.setWaterList(waterList);
-        a.setObstacleList(obstacleList);
-        a.setAnimalSmellRef(animalSmellGroup);
-        a.setAnimalStatsRef(animalStatsGroup);
-        a.setAnimalLabelRef(animalLabelGroup);
-        a.setAnimalTargetRef(animalTargetGroup);
-        a.setAnimalHomeLocationRef(animalHomeLocationGroup);
-        animalList.add(a);
-        animalGroup.getChildren().add(a.getImage());
-        animalSmellGroup.getChildren().add(a.getSmellCircle());
-        animalTargetGroup.getChildren().add(a.getTargetLocation());
-        animalStatsGroup.getChildren().add(a.getStatsBar().getGroup());
-        animalHomeLocationGroup.getChildren().add(a.getHomeLocation());
-        animalLabelGroup.getChildren().add(a.getText());
+    public void addAnimal(String type, int x, int y){
+        if (type.equals("Ant")) {
+            Animal a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
+                    animalList, foodList, waterList, obstacleList, animalSmellGroup, animalStatsGroup,
+                    animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
+            a.addSelfToLists();
+        }
         trackAnimalID++;
     }
 

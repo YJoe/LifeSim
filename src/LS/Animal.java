@@ -47,9 +47,30 @@ public abstract class Animal {
     public Inventory foodInventory, waterInventory;
 
     // Constructor
-    public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn, Group food, Group animal, Group water, World worldRef){
-        setSpecies(speciesIn); setSymbol(symbolIn); setID(IDIn); setEnergy(energyIn);
-        setX(xIn); setY(yIn); setFoodGroupRef(food); setAnimalGroupRef(animal); setWaterGroupRef(water);
+    public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn,
+                  Group food, Group animal, Group water, World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList,
+                  ArrayList<Water> waterList, ArrayList<Obstacle> obstacleList, Group animalSmellRef, Group animalStatsRef,
+                  Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef){
+
+        setSpecies(speciesIn);
+        setSymbol(symbolIn);
+        setID(IDIn);
+        setEnergy(energyIn);
+        setX(xIn);
+        setY(yIn);
+        setFoodGroupRef(food);
+        setAnimalGroupRef(animal);
+        setWaterGroupRef(water);
+        setWorldRef(worldRef);
+        setAnimalList(animalList);
+        setFoodList(foodList);
+        setWaterList(waterList);
+        setObstacleList(obstacleList);
+        setAnimalSmellRef(animalSmellRef);
+        setAnimalStatsRef(animalStatsRef);
+        setAnimalLabelRef(animalLabelRef);
+        setAnimalTargetRef(animalTargetRef);
+        setAnimalHomeLocationRef(animalHomeLocationRef);
 
         // Create stats bars
         setStatsBar(new StatsBar(x, y, 3));
@@ -101,11 +122,18 @@ public abstract class Animal {
         setYearBorn(yearBorn);
         setDayBorn(dayBorn);
 
-        // Set world ref
-        setWorldRef(worldRef);
-
         // Set targeting animal default
         setTargetingAnimal(false);
+    }
+
+    public void addSelfToLists(){
+        animalList.add(this);
+        getAnimalGroupRef().getChildren().add(getImage());
+        getAnimalSmellRef().getChildren().add(getSmellCircle());
+        getAnimalTargetRef().getChildren().add(getTargetLocation());
+        getAnimalStatsRef().getChildren().add(getStatsBar().getGroup());
+        getAnimalHomeLocationRef().getChildren().add(getHomeLocation());
+        getAnimalLabelRef().getChildren().add(getText());
     }
 
     // Main functions
