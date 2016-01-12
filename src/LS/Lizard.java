@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Lizard extends Animal{
     private Random rand = new Random();
-    private float baseSpeed = (float)(0.1), baseMetabolism = (float)(0.002);
+    private float baseSpeed = (float)(0.4), baseMetabolism = (float)(0.002);
     private int baseSize = 5, baseTurnAngle = 30, baseStrength = 5, baseMemory = 10;
     private Color bodyColour = Color.rgb(0, 150, 40);
     private Color smellColour = Color.rgb(0, 100, 100);
@@ -40,7 +40,7 @@ public class Lizard extends Animal{
         getImage().setFill(bodyColour);
 
         // Set a random speed
-        setSpeed(baseSpeed + (rand.nextInt(1) * 0.1));
+        setSpeed(baseSpeed + (rand.nextInt(10) * 0.1));
         setOriginalSpeed(getSpeed());
 
         // Set a random turning angle
@@ -174,7 +174,18 @@ public class Lizard extends Animal{
                 }
             }
         }
-        super.checkFood();
+        for(Food food : getFoodList()){
+            if (food.getType().equals("DeadAnt")) {
+                if (Collision.overlapsEfficient(this.getSmellCircle(), food.getImage())) {
+                    if (Collision.overlapsAccurate(this.getSmellCircle(), food.getImage())) {
+                        setTargetingFood(true);
+                        setTargetingAnimal(false);
+                        setTargetFoodID(food.getID());
+                        setLocalTarget(food.getImage());
+                    }
+                }
+            }
+        }
     }
 
     @Override

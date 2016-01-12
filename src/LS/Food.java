@@ -12,16 +12,18 @@ public abstract class Food {
     private int cal;
     private int size;
     private int decay;
+    private String type;
     private int decayMax;
     private boolean poisonous;
     private Circle image;
 
-    public Food(int xIn, int yIn, int id){
+    public Food(int xIn, int yIn, int id, String type){
         setX(xIn);
         setY(yIn);
         setID(id);
         setDecay(0);
         setDecayMax(new Random().nextInt(1000) + 2000);
+        setType(type);
         setPoisonous(false);
     }
 
@@ -101,5 +103,13 @@ public abstract class Food {
 
     public void setDecayMax(int decayMax) {
         this.decayMax = decayMax;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

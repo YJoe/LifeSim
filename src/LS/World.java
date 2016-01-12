@@ -150,7 +150,7 @@ public class World {
         Meat f;
         do {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
-            f = new Meat(x, y, trackFoodID);
+            f = new Meat(x, y, trackFoodID, "Meat");
         }while(overlapsAnything(f.getImage()));
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());
@@ -162,7 +162,7 @@ public class World {
         if (type.equals("Ant")){
             f = new DeadAnt(x, y, trackFoodID, size);
         } else {
-            f = new Meat(x, y, trackFoodID, size);
+            f = new Meat(x, y, trackFoodID, size, "Meat");
         }
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());

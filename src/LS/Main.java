@@ -19,8 +19,8 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 
 public class Main extends Application {
-    //public static int SIZE_X = 1000, SIZE_Y = 600;
-    public static int SIZE_X = 300, SIZE_Y = 200;
+    public static int SIZE_X = 1000, SIZE_Y = 600;
+    //public static int SIZE_X = 300, SIZE_Y = 200;
 
 
     public static void main(String[] args) {
@@ -38,13 +38,13 @@ public class Main extends Application {
         //fileChooser.showOpenDialog(primaryStage);
 
         // Create world
-        int ants = 1;
-        int lizards = 1;
+        int ants = 100;
+        int lizards = 2;
         int foodCount = 0;
-        int foodTrees = 0;
-        int shelterCount = 0;
+        int foodTrees = 50;
+        int shelterCount = 4;
         int obstacleCount = 0;
-        int poolCount = 0;
+        int poolCount = 2;
         World world = new World(root, ants, lizards, foodTrees, foodCount, shelterCount, obstacleCount, poolCount);
 
 //        world.addAnimal(90, 100);

@@ -11,7 +11,7 @@ public class Fruit extends Food{
     private Color colourR = Color.rgb(200, 50, 50);
 
     public Fruit(int x, int y, int id){
-        super(x, y, id);
+        super(x, y, id, "Fruit");
         setImage(new Circle(getX(), getY(), baseSize + rand.nextInt(2)));
         if (rand.nextInt(2) == 1) {
             getImage().setFill(colourR);
