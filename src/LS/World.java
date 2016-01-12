@@ -111,7 +111,7 @@ public class World {
             do {
                 int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
                 a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
-                        animalList, foodList, waterList, obstacleList, animalSmellGroup, animalStatsGroup,
+                        animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
                         animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
             } while (overlapsAnything(a.getImage()));
             a.addSelfToLists();
@@ -122,7 +122,7 @@ public class World {
     public void addAnimal(String type, int x, int y){
         if (type.equals("Ant")) {
             Animal a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
-                    animalList, foodList, waterList, obstacleList, animalSmellGroup, animalStatsGroup,
+                    animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
                     animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
             a.addSelfToLists();
         }

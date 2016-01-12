@@ -49,8 +49,8 @@ public abstract class Animal {
     // Constructor
     public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn,
                   Group food, Group animal, Group water, World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList,
-                  ArrayList<Water> waterList, ArrayList<Obstacle> obstacleList, Group animalSmellRef, Group animalStatsRef,
-                  Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef){
+                  ArrayList<Water> waterList, ArrayList<Obstacle> obstacleList, ArrayList<Shelter> shelterList, Group animalSmellRef,
+                  Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef){
 
         setSpecies(speciesIn);
         setSymbol(symbolIn);
@@ -66,6 +66,7 @@ public abstract class Animal {
         setFoodList(foodList);
         setWaterList(waterList);
         setObstacleList(obstacleList);
+        setShelterList(shelterList);
         setAnimalSmellRef(animalSmellRef);
         setAnimalStatsRef(animalStatsRef);
         setAnimalLabelRef(animalLabelRef);
@@ -561,7 +562,8 @@ public abstract class Animal {
 
     public void checkShelters(){
         for(int i = 0; i < getShelterList().size(); i++){
-            if(Collision.overlapsEfficient(getSmellCircle(), getShelterList().get(i).getImage())) {
+            System.out.println(getShelterList().get(i).getType());
+            if (Collision.overlapsEfficient(getSmellCircle(), getShelterList().get(i).getImage())) {
                 if (Collision.overlapsAccurate(getSmellCircle(), getShelterList().get(i).getImage())) {
                     setHome(new Target(getShelterList().get(i).getX(), getShelterList().get(i).getY()), getShelterList().get(i).getID());
                     break;

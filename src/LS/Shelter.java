@@ -7,14 +7,16 @@ import java.util.ArrayList;
 
 public abstract class Shelter {
     private int x, y, ID;
+    private String type;
     private StatsBar statsBar;
     private Circle image;
     private Inventory foodInventory, waterInventory;
     protected ArrayList<Animal> shelteredAnimals = new ArrayList<>();
 
-    public Shelter(int x, int y, int inventorySizeC, int inventorySizeS, int ID){
+    public Shelter(int x, int y, int inventorySizeC, int inventorySizeS, int ID, String type){
         setX(x);
         setY(y);
+        setType(type);
         setFoodInventory(new Inventory(inventorySizeC, inventorySizeS));
         setWaterInventory(new Inventory(inventorySizeC, inventorySizeS));
 
@@ -99,5 +101,13 @@ public abstract class Shelter {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

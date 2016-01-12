@@ -9,18 +9,18 @@ import java.util.Random;
 public class Ant extends Animal{
     private Random rand = new Random();
     private float baseSpeed = (float)(0.1), baseMetabolism = (float)(0.002);
-    private int baseSize = 3, baseTurnAngle = 30, baseStrength = 3, baseMemory = 10;
+    private int baseSize = 1, baseTurnAngle = 30, baseStrength = 3, baseMemory = 10;
     private Color bodyColour = Color.rgb(50, 50, 50);
     private Color smellColour = Color.rgb(0, 100, 100);
     private int maxAge = rand.nextInt(5) + 5, breedAge = 1, speedChangeAge = (maxAge / 2);
 
     public Ant(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup,
                World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
-               ArrayList<Obstacle> obstacleList, Group animalSmellRef, Group animalStatsRef, Group animalLabelRef,
-               Group animalTargetRef, Group animalHomeLocationRef){
+               ArrayList<Obstacle> obstacleList, ArrayList<Shelter> shelterList, Group animalSmellRef,
+               Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef){
 
         super("Ant", 'A', id, dayBorn, yearBorn, 2000, x, y, foodGroup, animalGroup, waterGroup, worldRef, animalList,
-                foodList, waterList, obstacleList, animalSmellRef, animalStatsRef, animalLabelRef, animalTargetRef, animalHomeLocationRef);
+                foodList, waterList, obstacleList, shelterList, animalSmellRef, animalStatsRef, animalLabelRef, animalTargetRef, animalHomeLocationRef);
 
         String [] names_m = {"Antdrew", "Anty", "Antain", "Antanas", "Antar", "Anturas", "Antavas"};
         String [] names_f = {"Anttoinette", "Antalia", "Anta", "Anthia", "Antalia", "Antandra", "Antia", "Antheemia"};
@@ -64,10 +64,11 @@ public class Ant extends Animal{
     public Ant(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup,
                int smellRange, float size, float speed, int turnAngle, float metabolism, int memory, int strength,
                World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
-               ArrayList<Obstacle> obstacleList, Group animalSmellRef, Group animalStatsRef, Group animalLabelRef,
-               Group animalTargetRef, Group animalHomeLocationRef){
+               ArrayList<Obstacle> obstacleList, ArrayList<Shelter> shelterList, Group animalSmellRef,
+               Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef){
         super("Ant", 'A', id, dayBorn, yearBorn, 2000, x, y, foodGroup, animalGroup, waterGroup, worldRef, animalList,
-                foodList, waterList, obstacleList, animalSmellRef, animalStatsRef, animalLabelRef, animalTargetRef, animalHomeLocationRef);
+                foodList, waterList, obstacleList, shelterList, animalSmellRef, animalStatsRef, animalLabelRef,
+                animalTargetRef, animalHomeLocationRef);
         String [] names_m = {"Antdrew", "Anty", "Antain", "Antanas", "Antar", "Anturas", "Antavas"};
         String [] names_f = {"Anttoinette", "Antalia", "Anta", "Anthia", "Antalia", "Antandra", "Antia", "Antheemia"};
         giveName(names_m, names_f);
@@ -111,10 +112,6 @@ public class Ant extends Animal{
     public void ageEvents(){
         if (getLastAge() != getAgeYear()) {
             setLastAge(getAgeYear());
-            //if (getAgeYear() == speedChangeAge){
-            //    System.out.println("SpeedChanged");
-            //    setOriginalSpeed(getOriginalSpeed() / 2);
-            //}
             if (getAgeYear() >= breedAge){
                 setShouldBreed(true);
             }
@@ -138,7 +135,8 @@ public class Ant extends Animal{
         World.trackAnimalID++;
         Ant a = new Ant(x, y, id, getWorldRef().getDay(), getWorldRef().getYear(), getFoodGroupRef(), getAnimalGroupRef(), getWaterGroupRef(),
                 smellRange, size, speed, turnAngle, metabolism, memory, strength, getWorldRef(), getAnimalList(), getFoodList(), getWaterList(),
-                getObstacleList(), getAnimalSmellRef(), getAnimalStatsRef(), getAnimalLabelRef(), getAnimalTargetRef(), getAnimalHomeLocationRef());
+                getObstacleList(), getShelterList(), getAnimalSmellRef(), getAnimalStatsRef(), getAnimalLabelRef(), getAnimalTargetRef(),
+                getAnimalHomeLocationRef());
 
         getAnimalList().add(a);
         a.setAnimalList(getAnimalList());
@@ -162,19 +160,33 @@ public class Ant extends Animal{
 
     @Override
     public void checkFood(){
-        for(int i = 0; i < getAnimalList().size(); i++){
-            if (getAnimalList().get(i).getSpecies().equals("Ant")){
-                if (getID() != getAnimalList().get(i).getID()) {
-                    if (Collision.overlapsEfficient(getSmellCircle(), getAnimalList().get(i).getImage())) {
-                        if (Collision.overlapsAccurate(getSmellCircle(), getAnimalList().get(i).getImage())) {
-                            setTargetingAnimal(true);
-                            setTargetFoodID(getAnimalList().get(i).getID());
-                            setLocalTarget(getAnimalList().get(i).getImage());
-                        }
+//        for(int i = 0; i < getAnimalList().size(); i++){
+//            if (getAnimalList().get(i).getSpecies().equals("Ant")){
+//                if (getID() != getAnimalList().get(i).getID()) {
+//                    if (Collision.overlapsEfficient(getSmellCircle(), getAnimalList().get(i).getImage())) {
+//                        if (Collision.overlapsAccurate(getSmellCircle(), getAnimalList().get(i).getImage())) {
+//                            setTargetingAnimal(true);
+//                            setTargetFoodID(getAnimalList().get(i).getID());
+//                            setLocalTarget(getAnimalList().get(i).getImage());
+//                        }
+//                    }
+//                }
+//            }
+//        }
+        super.checkFood();
+    }
+
+    @Override
+    public void checkShelters(){
+        for(int i = 0; i < getShelterList().size(); i++){
+            if(getShelterList().get(i).getType().equals("AntHill")) {
+                if (Collision.overlapsEfficient(getSmellCircle(), getShelterList().get(i).getImage())) {
+                    if (Collision.overlapsAccurate(getSmellCircle(), getShelterList().get(i).getImage())) {
+                        setHome(new Target(getShelterList().get(i).getX(), getShelterList().get(i).getY()), getShelterList().get(i).getID());
+                        break;
                     }
                 }
             }
         }
-        super.checkFood();
     }
 }
