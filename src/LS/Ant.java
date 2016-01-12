@@ -151,36 +151,19 @@ public class Ant extends Animal{
     }
 
     public void checkFood(){
-        //System.out.println("Animal " + getID() + " is here " + getAnimalList().size());
-
         for(int i = 0; i < getAnimalList().size(); i++){
-            if (getID() != getAnimalList().get(i).getID()) {
-                if (Collision.overlapsEfficient(getSmellCircle(), getAnimalList().get(i).getImage())) {
-                    if (Collision.overlapsAccurate(getSmellCircle(), getAnimalList().get(i).getImage())) {
-                        setTargetingAnimal(true);
-                        setTargetFoodID(getAnimalList().get(i).getID());
-                        setLocalTarget(getAnimalList().get(i).getImage());
+            if (getAnimalList().get(i).getSpecies().equals("Ant")){
+                if (getID() != getAnimalList().get(i).getID()) {
+                    if (Collision.overlapsEfficient(getSmellCircle(), getAnimalList().get(i).getImage())) {
+                        if (Collision.overlapsAccurate(getSmellCircle(), getAnimalList().get(i).getImage())) {
+                            setTargetingAnimal(true);
+                            setTargetFoodID(getAnimalList().get(i).getID());
+                            setLocalTarget(getAnimalList().get(i).getImage());
+                        }
                     }
                 }
             }
         }
-
-//
-//        for(int i = 0; i < getAnimalList().size(); i++){
-//            System.out.println("\tCheck id of " + getAnimalList().get(i).getID());
-//            if (getAnimalList().get(i).getID() != getID()) {
-//                System.out.println("\t\tSuccessful");
-//                if (Collision.overlapsEfficient(this.getSmellCircle(), getAnimalList().get(i).getImage())) {
-//                    System.out.println("\t\t\tCollision for " + getID());
-//                    if (Collision.overlapsAccurate(this.getSmellCircle(), getAnimalList().get(i).getImage())) {
-//                        setTargetingAnimal(true);
-//                        setTargetFoodID(getAnimalList().get(i).getID());
-//                        setLocalTarget(getAnimalList().get(i).getImage());
-//                    }
-//                }
-//                break;
-//            }
-//        }
         super.checkFood();
     }
 }

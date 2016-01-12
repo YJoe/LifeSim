@@ -16,9 +16,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
+
 public class Main extends Application {
-    //public static int SIZE_X = 1000, SIZE_Y = 600;
-    public static int SIZE_X = 300, SIZE_Y = 200;
+    public static int SIZE_X = 1000, SIZE_Y = 600;
+    //public static int SIZE_X = 300, SIZE_Y = 200;
 
 
     public static void main(String[] args) {
@@ -31,13 +33,17 @@ public class Main extends Application {
         Group root = new Group();
         Scene scene = new Scene(root, SIZE_X, SIZE_Y + 50, Color.rgb(255, 255, 255));
 
+        //FileChooser fileChooser = new FileChooser();
+        //fileChooser.setTitle("Open Resource File");
+        //fileChooser.showOpenDialog(primaryStage);
+
         // Create world
-        int animalCount = 3;
+        int animalCount = 40;
         int foodCount = 0;
-        int foodTrees = 0;
-        int shelterCount = 0;
+        int foodTrees = 10;
+        int shelterCount = 2;
         int obstacleCount = 0;
-        int poolCount = 0;
+        int poolCount = 1;
         World world = new World(root, animalCount, foodTrees, foodCount, shelterCount, obstacleCount, poolCount);
 
 //        world.addAnimal(90, 100);

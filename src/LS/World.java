@@ -166,8 +166,13 @@ public class World {
         trackFoodID++;
     }
 
-    public void addFood(int x, int y, int size){
-        Meat f = new Meat(x, y, trackFoodID, size);
+    public void addFood(String type, int x, int y, int size){
+        Meat f;
+        if (type.equals("Ant")){
+            f = new DeadAnt(x, y, trackFoodID, size);
+        } else {
+            f = new Meat(x, y, trackFoodID, size);
+        }
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());
         trackFoodID++;
@@ -318,7 +323,7 @@ public class World {
 
     // remove from the world
     public void killAnimal(int i){
-        addFood((int)(animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
+        addFood("Ant", (int)(animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
                 (int)(animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
                 (int)(animalList.get(i).getImage().getRadius()));
         animalRank.add(animalList.get(i));
