@@ -43,7 +43,7 @@ public class World {
     private Group foodTreeTrunkGroup = new Group();
 
     // set up the world
-    public World(Group root, int ants, int lizards, int foodTrees, int food, int shelters, int obstacles, int pools){
+    public World(Group root, Configuration configuration){
         System.out.println("Creating world");
         setDay(0);
         setYear(0);
@@ -66,46 +66,46 @@ public class World {
 
         setWorldStatsBar(new WorldStatsBar(root));
         getWorldStatsBar().setDateString(getDateString());
-        getWorldStatsBar().setAnimalCountString(ants + lizards);
-        getWorldStatsBar().setFoodCountString(food);
-        getWorldStatsBar().setShelterCountString(shelters);
+        getWorldStatsBar().setAnimalCountString(configuration.getAnts() + configuration.getLizards());
+        getWorldStatsBar().setFoodCountString(configuration.getFoodCount());
+        getWorldStatsBar().setShelterCountString(configuration.getShelterCount());
 
 
         System.out.println("Creating pools");
-        for(int i = 0; i < pools; i++){
+        for(int i = 0; i < configuration.getPoolCount(); i++){
             addRandomPool();
-            System.out.println(i+1 + "/" + pools);
+            System.out.println(i+1 + "/" + configuration.getPoolCount());
         }
         System.out.println("Creating food trees");
-        for(int i = 0; i < foodTrees; i++){
+        for(int i = 0; i < configuration.getFoodTrees(); i++){
             addRandomFoodTree();
-            System.out.println(i+1 + "/" + foodTrees);
+            System.out.println(i+1 + "/" + configuration.getFoodTrees());
         }
         System.out.println("Creating shelters");
-        for(int i = 0; i < shelters; i++){
+        for(int i = 0; i < configuration.getShelterCount(); i++){
             addRandomShelter();
-            System.out.println(i+1 + "/" + shelters);
+            System.out.println(i+1 + "/" + configuration.getShelterCount());
         }
         System.out.println("Creating animals");
         System.out.println("\tCreating ants");
-        for(int i = 0; i < ants; i++) {
+        for(int i = 0; i < configuration.getAnts(); i++) {
             addRandomAnimal("Ant");
-            System.out.println("\t" + i+1 + "/" + ants);
+            System.out.println("\t" + i+1 + "/" + configuration.getAnts());
         }
         System.out.println("\tCreating lizards");
-        for(int i = 0; i < lizards; i++){
+        for(int i = 0; i < configuration.getLizards(); i++){
             addRandomAnimal("Lizard");
-            System.out.println("\t" + i+1 + "/" + lizards);
+            System.out.println("\t" + i+1 + "/" + configuration.getLizards());
         }
         System.out.println("Creating food");
-        for(int i = 0; i < food; i++){
+        for(int i = 0; i < configuration.getFoodCount(); i++){
             addRandomFood();
-            System.out.println(i+1 + "/" + food);
+            System.out.println(i+1 + "/" + configuration.getFoodCount());
         }
         System.out.println("Creating obstacles");
-        for(int i = 0; i < obstacles; i++){
+        for(int i = 0; i < configuration.getObstacleCount(); i++){
             addRandomObstacle();
-            System.out.println(i+1 + "/" + obstacles);
+            System.out.println(i+1 + "/" + configuration.getObstacleCount());
         }
         System.out.println("World created and populated");
     }

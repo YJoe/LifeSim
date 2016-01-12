@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 public class SimulationMenu {
     private MenuBar menuBar;
+    private World currentWorld;
     private boolean isPaused = false;
 
     public SimulationMenu(Stage primaryStage){
@@ -165,5 +166,13 @@ public class SimulationMenu {
 
     public MenuBar getMenuBar() {
         return menuBar;
+    }
+
+    public World getCurrentWorld() {
+        return currentWorld;
+    }
+
+    public void setCurrentWorld(World currentWorld) {
+        this.currentWorld = currentWorld;
     }
 }

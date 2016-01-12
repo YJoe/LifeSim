@@ -37,39 +37,29 @@ public class Main extends Application {
         //fileChooser.setTitle("Open Resource File");
         //fileChooser.showOpenDialog(primaryStage);
 
-        // Create world
-        int ants = 100;
-        int lizards = 2;
+        int ants = 10;
+        int lizards = 1;
         int foodCount = 0;
-        int foodTrees = 50;
-        int shelterCount = 4;
+        int foodTrees = 0;
+        int shelterCount = 2;
         int obstacleCount = 0;
-        int poolCount = 2;
-        World world = new World(root, ants, lizards, foodTrees, foodCount, shelterCount, obstacleCount, poolCount);
+        int poolCount = 1;
 
-//        world.addAnimal(90, 100);
-//        world.getAnimalList().get(0).setStrength(0);
-//        world.addAnimal(110, 100);
-//        world.getAnimalList().get(1).setStrength(1);
-//        world.addAnimal(120, 100);
-//        world.getAnimalList().get(2).setStrength(2);
-
-
-        for(int i = 0; i < world.getAnimalList().size(); i++){
-            System.out.println(world.getAnimalList().get(i).getID());
-        }
-
-        //world.toggleSmellCircles();
-        //world.toggleTargetSquares();
-        //world.toggleHomeSquares();
-        //world.toggleStatBars();
-        //world.toggleShelterStatBars();
-        world.toggleAnimalLabels();
+        Configuration configuration = new Configuration(ants, lizards, foodCount, foodTrees, shelterCount, obstacleCount, poolCount);
 
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage);
         menu.togglePaused();
         root.getChildren().add(menu.getMenuBar());
+
+        menu.setCurrentWorld(new World(root, configuration));
+
+        //menu.getCurrentWorld().toggleSmellCircles();
+        //menu.getCurrentWorld().toggleTargetSquares();
+        //menu.getCurrentWorld().toggleHomeSquares();
+        //menu.getCurrentWorld().toggleStatBars();
+        //menu.getCurrentWorld().toggleShelterStatBars();
+        menu.getCurrentWorld().toggleAnimalLabels();
 
         // Create key press handler for scene
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -78,29 +68,22 @@ public class Main extends Application {
                     menu.togglePaused();
                 }else{
                     if (ke.getCode() == KeyCode.DIGIT1){
-                        world.toggleSmellCircles();
+                        menu.getCurrentWorld().toggleSmellCircles();
                     }else {
                         if (ke.getCode() == KeyCode.DIGIT2) {
-                            world.toggleTargetSquares();
+                            menu.getCurrentWorld().toggleTargetSquares();
                         } else {
                             if (ke.getCode() == KeyCode.DIGIT3) {
-                                world.toggleHomeSquares();
+                                menu.getCurrentWorld().toggleHomeSquares();
                             } else {
                                 if (ke.getCode() == KeyCode.DIGIT4) {
-                                    world.toggleStatBars();
+                                    menu.getCurrentWorld().toggleStatBars();
                                 } else {
                                     if (ke.getCode() == KeyCode.DIGIT5) {
-                                        world.toggleAnimalLabels();
+                                        menu.getCurrentWorld().toggleAnimalLabels();
                                     } else {
                                         if (ke.getCode() == KeyCode.DIGIT6) {
-                                            world.toggleAnimals();
-                                        } else {
-                                            if (ke.getCode() == KeyCode.DIGIT7) {
-                                                System.out.println("_______________");
-                                                for(int i = 0; i < world.getFoodList().size(); i++){
-                                                    System.out.println(world.getFoodList().get(i).getID());
-                                                }
-                                            }
+                                            menu.getCurrentWorld().toggleAnimals();
                                         }
                                     }
                                 }
@@ -116,7 +99,7 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event){
                 if (!menu.isPaused()) {
-                    world.update();
+                    menu.getCurrentWorld().update();
                 }
             }
         });
