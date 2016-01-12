@@ -1,6 +1,8 @@
 package LS;
 
-public class Configuration {
+import java.io.Serializable;
+
+public class Configuration implements Serializable{
     private int ants;
     private int lizards;
     private int foodCount;

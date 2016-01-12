@@ -2,12 +2,14 @@ package LS;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
 public class SimulationMenu {
     private MenuBar menuBar;
+    private Configuration configuration;
     private World currentWorld;
     private boolean isPaused = false;
 
@@ -160,6 +162,9 @@ public class SimulationMenu {
     public void togglePaused(){
         isPaused = !isPaused;
     }
+    public void setPaused(boolean isPaused){
+        this.isPaused = isPaused;
+    }
     public boolean isPaused(){
         return isPaused;
     }
@@ -168,11 +173,36 @@ public class SimulationMenu {
         return menuBar;
     }
 
+    public void createWorld(Group root){
+        // clear everything from the root
+        root.getChildren().clear();
+
+        // start the simulation in the paused state
+        setPaused(true);
+
+        // create the new world with the current configuration
+        setCurrentWorld(new World(root, getConfiguration()));
+        getCurrentWorld().toggleAnimalLabels();
+        getCurrentWorld().toggleTargetSquares();
+        getCurrentWorld().toggleHomeSquares();
+
+        // add the menu bar back in
+        root.getChildren().add(getMenuBar());
+    }
+
     public World getCurrentWorld() {
         return currentWorld;
     }
 
     public void setCurrentWorld(World currentWorld) {
         this.currentWorld = currentWorld;
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
     }
 }

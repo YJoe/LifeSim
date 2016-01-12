@@ -12,6 +12,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -37,29 +38,12 @@ public class Main extends Application {
         //fileChooser.setTitle("Open Resource File");
         //fileChooser.showOpenDialog(primaryStage);
 
-        int ants = 10;
-        int lizards = 1;
-        int foodCount = 0;
-        int foodTrees = 0;
-        int shelterCount = 2;
-        int obstacleCount = 0;
-        int poolCount = 1;
-
-        Configuration configuration = new Configuration(ants, lizards, foodCount, foodTrees, shelterCount, obstacleCount, poolCount);
-
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage);
         menu.togglePaused();
-        root.getChildren().add(menu.getMenuBar());
 
-        menu.setCurrentWorld(new World(root, configuration));
-
-        //menu.getCurrentWorld().toggleSmellCircles();
-        //menu.getCurrentWorld().toggleTargetSquares();
-        //menu.getCurrentWorld().toggleHomeSquares();
-        //menu.getCurrentWorld().toggleStatBars();
-        //menu.getCurrentWorld().toggleShelterStatBars();
-        menu.getCurrentWorld().toggleAnimalLabels();
+        menu.setConfiguration(new Configuration(100, 10, 0, 5, 1, 0, 2));
+        menu.createWorld(root);
 
         // Create key press handler for scene
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -84,6 +68,10 @@ public class Main extends Application {
                                     } else {
                                         if (ke.getCode() == KeyCode.DIGIT6) {
                                             menu.getCurrentWorld().toggleAnimals();
+                                        }else {
+                                            if (ke.getCode() == KeyCode.R) {
+                                                menu.createWorld(root);
+                                            }
                                         }
                                     }
                                 }

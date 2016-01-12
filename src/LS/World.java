@@ -45,6 +45,8 @@ public class World {
     // set up the world
     public World(Group root, Configuration configuration){
         System.out.println("Creating world");
+        trackAnimalID = 0;
+        trackFoodID = 0;
         setDay(0);
         setYear(0);
         setDayLength(10);
@@ -74,38 +76,30 @@ public class World {
         System.out.println("Creating pools");
         for(int i = 0; i < configuration.getPoolCount(); i++){
             addRandomPool();
-            System.out.println(i+1 + "/" + configuration.getPoolCount());
         }
         System.out.println("Creating food trees");
         for(int i = 0; i < configuration.getFoodTrees(); i++){
             addRandomFoodTree();
-            System.out.println(i+1 + "/" + configuration.getFoodTrees());
         }
         System.out.println("Creating shelters");
         for(int i = 0; i < configuration.getShelterCount(); i++){
             addRandomShelter();
-            System.out.println(i+1 + "/" + configuration.getShelterCount());
         }
-        System.out.println("Creating animals");
-        System.out.println("\tCreating ants");
+        System.out.println("Creating ants");
         for(int i = 0; i < configuration.getAnts(); i++) {
             addRandomAnimal("Ant");
-            System.out.println("\t" + i+1 + "/" + configuration.getAnts());
         }
-        System.out.println("\tCreating lizards");
+        System.out.println("Creating lizards");
         for(int i = 0; i < configuration.getLizards(); i++){
             addRandomAnimal("Lizard");
-            System.out.println("\t" + i+1 + "/" + configuration.getLizards());
         }
         System.out.println("Creating food");
         for(int i = 0; i < configuration.getFoodCount(); i++){
             addRandomFood();
-            System.out.println(i+1 + "/" + configuration.getFoodCount());
         }
         System.out.println("Creating obstacles");
         for(int i = 0; i < configuration.getObstacleCount(); i++){
             addRandomObstacle();
-            System.out.println(i+1 + "/" + configuration.getObstacleCount());
         }
         System.out.println("World created and populated");
     }
