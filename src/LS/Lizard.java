@@ -191,7 +191,7 @@ public class Lizard extends Animal{
     @Override
     public void checkShelters(){
         for(int i = 0; i < getShelterList().size(); i++){
-            if(getShelterList().get(i).getType().equals("Rocks")) {
+            if(getShelterList().get(i).getType().equals("RockShelter")) {
                 if (Collision.overlapsEfficient(getSmellCircle(), getShelterList().get(i).getImage())) {
                     if (Collision.overlapsAccurate(getSmellCircle(), getShelterList().get(i).getImage())) {
                         setHome(new Target(getShelterList().get(i).getX(), getShelterList().get(i).getY()), getShelterList().get(i).getID());

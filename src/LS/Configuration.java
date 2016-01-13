@@ -7,16 +7,18 @@ public class Configuration implements Serializable{
     private int lizards;
     private int foodCount;
     private int foodTrees;
-    private int shelterCount;
+    private int antHillCount;
+    private int rockShelterCount;
     private int obstacleCount;
     private int poolCount;
 
-    public Configuration(int ants, int lizards, int foodCount, int foodTrees, int shelterCount, int obstacleCount,  int poolCount){
+    public Configuration(int ants, int lizards, int foodCount, int foodTrees, int antHillCount, int rockShelterCount, int obstacleCount,  int poolCount){
         setAnts(ants);
         setLizards(lizards);
         setFoodCount(foodCount);
         setFoodTrees(foodTrees);
-        setShelterCount(shelterCount);
+        setAntHillCount(antHillCount);
+        setRockShelterCount(rockShelterCount);
         setObstacleCount(obstacleCount);
         setPoolCount(poolCount);
     }
@@ -53,14 +55,6 @@ public class Configuration implements Serializable{
         this.foodTrees = foodTrees;
     }
 
-    public int getShelterCount() {
-        return shelterCount;
-    }
-
-    public void setShelterCount(int shelterCount) {
-        this.shelterCount = shelterCount;
-    }
-
     public int getObstacleCount() {
         return obstacleCount;
     }
@@ -75,5 +69,21 @@ public class Configuration implements Serializable{
 
     public void setPoolCount(int poolCount) {
         this.poolCount = poolCount;
+    }
+
+    public int getAntHillCount() {
+        return antHillCount;
+    }
+
+    public void setAntHillCount(int antHillCount) {
+        this.antHillCount = antHillCount;
+    }
+
+    public int getRockShelterCount() {
+        return rockShelterCount;
+    }
+
+    public void setRockShelterCount(int rockShelterCount) {
+        this.rockShelterCount = rockShelterCount;
     }
 }

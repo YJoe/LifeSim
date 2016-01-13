@@ -70,7 +70,7 @@ public class World {
         getWorldStatsBar().setDateString(getDateString());
         getWorldStatsBar().setAnimalCountString(configuration.getAnts() + configuration.getLizards());
         getWorldStatsBar().setFoodCountString(configuration.getFoodCount());
-        getWorldStatsBar().setShelterCountString(configuration.getShelterCount());
+        getWorldStatsBar().setShelterCountString(configuration.getAntHillCount() + configuration.getRockShelterCount());
 
 
         System.out.println("Creating pools");
@@ -82,8 +82,11 @@ public class World {
             addRandomFoodTree();
         }
         System.out.println("Creating shelters");
-        for(int i = 0; i < configuration.getShelterCount(); i++){
-            addRandomShelter();
+        for(int i = 0; i < configuration.getAntHillCount(); i++){
+            addRandomShelter("AntHill");
+        }
+        for(int i = 0; i < configuration.getRockShelterCount(); i++){
+            addRandomShelter("RockShelter");
         }
         System.out.println("Creating ants");
         for(int i = 0; i < configuration.getAnts(); i++) {
@@ -237,12 +240,21 @@ public class World {
         }
     }
 
-    public void addRandomShelter(){
-        // TODO: Make random shelters
+    public void addRandomShelter(String type){
         Shelter s;
         do {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
-            s = new AntHill(x, y, shelterID);
+            if (type.equals("AntHill")) {
+                s = new AntHill(x, y, shelterID);
+            } else {
+                if(type.equals("RockShelter")){
+                    s = new RockShelter(x, y, shelterID);
+                }
+                else {
+                    System.out.println("Error creating shelter");
+                    return;
+                }
+            }
         } while(overlapsAnything(s.getImage()));
         shelterID++;
         shelterList.add(s);
