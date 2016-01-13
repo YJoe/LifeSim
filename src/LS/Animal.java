@@ -542,6 +542,8 @@ public abstract class Animal {
             if (Collision.overlapsEfficient(this.getSmellCircle(), water.getCircle())) {
                 if (Collision.overlapsAccurate(this.getSmellCircle(), water.getCircle())) {
                     setTargetingWater(true);
+                    setTargetingFood(false);
+                    setTargetingAnimal(false);
                     setLocalTarget(water.getCircle());
                 }
             }
@@ -569,6 +571,7 @@ public abstract class Animal {
     public void enterShelter(){
         Random rand = new Random();
         setWaitAtHome(100 + rand.nextInt(500));
+        setFollowMainCoolDown(1000 + rand.nextInt(500));
         setInShelter(true);
         setSelfVisibility(false);
 
@@ -616,7 +619,6 @@ public abstract class Animal {
 
                 // take some food and/or water
                 if (waterInventory.getSize() == 0 && getThirst() >= 10) {
-                    setFollowMainCoolDown(1000);
                     for (int j = 0; j < getWaterInventory().getCapacity() / 2; j++) {
                         if (getShelterList().get(i).getWaterInventory().getSize() > 1) {
                             if (getShelterList().get(i).getWaterInventory().getElement(0) > getWaterInventory().getSlotMax()) {
@@ -629,7 +631,6 @@ public abstract class Animal {
                     }
                 }
                 if (foodInventory.getSize() == 0 && getHunger() >= 10) {
-                    setFollowMainCoolDown(1000);
                     for (int j = 0; j < getFoodInventory().getCapacity() / 2; j++) {
                         if (getShelterList().get(i).getFoodInventory().getSize() > 1) {
                             if (getShelterList().get(i).getFoodInventory().getElement(0) > getFoodInventory().getSlotMax()) {

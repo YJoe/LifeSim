@@ -123,39 +123,42 @@ public class Ant extends Animal{
 
     @Override
     public void createBaby(Animal ant){
-        int x = (int)(getImage().getCenterX() + getImage().getTranslateX()), y = (int)(getImage().getCenterY() + getImage().getTranslateY()), id = World.trackAnimalID;
-        int smellRange = (getSmellRange() + ant.getSmellRange()) / 2;
-        float size = (getSize() + ant.getSize()) / 2;
-        float speed = (float)(getSpeed() + ant.getSpeed()) / 2;
-        int turnAngle = (getTurnAngle() + ant.getTurnAngle()) / 2;
-        float metabolism = (getMetabolism() + ant.getMetabolism()) / 2;
-        int memory = (getMemory() + ant.getMemory()) / 2;
-        int strength = (getStrength() + ant.getStrength()) / 2;
+        int random = rand.nextInt(3) + 1;
+        for(int i = 0; i < random; i++) {
+            int x = (int) (getImage().getCenterX() + getImage().getTranslateX()), y = (int) (getImage().getCenterY() + getImage().getTranslateY()), id = World.trackAnimalID;
+            int smellRange = (getSmellRange() + ant.getSmellRange()) / 2;
+            float size = (getSize() + ant.getSize()) / 2;
+            float speed = (float) (getSpeed() + ant.getSpeed()) / 2;
+            int turnAngle = (getTurnAngle() + ant.getTurnAngle()) / 2;
+            float metabolism = (getMetabolism() + ant.getMetabolism()) / 2;
+            int memory = (getMemory() + ant.getMemory()) / 2;
+            int strength = (getStrength() + ant.getStrength()) / 2;
 
-        World.trackAnimalID++;
-        Ant a = new Ant(x, y, id, getWorldRef().getDay(), getWorldRef().getYear(), getFoodGroupRef(), getAnimalGroupRef(), getWaterGroupRef(),
-                smellRange, size, speed, turnAngle, metabolism, memory, strength, getWorldRef(), getAnimalList(), getFoodList(), getWaterList(),
-                getObstacleList(), getShelterList(), getAnimalSmellRef(), getAnimalStatsRef(), getAnimalLabelRef(), getAnimalTargetRef(),
-                getAnimalHomeLocationRef());
+            World.trackAnimalID++;
+            Ant a = new Ant(x, y, id, getWorldRef().getDay(), getWorldRef().getYear(), getFoodGroupRef(), getAnimalGroupRef(), getWaterGroupRef(),
+                    smellRange, size, speed, turnAngle, metabolism, memory, strength, getWorldRef(), getAnimalList(), getFoodList(), getWaterList(),
+                    getObstacleList(), getShelterList(), getAnimalSmellRef(), getAnimalStatsRef(), getAnimalLabelRef(), getAnimalTargetRef(),
+                    getAnimalHomeLocationRef());
 
-        getAnimalList().add(a);
-        a.setAnimalList(getAnimalList());
-        a.setFoodList(getFoodList());
-        a.setShelterList(getShelterList());
-        a.setWaterList(getWaterList());
-        a.setObstacleList(getObstacleList());
-        a.setAnimalSmellRef(getAnimalSmellRef());
-        a.setAnimalStatsRef(getAnimalStatsRef());
-        a.setAnimalLabelRef(getAnimalLabelRef());
-        a.setAnimalTargetRef(getAnimalTargetRef());
-        a.setAnimalHomeLocationRef(getAnimalHomeLocationRef());
+            getAnimalList().add(a);
+            a.setAnimalList(getAnimalList());
+            a.setFoodList(getFoodList());
+            a.setShelterList(getShelterList());
+            a.setWaterList(getWaterList());
+            a.setObstacleList(getObstacleList());
+            a.setAnimalSmellRef(getAnimalSmellRef());
+            a.setAnimalStatsRef(getAnimalStatsRef());
+            a.setAnimalLabelRef(getAnimalLabelRef());
+            a.setAnimalTargetRef(getAnimalTargetRef());
+            a.setAnimalHomeLocationRef(getAnimalHomeLocationRef());
 
-        getAnimalGroupRef().getChildren().add(a.getImage());
-        getAnimalSmellRef().getChildren().add(a.getSmellCircle());
-        getAnimalTargetRef().getChildren().add(a.getTargetLocation());
-        getAnimalStatsRef().getChildren().add(a.getStatsBar().getGroup());
-        getAnimalHomeLocationRef().getChildren().add(a.getHomeLocation());
-        getAnimalLabelRef().getChildren().add(a.getText());
+            getAnimalGroupRef().getChildren().add(a.getImage());
+            getAnimalSmellRef().getChildren().add(a.getSmellCircle());
+            getAnimalTargetRef().getChildren().add(a.getTargetLocation());
+            getAnimalStatsRef().getChildren().add(a.getStatsBar().getGroup());
+            getAnimalHomeLocationRef().getChildren().add(a.getHomeLocation());
+            getAnimalLabelRef().getChildren().add(a.getText());
+        }
     }
 
     @Override
