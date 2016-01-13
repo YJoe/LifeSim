@@ -2,12 +2,16 @@ package LS;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class SimulationMenu {
@@ -49,7 +53,44 @@ public class SimulationMenu {
         });
         fileSaveAs.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                System.out.println("SaveAs Clicked");
+                Stage stage = new Stage();
+                stage.setTitle("Save");
+                GridPane grid = new GridPane();
+                grid.setAlignment(Pos.CENTER);
+                grid.setHgap(5);
+                grid.setVgap(5);
+                grid.setPadding(new Insets(5, 5, 5, 5));
+
+                Label saveAs = new Label("Save as");
+                grid.add(saveAs, 0, 1);
+                TextField textBox = new TextField();
+                grid.add(textBox, 1, 1);
+
+                Button btn = new Button("Submit");
+                HBox hbBtn = new HBox(10);
+                hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+                hbBtn.getChildren().add(btn);
+                grid.add(hbBtn, 1, 2);
+
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        try{
+                            saveConfiguration(textBox.getText());
+                            stage.close();
+                        }
+                        catch(NumberFormatException e1){
+                            Label invalidlabel = new Label("Incorrect information entered");
+                            invalidlabel.setFont(Font.font("Verdana", 15));
+                            invalidlabel.setTextFill(Color.RED);
+                            grid.add(invalidlabel, 0, 9);
+                        }
+                    }
+
+                });
+                Scene scene = new Scene(grid, 250, 90);
+                stage.setScene(scene);
+                stage.showAndWait();
             }
         });
         fileExit.setOnAction(new EventHandler<ActionEvent>() {
@@ -175,7 +216,7 @@ public class SimulationMenu {
     public void saveConfiguration(){
         Serialize.serialize(getConfiguration(), "MyWorld");
     }
-    public void seaveConfiguration(String name){
+    public void saveConfiguration(String name){
         Serialize.serialize(getConfiguration(), name);
     }
 
