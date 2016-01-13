@@ -365,7 +365,7 @@ public abstract class Animal {
     }
 
     public boolean isValidTarget(int x, int y){
-        if(x < Main.SIZE_X && x >= 0 && y < Main.SIZE_Y && y >= 0){
+        if(x < Main.SIZE_X && x >= 0 && y < Main.SIZE_Y && y >= 25){
             return true;
         }
         return false;
@@ -709,8 +709,8 @@ public abstract class Animal {
                 if (getHomeTarget().getY() > Main.SIZE_Y) {
                     getHomeTarget().setY(Main.SIZE_Y);
                 } else {
-                    if (getHomeTarget().getY() < 0) {
-                        getHomeTarget().setY(0);
+                    if (getHomeTarget().getY() < 25) {
+                        getHomeTarget().setY(25);
                     }
                 }
             }

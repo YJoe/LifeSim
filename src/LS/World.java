@@ -112,7 +112,7 @@ public class World {
         Animal a;
         if (type.equals("Ant")) {
             do {
-                int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
+                int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                 a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
                         animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
                         animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
@@ -121,7 +121,7 @@ public class World {
         } else {
             if (type.equals("Lizard")) {
                 do {
-                    int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
+                    int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                     a = new Lizard(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
                             animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
                             animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
@@ -146,7 +146,7 @@ public class World {
         //TODO: make random food rather than just meat
         Meat f;
         do {
-            int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
+            int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
             f = new Meat(x, y, trackFoodID, "Meat");
         }while(overlapsAnything(f.getImage()));
         foodList.add(f);
@@ -175,7 +175,7 @@ public class World {
         int x, y;
         FoodTree f;
         do {
-            f = new FoodTree(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y), foodList, foodGroup, waterList, foodTreeList);
+            f = new FoodTree(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y) + 25, foodList, foodGroup, waterList, foodTreeList);
         } while(overlapsAnything(f.getTreeTrunk().getImage()));
         foodTreeList.add(f);
         foodTreeLeafGroup.getChildren().add(f.getLeafCircle());
@@ -196,7 +196,7 @@ public class World {
     public void addRandomPool(){
         int waterCount = rand.nextInt(5) + 2;
         // add one water to base other water positions on
-        waterList.add(new Water(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y)));
+        waterList.add(new Water(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y) + 25));
         int PSize = waterList.size();
         waterGroup.getChildren().add(waterList.get(PSize - 1).getCircle());
         addWaterHazard( waterList.get(PSize - 1).getX(),
@@ -221,7 +221,7 @@ public class World {
                                 waterList.get(i + PSize - 1).getCircle().getRadius() *
                                 Math.sin(angleRad));
                 w = new Water(newX, newY);
-            } while(newX > Main.SIZE_X || newX < 0 || newY > Main.SIZE_Y || newY < 0 || !overlapsAnything(w.getCircle()));
+            } while(newX > Main.SIZE_X || newX < 0 || newY > Main.SIZE_Y || newY < 25 || !overlapsAnything(w.getCircle()));
             waterList.add(w);
             addWaterHazard( waterList.get(i + PSize).getX(),
                             waterList.get(i + PSize).getY(),
@@ -243,7 +243,7 @@ public class World {
     public void addRandomShelter(String type){
         Shelter s;
         do {
-            int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y);
+            int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
             if (type.equals("AntHill")) {
                 s = new AntHill(x, y, shelterID);
             } else {
@@ -265,7 +265,7 @@ public class World {
     public void addRandomObstacle(){
         Obstacle o;
         do {
-            o = new Rock(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y));
+            o = new Rock(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y) + 25);
         } while(overlapsAnything(o.getImage()));
         obstacleList.add(o);
         obstacleGroup.getChildren().add(o.getImage());

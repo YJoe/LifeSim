@@ -31,7 +31,7 @@ public class SimulationMenu {
     public SimulationMenu(Stage primaryStage, Group root){
         //Top Menu Bar
         menuBar = new MenuBar();
-        menuBar.setOpacity(0.8);
+        menuBar.setOpacity(1);
         setRoot(root);
 
         // File

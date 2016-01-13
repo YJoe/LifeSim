@@ -78,7 +78,7 @@ public class FoodTree {
 
     public boolean isInScreen(Circle c1){
         if(c1.getCenterX() < Main.SIZE_X && c1.getCenterX() > 0 &&
-                c1.getCenterY() < Main.SIZE_Y && c1.getCenterY() > 0){
+                c1.getCenterY() < Main.SIZE_Y && c1.getCenterY() > 25){
             return true;
         }
         return false;

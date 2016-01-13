@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -35,9 +36,9 @@ public class Main extends Application {
         SimulationMenu menu = new SimulationMenu(primaryStage, root);
         menu.togglePaused();
 
-        //                                      a  l  f  t  h  r  o  p
-        //menu.setConfiguration(new Configuration(0, 0, 0, 0, 0, 0, 0, 1));
-        //menu.createWorld();
+        //                                      a     l    f   t    h  r  o  p
+        menu.setConfiguration(new Configuration(100, 100, 100, 100, 0, 0, 0, 2));
+        menu.createWorld();
 
         // Create key press handler for scene
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -87,11 +88,10 @@ public class Main extends Application {
                 } else {
                     menu.getRoot().getChildren().clear();
                     Text notLoaded = new Text("NO SIMULATION LOADED");
-                    notLoaded.setTranslateX(270);
+                    notLoaded.setTranslateX(275);
                     notLoaded.setTranslateY(Main.SIZE_Y + 40);
                     notLoaded.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-                    notLoaded.setFill(Color.rgb(200, 0, 0));
-                    notLoaded.setOpacity(0.4);
+                    notLoaded.setFill(Color.rgb(100, 100, 100));
                     menu.getRoot().getChildren().add(notLoaded);
                     menu.getRoot().getChildren().add(menu.getMenuBar());
                 }
