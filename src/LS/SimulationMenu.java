@@ -3,8 +3,11 @@ package LS;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class SimulationMenu {
@@ -41,7 +44,7 @@ public class SimulationMenu {
         });
         fileSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                System.out.println("Save Clicked");
+                saveConfiguration();
             }
         });
         fileSaveAs.setOnAction(new EventHandler<ActionEvent>() {
@@ -167,6 +170,13 @@ public class SimulationMenu {
     }
     public boolean isPaused(){
         return isPaused;
+    }
+
+    public void saveConfiguration(){
+        Serialize.serialize(getConfiguration(), "MyWorld");
+    }
+    public void seaveConfiguration(String name){
+        Serialize.serialize(getConfiguration(), name);
     }
 
     public MenuBar getMenuBar() {
