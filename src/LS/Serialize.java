@@ -16,10 +16,10 @@ public class Serialize {
         }
     }
 
-    public static Configuration deserialize(String name){
+    public static Configuration deserialize(File file){
         Configuration configuration;
         try {
-            FileInputStream fileIn = new FileInputStream("Saved Worlds/" + name);
+            FileInputStream fileIn = new FileInputStream(file);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             configuration = (Configuration) in.readObject();
             in.close();

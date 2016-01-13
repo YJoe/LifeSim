@@ -7,17 +7,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
 
 public class Main extends Application {
     public static int SIZE_X = 1000, SIZE_Y = 600;
@@ -34,16 +28,12 @@ public class Main extends Application {
         Group root = new Group();
         Scene scene = new Scene(root, SIZE_X, SIZE_Y + 50, Color.rgb(255, 255, 255));
 
-        //FileChooser fileChooser = new FileChooser();
-        //fileChooser.setTitle("Open Resource File");
-        //fileChooser.showOpenDialog(primaryStage);
-
         // Create menu system object
-        SimulationMenu menu = new SimulationMenu(primaryStage);
+        SimulationMenu menu = new SimulationMenu(primaryStage, root);
         menu.togglePaused();
 
-        menu.setConfiguration(new Configuration(0, 10, 0, 5, 2, 1, 0, 1));
-        menu.createWorld(root);
+        menu.setConfiguration(new Configuration(0, 0, 0, 0, 0, 0, 0, 1));
+        menu.createWorld();
 
         // Create key press handler for scene
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -70,7 +60,7 @@ public class Main extends Application {
                                             menu.getCurrentWorld().toggleAnimals();
                                         }else {
                                             if (ke.getCode() == KeyCode.R) {
-                                                menu.createWorld(root);
+                                                menu.createWorld();
                                             }
                                         }
                                     }

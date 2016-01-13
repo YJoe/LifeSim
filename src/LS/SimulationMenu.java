@@ -12,18 +12,24 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class SimulationMenu {
     private MenuBar menuBar;
+    private Group root;
     private Configuration configuration;
     private World currentWorld;
     private boolean isPaused = false;
 
-    public SimulationMenu(Stage primaryStage){
+    public SimulationMenu(Stage primaryStage, Group root){
         //Top Menu Bar
         menuBar = new MenuBar();
         menuBar.setOpacity(0.8);
+        setRoot(root);
+
         // File
         javafx.scene.control.Menu file = new javafx.scene.control.Menu("File");
         MenuItem fileNewConfig = new MenuItem("New Configuration");
@@ -43,7 +49,16 @@ public class SimulationMenu {
         });
         fileOpenConfig.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                System.out.println("OpenConfig Clicked");
+                // Create a new stage
+                Stage stage = new Stage();
+
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Open Simulation Configuration File");
+                File existDirectory = new File(System.getProperty("user.dir") + "/SavedWorlds");
+                fileChooser.setInitialDirectory(existDirectory);
+                File file = fileChooser.showOpenDialog(stage);
+
+                loadConfiguration(file);
             }
         });
         fileSave.setOnAction(new EventHandler<ActionEvent>() {
@@ -213,6 +228,13 @@ public class SimulationMenu {
         return isPaused;
     }
 
+    // Load file functions
+    public void loadConfiguration(File filePath) {
+        setConfiguration(Serialize.deserialize(filePath));
+        createWorld();
+    }
+
+    // Save file functions
     public void saveConfiguration(){
         Serialize.serialize(getConfiguration(), "MyWorld");
     }
@@ -224,21 +246,21 @@ public class SimulationMenu {
         return menuBar;
     }
 
-    public void createWorld(Group root){
+    public void createWorld(){
         // clear everything from the root
-        root.getChildren().clear();
+        getRoot().getChildren().clear();
 
         // start the simulation in the paused state
         setPaused(true);
 
         // create the new world with the current configuration
-        setCurrentWorld(new World(root, getConfiguration()));
+        setCurrentWorld(new World(getRoot(), getConfiguration()));
         getCurrentWorld().toggleAnimalLabels();
         getCurrentWorld().toggleTargetSquares();
         getCurrentWorld().toggleHomeSquares();
 
         // add the menu bar back in
-        root.getChildren().add(getMenuBar());
+        getRoot().getChildren().add(getMenuBar());
     }
 
     public World getCurrentWorld() {
@@ -255,5 +277,13 @@ public class SimulationMenu {
 
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+    }
+
+    public void setRoot(Group root) {
+        this.root = root;
+    }
+
+    public Group getRoot(){
+        return root;
     }
 }
