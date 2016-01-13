@@ -156,7 +156,12 @@ public class World {
         if (type.equals("Ant")){
             f = new DeadAnt(x, y, trackFoodID, size);
         } else {
-            f = new Meat(x, y, trackFoodID, size, "Meat");
+            if (type.equals("Lizard")) {
+                f = new DeadAnt(x, y, trackFoodID, size);
+            }
+            else {
+                f = new Meat(x, y, trackFoodID, size, "QuestionableMeat");
+            }
         }
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());
@@ -308,9 +313,16 @@ public class World {
 
     // remove from the world
     public void killAnimal(int i){
-        addFood("Ant", (int)(animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
-                (int)(animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
-                (int)(animalList.get(i).getImage().getRadius()));
+        if (getAnimalList().get(i).getSpecies().equals("Ant")) {
+            addFood("Ant", (int) (animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
+                    (int) (animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
+                    (int) (animalList.get(i).getImage().getRadius()));
+        }
+        if (getAnimalList().get(i).getSpecies().equals("Lizard")) {
+            addFood("Lizard", (int) (animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
+                    (int) (animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
+                    (int) (animalList.get(i).getImage().getRadius()));
+        }
         animalRank.add(animalList.get(i));
         animalGroup.getChildren().remove(i);
         animalSmellGroup.getChildren().remove(i);

@@ -42,7 +42,7 @@ public class Main extends Application {
         SimulationMenu menu = new SimulationMenu(primaryStage);
         menu.togglePaused();
 
-        menu.setConfiguration(new Configuration(100, 10, 0, 5, 1, 0, 2));
+        menu.setConfiguration(new Configuration(100, 10, 0, 5, 1, 0, 1));
         menu.createWorld(root);
 
         // Create key press handler for scene
