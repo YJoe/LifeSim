@@ -10,6 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -32,9 +35,9 @@ public class Main extends Application {
         SimulationMenu menu = new SimulationMenu(primaryStage, root);
         menu.togglePaused();
 
-        //                                      a   l  f   t  h  r  o  p
-        menu.setConfiguration(new Configuration(300, 10, 0, 50, 2, 1, 0, 2));
-        menu.createWorld();
+        //                                      a  l  f  t  h  r  o  p
+        //menu.setConfiguration(new Configuration(0, 0, 0, 0, 0, 0, 0, 1));
+        //menu.createWorld();
 
         // Create key press handler for scene
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -77,8 +80,20 @@ public class Main extends Application {
         KeyFrame frame = new KeyFrame(Duration.millis(16), new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event){
-                if (!menu.isPaused()) {
-                    menu.getCurrentWorld().update();
+                if (menu.getCurrentWorld() != null) {
+                    if (!menu.isPaused()) {
+                        menu.getCurrentWorld().update();
+                    }
+                } else {
+                    menu.getRoot().getChildren().clear();
+                    Text notLoaded = new Text("NO SIMULATION LOADED");
+                    notLoaded.setTranslateX(270);
+                    notLoaded.setTranslateY(Main.SIZE_Y + 40);
+                    notLoaded.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
+                    notLoaded.setFill(Color.rgb(200, 0, 0));
+                    notLoaded.setOpacity(0.4);
+                    menu.getRoot().getChildren().add(notLoaded);
+                    menu.getRoot().getChildren().add(menu.getMenuBar());
                 }
             }
         });

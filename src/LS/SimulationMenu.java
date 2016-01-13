@@ -1,5 +1,8 @@
 package LS;
 
+import javafx.beans.value.ObservableListValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,6 +19,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class SimulationMenu {
     private MenuBar menuBar;
@@ -44,7 +48,27 @@ public class SimulationMenu {
         file.getItems().add(fileExit);
         fileNewConfig.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                System.out.println("NewConfig Clicked");
+                Stage stage = new Stage();
+                stage.setTitle("New Configuration");
+                GridPane grid = new GridPane();
+                grid.setAlignment(Pos.CENTER);
+                grid.setHgap(5);
+                grid.setVgap(5);
+                grid.setPadding(new Insets(5, 5, 5, 5));
+
+                Label antsText = new Label("Ants: ");
+                TextField antsBox = new TextField();
+                Label lizardsText = new Label("Lizards: ");
+                TextField lizardsBox = new TextField();
+
+                grid.add(antsText, 0, 0);
+                grid.add(antsBox, 1, 0);
+                grid.add(lizardsText, 0, 1);
+                grid.add(lizardsBox, 1, 1);
+
+                Scene scene = new Scene(grid, 250, 300);
+                stage.setScene(scene);
+                stage.showAndWait();
             }
         });
         fileOpenConfig.setOnAction(new EventHandler<ActionEvent>() {
