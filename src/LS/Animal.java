@@ -577,7 +577,7 @@ public abstract class Animal {
                 setTargetingHome(false);
                 // Check if the opposite sex is in the shelter and is also the correct age
                 if (isShouldBreed()){
-                    setWaitInShelterTimer(10000 + rand.nextInt(500));
+                    setWaitAtHome(1000 + rand.nextInt(500));
                     for (Animal animal : getAnimalList()){
                         if (animal.isInShelter()) {
                             if (animal.getGender() != getGender()) {
@@ -595,7 +595,6 @@ public abstract class Animal {
                             }
                         }
                     }
-                    setShouldBreed(false);
                     setBreedTimer(5000);
                 }
 
@@ -734,7 +733,7 @@ public abstract class Animal {
     }
 
     public void updateText(){
-        getText().setText(  getID() + "\nX" + (int)(getImage().getCenterX() + getImage().getTranslateX()) + " Y" + (int)(getImage().getCenterY() + getImage().getTranslateY()) +
+        getText().setText(  getID() + " " + getAgeYear() + " " + getGender() + "\nX" + (int)(getImage().getCenterX() + getImage().getTranslateX()) + " Y" + (int)(getImage().getCenterY() + getImage().getTranslateY()) +
                 "\nFood: " + getFoodInventory().getSize() + "/" + getFoodInventory().getCapacity() + "\n"
                             + "Water: " + getWaterInventory().getSize() + "/" + getWaterInventory().getCapacity());
     }
