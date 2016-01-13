@@ -38,7 +38,7 @@ public class FoodTree {
         setFoodGroup(foodGroup);
 
         // Set a food production rate
-        setFoodRate(rand.nextInt(500) + 800);
+        setFoodRate(rand.nextInt(300) + 400);
     }
 
     //

@@ -9,11 +9,11 @@ import java.util.Random;
 
 public class Lizard extends Animal{
     private Random rand = new Random();
-    private float baseSpeed = (float)(0.4), baseMetabolism = (float)(0.002);
-    private int baseSize = 5, baseTurnAngle = 30, baseStrength = 5, baseMemory = 10;
+    private float baseSpeed = (float)(0.2), baseMetabolism = (float)(0.001);
+    private int baseSize = 3, baseTurnAngle = 30, baseStrength = 5, baseMemory = 10;
     private Color bodyColour = Color.rgb(0, 150, 40);
     private Color smellColour = Color.rgb(0, 100, 100);
-    private int maxAge = rand.nextInt(5) + 5, breedAge = 1, speedChangeAge = (maxAge / 2);
+    private int maxAge = rand.nextInt(5) + 5, breedAge = 2, speedChangeAge = (maxAge / 2);
 
     public Lizard(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup,
                World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
@@ -47,7 +47,7 @@ public class Lizard extends Animal{
         setTurnAngle(baseTurnAngle + (rand.nextInt(20)));
 
         // Set a random metabolism
-        setMetabolism((float)(baseMetabolism + (rand.nextInt(4) * 0.0005)));
+        setMetabolism((float)(baseMetabolism + (rand.nextInt(2) * 0.0005)));
 
         // Set a random memory
         setMemory(baseMemory + (rand.nextInt(30)));
@@ -135,7 +135,7 @@ public class Lizard extends Animal{
         int strength = (getStrength() + ant.getStrength()) / 2;
 
         World.trackAnimalID++;
-        Ant a = new Ant(x, y, id, getWorldRef().getDay(), getWorldRef().getYear(), getFoodGroupRef(), getAnimalGroupRef(), getWaterGroupRef(),
+        Lizard a = new Lizard(x, y, id, getWorldRef().getDay(), getWorldRef().getYear(), getFoodGroupRef(), getAnimalGroupRef(), getWaterGroupRef(),
                 smellRange, size, speed, turnAngle, metabolism, memory, strength, getWorldRef(), getAnimalList(), getFoodList(), getWaterList(),
                 getObstacleList(), getShelterList(), getAnimalSmellRef(), getAnimalStatsRef(), getAnimalLabelRef(), getAnimalTargetRef(), getAnimalHomeLocationRef());
 
@@ -175,7 +175,7 @@ public class Lizard extends Animal{
             }
         }
         for(Food food : getFoodList()){
-            if (food.getType().equals("DeadAnt")) {
+            if (food.getType().equals("DeadAnt") || food.getType().equals("Fruit")) {
                 if (Collision.overlapsEfficient(this.getSmellCircle(), food.getImage())) {
                     if (Collision.overlapsAccurate(this.getSmellCircle(), food.getImage())) {
                         setTargetingFood(true);
