@@ -409,6 +409,7 @@ public abstract class Animal {
     }
 
     public void fightAnimal() {
+        System.out.println("Fighting");
         if (getEnergy() > 0) {
             for (Animal animal : animalList) {
                 if (animal.getID() == getTargetFoodID()){
@@ -465,17 +466,94 @@ public abstract class Animal {
     }
 
     public void checkFood(){
-        for(Food food : getFoodList()){
-            if (Collision.overlapsEfficient(this.getSmellCircle(), food.getImage())) {
-                if (Collision.overlapsAccurate(this.getSmellCircle(), food.getImage())) {
-                    setTargetingFood(true);
-                    setTargetingAnimal(false);
-                    setTargetFoodID(food.getID());
-                    setLocalTarget(food.getImage());
-                    return;
+        for(Animal animal : getAnimalList()) {
+            if (isInHuntList(animal.getSymbol())) {
+                if (getID() != animal.getID()) {
+                    if (Collision.overlapsEfficient(this.getSmellCircle(), animal.getImage())) {
+                        if (Collision.overlapsAccurate(this.getSmellCircle(), animal.getImage())) {
+                            setTargetingAnimal(true);
+                            setTargetFoodID(animal.getID());
+                            setLocalTarget(animal.getImage());
+                            return;
+                        }
+                    }
                 }
             }
         }
+
+        for(Food food : getFoodList()){
+            if (isInEatList(food.getType().charAt(4))) {
+                if (Collision.overlapsEfficient(this.getSmellCircle(), food.getImage())) {
+                    if (Collision.overlapsAccurate(this.getSmellCircle(), food.getImage())) {
+                        setTargetingFood(true);
+                        setTargetingAnimal(false);
+                        setTargetFoodID(food.getID());
+                        setLocalTarget(food.getImage());
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    public boolean isInEatList(char type) {
+        int indexX;
+        int indexY;
+
+        // Get index of animal to test
+        if (type == 'A')
+            indexX = 0;
+        else if (type == 'L')
+            indexX = 1;
+        else if (type == 'B')
+            indexX = 2;
+        else if (type == 'E')
+            indexX = 3;
+        else if (type == 'F')
+            indexX = 4;
+        else return false;
+
+        // Get index of self
+        if (getSymbol() == 'A')
+            indexY = 0;
+        else if (getSymbol() == 'L')
+            indexY = 1;
+        else if (getSymbol() == 'B')
+            indexY = 2;
+        else if (getSymbol() == 'E')
+            indexY = 3;
+        else return false;
+
+        return getConfiguration().getFoodChain().getEatList()[indexX][indexY];
+    }
+
+    public boolean isInHuntList(char type) {
+        int indexX;
+        int indexY;
+
+        // Get index of animal to test
+        if (type == 'A')
+            indexX = 0;
+        else if (type == 'L')
+            indexX = 1;
+        else if (type == 'B')
+            indexX = 2;
+        else if (type == 'E')
+            indexX = 3;
+        else return false;
+
+        // Get index of self
+        if (getSymbol() == 'A')
+            indexY = 0;
+        else if (getSymbol() == 'L')
+            indexY = 1;
+        else if (getSymbol() == 'B')
+            indexY = 2;
+        else if (getSymbol() == 'E')
+            indexY = 3;
+        else return false;
+
+        return getConfiguration().getFoodChain().getHuntList()[indexX][indexY];
     }
 
     public void eatFood(){

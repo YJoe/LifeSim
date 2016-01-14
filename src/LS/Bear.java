@@ -178,20 +178,4 @@ public class Bear extends Animal{
             }
         }
     }
-
-    public void checkFood(){
-        for(Food food : getFoodList()){
-            if (food.getType().equals("DeadAnt") || food.getType().equals("Fruit")) {
-                if (Collision.overlapsEfficient(this.getSmellCircle(), food.getImage())) {
-                    if (Collision.overlapsAccurate(this.getSmellCircle(), food.getImage())) {
-                        setTargetingFood(true);
-                        setTargetingAnimal(false);
-                        setTargetFoodID(food.getID());
-                        setLocalTarget(food.getImage());
-                        return;
-                    }
-                }
-            }
-        }
-    }
 }

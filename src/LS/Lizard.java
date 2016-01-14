@@ -163,37 +163,6 @@ public class Lizard extends Animal{
     }
 
     @Override
-    public void checkFood(){
-        for(int i = 0; i < getAnimalList().size(); i++){
-            if (getAnimalList().get(i).getSpecies().equals("Ant")){
-                if (getID() != getAnimalList().get(i).getID()) {
-                    if (Collision.overlapsEfficient(getSmellCircle(), getAnimalList().get(i).getImage())) {
-                        if (Collision.overlapsAccurate(getSmellCircle(), getAnimalList().get(i).getImage())) {
-                            setTargetingAnimal(true);
-                            setTargetFoodID(getAnimalList().get(i).getID());
-                            setLocalTarget(getAnimalList().get(i).getImage());
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        for(Food food : getFoodList()){
-            if (food.getType().equals("DeadAnt") || food.getType().equals("Fruit")) {
-                if (Collision.overlapsEfficient(this.getSmellCircle(), food.getImage())) {
-                    if (Collision.overlapsAccurate(this.getSmellCircle(), food.getImage())) {
-                        setTargetingFood(true);
-                        setTargetingAnimal(false);
-                        setTargetFoodID(food.getID());
-                        setLocalTarget(food.getImage());
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    @Override
     public void checkShelters(){
         for(int i = 0; i < getShelterList().size(); i++){
             if(getShelterList().get(i).getType().equals("RockShelter")) {
