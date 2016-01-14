@@ -68,43 +68,46 @@ public class World {
 
         setWorldStatsBar(new WorldStatsBar(root));
         getWorldStatsBar().setDateString(getDateString());
-        getWorldStatsBar().setAnimalCountString(configuration.getAnts() + configuration.getLizards());
+        getWorldStatsBar().setAnimalCountString(configuration.getAnts() +
+                                                configuration.getLizards() +
+                                                configuration.getBears() +
+                                                configuration.getEagles());
         getWorldStatsBar().setFoodCountString(configuration.getFoodCount());
         getWorldStatsBar().setShelterCountString(configuration.getAntHillCount() + configuration.getRockShelterCount());
 
 
-        System.out.println("Creating pools");
         for(int i = 0; i < configuration.getPoolCount(); i++){
             addRandomPool();
         }
-        System.out.println("Creating food trees");
         for(int i = 0; i < configuration.getFoodTrees(); i++){
             addRandomFoodTree();
         }
-        System.out.println("Creating shelters");
         for(int i = 0; i < configuration.getAntHillCount(); i++){
             addRandomShelter("AntHill");
         }
         for(int i = 0; i < configuration.getRockShelterCount(); i++){
             addRandomShelter("RockShelter");
         }
-        System.out.println("Creating ants");
         for(int i = 0; i < configuration.getAnts(); i++) {
             addRandomAnimal("Ant");
         }
-        System.out.println("Creating lizards");
         for(int i = 0; i < configuration.getLizards(); i++){
             addRandomAnimal("Lizard");
         }
-        System.out.println("Creating food");
+        for(int i = 0; i < configuration.getBears(); i++){
+            addRandomAnimal("Bear");
+        }
+        for(int i = 0; i < configuration.getEagles(); i++){
+            System.out.println("Here");
+            addRandomAnimal("Eagle");
+        }
         for(int i = 0; i < configuration.getFoodCount(); i++){
             addRandomFood();
         }
-        System.out.println("Creating obstacles");
         for(int i = 0; i < configuration.getObstacleCount(); i++){
             addRandomObstacle();
         }
-        System.out.println("World created and populated");
+        System.out.println("World created from configuration");
     }
 
     // add to the world
@@ -127,6 +130,27 @@ public class World {
                             animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
                 } while (overlapsAnything(a.getImage()));
                 a.addSelfToLists();
+            } else {
+                if (type.equals("Bear")){
+                    do {
+                        int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
+                        a = new Bear(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
+                                animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
+                                animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
+                    } while (overlapsAnything(a.getImage()));
+                    a.addSelfToLists();
+                }else {
+                    if (type.equals("Eagle")){
+                        System.out.println("Here");
+                        do {
+                            int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
+                            a = new Eagle(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
+                                    animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
+                                    animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
+                        } while (overlapsAnything(a.getImage()));
+                        a.addSelfToLists();
+                    }
+                }
             }
         }
         trackAnimalID++;
@@ -335,13 +359,23 @@ public class World {
                     (int) (animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
                     (int) (animalList.get(i).getImage().getRadius()));
         }
+        if (getAnimalList().get(i).getSpecies().equals("Bear")){
+            addFood("Bear", (int) (animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
+                    (int) (animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
+                    (int) (animalList.get(i).getImage().getRadius()));
+        }
+        if (getAnimalList().get(i).getSpecies().equals("Eagle")){
+            addFood("Eagle", (int) (animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
+                    (int) (animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
+                    (int) (animalList.get(i).getImage().getRadius()));
+        }
+
         animalRank.add(animalList.get(i));
         animalGroup.getChildren().remove(i);
         animalSmellGroup.getChildren().remove(i);
         animalTargetGroup.getChildren().remove(i);
         animalStatsGroup.getChildren().remove(i);
         animalLabelGroup.getChildren().remove(i);
-        System.out.println("Animal " + animalList.get(i).getID() + " died");
         animalList.remove(i);
     }
 

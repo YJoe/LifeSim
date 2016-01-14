@@ -469,6 +469,7 @@ public abstract class Animal {
                     setTargetingAnimal(false);
                     setTargetFoodID(food.getID());
                     setLocalTarget(food.getImage());
+                    return;
                 }
             }
         }

@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class Configuration implements Serializable{
     private int ants;
     private int lizards;
+    private int bears;
+    private int eagles;
     private int foodCount;
     private int foodTrees;
     private int antHillCount;
@@ -12,9 +14,11 @@ public class Configuration implements Serializable{
     private int obstacleCount;
     private int poolCount;
 
-    public Configuration(int ants, int lizards, int foodCount, int foodTrees, int antHillCount, int rockShelterCount, int obstacleCount,  int poolCount){
+    public Configuration(int ants, int lizards, int bears, int eagles, int foodCount, int foodTrees, int antHillCount, int rockShelterCount, int obstacleCount,  int poolCount){
         setAnts(ants);
         setLizards(lizards);
+        setBears(bears);
+        setEagles(eagles);
         setFoodCount(foodCount);
         setFoodTrees(foodTrees);
         setAntHillCount(antHillCount);
@@ -85,5 +89,21 @@ public class Configuration implements Serializable{
 
     public void setRockShelterCount(int rockShelterCount) {
         this.rockShelterCount = rockShelterCount;
+    }
+
+    public int getBears() {
+        return bears;
+    }
+
+    public void setBears(int bears) {
+        this.bears = bears;
+    }
+
+    public int getEagles() {
+        return eagles;
+    }
+
+    public void setEagles(int eagles) {
+        this.eagles = eagles;
     }
 }

@@ -21,7 +21,6 @@ public class Main extends Application {
     public static int SIZE_X = 1000, SIZE_Y = 600;
     //public static int SIZE_X = 300, SIZE_Y = 200;
 
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -36,8 +35,8 @@ public class Main extends Application {
         SimulationMenu menu = new SimulationMenu(primaryStage, root);
         menu.togglePaused();
 
-        //                                      a     l    f   t    h  r  o  p
-        menu.setConfiguration(new Configuration(100, 100, 100, 100, 0, 0, 0, 2));
+        //                                      a  l  b  e  f  t  h  r  o  p
+        menu.setConfiguration(new Configuration(0, 0, 1, 0, 0, 0, 0, 0, 0, 0));
         menu.createWorld();
 
         // Create key press handler for scene

@@ -169,6 +169,7 @@ public class Lizard extends Animal{
                             setTargetingAnimal(true);
                             setTargetFoodID(getAnimalList().get(i).getID());
                             setLocalTarget(getAnimalList().get(i).getImage());
+                            break;
                         }
                     }
                 }
@@ -182,6 +183,7 @@ public class Lizard extends Animal{
                         setTargetingAnimal(false);
                         setTargetFoodID(food.getID());
                         setLocalTarget(food.getImage());
+                        return;
                     }
                 }
             }
