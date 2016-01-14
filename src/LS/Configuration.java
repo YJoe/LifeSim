@@ -7,22 +7,28 @@ public class Configuration implements Serializable{
     private int lizards;
     private int bears;
     private int eagles;
-    private int foodCount;
-    private int foodTrees;
     private int antHillCount;
     private int rockShelterCount;
+    private int caves;
+    private int nests;
+    private int foodCount;
+    private int foodTrees;
     private int obstacleCount;
     private int poolCount;
 
-    public Configuration(int ants, int lizards, int bears, int eagles, int foodCount, int foodTrees, int antHillCount, int rockShelterCount, int obstacleCount,  int poolCount){
+    public Configuration(int ants, int lizards, int bears, int eagles,
+                         int antHillCount, int rockShelterCount, int caves, int nests,
+                         int foodCount, int foodTrees, int obstacleCount,  int poolCount){
         setAnts(ants);
         setLizards(lizards);
         setBears(bears);
         setEagles(eagles);
-        setFoodCount(foodCount);
-        setFoodTrees(foodTrees);
         setAntHillCount(antHillCount);
         setRockShelterCount(rockShelterCount);
+        setCaves(caves);
+        setNests(nests);
+        setFoodCount(foodCount);
+        setFoodTrees(foodTrees);
         setObstacleCount(obstacleCount);
         setPoolCount(poolCount);
     }
@@ -105,5 +111,21 @@ public class Configuration implements Serializable{
 
     public void setEagles(int eagles) {
         this.eagles = eagles;
+    }
+
+    public int getCaves() {
+        return caves;
+    }
+
+    public void setCaves(int caves) {
+        this.caves = caves;
+    }
+
+    public int getNests() {
+        return nests;
+    }
+
+    public void setNests(int nests) {
+        this.nests = nests;
     }
 }

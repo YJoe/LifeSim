@@ -73,7 +73,10 @@ public class World {
                                                 configuration.getBears() +
                                                 configuration.getEagles());
         getWorldStatsBar().setFoodCountString(configuration.getFoodCount());
-        getWorldStatsBar().setShelterCountString(configuration.getAntHillCount() + configuration.getRockShelterCount());
+        getWorldStatsBar().setShelterCountString(configuration.getAntHillCount() +
+                                                    configuration.getRockShelterCount() +
+                                                    configuration.getCaves() +
+                                                    configuration.getNests());
 
 
         for(int i = 0; i < configuration.getPoolCount(); i++){
@@ -88,6 +91,12 @@ public class World {
         for(int i = 0; i < configuration.getRockShelterCount(); i++){
             addRandomShelter("RockShelter");
         }
+        for(int i = 0; i < configuration.getCaves(); i++){
+            addRandomShelter("Cave");
+        }
+        for(int i = 0; i < configuration.getNests(); i++){
+            addRandomShelter("Nest");
+        }
         for(int i = 0; i < configuration.getAnts(); i++) {
             addRandomAnimal("Ant");
         }
@@ -98,7 +107,6 @@ public class World {
             addRandomAnimal("Bear");
         }
         for(int i = 0; i < configuration.getEagles(); i++){
-            System.out.println("Here");
             addRandomAnimal("Eagle");
         }
         for(int i = 0; i < configuration.getFoodCount(); i++){
@@ -141,7 +149,6 @@ public class World {
                     a.addSelfToLists();
                 }else {
                     if (type.equals("Eagle")){
-                        System.out.println("Here");
                         do {
                             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                             a = new Eagle(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
@@ -279,12 +286,20 @@ public class World {
             if (type.equals("AntHill")) {
                 s = new AntHill(x, y, shelterID);
             } else {
-                if(type.equals("RockShelter")){
+                if (type.equals("RockShelter")) {
                     s = new RockShelter(x, y, shelterID);
-                }
-                else {
-                    System.out.println("Error creating shelter");
-                    return;
+                } else {
+                    if (type.equals("Cave")) {
+                        s = new Cave(x, y, shelterID);
+                    } else {
+                        if (type.equals("Nest")) {
+                            s = new Nest(x, y, shelterID);
+                        }
+                        else{
+                            System.out.println("Error creating shelter");
+                            return;
+                        }
+                    }
                 }
             }
         } while(overlapsAnything(s.getImage()));
