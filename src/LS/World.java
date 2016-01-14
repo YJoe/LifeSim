@@ -185,9 +185,17 @@ public class World {
         } else {
             if (type.equals("Lizard")) {
                 f = new DeadAnt(x, y, trackFoodID, size);
-            }
-            else {
-                f = new Meat(x, y, trackFoodID, size, "QuestionableMeat");
+            } else {
+                if (type.equals("Bear")) {
+                    f = new DeadBear(x, y, trackFoodID, size);
+                } else {
+                    if (type.equals("Eagle")){
+                        f = new DeadEagle(x, y, trackFoodID, size);
+                    }
+                    else{
+                        f = new Meat(x, y, trackFoodID, size, "QuestionableMeat");
+                    }
+                }
             }
         }
         foodList.add(f);
@@ -349,26 +357,9 @@ public class World {
 
     // remove from the world
     public void killAnimal(int i){
-        if (getAnimalList().get(i).getSpecies().equals("Ant")) {
-            addFood("Ant", (int) (animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
-                    (int) (animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
-                    (int) (animalList.get(i).getImage().getRadius()));
-        }
-        if (getAnimalList().get(i).getSpecies().equals("Lizard")) {
-            addFood("Lizard", (int) (animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
-                    (int) (animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
-                    (int) (animalList.get(i).getImage().getRadius()));
-        }
-        if (getAnimalList().get(i).getSpecies().equals("Bear")){
-            addFood("Bear", (int) (animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
-                    (int) (animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
-                    (int) (animalList.get(i).getImage().getRadius()));
-        }
-        if (getAnimalList().get(i).getSpecies().equals("Eagle")){
-            addFood("Eagle", (int) (animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
-                    (int) (animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
-                    (int) (animalList.get(i).getImage().getRadius()));
-        }
+        addFood(getAnimalList().get(i).getSpecies(), (int) (animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
+                (int) (animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
+                (int) (animalList.get(i).getImage().getRadius()));
 
         animalRank.add(animalList.get(i));
         animalGroup.getChildren().remove(i);
