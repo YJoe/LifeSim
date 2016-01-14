@@ -62,7 +62,7 @@ public class Main extends Application {
                                                 menu.createWorld();
                                             } else {
                                                 if (ke.getCode() == KeyCode.N){
-                                                    menu.newFoodChain();
+                                                    menu.newConfiguration();
                                                 }
                                             }
                                         }

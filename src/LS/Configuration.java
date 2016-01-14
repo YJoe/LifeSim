@@ -15,10 +15,12 @@ public class Configuration implements Serializable{
     private int foodTrees;
     private int obstacleCount;
     private int poolCount;
+    private FoodChain foodChain;
 
     public Configuration(int ants, int lizards, int bears, int eagles,
                          int antHillCount, int rockShelterCount, int caves, int nests,
-                         int foodCount, int foodTrees, int obstacleCount,  int poolCount){
+                         int foodCount, int foodTrees, int obstacleCount,  int poolCount,
+                         FoodChain foodChain){
         setAnts(ants);
         setLizards(lizards);
         setBears(bears);
@@ -31,6 +33,7 @@ public class Configuration implements Serializable{
         setFoodTrees(foodTrees);
         setObstacleCount(obstacleCount);
         setPoolCount(poolCount);
+        setFoodChain(foodChain);
     }
 
     public int getAnts() {
@@ -127,5 +130,13 @@ public class Configuration implements Serializable{
 
     public void setNests(int nests) {
         this.nests = nests;
+    }
+
+    public FoodChain getFoodChain() {
+        return foodChain;
+    }
+
+    public void setFoodChain(FoodChain foodChain) {
+        this.foodChain = foodChain;
     }
 }
