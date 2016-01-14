@@ -36,7 +36,7 @@ public class Main extends Application {
         menu.togglePaused();
 
         //                                      a  l  b  e  f  t  h  r  o  p
-        menu.setConfiguration(new Configuration(0, 0, 1, 0, 0, 0, 0, 0, 0, 0));
+        menu.setConfiguration(new Configuration(0, 0, 5, 10, 0, 0, 0, 0, 0, 0));
         menu.createWorld();
 
         // Create key press handler for scene

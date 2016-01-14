@@ -8,8 +8,8 @@ import java.util.Random;
 
 public class Eagle extends Animal{
     private Random rand = new Random();
-    private float baseSpeed = (float)(0.3), baseMetabolism = (float)(0.003);
-    private int baseSize = 20, baseTurnAngle = 30, baseStrength = 20, baseMemory = 10;
+    private float baseSpeed = (float)(0.4), baseMetabolism = (float)(0.001);
+    private int baseSize = 5, baseTurnAngle = 30, baseStrength = 15, baseMemory = 10;
     private Color bodyColour = Color.rgb(200, 200, 200);
     private Color smellColour = Color.rgb(0, 100, 100);
     private int maxAge = rand.nextInt(10) + 10, breedAge = 2, speedChangeAge = (maxAge / 2);
@@ -27,19 +27,19 @@ public class Eagle extends Animal{
         giveName(names_m, names_f);
 
         // Create smell attributes
-        setSmellRange(rand.nextInt(50) + 100 - 15);
+        setSmellRange(rand.nextInt(50) + 100 - 25);
         setSmellCircle(new Circle(x, y, getSmellRange()));
         getSmellCircle().setFill(smellColour);
         getSmellCircle().setOpacity(0.3);
         setPathDistance(getSmellRange());
 
         // Create body attributes
-        setSize(baseSize + rand.nextInt(10));
+        setSize(baseSize + rand.nextInt(5));
         setImage(new Circle(x, y, getSize()));
         getImage().setFill(bodyColour);
 
         // Set a random speed
-        setSpeed(baseSpeed + (rand.nextInt(3) * 0.1));
+        setSpeed(baseSpeed + (rand.nextInt(10) * 0.1));
         setOriginalSpeed(getSpeed());
 
         // Set a random turning angle
@@ -82,12 +82,12 @@ public class Eagle extends Animal{
         setPathDistance(getSmellRange());
 
         // Create body attributes
-        setSize(size + rand.nextInt(5));
+        setSize(size + rand.nextInt(2) - 1);
         setImage(new Circle(x, y, getSize()));
         getImage().setFill(bodyColour);
 
         // Set a random speed
-        setSpeed(speed + rand.nextInt(5));
+        setSpeed(speed + rand.nextInt(2) - 1);
         setOriginalSpeed(getSpeed());
 
         // Set a random turning angle
@@ -176,6 +176,7 @@ public class Eagle extends Animal{
         }
     }
 
+    @Override
     public void checkFood(){
         for(int i = 0; i < getAnimalList().size(); i++){
             if (getAnimalList().get(i).getSpecies().equals("Lizard")){

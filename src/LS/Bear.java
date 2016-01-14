@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Bear extends Animal{
     private Random rand = new Random();
-    private float baseSpeed = (float)(0.3), baseMetabolism = (float)(0.003);
+    private float baseSpeed = (float)(0.2), baseMetabolism = (float)(0.003);
     private int baseSize = 20, baseTurnAngle = 30, baseStrength = 20, baseMemory = 10;
     private Color bodyColour = Color.rgb(200, 100, 0);
     private Color smellColour = Color.rgb(0, 100, 100);
@@ -82,12 +82,12 @@ public class Bear extends Animal{
         setPathDistance(getSmellRange());
 
         // Create body attributes
-        setSize(size + rand.nextInt(5));
+        setSize(size + rand.nextInt(2) - 1);
         setImage(new Circle(x, y, getSize()));
         getImage().setFill(bodyColour);
 
         // Set a random speed
-        setSpeed(speed + rand.nextInt(5));
+        setSpeed(speed + rand.nextInt(2) - 1);
         setOriginalSpeed(getSpeed());
 
         // Set a random turning angle
