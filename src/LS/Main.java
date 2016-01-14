@@ -35,10 +35,6 @@ public class Main extends Application {
         SimulationMenu menu = new SimulationMenu(primaryStage, root);
         menu.togglePaused();
 
-        //                                      a  l  b  e   h  r  c  n  f  t  o  p
-        menu.setConfiguration(new Configuration(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
-        menu.createWorld();
-
         // Create key press handler for scene
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent ke) {
@@ -65,6 +61,10 @@ public class Main extends Application {
                                         }else {
                                             if (ke.getCode() == KeyCode.R) {
                                                 menu.createWorld();
+                                            } else {
+                                                if (ke.getCode() == KeyCode.N){
+                                                    menu.newConfiguration();
+                                                }
                                             }
                                         }
                                     }

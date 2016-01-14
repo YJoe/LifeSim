@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -48,27 +49,7 @@ public class SimulationMenu {
         file.getItems().add(fileExit);
         fileNewConfig.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                Stage stage = new Stage();
-                stage.setTitle("New Configuration");
-                GridPane grid = new GridPane();
-                grid.setAlignment(Pos.CENTER);
-                grid.setHgap(5);
-                grid.setVgap(5);
-                grid.setPadding(new Insets(5, 5, 5, 5));
-
-                Label antsText = new Label("Ants: ");
-                TextField antsBox = new TextField();
-                Label lizardsText = new Label("Lizards: ");
-                TextField lizardsBox = new TextField();
-
-                grid.add(antsText, 0, 0);
-                grid.add(antsBox, 1, 0);
-                grid.add(lizardsText, 0, 1);
-                grid.add(lizardsBox, 1, 1);
-
-                Scene scene = new Scene(grid, 250, 300);
-                stage.setScene(scene);
-                stage.showAndWait();
+                newConfiguration();
             }
         });
         fileOpenConfig.setOnAction(new EventHandler<ActionEvent>() {
@@ -105,11 +86,11 @@ public class SimulationMenu {
                 TextField textBox = new TextField();
                 grid.add(textBox, 1, 1);
 
-                Button btn = new Button("Submit");
+                Button btn = new Button("Create");
                 HBox hbBtn = new HBox(10);
                 hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
                 hbBtn.getChildren().add(btn);
-                grid.add(hbBtn, 1, 2);
+                grid.add(hbBtn, 1, 3);
 
                 btn.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -256,6 +237,146 @@ public class SimulationMenu {
     public void loadConfiguration(File filePath) {
         setConfiguration(Serialize.deserialize(filePath));
         createWorld();
+    }
+
+    public void newConfiguration(){
+        Stage stage = new Stage();
+        stage.setTitle("New Configuration");
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.TOP_CENTER);
+        grid.setHgap(5);
+        grid.setVgap(5);
+        grid.setPadding(new Insets(5, 5, 5, 5));
+
+        Text sceneTitle = new Text("New Configuration");
+        sceneTitle.setFont(Font.font("Verdana", FontWeight.NORMAL, 20));
+        grid.add(sceneTitle, 0, 0, 2, 1);
+
+        Text column1 = new Text("Amount");
+        grid.add(column1, 1, 1);
+
+        Text column2 = new Text("Homes");
+        grid.add(column2, 2, 1);
+
+        // Ants
+        Label antsText = new Label("Ants: ");
+        TextField antsBox = new TextField();
+        TextField antsHomeBox = new TextField();
+        grid.add(antsText, 0, 2);
+        grid.add(antsBox, 1, 2);
+        grid.add(antsHomeBox, 2, 2);
+
+        // Lizards
+        Label lizardsText = new Label("Lizards: ");
+        TextField lizardsBox = new TextField();
+        TextField lizardsHomeBox = new TextField();
+        grid.add(lizardsText, 0, 3);
+        grid.add(lizardsBox, 1, 3);
+        grid.add(lizardsHomeBox, 2, 3);
+
+        // Bears
+        Label bearsText = new Label("Bears: ");
+        TextField bearsBox = new TextField();
+        TextField bearsHomeBox = new TextField();
+        grid.add(bearsText, 0, 4);
+        grid.add(bearsBox, 1, 4);
+        grid.add(bearsHomeBox, 2, 4);
+
+        // Eagles
+        Label eaglesText = new Label("Eagles: ");
+        TextField eaglesBox = new TextField();
+        TextField eaglesHomeBox = new TextField();
+        grid.add(eaglesText, 0, 5);
+        grid.add(eaglesBox, 1, 5);
+        grid.add(eaglesHomeBox, 2, 5);
+
+        // Pre-killed meat
+        Label meatText = new Label("Meat: ");
+        TextField meatBox = new TextField();
+        grid.add(meatText, 0, 6);
+        grid.add(meatBox, 1, 6);
+
+        // Trees
+        Label treeText = new Label("Trees: ");
+        TextField treeBox = new TextField();
+        grid.add(treeText, 0, 7);
+        grid.add(treeBox, 1, 7);
+
+        // Rocks
+        Label rocksText = new Label("Rocks: ");
+        TextField rocksBox = new TextField();
+        grid.add(rocksText, 0, 8);
+        grid.add(rocksBox, 1, 8);
+
+        // Water
+        Label waterText = new Label("Ponds: ");
+        TextField waterBox = new TextField();
+        grid.add(waterText, 0, 9);
+        grid.add(waterBox, 1, 9);
+
+
+        // Submit button
+        Button submit = new Button("Submit");
+        HBox hBox = new HBox(10);
+        submit.setAlignment(Pos.BOTTOM_RIGHT);
+        hBox.getChildren().add(submit);
+        grid.add(hBox, 2, 10);
+
+        submit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                int ants, aHomes;
+                int lizards, lHomes;
+                int bears, bHomes;
+                int eagles, eHomes;
+                int meat;
+                int trees;
+                int rocks;
+                int pools;
+                Configuration configuration;
+
+                try {
+                    ants = Integer.parseInt(antsBox.getText());
+                    aHomes = Integer.parseInt(antsHomeBox.getText());
+                    lizards = Integer.parseInt(lizardsBox.getText());
+                    lHomes = Integer.parseInt(lizardsHomeBox.getText());
+                    bears = Integer.parseInt(bearsBox.getText());
+                    bHomes = Integer.parseInt(bearsHomeBox.getText());
+                    eagles = Integer.parseInt(eaglesBox.getText());
+                    eHomes = Integer.parseInt(eaglesHomeBox.getText());
+
+                    meat = Integer.parseInt(meatBox.getText());
+                    trees = Integer.parseInt(treeBox.getText());
+                    rocks = Integer.parseInt(rocksBox.getText());
+                    pools = Integer.parseInt(waterBox.getText());
+
+                    configuration = new Configuration(ants, lizards, bears, eagles,
+                            aHomes, lHomes, bHomes, eHomes,
+                            meat, trees, rocks, pools);
+                    setConfiguration(configuration);
+                    createWorld();
+                    stage.close();
+                }
+                catch(NumberFormatException n){
+                    // Display error
+                    Label invalidLabel = new Label("Invalid");
+                    invalidLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+                    invalidLabel.setTextFill(Color.RED);
+                    grid.add(invalidLabel, 0, 10);
+
+                    // clear fields
+                    antsBox.setText("");
+                    lizardsBox.setText("");
+                    bearsBox.setText("");
+                    eaglesBox.setText("");
+                    n.printStackTrace();
+                }
+            }
+        });
+
+        Scene scene = new Scene(grid, 700, 400);
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 
     // Save file functions
