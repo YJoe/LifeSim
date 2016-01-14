@@ -19,7 +19,6 @@ import javafx.util.Duration;
 
 public class Main extends Application {
     public static int SIZE_X = 1000, SIZE_Y = 600;
-    //public static int SIZE_X = 300, SIZE_Y = 200;
 
     public static void main(String[] args) {
         launch(args);
@@ -63,7 +62,7 @@ public class Main extends Application {
                                                 menu.createWorld();
                                             } else {
                                                 if (ke.getCode() == KeyCode.N){
-                                                    menu.newConfiguration();
+                                                    menu.newFoodChain();
                                                 }
                                             }
                                         }

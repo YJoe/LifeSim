@@ -223,16 +223,6 @@ public class SimulationMenu {
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
     }
 
-    public void togglePaused(){
-        isPaused = !isPaused;
-    }
-    public void setPaused(boolean isPaused){
-        this.isPaused = isPaused;
-    }
-    public boolean isPaused(){
-        return isPaused;
-    }
-
     // Load file functions
     public void loadConfiguration(File filePath) {
         setConfiguration(Serialize.deserialize(filePath));
@@ -379,6 +369,127 @@ public class SimulationMenu {
         stage.showAndWait();
     }
 
+    public void newFoodChain(){
+        Stage stage = new Stage();
+        stage.setTitle("New Configuration");
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.TOP_CENTER);
+        grid.setHgap(5);
+        grid.setVgap(5);
+        grid.setPadding(new Insets(5, 5, 5, 5));
+
+        Text sceneTitle = new Text("New Food Chain");
+        sceneTitle.setFont(Font.font("Verdana", FontWeight.NORMAL, 20));
+        grid.add(sceneTitle, 0, 0, 5, 1);
+
+        Text key = new Text("Key: \nA = Ants\nL = Lizards\nB = Bears\nE = Eagles");
+        grid.add(key, 10, 5, 1, 4);
+
+        Text huntList = new Text("Hunt List");
+        grid.add(huntList, 0, 1);
+
+        Text hAnts = new Text("A");
+        grid.add(hAnts, 2, 1);
+        Text hLizards = new Text("L");
+        grid.add(hLizards, 3, 1);
+        Text hBears = new Text("B");
+        grid.add(hBears, 4, 1);
+        Text hEagles = new Text("E");
+        grid.add(hEagles, 5, 1);
+
+        Text ants = new Text("Ants");
+        grid.add(ants, 1, 3);
+        Text lizards = new Text("Lizards");
+        grid.add(lizards, 1, 4);
+        Text bears = new Text("Bears");
+        grid.add(bears, 1, 5);
+        Text eagles = new Text("Eagles");
+        grid.add(eagles, 1, 6);
+
+        ArrayList<ArrayList<CheckBox>> huntsBoxes = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            huntsBoxes.add(new ArrayList<>());
+            for (int j = 0; j < 4; j++){
+                huntsBoxes.get(i).add(new CheckBox());
+                grid.add(huntsBoxes.get(i).get(j), i + 2, j + 3);
+            }
+        }
+
+        Text eatList = new Text("Eat List");
+        grid.add(eatList, 0, 7);
+
+        Text ants2 = new Text("A");
+        grid.add(ants2, 2, 7);
+        Text lizards2 = new Text("L");
+        grid.add(lizards2, 3, 7);
+        Text bears2 = new Text("B");
+        grid.add(bears2, 4, 7);
+        Text eagles2 = new Text("E");
+        grid.add(eagles2, 5, 7);
+        Text fruit = new Text("F");
+        grid.add(fruit, 6, 7);
+
+        Text eAnts = new Text("Ants");
+        grid.add(eAnts, 1, 8);
+        Text eLizards = new Text("Lizards");
+        grid.add(eLizards, 1, 9);
+        Text eBears = new Text("Bears");
+        grid.add(eBears, 1, 10);
+        Text eEagles = new Text("Eagles");
+        grid.add(eEagles, 1, 11);
+
+        ArrayList<ArrayList<CheckBox>> eatsBoxes = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            eatsBoxes.add(new ArrayList<>());
+            for (int j = 0; j < 4; j++){
+                eatsBoxes.get(i).add(new CheckBox());
+                grid.add(eatsBoxes.get(i).get(j), i + 2, j + 8);
+            }
+        }
+
+        // Load Defaults
+        Button defaults = new Button("Load Default");
+        HBox hBox = new HBox(10);
+        hBox.getChildren().add(defaults);
+        grid.add(hBox, 1, 15, 4, 1);
+
+        defaults.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent e){
+                for(int i = 0; i < 4; i++){
+                    for (int j = 0; j < 4; j++){
+                        if ((i == 0 && j == 1) ||
+                                (i == 1 && j == 3))
+                            huntsBoxes.get(i).get(j).setSelected(true);
+                        else
+                            huntsBoxes.get(i).get(j).setSelected(false);
+                    }
+                }
+                for(int i = 0; i < 5; i++){
+                    for (int j = 0; j < 4; j++){
+                        if ((i != 0 && j == 0) ||
+                            (i != 1 && j == 1) ||
+                            (i < 1 || i  > 3) && j == 2 ||
+                            (i > 0 && i < 3) && j == 3)
+                            eatsBoxes.get(i).get(j).setSelected(true);
+                        else
+                            eatsBoxes.get(i).get(j).setSelected(false);
+                    }
+                }
+            }
+        });
+
+        // Submit
+        Button submit = new Button("Submit");
+        HBox hBox2 = new HBox(10);
+        hBox2.getChildren().add(submit);
+        grid.add(hBox2, 4, 15, 4, 1);
+
+        Scene scene = new Scene(grid, 350, 320);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
     // Save file functions
     public void saveConfiguration(){
         Serialize.serialize(getConfiguration(), "MyWorld");
@@ -431,4 +542,17 @@ public class SimulationMenu {
     public Group getRoot(){
         return root;
     }
+
+    public void togglePaused(){
+        isPaused = !isPaused;
+    }
+
+    public void setPaused(boolean isPaused){
+        this.isPaused = isPaused;
+    }
+
+    public boolean isPaused(){
+        return isPaused;
+    }
+
 }

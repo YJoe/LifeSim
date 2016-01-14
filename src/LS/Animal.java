@@ -498,7 +498,7 @@ public abstract class Animal {
             if(getTargetFoodID() == getFoodList().get(i).getID()) {
                 if (getFoodList().get(i).isPoisonous()) {
                     setPoisoned(true);
-                    setPoisonTime(getFoodList().get(i).getDecay()/4);
+                    setPoisonTime(getFoodList().get(i).getDecay()/2);
                     getFoodGroupRef().getChildren().remove(i);
                     getFoodList().remove(i);
                 } else {
