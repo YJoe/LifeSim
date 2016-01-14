@@ -25,7 +25,7 @@ public abstract class Animal {
     private float metabolism;
     private float hunger = 0;
     private float thirst = 0;
-    private int id, x, y, energy, smellRange, turnAngle, pathDistance, foodSearchCoolDown, followMainCoolDown;
+    private int id, x, y, energy, maxEnergy, smellRange, turnAngle, pathDistance, foodSearchCoolDown, followMainCoolDown;
     private int homeX, homeY, memory, memoryBiasX, memoryBiasY, waitAtHome, homeID, breedTimer;
     private int lastAngle = new Random().nextInt(360);
     private int targetFoodID;
@@ -56,6 +56,7 @@ public abstract class Animal {
         setSymbol(symbolIn);
         setID(IDIn);
         setEnergy(energyIn);
+        setMaxEnergy(energyIn);
         setX(xIn);
         setY(yIn);
         setFoodGroupRef(food);
@@ -269,7 +270,7 @@ public abstract class Animal {
 
         getStatsBar().getBar(0).setWidth(getHunger() * (getStatsBar().getStatBarWidth()/10));
         getStatsBar().getBar(1).setWidth(getThirst() * (getStatsBar().getStatBarWidth()/10));
-        getStatsBar().getBar(2).setWidth(getEnergy() * (getStatsBar().getStatBarWidth()/2000.0));
+        getStatsBar().getBar(2).setWidth(getEnergy() * (getStatsBar().getStatBarWidth()/(double)getMaxEnergy()));
     }
 
     public void target(){
@@ -1393,6 +1394,14 @@ public abstract class Animal {
 
     public void setTargetingAnimal(boolean targetingAnimal) {
         this.targetingAnimal = targetingAnimal;
+    }
+
+    public int getMaxEnergy() {
+        return maxEnergy;
+    }
+
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxEnergy = maxEnergy;
     }
 }
 
