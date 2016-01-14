@@ -17,10 +17,12 @@ public class Eagle extends Animal{
     public Eagle(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup,
                 World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
                 ArrayList<Obstacle> obstacleList, ArrayList<Shelter> shelterList, Group animalSmellRef,
-                Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef){
+                Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef,
+                 Configuration configuration){
 
         super("Eagle", 'E', id, dayBorn, yearBorn, 4000, x, y, foodGroup, animalGroup, waterGroup, worldRef, animalList,
-                foodList, waterList, obstacleList, shelterList, animalSmellRef, animalStatsRef, animalLabelRef, animalTargetRef, animalHomeLocationRef);
+                foodList, waterList, obstacleList, shelterList, animalSmellRef, animalStatsRef, animalLabelRef,
+                animalTargetRef, animalHomeLocationRef, configuration);
 
         String [] names_m = {"Edd"};
         String [] names_f = {"Emily"};
@@ -65,10 +67,11 @@ public class Eagle extends Animal{
                 int smellRange, float size, float speed, int turnAngle, float metabolism, int memory, int strength,
                 World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
                 ArrayList<Obstacle> obstacleList, ArrayList<Shelter> shelterList, Group animalSmellRef,
-                Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef){
+                Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef,
+                 Configuration configuration){
         super("Eagle", 'E', id, dayBorn, yearBorn, 2000, x, y, foodGroup, animalGroup, waterGroup, worldRef, animalList,
                 foodList, waterList, obstacleList, shelterList, animalSmellRef, animalStatsRef, animalLabelRef,
-                animalTargetRef, animalHomeLocationRef);
+                animalTargetRef, animalHomeLocationRef, configuration);
 
         String [] names_m = {"Edd"};
         String [] names_f = {"Emily"};
@@ -139,7 +142,7 @@ public class Eagle extends Animal{
             Eagle a = new Eagle(x, y, id, getWorldRef().getDay(), getWorldRef().getYear(), getFoodGroupRef(), getAnimalGroupRef(), getWaterGroupRef(),
                     smellRange, size, speed, turnAngle, metabolism, memory, strength, getWorldRef(), getAnimalList(), getFoodList(), getWaterList(),
                     getObstacleList(), getShelterList(), getAnimalSmellRef(), getAnimalStatsRef(), getAnimalLabelRef(), getAnimalTargetRef(),
-                    getAnimalHomeLocationRef());
+                    getAnimalHomeLocationRef(), getConfiguration());
 
             getAnimalList().add(a);
             a.setAnimalList(getAnimalList());

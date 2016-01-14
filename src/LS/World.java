@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class World {
     private Random rand = new Random();
+    private Configuration configuration;
     private int year;
     private int day;
     private int dayLength;
@@ -51,6 +52,7 @@ public class World {
         setYear(0);
         setDayLength(10);
         setDayLengthCounter(0);
+        setConfiguration(configuration);
 
         root.getChildren().add(shelterGroup);
         root.getChildren().add(shelterStatsGroup);
@@ -126,7 +128,7 @@ public class World {
                 int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                 a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
                         animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                        animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
+                        animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, configuration);
             } while (overlapsAnything(a.getImage()));
             a.addSelfToLists();
         } else {
@@ -135,7 +137,7 @@ public class World {
                     int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                     a = new Lizard(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
                             animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                            animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
+                            animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, configuration);
                 } while (overlapsAnything(a.getImage()));
                 a.addSelfToLists();
             } else {
@@ -144,7 +146,7 @@ public class World {
                         int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                         a = new Bear(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
                                 animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                                animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
+                                animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, configuration);
                     } while (overlapsAnything(a.getImage()));
                     a.addSelfToLists();
                 }else {
@@ -153,7 +155,7 @@ public class World {
                             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                             a = new Eagle(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
                                     animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                                    animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
+                                    animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, configuration);
                         } while (overlapsAnything(a.getImage()));
                         a.addSelfToLists();
                     }
@@ -167,7 +169,7 @@ public class World {
         if (type.equals("Ant")) {
             Animal a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
                     animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                    animalLabelGroup, animalTargetGroup, animalHomeLocationGroup);
+                    animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, configuration);
             a.addSelfToLists();
         }
         trackAnimalID++;
@@ -539,5 +541,13 @@ public class World {
 
     public void setWorldStatsBar(WorldStatsBar worldStatsBar) {
         this.worldStatsBar = worldStatsBar;
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
     }
 }

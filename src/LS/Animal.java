@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 
 public abstract class Animal {
     private World worldRef;
+    private Configuration configuration;
     private Circle image, smellCircle;
     private Text text;
     private StatsBar statsBar;
@@ -50,7 +51,7 @@ public abstract class Animal {
     public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn,
                   Group food, Group animal, Group water, World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList,
                   ArrayList<Water> waterList, ArrayList<Obstacle> obstacleList, ArrayList<Shelter> shelterList, Group animalSmellRef,
-                  Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef){
+                  Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef, Configuration configuration){
 
         setSpecies(speciesIn);
         setSymbol(symbolIn);
@@ -73,6 +74,7 @@ public abstract class Animal {
         setAnimalLabelRef(animalLabelRef);
         setAnimalTargetRef(animalTargetRef);
         setAnimalHomeLocationRef(animalHomeLocationRef);
+        setConfiguration(configuration);
 
         // Create stats bars
         setStatsBar(new StatsBar(x, y, 3));
@@ -1402,6 +1404,14 @@ public abstract class Animal {
 
     public void setMaxEnergy(int maxEnergy) {
         this.maxEnergy = maxEnergy;
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
     }
 }
 

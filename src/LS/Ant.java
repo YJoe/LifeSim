@@ -17,10 +17,12 @@ public class Ant extends Animal{
     public Ant(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup,
                World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
                ArrayList<Obstacle> obstacleList, ArrayList<Shelter> shelterList, Group animalSmellRef,
-               Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef){
+               Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef,
+               Configuration configuration){
 
         super("Ant", 'A', id, dayBorn, yearBorn, 2000, x, y, foodGroup, animalGroup, waterGroup, worldRef, animalList,
-                foodList, waterList, obstacleList, shelterList, animalSmellRef, animalStatsRef, animalLabelRef, animalTargetRef, animalHomeLocationRef);
+                foodList, waterList, obstacleList, shelterList, animalSmellRef, animalStatsRef, animalLabelRef,
+                animalTargetRef, animalHomeLocationRef, configuration);
 
         String [] names_m = {"Antdrew", "Anty", "Antain", "Antanas", "Antar", "Anturas", "Antavas"};
         String [] names_f = {"Anttoinette", "Antalia", "Anta", "Anthia", "Antalia", "Antandra", "Antia", "Antheemia"};
@@ -65,10 +67,11 @@ public class Ant extends Animal{
                int smellRange, float size, float speed, int turnAngle, float metabolism, int memory, int strength,
                World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
                ArrayList<Obstacle> obstacleList, ArrayList<Shelter> shelterList, Group animalSmellRef,
-               Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef){
+               Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef,
+               Configuration configuration){
         super("Ant", 'A', id, dayBorn, yearBorn, 2000, x, y, foodGroup, animalGroup, waterGroup, worldRef, animalList,
                 foodList, waterList, obstacleList, shelterList, animalSmellRef, animalStatsRef, animalLabelRef,
-                animalTargetRef, animalHomeLocationRef);
+                animalTargetRef, animalHomeLocationRef, configuration);
         String [] names_m = {"Antdrew", "Anty", "Antain", "Antanas", "Antar", "Anturas", "Antavas"};
         String [] names_f = {"Anttoinette", "Antalia", "Anta", "Anthia", "Antalia", "Antandra", "Antia", "Antheemia"};
         giveName(names_m, names_f);
@@ -138,7 +141,7 @@ public class Ant extends Animal{
             Ant a = new Ant(x, y, id, getWorldRef().getDay(), getWorldRef().getYear(), getFoodGroupRef(), getAnimalGroupRef(), getWaterGroupRef(),
                     smellRange, size, speed, turnAngle, metabolism, memory, strength, getWorldRef(), getAnimalList(), getFoodList(), getWaterList(),
                     getObstacleList(), getShelterList(), getAnimalSmellRef(), getAnimalStatsRef(), getAnimalLabelRef(), getAnimalTargetRef(),
-                    getAnimalHomeLocationRef());
+                    getAnimalHomeLocationRef(), getConfiguration());
 
             getAnimalList().add(a);
             a.setAnimalList(getAnimalList());
