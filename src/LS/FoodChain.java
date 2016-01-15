@@ -1,27 +1,30 @@
 package LS;
 
-public class FoodChain {
-    private boolean [][] eatList = new boolean[4][5];
-    private boolean [][] huntList = new boolean[4][4];
+import java.io.Serializable;
+import java.util.ArrayList;
 
-    public FoodChain(boolean [][] eatList, boolean [][] huntList){
+public class FoodChain implements Serializable {
+    private ArrayList<ArrayList<Boolean>> eatList = new ArrayList<>();
+    private ArrayList<ArrayList<Boolean>> huntList = new ArrayList<>();
+
+    public FoodChain(ArrayList<ArrayList<Boolean>> eatList, ArrayList<ArrayList<Boolean>> huntList){
         setEatList(eatList);
         setHuntList(huntList);
     }
 
-    public boolean[][] getEatList() {
+    public ArrayList<ArrayList<Boolean>> getEatList() {
         return eatList;
     }
 
-    public void setEatList(boolean[][] eatList) {
+    public void setEatList(ArrayList<ArrayList<Boolean>> eatList) {
         this.eatList = eatList;
     }
 
-    public boolean[][] getHuntList() {
+    public ArrayList<ArrayList<Boolean>> getHuntList() {
         return huntList;
     }
 
-    public void setHuntList(boolean[][] huntList) {
+    public void setHuntList(ArrayList<ArrayList<Boolean>> huntList) {
         this.huntList = huntList;
     }
 }

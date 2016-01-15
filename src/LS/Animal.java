@@ -409,7 +409,6 @@ public abstract class Animal {
     }
 
     public void fightAnimal() {
-        System.out.println("Fighting");
         if (getEnergy() > 0) {
             for (Animal animal : animalList) {
                 if (animal.getID() == getTargetFoodID()){
@@ -474,7 +473,7 @@ public abstract class Animal {
                             setTargetingAnimal(true);
                             setTargetFoodID(animal.getID());
                             setLocalTarget(animal.getImage());
-                            return;
+                            break;
                         }
                     }
                 }
@@ -482,7 +481,7 @@ public abstract class Animal {
         }
 
         for(Food food : getFoodList()){
-            if (isInEatList(food.getType().charAt(4))) {
+            if (isInEatList(food.getType().charAt(0))) {
                 if (Collision.overlapsEfficient(this.getSmellCircle(), food.getImage())) {
                     if (Collision.overlapsAccurate(this.getSmellCircle(), food.getImage())) {
                         setTargetingFood(true);
@@ -524,7 +523,7 @@ public abstract class Animal {
             indexY = 3;
         else return false;
 
-        return getConfiguration().getFoodChain().getEatList()[indexX][indexY];
+        return getConfiguration().getFoodChain().getEatList().get(indexX).get(indexY);
     }
 
     public boolean isInHuntList(char type) {
@@ -553,7 +552,7 @@ public abstract class Animal {
             indexY = 3;
         else return false;
 
-        return getConfiguration().getFoodChain().getHuntList()[indexX][indexY];
+        return getConfiguration().getFoodChain().getHuntList().get(indexX).get(indexY);
     }
 
     public void eatFood(){
@@ -671,7 +670,6 @@ public abstract class Animal {
                                         animal.setShouldBreed(false);
                                         setShouldBreed(false);
                                         createBaby(animal);
-                                        System.out.println(getAnimalList().get(getAnimalList().size() - 1).getName() + " was just born");
                                         setBreedTimer(5000);
                                         animal.setBreedTimer(5000);
                                         break;

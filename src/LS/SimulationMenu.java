@@ -438,17 +438,19 @@ public class SimulationMenu {
                 int trees;
                 int rocks;
                 int pools;
-                boolean eatList[][] = new boolean[5][4];
-                boolean huntList[][] = new boolean[4][4];
+                ArrayList<ArrayList<Boolean>> eatList = new ArrayList<>();
+                ArrayList<ArrayList<Boolean>> huntList = new ArrayList<>();
 
                 for(int i = 0; i < 5; i++){
+                    eatList.add(new ArrayList<>());
                     for(int j = 0; j < 4; j++){
-                        eatList[i][j] = eatsBoxes.get(i).get(j).isSelected();
+                        eatList.get(i).add(eatsBoxes.get(i).get(j).isSelected());
                     }
                 }
                 for(int i = 0; i < 4; i++){
+                    huntList.add(new ArrayList<>());
                     for(int j = 0; j < 4; j++){
-                        huntList[i][j] = huntsBoxes.get(i).get(j).isSelected();
+                        huntList.get(i).add(huntsBoxes.get(i).get(j).isSelected());
                     }
                 }
                 FoodChain foodChain = new FoodChain(eatList, huntList);
