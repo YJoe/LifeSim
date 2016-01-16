@@ -14,7 +14,6 @@ public class WorldStatsBar {
     private Text animalCount;
     private Text foodCount;
     private Text shelterCount;
-    private Button pause, play, reset, view;
     private Group rootRef;
 
     public WorldStatsBar(){
@@ -25,9 +24,9 @@ public class WorldStatsBar {
 
         // create date
         setDate(new Text());
-        getDate().setFont(Font.font ("Verdana", 40));
-        getDate().setTranslateX(10);
-        getDate().setTranslateY(Main.SIZE_Y + 40);
+        getDate().setFont(Font.font ("Verdana", 30));
+        getDate().setTranslateX(185);
+        getDate().setTranslateY(Main.SIZE_Y + 35);
         getDate().setFill(Color.rgb(200, 200, 200));
 
         // create animal counter
@@ -121,38 +120,6 @@ public class WorldStatsBar {
 
     public void setRootRef(Group rootRef) {
         this.rootRef = rootRef;
-    }
-
-    public Button getPause() {
-        return pause;
-    }
-
-    public void setPause(Button pause) {
-        this.pause = pause;
-    }
-
-    public Button getPlay() {
-        return play;
-    }
-
-    public void setPlay(Button play) {
-        this.play = play;
-    }
-
-    public Button getReset() {
-        return reset;
-    }
-
-    public void setReset(Button reset) {
-        this.reset = reset;
-    }
-
-    public Button getView() {
-        return view;
-    }
-
-    public void setView(Button view) {
-        this.view = view;
     }
 
     public Group getGroup() {

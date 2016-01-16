@@ -87,6 +87,7 @@ public class Main extends Application {
                 if (menu.getCurrentWorld() != null) {
                     if (!menu.isPaused()) {
                         menu.getCurrentWorld().update();
+                        menu.getWorldStatsBar().setDateString(menu.getCurrentWorld().getDateString());
                     }
                 } else {
                     menu.getRoot().getChildren().clear();

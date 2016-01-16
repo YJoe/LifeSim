@@ -41,7 +41,7 @@ public class SimulationMenu {
         // create buttons
         setReset(new Button("Reset"));
         getReset().setTranslateX(10);
-        getReset().setTranslateY(Main.SIZE_Y + 15);
+        getReset().setTranslateY(Main.SIZE_Y + 13);
         getReset().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -50,7 +50,7 @@ public class SimulationMenu {
         });
         setView(new Button("View"));
         getView().setTranslateX(70);
-        getView().setTranslateY(Main.SIZE_Y + 15);
+        getView().setTranslateY(Main.SIZE_Y + 13);
         getView().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -58,10 +58,9 @@ public class SimulationMenu {
                 view();
             }
         });
-
         setPlay(new Button("Play"));
         getPlay().setTranslateX(126);
-        getPlay().setTranslateY(Main.SIZE_Y + 15);
+        getPlay().setTranslateY(Main.SIZE_Y + 13);
         getPlay().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
