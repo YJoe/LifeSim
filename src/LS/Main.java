@@ -91,7 +91,6 @@ public class Main extends Application {
                 } else {
                     menu.getRoot().getChildren().clear();
                     menu.getRoot().getChildren().add(menu.getWorldStatsBar().getGroup());
-                    menu.getRoot().getChildren().add(menu.getButtonGroup());
                     Text notLoaded = new Text("NO SIMULATION LOADED");
                     notLoaded.setTranslateX(279);
                     notLoaded.setTranslateY(Main.SIZE_Y + 43);

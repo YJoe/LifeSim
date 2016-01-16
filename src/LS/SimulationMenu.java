@@ -51,6 +51,13 @@ public class SimulationMenu {
         setView(new Button("View"));
         getView().setTranslateX(70);
         getView().setTranslateY(Main.SIZE_Y + 15);
+        getView().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("here");
+                view();
+            }
+        });
 
         setPlay(new Button("Play"));
         getPlay().setTranslateX(126);
@@ -537,6 +544,56 @@ public class SimulationMenu {
         });
 
         Scene scene = new Scene(grid, 800, 400);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
+    public void view(){
+        Stage stage = new Stage();
+        Group viewRoot = new Group();
+
+        // create options
+        Button smellRange = new Button("Smell Range");
+        smellRange.setTranslateX(5); smellRange.setTranslateY(5);
+        smellRange.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getCurrentWorld().toggleSmellCircles();
+            }
+        });
+        viewRoot.getChildren().add(smellRange);
+
+        Button stats = new Button("Animal Stats");
+        stats.setTranslateX(5); stats.setTranslateY(35);
+        stats.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getCurrentWorld().toggleStatBars();
+            }
+        });
+        viewRoot.getChildren().add(stats);
+
+        Button shelterStats = new Button("Shelter Stats");
+        shelterStats.setTranslateX(5); shelterStats.setTranslateY(65);
+        shelterStats.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getCurrentWorld().toggleShelterStatBars();
+            }
+        });
+        viewRoot.getChildren().add(shelterStats);
+
+        Button targets = new Button("Targets");
+        targets.setTranslateX(5); targets.setTranslateY(95);
+        targets.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getCurrentWorld().toggleTargetSquares();
+            }
+        });
+        viewRoot.getChildren().add(targets);
+
+        Scene scene = new Scene(viewRoot, 70, 200);
         stage.setScene(scene);
         stage.showAndWait();
     }
