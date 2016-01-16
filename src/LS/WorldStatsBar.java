@@ -5,15 +5,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.control.*;
 
 public class WorldStatsBar {
+    private Group group = new Group();
     private Rectangle backBar;
     private Text date;
     private Text animalCount;
     private Text foodCount;
     private Text shelterCount;
+    private Button pause, play, reset, view;
+    private Group rootRef;
 
-    public WorldStatsBar(Group root){
+    public WorldStatsBar(){
 
         // create backBar
         setBackBar(new Rectangle(0, Main.SIZE_Y, Main.SIZE_X, 50));
@@ -47,15 +51,13 @@ public class WorldStatsBar {
         getShelterCount().setTranslateY(Main.SIZE_Y + 21);
         getShelterCount().setFill(Color.rgb(200, 200, 200));
 
-
         // add everything to the root group
-        root.getChildren().add(getBackBar());
-        root.getChildren().add(getDate());
-        root.getChildren().add(getAnimalCount());
-        root.getChildren().add(getFoodCount());
-        root.getChildren().add(getShelterCount());
+        group.getChildren().add(getBackBar());
+        group.getChildren().add(getDate());
+        group.getChildren().add(getAnimalCount());
+        group.getChildren().add(getFoodCount());
+        group.getChildren().add(getShelterCount());
     }
-
 
     public Text getDate() {
         return date;
@@ -111,5 +113,53 @@ public class WorldStatsBar {
 
     public void setShelterCountString(int shelterCount){
         getShelterCount().setText("Shelters " + shelterCount);
+    }
+
+    public Group getRootRef() {
+        return rootRef;
+    }
+
+    public void setRootRef(Group rootRef) {
+        this.rootRef = rootRef;
+    }
+
+    public Button getPause() {
+        return pause;
+    }
+
+    public void setPause(Button pause) {
+        this.pause = pause;
+    }
+
+    public Button getPlay() {
+        return play;
+    }
+
+    public void setPlay(Button play) {
+        this.play = play;
+    }
+
+    public Button getReset() {
+        return reset;
+    }
+
+    public void setReset(Button reset) {
+        this.reset = reset;
+    }
+
+    public Button getView() {
+        return view;
+    }
+
+    public void setView(Button view) {
+        this.view = view;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

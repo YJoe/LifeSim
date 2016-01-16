@@ -1,8 +1,5 @@
 package LS;
 
-import javafx.beans.value.ObservableListValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -25,8 +22,11 @@ import java.util.ArrayList;
 public class SimulationMenu {
     private MenuBar menuBar;
     private Group root;
+    private WorldStatsBar worldStatsBar;
     private Configuration configuration;
     private World currentWorld;
+    private Group buttonGroup = new Group();
+    private Button reset, view, play;
     private boolean isPaused = false;
 
     public SimulationMenu(Stage primaryStage, Group root){
@@ -34,6 +34,38 @@ public class SimulationMenu {
         menuBar = new MenuBar();
         menuBar.setOpacity(1);
         setRoot(root);
+        setWorldStatsBar(new WorldStatsBar());
+        root.getChildren().add(getWorldStatsBar().getGroup());
+        root.getChildren().add(getButtonGroup());
+
+        // create buttons
+        setReset(new Button("Reset"));
+        getReset().setTranslateX(10);
+        getReset().setTranslateY(Main.SIZE_Y + 15);
+        getReset().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                createWorld();
+            }
+        });
+        setView(new Button("View"));
+        getView().setTranslateX(70);
+        getView().setTranslateY(Main.SIZE_Y + 15);
+
+        setPlay(new Button("Play"));
+        getPlay().setTranslateX(126);
+        getPlay().setTranslateY(Main.SIZE_Y + 15);
+        getPlay().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                togglePaused();
+                if (isPaused()){
+                    getPlay().setText("Play");
+                } else{
+                    getPlay().setText("Pause");
+                }
+            }
+        });
 
         // File
         javafx.scene.control.Menu file = new javafx.scene.control.Menu("File");
@@ -210,6 +242,10 @@ public class SimulationMenu {
         menuBar.getMenus().add(edit);
         menuBar.getMenus().add(view);
         menuBar.getMenus().add(simulate);
+
+        getButtonGroup().getChildren().add(getPlay());
+        getButtonGroup().getChildren().add(getView());
+        getButtonGroup().getChildren().add(getReset());
 
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
     }
@@ -533,6 +569,8 @@ public class SimulationMenu {
 
         // add the menu bar back in
         getRoot().getChildren().add(getMenuBar());
+        getRoot().getChildren().add(getWorldStatsBar().getGroup());
+        getRoot().getChildren().add(getButtonGroup());
     }
 
     public World getCurrentWorld() {
@@ -571,4 +609,43 @@ public class SimulationMenu {
         return isPaused;
     }
 
+    public WorldStatsBar getWorldStatsBar() {
+        return worldStatsBar;
+    }
+
+    public void setWorldStatsBar(WorldStatsBar worldStatsBar) {
+        this.worldStatsBar = worldStatsBar;
+    }
+
+    public Button getReset() {
+        return reset;
+    }
+
+    public void setReset(Button reset) {
+        this.reset = reset;
+    }
+
+    public Button getView() {
+        return view;
+    }
+
+    public void setView(Button view) {
+        this.view = view;
+    }
+
+    public Button getPlay() {
+        return play;
+    }
+
+    public void setPlay(Button play) {
+        this.play = play;
+    }
+
+    public Group getButtonGroup() {
+        return buttonGroup;
+    }
+
+    public void setButtonGroup(Group buttonGroup) {
+        this.buttonGroup = buttonGroup;
+    }
 }

@@ -32,6 +32,7 @@ public class Main extends Application {
 
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage, root);
+        menu.getWorldStatsBar();
         menu.togglePaused();
 
         // Create key press handler for scene
@@ -89,9 +90,11 @@ public class Main extends Application {
                     }
                 } else {
                     menu.getRoot().getChildren().clear();
+                    menu.getRoot().getChildren().add(menu.getWorldStatsBar().getGroup());
+                    menu.getRoot().getChildren().add(menu.getButtonGroup());
                     Text notLoaded = new Text("NO SIMULATION LOADED");
-                    notLoaded.setTranslateX(275);
-                    notLoaded.setTranslateY(Main.SIZE_Y + 40);
+                    notLoaded.setTranslateX(279);
+                    notLoaded.setTranslateY(Main.SIZE_Y + 43);
                     notLoaded.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
                     notLoaded.setFill(Color.rgb(100, 100, 100));
                     menu.getRoot().getChildren().add(notLoaded);

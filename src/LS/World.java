@@ -45,7 +45,6 @@ public class World {
 
     // set up the world
     public World(Group root, Configuration configuration){
-        System.out.println("Creating world");
         trackAnimalID = 0;
         trackFoodID = 0;
         setDay(0);
@@ -68,17 +67,17 @@ public class World {
         root.getChildren().add(foodTreeTrunkGroup);
         root.getChildren().add(foodTreeLeafGroup);
 
-        setWorldStatsBar(new WorldStatsBar(root));
-        getWorldStatsBar().setDateString(getDateString());
-        getWorldStatsBar().setAnimalCountString(configuration.getAnts() +
-                                                configuration.getLizards() +
-                                                configuration.getBears() +
-                                                configuration.getEagles());
-        getWorldStatsBar().setFoodCountString(configuration.getFoodCount());
-        getWorldStatsBar().setShelterCountString(configuration.getAntHillCount() +
-                                                    configuration.getRockShelterCount() +
-                                                    configuration.getCaves() +
-                                                    configuration.getNests());
+        //setWorldStatsBar(new WorldStatsBar(root));
+        //getWorldStatsBar().setDateString(getDateString());
+        //getWorldStatsBar().setAnimalCountString(configuration.getAnts() +
+        //                                        configuration.getLizards() +
+        //                                        configuration.getBears() +
+        //                                        configuration.getEagles());
+        //getWorldStatsBar().setFoodCountString(configuration.getFoodCount());
+        //getWorldStatsBar().setShelterCountString(configuration.getAntHillCount() +
+        //                                            configuration.getRockShelterCount() +
+        //                                            configuration.getCaves() +
+        //                                            configuration.getNests());
 
 
         for(int i = 0; i < configuration.getPoolCount(); i++){
@@ -117,7 +116,6 @@ public class World {
         for(int i = 0; i < configuration.getObstacleCount(); i++){
             addRandomObstacle();
         }
-        System.out.println("World created from configuration");
     }
 
     // add to the world
@@ -407,7 +405,6 @@ public class World {
     // run world
     public void update(){
         updateClock();
-        updateStats();
         ageAnimals();
 
         // call update for all animals
@@ -443,7 +440,6 @@ public class World {
         if (getDayLengthCounter() >= getDayLength()){
             setDayLengthCounter(0);
             setDay(getDay() + 1);
-            getWorldStatsBar().setDateString(getDateString());
             if (getDay() > 365){
                 setDay(0);
                 setYear(getYear() + 1);
@@ -455,11 +451,6 @@ public class World {
         for(Animal animal : getAnimalList()){
             animal.solveAge(getYear(), getDay());
         }
-    }
-
-    public void updateStats(){
-        getWorldStatsBar().setAnimalCountString(getAnimalList().size());
-        getWorldStatsBar().setFoodCountString(getFoodList().size());
     }
 
     public void printRank(){
