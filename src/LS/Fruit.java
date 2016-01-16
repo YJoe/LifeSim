@@ -18,7 +18,7 @@ public class Fruit extends Food{
         } else {
             getImage().setFill(colourG);
         }
-        setCal((int)(getImage().getRadius()));
+        setCal((int)(getImage().getRadius()) * 4);
         setSize((int)(getImage().getRadius()));
     }
 }

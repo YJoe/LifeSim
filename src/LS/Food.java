@@ -26,7 +26,7 @@ public abstract class Food {
         setType(type);
         setPoisonous(false);
     }
-
+    
     public void update(){
         if (!isPoisonous()) {
             if (getDecay() > getDecayMax()) {

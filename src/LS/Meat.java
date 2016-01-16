@@ -14,7 +14,7 @@ public class Meat extends Food{
         super(x, y, id, type);
         setImage(new Circle(getX(), getY(), baseSize + rand.nextInt(3)));
         getImage().setFill(colour);
-        setCal((int)(getImage().getRadius()));
+        setCal((int)(getImage().getRadius()) * 4);
         setSize((int)(getImage().getRadius()));
     }
 
@@ -22,7 +22,7 @@ public class Meat extends Food{
         super(x, y, id, type);
         setImage(new Circle(getX(), getY(), size));
         getImage().setFill(colour);
-        setCal((int)(getImage().getRadius()));
+        setCal((int)(getImage().getRadius()) * 4);
         setSize((int)(getImage().getRadius()));
     }
 }

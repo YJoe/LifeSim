@@ -169,6 +169,13 @@ public class World {
                     animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
                     animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, configuration);
             a.addSelfToLists();
+        } else {
+            if (type.equals("Bear")){
+                Animal a = new Bear(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
+                        animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
+                        animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, configuration);
+                a.addSelfToLists();
+            }
         }
         trackAnimalID++;
     }
