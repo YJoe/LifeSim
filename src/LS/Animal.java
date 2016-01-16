@@ -652,7 +652,6 @@ public abstract class Animal {
     public void enterShelter(){
         Random rand = new Random();
         setWaitAtHome(100 + rand.nextInt(500));
-        setFollowMainCoolDown(1000 + rand.nextInt(500));
         setInShelter(true);
         setSelfVisibility(false);
 
@@ -728,6 +727,7 @@ public abstract class Animal {
 
     public void exitShelter(){
         setWaitAtHome(0);
+        setFollowMainCoolDown(1000 + new Random().nextInt(500));
         setInShelter(false);
         setSelfVisibility(true);
     }

@@ -54,16 +54,7 @@ public class SimulationMenu {
         });
         fileOpenConfig.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                // Create a new stage
-                Stage stage = new Stage();
-
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Open Simulation Configuration File");
-                File existDirectory = new File(System.getProperty("user.dir") + "/SavedWorlds");
-                fileChooser.setInitialDirectory(existDirectory);
-                File file = fileChooser.showOpenDialog(stage);
-
-                loadConfiguration(file);
+                openConfiguration();
             }
         });
         fileSave.setOnAction(new EventHandler<ActionEvent>() {
@@ -224,6 +215,19 @@ public class SimulationMenu {
     }
 
     // Load file functions
+    public void openConfiguration(){
+        // Create a new stage
+        Stage stage = new Stage();
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Simulation Configuration File");
+        File existDirectory = new File(System.getProperty("user.dir") + "/SavedWorlds");
+        fileChooser.setInitialDirectory(existDirectory);
+        File file = fileChooser.showOpenDialog(stage);
+
+        loadConfiguration(file);
+    }
+
     public void loadConfiguration(File filePath) {
         setConfiguration(Serialize.deserialize(filePath));
         createWorld();
@@ -505,6 +509,7 @@ public class SimulationMenu {
     public void saveConfiguration(){
         Serialize.serialize(getConfiguration(), "MyWorld");
     }
+
     public void saveConfiguration(String name){
         Serialize.serialize(getConfiguration(), name);
     }

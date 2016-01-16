@@ -63,6 +63,10 @@ public class Main extends Application {
                                             } else {
                                                 if (ke.getCode() == KeyCode.N){
                                                     menu.newConfiguration();
+                                                } else {
+                                                    if (ke.getCode() == KeyCode.O){
+                                                        menu.openConfiguration();
+                                                    }
                                                 }
                                             }
                                         }
