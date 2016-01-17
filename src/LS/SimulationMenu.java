@@ -7,6 +7,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -15,6 +16,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -27,6 +30,7 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class SimulationMenu {
@@ -64,7 +68,6 @@ public class SimulationMenu {
         getView().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("here");
                 view();
             }
         });
@@ -161,7 +164,7 @@ public class SimulationMenu {
         modifyLifeForm.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                System.out.println("modify life form clicked");
+                //modifyAnimal();
             }
         });
         removeLifeForm.setOnAction(new EventHandler<ActionEvent>(){
@@ -184,12 +187,15 @@ public class SimulationMenu {
         MenuItem displayLifeForms = new MenuItem("Display Life Form Stats");
         MenuItem displayMapInfo = new MenuItem("Display Map Stats");
         view.getItems().add(displayConfig);
+        view.getItems().add(displayLifeForms);
         view.getItems().add(editConfig);
         view.getItems().add(displayMapInfo);
         displayConfig.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                System.out.println("was clicked");
+                if (getCurrentWorld() != null) {
+                    viewConfiguration();
+                }
             }
         });
         editConfig.setOnAction(new EventHandler<ActionEvent>(){
@@ -201,7 +207,7 @@ public class SimulationMenu {
         displayLifeForms.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                System.out.println("was clicked");
+                viewAnimalStats();
             }
         });
         displayMapInfo.setOnAction(new EventHandler<ActionEvent>(){
@@ -548,6 +554,111 @@ public class SimulationMenu {
         stage.showAndWait();
     }
 
+    public void viewConfiguration(){
+        Stage stage = new Stage();
+
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.TOP_CENTER);
+        grid.setHgap(5);
+        grid.setVgap(5);
+        grid.setPadding(new Insets(5, 5, 5, 5));
+
+        Text title = new Text("Current Configuration");
+        title.setFont(new Font("Verdana", 20));
+        grid.add(title, 0, 0, 10, 1);
+
+        Font headings = new Font("Verdana", 15);
+        Font smallText = new Font("Verdana", 10);
+
+        Text entities = new Text("entities");
+        entities.setFont(headings);
+        grid.add(entities, 0, 1, 2, 1);
+
+        Text huntList = new Text("Hunt List");
+        huntList.setFont(headings);
+        grid.add(huntList, 5, 1, 4, 1);
+
+        Text eatList = new Text("Eat List");
+        eatList.setFont(headings);
+        grid.add(eatList, 5, 8, 4, 1);
+
+        Text ants = new Text("Animals: " + getConfiguration().getAnts());
+        Text antHill = new Text("AntHills: " + getConfiguration().getAntHillCount());
+        Text lizards = new Text("Lizards: " + getConfiguration().getLizards());
+        Text rockShelters = new Text("RockHome: " + getConfiguration().getRockShelterCount());
+        Text bears = new Text("Bears: " + getConfiguration().getBears());
+        Text caves = new Text("BearCaves: " + getConfiguration().getCaves());
+        Text eagles = new Text("Eagles: " + getConfiguration().getEagles());
+        Text nests = new Text("Nests: " + getConfiguration().getNests());
+
+        ArrayList<Text> info = new ArrayList<>();
+        info.add(ants); info.add(antHill); info.add(lizards);
+        info.add(rockShelters); info.add(bears); info.add(caves);
+        info.add(eagles); info.add(nests);
+
+        for (int i = 0; i < info.size(); i++){
+            info.get(i).setFont(smallText);
+            grid.add(info.get(i), 0, i + 2);
+        }
+
+        ArrayList<ArrayList<CheckBox>> huntElements = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            huntElements.add(new ArrayList<>());
+            for(int j = 0; j < 4; j++){
+                huntElements.get(i).add(new CheckBox());
+                huntElements.get(i).get(j).setSelected(getConfiguration().getFoodChain().getHuntList().get(i).get(j));
+                grid.add(huntElements.get(i).get(j), i + 6, j + 3);
+            }
+        }
+
+        ArrayList<Text> huntListText= new ArrayList<>();
+        huntListText.add(new Text("A"));
+        huntListText.add(new Text("L"));
+        huntListText.add(new Text("B"));
+        huntListText.add(new Text("E"));
+        for(int i = 0; i < huntListText.size(); i++){
+            grid.add(huntListText.get(i), i + 6, 2);
+        }
+        huntListText.add(new Text("Ants"));
+        huntListText.add(new Text("Lizards"));
+        huntListText.add(new Text("Bears"));
+        huntListText.add(new Text("Eagles"));
+        for(int i = 4; i < huntListText.size(); i++){
+            grid.add(huntListText.get(i), 5, i - 1);
+        }
+
+        ArrayList<ArrayList<CheckBox>> eatElements = new ArrayList<>();
+        for(int i = 0; i < 5; i++){
+            eatElements.add(new ArrayList<>());
+            for(int j = 0; j < 4; j++){
+                eatElements.get(i).add(new CheckBox());
+                eatElements.get(i).get(j).setSelected(getConfiguration().getFoodChain().getEatList().get(i).get(j));
+                grid.add(eatElements.get(i).get(j), i + 6 , j + 10);
+            }
+        }
+
+        ArrayList<Text> eatListText= new ArrayList<>();
+        eatListText.add(new Text("A"));
+        eatListText.add(new Text("L"));
+        eatListText.add(new Text("B"));
+        eatListText.add(new Text("E"));
+        eatListText.add(new Text("F"));
+        for(int i = 0; i < eatListText.size(); i++){
+            grid.add(eatListText.get(i), i + 6, 9);
+        }
+        eatListText.add(new Text("Ants"));
+        eatListText.add(new Text("Lizards"));
+        eatListText.add(new Text("Bears"));
+        eatListText.add(new Text("Eagles"));
+        for(int i = 5; i < eatListText.size(); i++){
+            grid.add(eatListText.get(i), 5, i + 5);
+        }
+
+        Scene scene = new Scene(grid, 300, 340);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
     public void view(){
         Stage stage = new Stage();
         Group viewRoot = new Group();
@@ -727,6 +838,52 @@ public class SimulationMenu {
         grid.add(sizeText,0,10);
         grid.add(size, 1, 10);
 
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
+    public void viewAnimalStats(){
+        Stage stage = new Stage();
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.TOP_CENTER);
+        grid.setHgap(5);
+        grid.setVgap(5);
+        grid.setPadding(new Insets(5, 5, 5, 5));
+
+        Text title = new Text("Animal Stats");
+        title.setFont(new Font("Verdana", 20));
+        grid.add(title, 0, 0, 5, 1);
+
+        TextField field = new TextField("Animal ID");
+        grid.add(field, 0, 1);
+
+        Button go = new Button("View");
+        grid.add(go, 1, 1);
+
+        Text text = new Text();
+        grid.add(text, 0, 4, 4, 10);
+
+        go.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                int index;
+                try {
+                    index = Integer.parseInt(field.getText());
+                    try{
+                        text.setText(getCurrentWorld().getAnimalList().get(index).statistics());
+                        System.out.println(getCurrentWorld().getAnimalList().get(index).getName());
+                    }
+                    catch(IndexOutOfBoundsException i){
+                        System.out.println("Animal not found");
+                    }
+                }
+                catch(NumberFormatException n){
+                    System.out.println("Enter a bloody number");
+                }
+            }
+        });
+
+        Scene scene = new Scene(grid, 400, 400);
         stage.setScene(scene);
         stage.showAndWait();
     }

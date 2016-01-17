@@ -1,5 +1,7 @@
 package LS;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.Group;
@@ -1231,11 +1233,13 @@ public abstract class Animal {
 
     // INFORMATIONAL
     public String statistics(){
-        return ("Name: " + getName() + "\n" +
-                "Species: " + getSpecies() + "\n" +
-                "Speed: " + getSpeed() + "\n" +
-                "Smell Range: " + getSmellRange() + "\n" +
-                "Metabolism: " + getMetabolism());
+        return ("Name:\t\t\t" + getName() + "\n" +
+                "Species:\t\t\t" + getSpecies() + "\n" +
+                "Speed:\t\t\t" + String.format("%.2g", getSpeed()) + "\n" +
+                "Smell Range:\t\t" + getSmellRange() + "\n" +
+                "Metabolism:\t\t" + getMetabolism() + "\n" +
+                "Food Inventory:\t" + getFoodInventory().getSize() + "/" + getFoodInventory().getCapacity() + "\n" +
+                "Water Inventory:\t" + getWaterInventory().getSize() + "/" + getWaterInventory().getCapacity());
     }
     public String toString(){
         return ("Name: " + getName() + "\n" +
