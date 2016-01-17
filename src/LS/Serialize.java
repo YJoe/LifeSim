@@ -5,7 +5,7 @@ import java.io.*;
 public class Serialize {
     public static void serialize(Configuration configuration, String fileName){
         try{
-            FileOutputStream fileOut = new FileOutputStream("SavedWorlds/" + fileName + ".ser");
+            FileOutputStream fileOut = new FileOutputStream("LifeSim/SavedWorlds/" + fileName + ".ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(configuration);
             out.close();

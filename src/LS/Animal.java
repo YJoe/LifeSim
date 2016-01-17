@@ -189,10 +189,11 @@ public abstract class Animal {
         setMemory(100);
 
         // Create food inventory
-        setFoodInventory(new Inventory(getStrength()/2, getStrength()/2 ));
+        setFoodInventory(new Inventory(getStrength(), getStrength()));
 
         // Create water inventory
-        setWaterInventory(new Inventory(getStrength()/2, getStrength()/2));
+        setWaterInventory(new Inventory(getStrength(), getStrength()));
+
 
         // Create stats bars
         setStatsBar(new StatsBar(x, y, 3));
@@ -397,10 +398,10 @@ public abstract class Animal {
                 createLocalTargetDirectedToMain();
             }
         } else {
-            System.out.println("Here");
             if (!hasLocalTarget()){
                 getRandomLocalTarget();
             }
+
             if ((!isTargetFood() && !isTargetingAnimal()) && getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
                 checkFood();
             }

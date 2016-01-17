@@ -57,10 +57,10 @@ public class Ant extends Animal{
         setStrength(baseStrength + rand.nextInt(2));
 
         // Create food inventory
-        setFoodInventory(new Inventory(getStrength()/2 + rand.nextInt(2), getStrength()/2 + (rand.nextInt(2))));
+        setFoodInventory(new Inventory(getStrength()/2 + rand.nextInt(2), getStrength() + (rand.nextInt(2))));
 
         // Create water inventory
-        setWaterInventory(new Inventory(getStrength()/2 + rand.nextInt(2), getStrength()/2 + (rand.nextInt(2))));
+        setWaterInventory(new Inventory(getStrength()/2 + rand.nextInt(2), getStrength() + (rand.nextInt(2))));
     }
 
     public Ant(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup,

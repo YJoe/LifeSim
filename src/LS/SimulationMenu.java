@@ -143,7 +143,6 @@ public class SimulationMenu {
                             grid.add(invalidlabel, 0, 9);
                         }
                     }
-
                 });
                 Scene scene = new Scene(grid, 250, 90);
                 stage.setScene(scene);
@@ -266,7 +265,7 @@ public class SimulationMenu {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Simulation Configuration File");
-        File existDirectory = new File(System.getProperty("user.dir") + "/SavedWorlds");
+        File existDirectory = new File(System.getProperty("user.dir") + "/LifeSim/SavedWorlds");
         fileChooser.setInitialDirectory(existDirectory);
         File file = fileChooser.showOpenDialog(stage);
 
