@@ -126,7 +126,7 @@ public class World {
                 int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                 a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
                         animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                        animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, configuration);
+                        animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, getConfiguration());
             } while (overlapsAnything(a.getImage()));
             a.addSelfToLists();
         } else {
@@ -135,7 +135,7 @@ public class World {
                     int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                     a = new Lizard(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
                             animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                            animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, configuration);
+                            animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, getConfiguration());
                 } while (overlapsAnything(a.getImage()));
                 a.addSelfToLists();
             } else {
@@ -144,7 +144,7 @@ public class World {
                         int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                         a = new Bear(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
                                 animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                                animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, configuration);
+                                animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, getConfiguration());
                     } while (overlapsAnything(a.getImage()));
                     a.addSelfToLists();
                 }else {
@@ -153,7 +153,7 @@ public class World {
                             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                             a = new Eagle(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
                                     animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                                    animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, configuration);
+                                    animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, getConfiguration());
                         } while (overlapsAnything(a.getImage()));
                         a.addSelfToLists();
                     }
@@ -161,6 +161,39 @@ public class World {
             }
         }
         trackAnimalID++;
+    }
+
+    public void addAnimal(String type, int x, int y, char gender, String name, double speed, float metabolism, int strength, int smell, int size){
+        Animal a = null;
+        if (type.equals("Ant")){
+            a = new Ant(x, y, gender, name, speed, metabolism, strength, smell, size, trackAnimalID, getDay(), getYear(),
+                    foodGroup, animalGroup, waterGroup, this, animalList, foodList, waterList, obstacleList, shelterList,
+                    animalSmellGroup, animalStatsGroup, animalLabelGroup, animalTargetGroup, animalHomeLocationGroup,
+                    getConfiguration());
+        }
+        else {
+            if (type.equals("Lizard")){
+                a = new Lizard(x, y, gender, name, speed, metabolism, strength, smell, size, trackAnimalID, getDay(), getYear(),
+                        foodGroup, animalGroup, waterGroup, this, animalList, foodList, waterList, obstacleList, shelterList,
+                        animalSmellGroup, animalStatsGroup, animalLabelGroup, animalTargetGroup, animalHomeLocationGroup,
+                        getConfiguration());
+            } else {
+                if (type.equals("Bear")){
+                    a = new Bear(x, y, gender, name, speed, metabolism, strength, smell, size, trackAnimalID, getDay(), getYear(),
+                            foodGroup, animalGroup, waterGroup, this, animalList, foodList, waterList, obstacleList, shelterList,
+                            animalSmellGroup, animalStatsGroup, animalLabelGroup, animalTargetGroup, animalHomeLocationGroup,
+                            getConfiguration());
+                } else {
+                    if (type.equals("Eagle")){
+                        a = new Eagle(x, y, gender, name, speed, metabolism, strength, smell, size, trackAnimalID, getDay(), getYear(),
+                                foodGroup, animalGroup, waterGroup, this, animalList, foodList, waterList, obstacleList, shelterList,
+                                animalSmellGroup, animalStatsGroup, animalLabelGroup, animalTargetGroup, animalHomeLocationGroup,
+                                getConfiguration());
+                    }
+                }
+            }
+        }
+        a.addSelfToLists();
     }
 
     public void addAnimal(String type, int x, int y){

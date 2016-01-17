@@ -49,9 +49,10 @@ public abstract class Animal {
 
     // Constructor
     public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn,
-                  Group food, Group animal, Group water, World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList,
-                  ArrayList<Water> waterList, ArrayList<Obstacle> obstacleList, ArrayList<Shelter> shelterList, Group animalSmellRef,
-                  Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef, Configuration configuration){
+                  Group food, Group animal, Group water, World worldRef, ArrayList<Animal> animalList,
+                  ArrayList<Food> foodList, ArrayList<Water> waterList, ArrayList<Obstacle> obstacleList,
+                  ArrayList<Shelter> shelterList, Group animalSmellRef, Group animalStatsRef, Group animalLabelRef,
+                  Group animalTargetRef, Group animalHomeLocationRef, Configuration configuration){
 
         setSpecies(speciesIn);
         setSymbol(symbolIn);
@@ -125,6 +126,115 @@ public abstract class Animal {
         setLastAge(0);
         setYearBorn(yearBorn);
         setDayBorn(dayBorn);
+
+        // Set targeting animal default
+        setTargetingAnimal(false);
+    }
+
+    public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn,
+                  char gender, String name, double speed, float metabolism, int strength, int smell, int size,
+                  Group food, Group animal, Group water, World worldRef, ArrayList<Animal> animalList,
+                  ArrayList<Food> foodList, ArrayList<Water> waterList, ArrayList<Obstacle> obstacleList,
+                  ArrayList<Shelter> shelterList, Group animalSmellRef, Group animalStatsRef, Group animalLabelRef,
+                  Group animalTargetRef, Group animalHomeLocationRef, Configuration configuration, Color colour){
+
+        setSpecies(speciesIn);
+        setSymbol(symbolIn);
+        setID(IDIn);
+        setAgeDay(dayBorn);
+        setAgeYear(yearBorn);
+        setLastAge(yearBorn);
+        setEnergy(energyIn);
+        setMaxEnergy(energyIn);
+        setX(xIn);
+        setY(yIn);
+        setGender(gender);
+        setName(name);
+        setSpeed(speed);
+        setOriginalSpeed(getSpeed());
+        setMetabolism(metabolism);
+        setStrength(strength);
+        setSmellRange(smell);
+        setSize(size);
+        setFoodGroupRef(food);
+        setAnimalGroupRef(animal);
+        setWaterGroupRef(water);
+        setWorldRef(worldRef);
+        setAnimalList(animalList);
+        setFoodList(foodList);
+        setWaterList(waterList);
+        setObstacleList(obstacleList);
+        setShelterList(shelterList);
+        setAnimalSmellRef(animalSmellRef);
+        setAnimalStatsRef(animalStatsRef);
+        setAnimalLabelRef(animalLabelRef);
+        setAnimalTargetRef(animalTargetRef);
+        setAnimalHomeLocationRef(animalHomeLocationRef);
+        setConfiguration(configuration);
+
+        // Create smell attributes
+        setSmellCircle(new Circle(x, y, getSmellRange()));
+        getSmellCircle().setFill(Color.rgb(0, 100, 100));
+        getSmellCircle().setOpacity(0.3);
+        setPathDistance(getSmellRange());
+
+        // Create body attributes
+        setImage(new Circle(x, y, getSize()));
+        getImage().setFill(colour);
+
+        // Set a random turning angle
+        setTurnAngle(40);
+
+        // Set a random memory
+        setMemory(100);
+
+        // Create food inventory
+        setFoodInventory(new Inventory(getStrength()/2, getStrength()/2 ));
+
+        // Create water inventory
+        setWaterInventory(new Inventory(getStrength()/2, getStrength()/2));
+
+        // Create stats bars
+        setStatsBar(new StatsBar(x, y, 3));
+        getStatsBar().getBar(0).setFill(Color.rgb(255, 100, 100));
+        getStatsBar().getBar(1).setFill(Color.rgb(100, 100, 255));
+        getStatsBar().getBar(2).setFill(Color.rgb(100, 255, 100));
+
+        // Create target indicator
+        Rectangle r = new Rectangle(0, 0, 5, 5);
+        r.setFill(Color.rgb(255, 0, 0));
+        setTargetLocation(r);
+
+        // Create home locator
+        Rectangle h = new Rectangle(0, 0, 5, 5);
+        h.setFill(Color.rgb(0, 0, 255));
+        setHomeLocation(h);
+        setHomeX(0);
+        setHomeY(0);
+
+        // set a food cool down value
+        setFoodSearchCoolDown(0);
+        setFollowMainCoolDown(0);
+
+        // Create memory direction bias
+        Random rand = new Random();
+        setMemoryBiasX(rand.nextInt(2));
+        setMemoryBiasY(rand.nextInt(2));
+
+        // Create label
+        setText(new Text(getID() + ""));
+        getText().setTranslateX(getX());
+        getText().setTranslateY(getY());
+        getText().setFont(Font.font ("Verdana", 12));
+        getText().setFill(Color.rgb(200, 0, 0));
+
+        // Set shelter variables
+        setInShelter(false);
+        setWaitAtHome(0);
+
+        // Set poison variables
+        setPoisoned(false);
+        setPoisonTime(0);
 
         // Set targeting animal default
         setTargetingAnimal(false);
@@ -287,6 +397,7 @@ public abstract class Animal {
                 createLocalTargetDirectedToMain();
             }
         } else {
+            System.out.println("Here");
             if (!hasLocalTarget()){
                 getRandomLocalTarget();
             }
@@ -479,7 +590,6 @@ public abstract class Animal {
                 }
             }
         }
-
         for(Food food : getFoodList()){
             if (isInEatList(food.getType().charAt(0))) {
                 if (Collision.overlapsEfficient(this.getSmellCircle(), food.getImage())) {

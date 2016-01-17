@@ -112,6 +112,19 @@ public class Lizard extends Animal{
         setWaterInventory(new Inventory(strength/2 + rand.nextInt(2) - 1, strength/2 + (rand.nextInt(2) - 1)));
     }
 
+    public Lizard(int x, int y, char gender, String name, double speed, float metabolism, int strength, int smell,
+                 int size, int id, int dayBorn, int yearBorn,  Group foodGroup, Group animalGroup, Group waterGroup,
+                 World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
+                 ArrayList<Obstacle> obstacleList, ArrayList<Shelter> shelterList, Group animalSmellRef,
+                 Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef,
+                 Configuration configuration){
+
+        super("Lizard", 'L', id, dayBorn, yearBorn, 2000, x, y, gender, name, speed, metabolism, strength, smell, size,
+                foodGroup, animalGroup, waterGroup, worldRef, animalList, foodList, waterList, obstacleList,
+                shelterList, animalSmellRef, animalStatsRef, animalLabelRef, animalTargetRef, animalHomeLocationRef,
+                configuration, Color.rgb(0, 150, 40));
+    }
+
     @Override
     public void ageEvents(){
         if (getLastAge() != getAgeYear()) {

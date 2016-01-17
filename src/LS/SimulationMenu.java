@@ -1,5 +1,7 @@
 package LS;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -7,6 +9,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -16,6 +24,8 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.awt.geom.Arc2D;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -79,12 +89,10 @@ public class SimulationMenu {
         MenuItem fileOpenConfig = new MenuItem("Open Configuration");
         MenuItem fileSave = new MenuItem("Save");
         MenuItem fileSaveAs = new MenuItem("Save As");
-        MenuItem fileExit = new MenuItem("Exit");
         file.getItems().add(fileNewConfig);
         file.getItems().add(fileOpenConfig);
         file.getItems().add(fileSave);
         file.getItems().add(fileSaveAs);
-        file.getItems().add(fileExit);
         fileNewConfig.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 newConfiguration();
@@ -142,11 +150,6 @@ public class SimulationMenu {
                 stage.showAndWait();
             }
         });
-        fileExit.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                System.out.println("Exit Clicked");
-            }
-        });
 
         // Edit
         javafx.scene.control.Menu edit = new javafx.scene.control.Menu("Edit");
@@ -171,7 +174,7 @@ public class SimulationMenu {
         addLifeForm.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                System.out.println("add life form clicked");
+                addAnimal();
             }
         });
 
@@ -362,7 +365,6 @@ public class SimulationMenu {
         waterBox.setText("0");
         grid.add(waterText, 0, 9);
         grid.add(waterBox, 1, 9);
-
 
         // Submit button
         Button submit = new Button("Create world");
@@ -604,6 +606,130 @@ public class SimulationMenu {
 
     public void saveConfiguration(String name){
         Serialize.serialize(getConfiguration(), name);
+    }
+
+    // edit
+    public void addAnimal(){
+        Stage stage = new Stage();
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setHgap(5);
+        grid.setVgap(5);
+        Scene scene = new Scene(grid, 180, 410);
+
+        Text title = new Text("Add an animal");
+        title.setFont(Font.font("Verdana", FontWeight.NORMAL, 20));
+
+        Text speciesText = new Text("Species: ");
+        ComboBox<String> species = new ComboBox<>(
+                FXCollections.observableArrayList("Ant", "Lizard", "Bear", "Eagle"));
+        species.getSelectionModel().select(0);
+        species.setPrefWidth(150);
+
+        Text genderText = new Text("Gender: ");
+        ComboBox<String> gender = new ComboBox<>(
+                FXCollections.observableArrayList("M", "F"));
+        gender.getSelectionModel().select(0);
+        gender.setPrefWidth(150);
+
+        Text nameText = new Text("Name: ");
+        TextField name = new TextField();
+        Text xText = new Text("X: ");
+        TextField x = new TextField();
+        Text yText = new Text("Y: ");
+        TextField y = new TextField();
+        Text speedText = new Text("Speed: ");
+        TextField speed = new TextField();
+        Text metabolismText = new Text("Metabolism: ");
+        TextField metabolism = new TextField();
+        Text strengthText = new Text("Strength: ");
+        TextField strength = new TextField();
+        Text smellText = new Text("Smell Range: ");
+        TextField smellRange = new TextField();
+        Text sizeText = new Text("Size: ");
+        TextField size = new TextField();
+
+        Button add = new Button("Add Animal");
+        grid.add(add, 1, 11);
+        add.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                char genderPass;
+                String namePass;
+                int xPass;
+                int yPass;
+                double speedPass;
+                float metabolismPass;
+                int strengthPass;
+                int smellPass;
+                int sizePass;
+
+                try{
+                    genderPass = gender.getSelectionModel().getSelectedItem().charAt(0);
+                    namePass = name.getText();
+                    xPass = Integer.parseInt(x.getText());
+                    yPass = Integer.parseInt(y.getText());
+                    speedPass = Double.parseDouble(speed.getText());
+                    metabolismPass = Float.parseFloat(metabolism.getText());
+                    strengthPass = Integer.parseInt(strength.getText());
+                    smellPass = Integer.parseInt(smellRange.getText());
+                    sizePass = Integer.parseInt(size.getText());
+
+                    getCurrentWorld().addAnimal(species.getSelectionModel().getSelectedItem(), xPass, yPass, genderPass,
+                            namePass, speedPass, metabolismPass, strengthPass, smellPass, sizePass);
+
+                    stage.close();
+                }
+                catch(NumberFormatException n){
+                    System.out.println("sozza m9");
+                }
+            }
+        });
+
+        Button suggest = new Button("Suggest");
+        grid.add(suggest, 0, 11);
+        suggest.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                name.setText("Joe");
+                x.setText("0");
+                y.setText("0");
+                speed.setText("0.8");
+                metabolism.setText("0.001");
+                strength.setText("1");
+                smellRange.setText("80");
+                size.setText("1");
+            }
+        });
+
+
+        Text extraInfo = new Text("(A single blank field will load\n the default of the animal)");
+        grid.add(extraInfo, 0, 12, 3, 2);
+
+        grid.add(title, 0, 0, 2, 1);
+        grid.add(speciesText,0, 1);
+        grid.add(species, 1, 1);
+        grid.add(genderText, 0, 2);
+        grid.add(gender, 1, 2);
+        grid.add(nameText,0,3);
+        grid.add(name, 1, 3);
+        grid.add(xText,0,4);
+        grid.add(x, 1, 4);
+        grid.add(yText,0,5);
+        grid.add(y, 1, 5);
+        grid.add(speedText,0,6);
+        grid.add(speed, 1, 6);
+        grid.add(metabolismText,0,7);
+        grid.add(metabolism, 1, 7);
+        grid.add(strengthText,0,8);
+        grid.add(strength, 1, 8);
+        grid.add(smellText,0,9);
+        grid.add(smellRange, 1, 9);
+        grid.add(sizeText,0,10);
+        grid.add(size, 1, 10);
+
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 
     public MenuBar getMenuBar() {
