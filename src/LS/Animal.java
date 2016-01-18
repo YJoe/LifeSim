@@ -39,6 +39,7 @@ public abstract class Animal {
     private boolean inShelter, shouldBreed;
     private int lastAge;
     private int strength;
+    private int maxAge, speedChangeAge, breedAge;
     private double speed, originalSpeed, dx, dy;
     private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, targetingAnimal, poisoned;
     private Target localTarget, mainTarget, homeTarget;
@@ -276,6 +277,15 @@ public abstract class Animal {
     public void ageEvents(){
         if (getLastAge() != getAgeYear()) {
             setLastAge(getAgeYear());
+            if (getAgeYear() >= getBreedAge()) {
+                setShouldBreed(true);
+            }
+            if (getAgeYear() >= getSpeedChangeAge()) {
+                setSpeed(getOriginalSpeed() * 0.7);
+            }
+            if (getAgeYear() == getMaxAge()) {
+                setMaxEnergy(getMaxEnergy()/4);
+            }
         }
     }
 
@@ -1603,6 +1613,30 @@ public abstract class Animal {
 
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+    }
+
+    public int getMaxAge() {
+        return maxAge;
+    }
+
+    public void setMaxAge(int maxAge) {
+        this.maxAge = maxAge;
+    }
+
+    public int getSpeedChangeAge() {
+        return speedChangeAge;
+    }
+
+    public void setSpeedChangeAge(int speedChangeAge) {
+        this.speedChangeAge = speedChangeAge;
+    }
+
+    public int getBreedAge() {
+        return breedAge;
+    }
+
+    public void setBreedAge(int breedAge) {
+        this.breedAge = breedAge;
     }
 }
 

@@ -12,7 +12,7 @@ public class Bear extends Animal{
     private int baseSize = 20, baseTurnAngle = 30, baseStrength = 20, baseMemory = 10;
     private Color bodyColour = Color.rgb(200, 100, 0);
     private Color smellColour = Color.rgb(0, 100, 100);
-    private int maxAge = rand.nextInt(15) + 15, breedAge = 2, speedChangeAge = (maxAge / 2);
+    private int maxAge = rand.nextInt(15) + 15, breedAge = 2, speedChangeAge = (maxAge/2) + rand.nextInt(4) - 2;
 
     public Bear(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup,
                World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
@@ -27,6 +27,10 @@ public class Bear extends Animal{
         String [] names_m = {"Beary", "Barry", "Barnaby", "Pooh"};
         String [] names_f = {"Bearnadette", "Beth", "Berlinda", "Bertha"};
         giveName(names_m, names_f);
+
+        setBreedAge(breedAge);
+        setSpeedChangeAge(speedChangeAge);
+        setMaxAge(maxAge);
 
         // Create smell attributes
         setSmellRange(rand.nextInt(50) + 100 - 15);

@@ -12,7 +12,7 @@ public class Ant extends Animal{
     private int baseSize = 1, baseTurnAngle = 30, baseStrength = 3, baseMemory = 10;
     private Color bodyColour = Color.rgb(50, 50, 50);
     private Color smellColour = Color.rgb(0, 100, 100);
-    private int maxAge = rand.nextInt(5) + 5, breedAge = 1, speedChangeAge = (maxAge / 2);
+    private int maxAge = rand.nextInt(5) + 5, breedAge = 1, speedChangeAge = (maxAge/2) + rand.nextInt(4) - 2;
 
     public Ant(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup,
                World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
@@ -27,6 +27,10 @@ public class Ant extends Animal{
         String [] names_m = {"Antdrew", "Anty", "Antain", "Antanas", "Antar", "Anturas", "Antavas"};
         String [] names_f = {"Anttoinette", "Antalia", "Anta", "Anthia", "Antalia", "Antandra", "Antia", "Antheemia"};
         giveName(names_m, names_f);
+
+        setBreedAge(breedAge);
+        setSpeedChangeAge(speedChangeAge);
+        setMaxAge(maxAge);
 
         // Create smell attributes
         setSmellRange(rand.nextInt(30) + 50 - 15);
@@ -122,19 +126,6 @@ public class Ant extends Animal{
                 foodGroup, animalGroup, waterGroup, worldRef, animalList, foodList, waterList, obstacleList,
                 shelterList, animalSmellRef, animalStatsRef, animalLabelRef, animalTargetRef, animalHomeLocationRef,
                 configuration, Color.rgb(50, 50, 50));
-    }
-
-    @Override
-    public void ageEvents(){
-        if (getLastAge() != getAgeYear()) {
-            setLastAge(getAgeYear());
-            if (getAgeYear() >= breedAge){
-                setShouldBreed(true);
-            }
-            if (getAgeYear() == maxAge){
-                setEnergy(0);
-            }
-        }
     }
 
     @Override

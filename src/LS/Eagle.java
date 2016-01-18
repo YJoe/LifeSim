@@ -12,7 +12,7 @@ public class Eagle extends Animal{
     private int baseSize = 5, baseTurnAngle = 30, baseStrength = 15, baseMemory = 10;
     private Color bodyColour = Color.rgb(200, 200, 200);
     private Color smellColour = Color.rgb(0, 100, 100);
-    private int maxAge = rand.nextInt(10) + 10, breedAge = 2, speedChangeAge = (maxAge / 2);
+    private int maxAge = rand.nextInt(10) + 10, breedAge = 2, speedChangeAge = (maxAge/2) + rand.nextInt(4) - 2;
 
     public Eagle(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup,
                 World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
@@ -76,6 +76,10 @@ public class Eagle extends Animal{
         String [] names_m = {"Edd"};
         String [] names_f = {"Emily"};
         giveName(names_m, names_f);
+
+        setBreedAge(breedAge);
+        setSpeedChangeAge(speedChangeAge);
+        setMaxAge(maxAge);
 
         // Create smell attributes
         setSmellRange(rand.nextInt(5) + smellRange);
