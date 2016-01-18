@@ -92,8 +92,8 @@ public class Main extends Application {
                 } else {
                     menu.getRoot().getChildren().clear();
                     menu.getRoot().getChildren().add(menu.getWorldStatsBar().getGroup());
-                    Text notLoaded = new Text("NO SIMULATION LOADED");
-                    notLoaded.setTranslateX(279);
+                    Text notLoaded = new Text("NO WORLD LOADED");
+                    notLoaded.setTranslateX(5);
                     notLoaded.setTranslateY(Main.SIZE_Y + 43);
                     notLoaded.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
                     notLoaded.setFill(Color.rgb(100, 100, 100));

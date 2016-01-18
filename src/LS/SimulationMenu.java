@@ -22,6 +22,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -108,48 +109,22 @@ public class SimulationMenu {
         });
         fileSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                saveConfiguration();
+                if (getCurrentWorld() != null) {
+                    saveConfiguration();
+                }
+                 else {
+                    errorWindow("No world loaded");
+                }
             }
         });
         fileSaveAs.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-                Stage stage = new Stage();
-                stage.setTitle("Save");
-                GridPane grid = new GridPane();
-                grid.setAlignment(Pos.CENTER);
-                grid.setHgap(5);
-                grid.setVgap(5);
-                grid.setPadding(new Insets(5, 5, 5, 5));
-
-                Label saveAs = new Label("Save as");
-                grid.add(saveAs, 0, 1);
-                TextField textBox = new TextField();
-                grid.add(textBox, 1, 1);
-
-                Button btn = new Button("Create");
-                HBox hbBtn = new HBox(10);
-                hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-                hbBtn.getChildren().add(btn);
-                grid.add(hbBtn, 1, 3);
-
-                btn.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent e) {
-                        try{
-                            saveConfiguration(textBox.getText());
-                            stage.close();
-                        }
-                        catch(NumberFormatException e1){
-                            Label invalidlabel = new Label("Incorrect information entered");
-                            invalidlabel.setFont(Font.font("Verdana", 15));
-                            invalidlabel.setTextFill(Color.RED);
-                            grid.add(invalidlabel, 0, 9);
-                        }
-                    }
-                });
-                Scene scene = new Scene(grid, 250, 90);
-                stage.setScene(scene);
-                stage.showAndWait();
+                if(getCurrentWorld() != null){
+                    saveConfigurationAs();
+                }
+                else{
+                    errorWindow("No world loaded");
+                }
             }
         });
 
@@ -172,22 +147,36 @@ public class SimulationMenu {
         removeLifeForm.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                removeAnimal();
+                if (getCurrentWorld() != null) {
+                    removeAnimal();
+                }
+                else {
+                    errorWindow("No world loaded");
+                }
             }
         });
         addLifeForm.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                addAnimal();
+                if (getCurrentWorld() != null) {
+                    addAnimal();
+                }
+                else {
+                    errorWindow("No world loaded");
+                }
             }
         });
         editConfig.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                editFoodChain();
+                if (getCurrentWorld() != null) {
+                    editFoodChain();
+                }
+                else {
+                    errorWindow("No world loaded");
+                }
             }
         });
-
 
         // View
         javafx.scene.control.Menu view = new javafx.scene.control.Menu("View");
@@ -203,12 +192,20 @@ public class SimulationMenu {
                 if (getCurrentWorld() != null) {
                     viewConfiguration();
                 }
+                else {
+                    errorWindow("No world loaded");
+                }
             }
         });
         displayLifeForms.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                viewAnimalStats();
+                if (getCurrentWorld() != null) {
+                    viewAnimalStats();
+                }
+                else {
+                    errorWindow("No world loaded");
+                }
             }
         });
         displayMapInfo.setOnAction(new EventHandler<ActionEvent>(){
@@ -263,6 +260,37 @@ public class SimulationMenu {
         getButtonGroup().getChildren().add(getReset());
 
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
+    }
+
+    public void errorWindow(String message){
+        Stage stage = new Stage();
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(5);
+        grid.setVgap(5);
+        grid.setPadding(new Insets(5, 5, 5, 5));
+
+        Text errorText = new Text("ERROR:");
+        errorText.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
+        errorText.setFill(Color.RED);
+        grid.add(errorText, 0, 0);
+
+        Text messageText = new Text(message);
+        messageText.setFont(new Font("Verdana", 15));
+        grid.add(messageText, 1, 0);
+
+        Button okay = new Button("Okay");
+        grid.add(okay, 1, 1);
+        okay.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.close();
+            }
+        });
+
+        Scene scene = new Scene(grid, 250, 100);
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 
     // Load file functions
@@ -713,6 +741,46 @@ public class SimulationMenu {
     // Save file functions
     public void saveConfiguration(){
         Serialize.serialize(getConfiguration(), "MyWorld");
+    }
+
+    public void saveConfigurationAs(){
+        Stage stage = new Stage();
+        stage.setTitle("Save");
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setHgap(5);
+        grid.setVgap(5);
+        grid.setPadding(new Insets(5, 5, 5, 5));
+
+        Label saveAs = new Label("Save as");
+        grid.add(saveAs, 0, 1);
+        TextField textBox = new TextField();
+        grid.add(textBox, 1, 1);
+
+        Button btn = new Button("Create");
+        HBox hbBtn = new HBox(10);
+        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.getChildren().add(btn);
+        grid.add(hbBtn, 1, 3);
+
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                try{
+                    saveConfiguration(textBox.getText());
+                    stage.close();
+                }
+                catch(NumberFormatException e1){
+                    Label invalidlabel = new Label("Incorrect information entered");
+                    invalidlabel.setFont(Font.font("Verdana", 15));
+                    invalidlabel.setTextFill(Color.RED);
+                    grid.add(invalidlabel, 0, 9);
+                }
+            }
+        });
+        Scene scene = new Scene(grid, 250, 90);
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 
     public void saveConfiguration(String name){
