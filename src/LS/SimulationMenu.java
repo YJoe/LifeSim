@@ -158,9 +158,11 @@ public class SimulationMenu {
         MenuItem modifyLifeForm = new MenuItem("Modify Life Form");
         MenuItem removeLifeForm = new MenuItem("Remove Life Form");
         MenuItem addLifeForm = new MenuItem("Add Life Form");
+        MenuItem editConfig = new MenuItem("Edit Configuration");
         edit.getItems().add(modifyLifeForm);
         edit.getItems().add(removeLifeForm);
         edit.getItems().add(addLifeForm);
+        edit.getItems().add(editConfig);
         modifyLifeForm.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
@@ -179,16 +181,21 @@ public class SimulationMenu {
                 addAnimal();
             }
         });
+        editConfig.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent arg0) {
+                editFoodChain();
+            }
+        });
+
 
         // View
         javafx.scene.control.Menu view = new javafx.scene.control.Menu("View");
         MenuItem displayConfig = new MenuItem("Display Configuration");
-        MenuItem editConfig = new MenuItem("Edit Configuration");
         MenuItem displayLifeForms = new MenuItem("Display Life Form Stats");
         MenuItem displayMapInfo = new MenuItem("Display Map Stats");
         view.getItems().add(displayConfig);
         view.getItems().add(displayLifeForms);
-        view.getItems().add(editConfig);
         view.getItems().add(displayMapInfo);
         displayConfig.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -196,12 +203,6 @@ public class SimulationMenu {
                 if (getCurrentWorld() != null) {
                     viewConfiguration();
                 }
-            }
-        });
-        editConfig.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent arg0) {
-                editFoodChain();
             }
         });
         displayLifeForms.setOnAction(new EventHandler<ActionEvent>(){
