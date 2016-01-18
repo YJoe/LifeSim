@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -216,6 +217,17 @@ public class SimulationMenu {
             }
         });
 
+        // Graph
+        Menu graph = new Menu("Graph");
+        MenuItem population = new MenuItem("Population");
+        graph.getItems().add(population);
+        population.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                populationGraph();
+            }
+        });
+
         // Simulate
         javafx.scene.control.Menu simulate = new javafx.scene.control.Menu("Simulate");
         MenuItem run = new MenuItem("Run");
@@ -254,6 +266,7 @@ public class SimulationMenu {
         menuBar.getMenus().add(file);
         menuBar.getMenus().add(edit);
         menuBar.getMenus().add(view);
+        menuBar.getMenus().add(graph);
         menuBar.getMenus().add(simulate);
 
         getButtonGroup().getChildren().add(getPlay());
@@ -788,6 +801,86 @@ public class SimulationMenu {
         Serialize.serialize(getConfiguration(), name);
     }
 
+    // Graph
+    public void populationGraph(){
+        Stage stage = new Stage();
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.TOP_CENTER);
+        grid.setHgap(5);
+        grid.setVgap(5);
+        grid.setPadding(new Insets(5, 5, 5, 5));
+        Scene scene = new Scene(grid);
+        stage.setWidth(500);
+        stage.setHeight(500);
+
+        int ants = 0, lizards = 0, bears = 0, eagles = 0;
+
+        for(int i = 0; i < getCurrentWorld().getAnimalList().size(); i++){
+            if (getCurrentWorld().getAnimalList().get(i).getSpecies().equals("Ant")){
+                ants++;
+            } else {
+                if(getCurrentWorld().getAnimalList().get(i).getSpecies().equals("Lizard")){
+                    lizards++;
+                } else {
+                    if(getCurrentWorld().getAnimalList().get(i).getSpecies().equals("Bear")){
+                        bears++;
+                    } else{
+                        if(getCurrentWorld().getAnimalList().get(i).getSpecies().equals("Eagle")){
+                            eagles++;
+                        }
+                    }
+                }
+            }
+        }
+
+        ObservableList<PieChart.Data> pieChartData =
+                FXCollections.observableArrayList(
+                        new PieChart.Data("Ants", ants),
+                        new PieChart.Data("Lizards", lizards),
+                        new PieChart.Data("Bears", bears),
+                        new PieChart.Data("Eagles", eagles));
+        final PieChart chart = new PieChart(pieChartData);
+        chart.setTitle("Population");
+
+
+        Button update = new Button("Update");
+        update.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("hi");
+                int ants = 0, lizards = 0, bears = 0, eagles = 0;
+                for(int i = 0; i < getCurrentWorld().getAnimalList().size(); i++){
+                    if (getCurrentWorld().getAnimalList().get(i).getSpecies().equals("Ant")){
+                        ants++;
+                    } else {
+                        if(getCurrentWorld().getAnimalList().get(i).getSpecies().equals("Lizard")){
+                            lizards++;
+                        } else {
+                            if(getCurrentWorld().getAnimalList().get(i).getSpecies().equals("Bear")){
+                                bears++;
+                            } else{
+                                if(getCurrentWorld().getAnimalList().get(i).getSpecies().equals("Eagle")){
+                                    eagles++;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                chart.getData().get(0).setPieValue(ants);
+                chart.getData().get(1).setPieValue(lizards);
+                chart.getData().get(2).setPieValue(bears);
+                chart.getData().get(3).setPieValue(eagles);
+            }
+        });
+
+        grid.add(chart, 0, 0);
+        grid.add(update, 0, 1);
+        System.out.println(ants + " " + lizards + " " + bears + " " + eagles);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     // edit
     public void addAnimal(){
         Stage stage = new Stage();
@@ -1018,7 +1111,6 @@ public class SimulationMenu {
                 }
                 for(int i = 0; i < getCurrentWorld().getAnimalList().size(); i++) {
                     if (getCurrentWorld().getAnimalList().get(i).getID() == id) {
-                        System.out.println("Found");
                         textFields.get(0).setText(getCurrentWorld().getAnimalList().get(i).getName());
                         textFields.get(1).setText(getCurrentWorld().getAnimalList().get(i).getGender() + "");
                         textFields.get(2).setText(String.format("%.1g", getCurrentWorld().getAnimalList().get(i).getSpeed()));
