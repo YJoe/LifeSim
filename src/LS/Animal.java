@@ -228,7 +228,7 @@ public abstract class Animal {
         setText(new Text(getID() + ""));
         getText().setTranslateX(getX());
         getText().setTranslateY(getY());
-        getText().setFont(Font.font ("Verdana", 12));
+        getText().setFont(Font.font ("Verdana", 10));
         getText().setFill(Color.rgb(200, 0, 0));
 
         // Set shelter variables
@@ -927,9 +927,7 @@ public abstract class Animal {
     }
 
     public void updateText(){
-        getText().setText(  getID() + " " + getAgeYear() + " " + getGender() + "\nX" + (int)(getImage().getCenterX() + getImage().getTranslateX()) + " Y" + (int)(getImage().getCenterY() + getImage().getTranslateY()) +
-                "\nFood: " + getFoodInventory().getSize() + "/" + getFoodInventory().getCapacity() + "\n"
-                            + "Water: " + getWaterInventory().getSize() + "/" + getWaterInventory().getCapacity());
+        getText().setText(statistics());
     }
 
     public void setSelfVisibility(boolean visibility){
@@ -1234,11 +1232,13 @@ public abstract class Animal {
     // INFORMATIONAL
     public String statistics(){
         return ("Name:\t\t\t" + getName() + "\n" +
+                "ID:\t\t\t\t" + getID() + "\n" +
+                "Gender:\t\t\t" + getGender() + "\n" +
                 "Species:\t\t\t" + getSpecies() + "\n" +
                 "Speed:\t\t\t" + String.format("%.1g", getSpeed()) + "\n" +
                 "Smell Range:\t\t" + getSmellRange() + "\n" +
                 "Metabolism:\t\t" + String.format("%.1g", getMetabolism()) + "\n" +
-                "Food Inventory:\t" + getFoodInventory().getSize() + "/" + getFoodInventory().getCapacity() + "\n" +
+                "Food Inventory: \t" + getFoodInventory().getSize() + "/" + getFoodInventory().getCapacity() + "\n" +
                 "Water Inventory:\t" + getWaterInventory().getSize() + "/" + getWaterInventory().getCapacity());
     }
     public String toString(){

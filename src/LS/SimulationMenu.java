@@ -861,6 +861,7 @@ public class SimulationMenu {
         grid.add(go, 1, 1);
 
         Text text = new Text();
+        text.setFont(new Font("Verdana", 10));
         grid.add(text, 0, 4, 4, 10);
 
         go.setOnAction(new EventHandler<ActionEvent>() {
