@@ -1235,9 +1235,9 @@ public abstract class Animal {
     public String statistics(){
         return ("Name:\t\t\t" + getName() + "\n" +
                 "Species:\t\t\t" + getSpecies() + "\n" +
-                "Speed:\t\t\t" + String.format("%.2g", getSpeed()) + "\n" +
+                "Speed:\t\t\t" + String.format("%.1g", getSpeed()) + "\n" +
                 "Smell Range:\t\t" + getSmellRange() + "\n" +
-                "Metabolism:\t\t" + getMetabolism() + "\n" +
+                "Metabolism:\t\t" + String.format("%.1g", getMetabolism()) + "\n" +
                 "Food Inventory:\t" + getFoodInventory().getSize() + "/" + getFoodInventory().getCapacity() + "\n" +
                 "Water Inventory:\t" + getWaterInventory().getSize() + "/" + getWaterInventory().getCapacity());
     }

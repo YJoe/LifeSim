@@ -201,7 +201,7 @@ public class SimulationMenu {
         editConfig.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                System.out.println("was  clicked");
+                editFoodChain();
             }
         });
         displayLifeForms.setOnAction(new EventHandler<ActionEvent>(){
@@ -570,7 +570,7 @@ public class SimulationMenu {
         Font headings = new Font("Verdana", 15);
         Font smallText = new Font("Verdana", 10);
 
-        Text entities = new Text("entities");
+        Text entities = new Text("Entities");
         entities.setFont(headings);
         grid.add(entities, 0, 1, 2, 1);
 
@@ -866,24 +866,156 @@ public class SimulationMenu {
         go.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                int index;
+                int id = 0;
+                boolean found = false;
                 try {
-                    index = Integer.parseInt(field.getText());
-                    try{
-                        text.setText(getCurrentWorld().getAnimalList().get(index).statistics());
-                        System.out.println(getCurrentWorld().getAnimalList().get(index).getName());
-                    }
-                    catch(IndexOutOfBoundsException i){
-                        System.out.println("Animal not found");
-                    }
+                    id = Integer.parseInt(field.getText());
                 }
                 catch(NumberFormatException n){
-                    System.out.println("Enter a bloody number");
+                    id = -1;
+                }
+                for(int i = 0; i < getCurrentWorld().getAnimalList().size(); i++) {
+                    if (getCurrentWorld().getAnimalList().get(i).getID() == id) {
+                        text.setText(getCurrentWorld().getAnimalList().get(i).statistics());
+                        text.setFill(Color.BLACK);
+                        System.out.println(getCurrentWorld().getAnimalList().get(i).getName());
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found){
+                    text.setText("Animal " + id + " not found");
+                    text.setFill(Color.RED);
                 }
             }
         });
 
-        Scene scene = new Scene(grid, 400, 400);
+        Scene scene = new Scene(grid, 220, 200);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
+    public void editFoodChain(){
+        Stage stage = new Stage();
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.TOP_CENTER);
+        grid.setHgap(5);
+        grid.setVgap(5);
+        grid.setPadding(new Insets(5, 5, 5, 5));
+
+        Font headings = new Font("Verdana", 15);
+        Font smallText = new Font("Verdana", 10);
+
+        Text huntList = new Text("Hunt List");
+        huntList.setFont(headings);
+        grid.add(huntList, 0, 1, 4, 1);
+
+        Text eatList = new Text("Eat List");
+        eatList.setFont(headings);
+        grid.add(eatList, 0, 8, 4, 1);
+
+        ArrayList<ArrayList<CheckBox>> huntElements = new ArrayList<>();
+        for(int i = 0; i < 4; i++){
+            huntElements.add(new ArrayList<>());
+            for(int j = 0; j < 4; j++){
+                huntElements.get(i).add(new CheckBox());
+                huntElements.get(i).get(j).setSelected(getConfiguration().getFoodChain().getHuntList().get(i).get(j));
+                grid.add(huntElements.get(i).get(j), i + 1, j + 3);
+            }
+        }
+
+        ArrayList<Text> huntListText= new ArrayList<>();
+        huntListText.add(new Text("A"));
+        huntListText.add(new Text("L"));
+        huntListText.add(new Text("B"));
+        huntListText.add(new Text("E"));
+        for(int i = 0; i < huntListText.size(); i++){
+            huntListText.get(i).setFont(smallText);
+            grid.add(huntListText.get(i), i + 1, 2);
+        }
+        huntListText.add(new Text("Ants"));
+        huntListText.add(new Text("Lizards"));
+        huntListText.add(new Text("Bears"));
+        huntListText.add(new Text("Eagles"));
+        for(int i = 4; i < huntListText.size(); i++){
+            huntListText.get(i).setFont(smallText);
+            grid.add(huntListText.get(i), 0, i - 1);
+        }
+
+        ArrayList<ArrayList<CheckBox>> eatElements = new ArrayList<>();
+        for(int i = 0; i < 5; i++){
+            eatElements.add(new ArrayList<>());
+            for(int j = 0; j < 4; j++){
+                eatElements.get(i).add(new CheckBox());
+                eatElements.get(i).get(j).setSelected(getConfiguration().getFoodChain().getEatList().get(i).get(j));
+                grid.add(eatElements.get(i).get(j), i + 1 , j + 10);
+            }
+        }
+
+        ArrayList<Text> eatListText= new ArrayList<>();
+        eatListText.add(new Text("A"));
+        eatListText.add(new Text("L"));
+        eatListText.add(new Text("B"));
+        eatListText.add(new Text("E"));
+        eatListText.add(new Text("F"));
+        for(int i = 0; i < eatListText.size(); i++){
+            eatListText.get(i).setFont(smallText);
+            grid.add(eatListText.get(i), i + 1, 9);
+        }
+        eatListText.add(new Text("Ants"));
+        eatListText.add(new Text("Lizards"));
+        eatListText.add(new Text("Bears"));
+        eatListText.add(new Text("Eagles"));
+        for(int i = 5; i < eatListText.size(); i++){
+            eatListText.get(i).setFont(smallText);
+            grid.add(eatListText.get(i), 0, i + 5);
+        }
+
+        Button restore = new Button("Restore");
+        grid.add(restore, 1, 17, 3, 1);
+
+        restore.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                for(int i = 0; i < 4; i++){
+                    for(int j = 0; j < 4; j++){
+                        huntElements.get(i).get(j).setSelected(getConfiguration().getFoodChain().getHuntList().get(i).get(j));
+                    }
+                }
+                for(int i = 0; i < 5; i++){
+                    for(int j = 0; j < 4; j++){
+                        eatElements.get(i).get(j).setSelected(getConfiguration().getFoodChain().getEatList().get(i).get(j));
+                    }
+                }
+            }
+        });
+
+        Button set = new Button("Set");
+        grid.add(set, 4, 17, 3, 1);
+
+        set.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ArrayList<ArrayList<Boolean>> foodChainEatList = new ArrayList<>();
+                ArrayList<ArrayList<Boolean>> foodChainHuntList = new ArrayList<>();
+
+                for(int i = 0; i < 5; i++){
+                    foodChainEatList.add(new ArrayList<>());
+                    for(int j = 0; j < 4; j++){
+                        foodChainEatList.get(i).add(eatElements.get(i).get(j).isSelected());
+                    }
+                }
+                for(int i = 0; i < 4; i++){
+                    foodChainHuntList.add(new ArrayList<>());
+                    for(int j = 0; j < 4; j++){
+                        foodChainHuntList.get(i).add(huntElements.get(i).get(j).isSelected());
+                    }
+                }
+                getConfiguration().setFoodChain(new FoodChain(foodChainEatList, foodChainHuntList));
+            }
+        });
+
+        Scene scene = new Scene(grid, 200, 330);
         stage.setScene(scene);
         stage.showAndWait();
     }
