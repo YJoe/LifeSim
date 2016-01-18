@@ -21,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -141,7 +142,7 @@ public class SimulationMenu {
         modifyLifeForm.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                //modifyAnimal();
+                editAnimal();
             }
         });
         removeLifeForm.setOnAction(new EventHandler<ActionEvent>(){
@@ -881,7 +882,6 @@ public class SimulationMenu {
             }
         });
 
-
         Text extraInfo = new Text("(A single blank field will load\n the default of the animal)");
         grid.add(extraInfo, 0, 12, 3, 2);
 
@@ -960,7 +960,102 @@ public class SimulationMenu {
             }
         });
 
-        Scene scene = new Scene(grid, 220, 200);
+        Scene scene = new Scene(grid, 240, 200);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
+    public void editAnimal(){
+        // Animal editor
+        Stage stage = new Stage();
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.TOP_CENTER);
+        grid.setHgap(5);
+        grid.setVgap(5);
+        grid.setPadding(new Insets(5, 5, 5, 5));
+
+        Text title = new Text("Edit Animal");
+        title.setFont(new Font("Verdana", 20));
+        grid.add(title, 0, 0, 5, 1);
+
+        TextField field = new TextField("Animal ID");
+        grid.add(field, 1, 1);
+
+        // Field info
+        Font smallText = new Font("Verdana", 10);
+        ArrayList<Text> textList = new ArrayList<>();
+        textList.add(new Text("Name: "));
+        textList.add(new Text("Gender: "));
+        textList.add(new Text("Speed: "));
+        textList.add(new Text("Smell Range: "));
+        textList.add(new Text("Metabolism: "));
+        textList.add(new Text("Strength"));
+        for(int i = 0; i < textList.size(); i++){
+            textList.get(i).setFont(smallText);
+            grid.add(textList.get(i), 0, i + 2);
+        }
+
+        // Field
+        ArrayList<TextField> textFields = new ArrayList<>();
+        for(int i = 0; i < 6; i++){
+            textFields.add(new TextField());
+            grid.add(textFields.get(i), 1 , i + 2);
+        }
+
+        // Buttons
+        Button find = new Button("Find");
+        grid.add(find, 0, 1);
+        find.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                int id;
+                try {
+                    id = Integer.parseInt(field.getText());
+                }
+                catch(NumberFormatException n){
+                    errorWindow("Animal not found");
+                    id = -1;
+                }
+                for(int i = 0; i < getCurrentWorld().getAnimalList().size(); i++) {
+                    if (getCurrentWorld().getAnimalList().get(i).getID() == id) {
+                        System.out.println("Found");
+                        textFields.get(0).setText(getCurrentWorld().getAnimalList().get(i).getName());
+                        textFields.get(1).setText(getCurrentWorld().getAnimalList().get(i).getGender() + "");
+                        textFields.get(2).setText(String.format("%.1g", getCurrentWorld().getAnimalList().get(i).getSpeed()));
+                        textFields.get(3).setText(getCurrentWorld().getAnimalList().get(i).getSmellRange() + "");
+                        textFields.get(4).setText(String.format("%.1g", getCurrentWorld().getAnimalList().get(i).getMetabolism()));
+                        textFields.get(5).setText(getCurrentWorld().getAnimalList().get(i).getStrength() + "");
+                        break;
+                    }
+                }
+            }
+        });
+
+        Button save = new Button("Save");
+        grid.add(save, 0, 9);
+        save.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    int index = Integer.parseInt(field.getText());
+                    getCurrentWorld().getAnimalList().get(index).setName(textFields.get(0).getText());
+                    String c = textFields.get(1).getText();
+                    getCurrentWorld().getAnimalList().get(index).setGender(c.charAt(0));
+                    getCurrentWorld().getAnimalList().get(index).setSpeed(Double.parseDouble(textFields.get(2).getText()));
+                    getCurrentWorld().getAnimalList().get(index).setOriginalSpeed(Double.parseDouble(textFields.get(2).getText()));
+                    getCurrentWorld().getAnimalList().get(index).setSmellRange(Integer.parseInt(textFields.get(3).getText()));
+                    getCurrentWorld().getAnimalList().get(index).setPathDistance(Integer.parseInt(textFields.get(3).getText()));
+                    getCurrentWorld().getAnimalList().get(index).getSmellCircle().setRadius(Integer.parseInt(textFields.get(3).getText()));
+                    getCurrentWorld().getAnimalList().get(index).setMetabolism(Float.parseFloat(textFields.get(4).getText()));
+                    getCurrentWorld().getAnimalList().get(index).setStrength(Integer.parseInt(textFields.get(5).getText()));
+                }
+                catch(IndexOutOfBoundsException i){
+                    errorWindow("Animal not found");
+                }
+            }
+        });
+
+        Scene scene = new Scene(grid, 280, 300);
         stage.setScene(scene);
         stage.showAndWait();
     }

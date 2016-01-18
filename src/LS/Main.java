@@ -93,10 +93,10 @@ public class Main extends Application {
                     menu.getRoot().getChildren().clear();
                     menu.getRoot().getChildren().add(menu.getWorldStatsBar().getGroup());
                     Text notLoaded = new Text("NO WORLD LOADED");
-                    notLoaded.setTranslateX(5);
-                    notLoaded.setTranslateY(Main.SIZE_Y + 43);
-                    notLoaded.setFont(Font.font("Verdana", FontWeight.BOLD, 50));
-                    notLoaded.setFill(Color.rgb(100, 100, 100));
+                    notLoaded.setTranslateX(10);
+                    notLoaded.setTranslateY(Main.SIZE_Y + 38);
+                    notLoaded.setFont(Font.font("Verdana", FontWeight.BOLD, 35));
+                    notLoaded.setFill(Color.rgb(200, 200, 200));
                     menu.getRoot().getChildren().add(notLoaded);
                     menu.getRoot().getChildren().add(menu.getMenuBar());
                 }
