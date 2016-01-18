@@ -155,7 +155,7 @@ public class SimulationMenu {
 
         // Edit
         javafx.scene.control.Menu edit = new javafx.scene.control.Menu("Edit");
-        MenuItem modifyLifeForm = new MenuItem("Modify Life Form");
+        MenuItem modifyLifeForm = new MenuItem("Edit Life Form");
         MenuItem removeLifeForm = new MenuItem("Remove Life Form");
         MenuItem addLifeForm = new MenuItem("Add Life Form");
         MenuItem editConfig = new MenuItem("Edit Configuration");
@@ -172,7 +172,7 @@ public class SimulationMenu {
         removeLifeForm.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                System.out.println("remove life form clicked");
+                removeAnimal();
             }
         });
         addLifeForm.setOnAction(new EventHandler<ActionEvent>(){
@@ -839,6 +839,60 @@ public class SimulationMenu {
         grid.add(sizeText,0,10);
         grid.add(size, 1, 10);
 
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
+    public void removeAnimal(){
+        Stage stage = new Stage();
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.TOP_CENTER);
+        grid.setHgap(5);
+        grid.setVgap(5);
+        grid.setPadding(new Insets(5, 5, 5, 5));
+
+        Text title = new Text("Remove Animal");
+        title.setFont(new Font("Verdana", 20));
+        grid.add(title, 0, 0, 5, 1);
+
+        TextField field = new TextField("Animal ID");
+        grid.add(field, 0, 1);
+
+        Button remove = new Button("Remove");
+        grid.add(remove, 1, 1);
+
+        Text text = new Text();
+        text.setFont(new Font("Verdana", 10));
+        grid.add(text, 0, 4, 4, 10);
+
+        remove.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                int id;
+                boolean found = false;
+                try {
+                    id = Integer.parseInt(field.getText());
+                }
+                catch(NumberFormatException n){
+                    id = -1;
+                }
+                for(int i = 0; i < getCurrentWorld().getAnimalList().size(); i++) {
+                    if (getCurrentWorld().getAnimalList().get(i).getID() == id) {
+                        getCurrentWorld().getAnimalList().get(i).setEnergy(-10);
+                        text.setText("Animal " + i + " will be killed in the next update");
+                        text.setFill(Color.BLACK);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found){
+                    text.setText("Animal " + id + " not found");
+                    text.setFill(Color.RED);
+                }
+            }
+        });
+
+        Scene scene = new Scene(grid, 220, 200);
         stage.setScene(scene);
         stage.showAndWait();
     }
