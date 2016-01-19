@@ -500,6 +500,39 @@ public class SimulationMenu {
             }
         }
 
+        Button current = new Button("Current");
+        if(getCurrentWorld() != null) {
+            grid.add(current, 0, 15, 3, 1);
+        }
+        current.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                antsBox.setText(getConfiguration().getAnts() + "");
+                antsHomeBox.setText(getConfiguration().getAntHillCount() + "");
+                lizardsBox.setText(getConfiguration().getLizards() + "");
+                lizardsHomeBox.setText(getConfiguration().getRockShelterCount() + "");
+                bearsBox.setText(getConfiguration().getBears() + "");
+                bearsHomeBox.setText(getConfiguration().getCaves() + "");
+                eaglesBox.setText(getConfiguration().getEagles() + "");
+                eaglesHomeBox.setText(getConfiguration().getNests() + "");
+                treeBox.setText(getConfiguration().getFoodTrees() + "");
+                meatBox.setText(getConfiguration().getFoodCount() + "");
+                rocksBox.setText(getConfiguration().getObstacleCount() + "");
+                waterBox.setText(getConfiguration().getPoolCount() + "");
+
+                for(int i = 0; i < 5; i++){
+                    for(int j = 0; j < 4; j++){
+                        eatsBoxes.get(i).get(j).setSelected(getConfiguration().getEatList().get(i).get(j));
+                    }
+                }
+                for(int i = 0; i < 4; i++){
+                    for(int j = 0; j < 4; j++){
+                        huntsBoxes.get(i).get(j).setSelected(getConfiguration().getHuntList().get(i).get(j));
+                    }
+                }
+            }
+        });
+
         defaults.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){

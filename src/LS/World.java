@@ -214,7 +214,6 @@ public class World {
     }
 
     public void addRandomFood(){
-        //TODO: make random food rather than just meat
         Food f;
         do {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
