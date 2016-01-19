@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class FoodTree {
     private Circle leafCircle;
-    private TreeTrunk treeTrunk;
+    private Obstacle treeTrunk;
     private ArrayList<FoodTree> treeList;
     private ArrayList<Food> foodList;
     private ArrayList<Water> waterList;
@@ -23,7 +23,7 @@ public class FoodTree {
         getLeafCircle().setOpacity(0.15);
 
         // Create trunk
-        setTreeTrunk(new TreeTrunk(x, y, 10));
+        setTreeTrunk(new Obstacle("TreeTrunk", x, y, 10, Color.rgb(100, 70, 30)));
 
         // Set water list reference
         setWaterList(waterList);
@@ -136,11 +136,11 @@ public class FoodTree {
         this.waterList = waterList;
     }
 
-    public TreeTrunk getTreeTrunk() {
+    public Obstacle getTreeTrunk() {
         return treeTrunk;
     }
 
-    public void setTreeTrunk(TreeTrunk treeTrunk) {
+    public void setTreeTrunk(Obstacle treeTrunk) {
         this.treeTrunk = treeTrunk;
     }
 

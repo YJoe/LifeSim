@@ -1,19 +1,20 @@
 package LS;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public abstract class Obstacle {
+public class Obstacle {
     int x, y, size;
+    String type;
     Circle image;
 
-    public Obstacle(int x, int y){
-        setX(x); setY(y);
-    }
-    public Obstacle(int x, int y, int size){
+    public Obstacle(String type, int x, int y, int size, Color colour){
         setX(x);
         setY(y);
+        setType(type);
         setSize(size);
         setImage(new Circle(getX(), getY(), getSize()));
+        getImage().setFill(colour);
     }
 
     public int getX(){
@@ -43,4 +44,12 @@ public abstract class Obstacle {
     public void setImage(Circle image){
         this.image = image;
     }
+
+    public String getType(){
+        return this.type;
+    }
+    public void setType(String type){
+        this.type = type;
+    }
+
 }

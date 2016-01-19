@@ -356,14 +356,14 @@ public class World {
     public void addRandomObstacle(){
         Obstacle o;
         do {
-            o = new Rock(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y) + 25);
+            o = new Obstacle("Rock", rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y) + 25, rand.nextInt(10) + 10, Color.rgb(150, 150, 150));
         } while(overlapsAnything(o.getImage()));
         obstacleList.add(o);
         obstacleGroup.getChildren().add(o.getImage());
     }
 
     public void addWaterHazard(int x, int y, int size){
-        WaterHazard o = new WaterHazard(x, y, size);
+        Obstacle o = new Obstacle("WaterHazard", x, y, size, Color.rgb(50, 50, 200));
         obstacleList.add(o);
         obstacleGroup.getChildren().add(o.getImage());
     }
