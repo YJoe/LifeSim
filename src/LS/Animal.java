@@ -132,6 +132,8 @@ public abstract class Animal {
 
         // Set targeting animal default
         setTargetingAnimal(false);
+
+        setFollowMainCoolDown(10000 + new Random().nextInt(5000));
     }
 
     public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn,
@@ -242,6 +244,8 @@ public abstract class Animal {
 
         // Set targeting animal default
         setTargetingAnimal(false);
+
+        setFollowMainCoolDown(10000 + new Random().nextInt(5000));
     }
 
     public void addSelfToLists(){
@@ -423,11 +427,13 @@ public abstract class Animal {
             if (homeTarget == null){
                 checkShelters();
             }
-            if (homeTarget != null && (waterInventory.getSize() == waterInventory.getCapacity()/2
-                    || foodInventory.getSize() == foodInventory.getCapacity()/2)){
+            if (homeTarget != null && waterInventory.getSize() == waterInventory.getCapacity()
+                    && foodInventory.getSize() == foodInventory.getCapacity() && getFoodSearchCoolDown() == 0
+                    && getFollowMainCoolDown() == 0){
                 targetHome();
             }
-            if (homeTarget != null && isShouldBreed() && getBreedTimer() == 0){
+            if (homeTarget != null && isShouldBreed() && getBreedTimer() == 0  && getFoodSearchCoolDown() == 0
+                    && getFollowMainCoolDown() == 0){
                 targetHome();
             }
             if (homeTarget != null && getFollowMainCoolDown() == 0){
@@ -435,7 +441,7 @@ public abstract class Animal {
                     targetHome();
                     checkWater();
                 }
-                if (foodInventory.getSize() == 0 && getHunger() == 10) {
+                if (foodInventory.getSize() == 0 && getHunger() == 10  && getFoodSearchCoolDown() == 0 ) {
                     targetHome();
                     checkFood();
                 }
@@ -777,10 +783,11 @@ public abstract class Animal {
         setWaitAtHome(100 + rand.nextInt(500));
         setInShelter(true);
         setSelfVisibility(false);
+        setTargetingHome(false);
+        setFollowMainCoolDown(10000 + new Random().nextInt(5000));
 
         for (int i = 0; i < getShelterList().size(); i++) {
             if (getShelterList().get(i).getID() == getHomeID()) {
-                setTargetingHome(false);
                 // Check if the opposite sex is in the shelter and is also the correct age
                 if (isShouldBreed()){
                     setWaitAtHome(1000 + rand.nextInt(500));
@@ -850,13 +857,14 @@ public abstract class Animal {
 
     public void exitShelter(){
         setWaitAtHome(0);
-        setFollowMainCoolDown(1000 + new Random().nextInt(500));
+        setFollowMainCoolDown(10000 + new Random().nextInt(5000));
         setInShelter(false);
         setSelfVisibility(true);
     }
 
     public void targetHome(){
         setTargetingHome(true);
+        setFollowMainCoolDown(1000);
         setMainTarget(getHomeTarget());
     }
 
