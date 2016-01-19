@@ -104,10 +104,6 @@ public class FoodTree {
         this.leafCircle = leafCircle;
     }
 
-    public ArrayList<Food> getFoodList() {
-        return foodList;
-    }
-
     public void setFoodList(ArrayList<Food> foodList) {
         this.foodList = foodList;
     }
@@ -128,10 +124,6 @@ public class FoodTree {
         this.foodRate = foodRate;
     }
 
-    public ArrayList<Water> getWaterList() {
-        return waterList;
-    }
-
     public void setWaterList(ArrayList<Water> waterList) {
         this.waterList = waterList;
     }
@@ -142,10 +134,6 @@ public class FoodTree {
 
     public void setTreeTrunk(Obstacle treeTrunk) {
         this.treeTrunk = treeTrunk;
-    }
-
-    public ArrayList<FoodTree> getTreeList() {
-        return treeList;
     }
 
     public void setTreeList(ArrayList<FoodTree> treeList) {

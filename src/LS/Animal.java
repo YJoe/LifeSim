@@ -1,7 +1,7 @@
 package LS;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
+
+
 import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.Group;
@@ -11,46 +11,65 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+/**
+ * Animal provides an entity with the capability to navigate a world of objects deciding how to best
+ * keep them self alive. Animal is an abstract class and can be instantiated only through the use of the derived
+ * classes Ant, Bear, Eagle and Lizard.
+ */
 public abstract class Animal {
-    private World worldRef;
-    private Configuration configuration;
-    private Circle image, smellCircle;
-    private Text text;
-    private StatsBar statsBar;
-    private Rectangle targetLocation;
-    private Rectangle homeLocation;
-    private Group foodGroupRef;
-    private Group waterGroupRef;
-    private Group animalGroupRef, animalSmellRef, animalStatsRef, animalLabelRef, animalTargetRef, animalHomeLocationRef;
-    private String species, name;
-    private char symbol, gender;
-    private float size;
-    private float metabolism;
-    private float hunger = 0;
-    private float thirst = 0;
-    private int id, x, y, energy, maxEnergy, smellRange, turnAngle, pathDistance, foodSearchCoolDown, followMainCoolDown;
-    private int homeX, homeY, memory, memoryBiasX, memoryBiasY, waitAtHome, homeID, breedTimer;
-    private int lastAngle = new Random().nextInt(360);
-    private int targetFoodID;
-    private int targetWaterID;
-    private int waitInShelterTimer;
-    private int poisonTime;
-    private int ageYear, ageDay, dayBorn, yearBorn;
-    private boolean inShelter, shouldBreed;
-    private int lastAge;
-    private int strength;
-    private int maxAge, speedChangeAge, breedAge;
-    private double speed, originalSpeed, dx, dy;
-    private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome, targetingAnimal, poisoned;
-    private Target localTarget, mainTarget, homeTarget;
-    private ArrayList<Animal> animalList = new ArrayList<>();
+    private Group foodGroupRef, waterGroupRef, animalGroupRef, animalSmellRef, animalStatsRef, animalLabelRef,
+            animalTargetRef, animalHomeLocationRef;
+    private float size, metabolism, hunger = 0, thirst = 0;
+    private int id, x, y, energy, maxEnergy, smellRange, turnAngle, pathDistance, foodSearchCoolDown,
+            followMainCoolDown, waitAtHome, homeID, breedTimer, lastAngle = new Random().nextInt(360),
+            targetFoodID, poisonTime, ageYear, ageDay, dayBorn, yearBorn, maxAge, speedChangeAge, breedAge,
+            lastAge, strength;
+    private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome,
+            targetingAnimal, poisoned, inShelter, shouldBreed;
+    private double speed, originalSpeed, dx, dy;private ArrayList<Animal> animalList = new ArrayList<>();
     private ArrayList<Food> foodList = new ArrayList<>();
     private ArrayList<Water> waterList = new ArrayList<>();
     private ArrayList<Shelter> shelterList = new ArrayList<>();
     private ArrayList<Obstacle> obstacleList = new ArrayList<>();
     public Inventory foodInventory, waterInventory;
+    private Target localTarget, mainTarget, homeTarget;
+    private World worldRef;
+    private Configuration configuration;
+    private Circle image, smellCircle;
+    private Text text;
+    private StatsBar statsBar;
+    private Rectangle targetLocation, homeLocation;
+    private String species, name;
+    private char symbol, gender;
 
-    // Constructor
+    /**
+     * Called as a super constructor from all child classes. The parameters assume that other Animal traits
+     * are set within the child class constructor.
+     *
+     * @param speciesIn Species of the Animal
+     * @param symbolIn Symbol of the Animal, typically the first character of the species
+     * @param IDIn A unique ID of the Animal
+     * @param dayBorn The day (0 - 365) in which the Animal was born
+     * @param yearBorn The year in which the Animal was born
+     * @param energyIn The stating and max energy of the Animal
+     * @param xIn X coordinate
+     * @param yIn Y coordinate
+     * @param food Food group reference, a node of the root node
+     * @param animal Animal group reference, a node of the root node
+     * @param water Water group reference, a node of the root node
+     * @param worldRef World object in which the Animal lives
+     * @param animalList List of all Animals also living in the world
+     * @param foodList List of all Food within the world
+     * @param waterList List of all Water within the world
+     * @param obstacleList List of all Obstacles within the world
+     * @param shelterList List of all Shelters within the world
+     * @param animalSmellRef Animal smellCircle group reference, a node of the root node
+     * @param animalStatsRef Animal statBar group reference, a node of the root node
+     * @param animalLabelRef Animal label group reference, a node of the root node
+     * @param animalTargetRef Animal target group reference, a node of the root node
+     * @param animalHomeLocationRef Animal home group reference, a node of the root node
+     * @param configuration Configuration in which the animal follows hunting and eating rules of
+     */
     public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn,
                   Group food, Group animal, Group water, World worldRef, ArrayList<Animal> animalList,
                   ArrayList<Food> foodList, ArrayList<Water> waterList, ArrayList<Obstacle> obstacleList,
@@ -98,17 +117,10 @@ public abstract class Animal {
         Rectangle h = new Rectangle(0, 0, 5, 5);
         h.setFill(Color.rgb(0, 0, 255));
         setHomeLocation(h);
-        setHomeX(0);
-        setHomeY(0);
 
         // set a food cool down value
         setFoodSearchCoolDown(0);
         setFollowMainCoolDown(0);
-
-        // Create memory direction bias
-        Random rand = new Random();
-        setMemoryBiasX(rand.nextInt(2));
-        setMemoryBiasY(rand.nextInt(2));
 
         // Create label
         setText(new Text(getID() + ""));
@@ -136,6 +148,42 @@ public abstract class Animal {
         setFollowMainCoolDown(10000 + new Random().nextInt(5000));
     }
 
+    /**
+     * Called as a super constructor from all child classes. Used to create an animal of specific attributes,
+     * typically called by the createBaby function within all child classes
+     *
+     * @param speciesIn Species of the Animal
+     * @param symbolIn Symbol of the Animal, typically the first character of the species
+     * @param IDIn A unique ID of the Animal
+     * @param dayBorn The day (0 - 365) in which the Animal was born
+     * @param yearBorn The year in which the Animal was born
+     * @param energyIn The stating and max energy of the Animal
+     * @param xIn X coordinate
+     * @param yIn Y coordinate
+     * @param gender Gender of an Animal 'M' or 'F'
+     * @param name Name of the Animal
+     * @param speed Speed at which the Animal can move
+     * @param metabolism Rate at which the Animals hunger and thirst grow
+     * @param strength Strrngth of the Animal used to determine the winner of fights and size of an
+     *                 Animal's inventory space
+     * @param smell The range at which the Animal can perceive its world
+     * @param size Body size of the Animal
+     * @param food Food group reference, a node of the root node
+     * @param animal Animal group reference, a node of the root node
+     * @param water Water group reference, a node of the root node
+     * @param worldRef World object in which the Animal lives
+     * @param animalList List of all Animals also living in the world
+     * @param foodList List of all Food within the world
+     * @param waterList List of all Water within the world
+     * @param obstacleList List of all Obstacles within the world
+     * @param shelterList List of all Shelters within the world
+     * @param animalSmellRef Animal smellCircle group reference, a node of the root node
+     * @param animalStatsRef Animal statBar group reference, a node of the root node
+     * @param animalLabelRef Animal label group reference, a node of the root node
+     * @param animalTargetRef Animal target group reference, a node of the root node
+     * @param animalHomeLocationRef Animal home group reference, a node of the root node
+     * @param colour Color variable of the Animals body circle
+     */
     public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn,
                   char gender, String name, double speed, float metabolism, int strength, int smell, int size,
                   Group food, Group animal, Group water, World worldRef, ArrayList<Animal> animalList,
@@ -190,9 +238,6 @@ public abstract class Animal {
         // Set a random turning angle
         setTurnAngle(40);
 
-        // Set a random memory
-        setMemory(100);
-
         // Create food inventory
         setFoodInventory(new Inventory(getStrength(), getStrength()));
 
@@ -215,17 +260,10 @@ public abstract class Animal {
         Rectangle h = new Rectangle(0, 0, 5, 5);
         h.setFill(Color.rgb(0, 0, 255));
         setHomeLocation(h);
-        setHomeX(0);
-        setHomeY(0);
 
         // set a food cool down value
         setFoodSearchCoolDown(0);
         setFollowMainCoolDown(0);
-
-        // Create memory direction bias
-        Random rand = new Random();
-        setMemoryBiasX(rand.nextInt(2));
-        setMemoryBiasY(rand.nextInt(2));
 
         // Create label
         setText(new Text(getID() + ""));
@@ -248,6 +286,9 @@ public abstract class Animal {
         setFollowMainCoolDown(10000 + new Random().nextInt(5000));
     }
 
+    /**
+     * Adds the Animal to all lists needed to function and be visible within the world
+     */
     public void addSelfToLists(){
         animalList.add(this);
         getAnimalGroupRef().getChildren().add(getImage());
@@ -258,7 +299,9 @@ public abstract class Animal {
         getAnimalLabelRef().getChildren().add(getText());
     }
 
-    // Main functions
+    /**
+     * Updates the Animal between keyFrames, calling all functions needed to appear to live within the world
+     */
     public void update(){
         if(isInShelter()){
             setWaitAtHome(getWaitAtHome() - 1);
@@ -272,12 +315,14 @@ public abstract class Animal {
             target();
             directDxDy();
             move();
-            forget();
             hungerEnergyWaterDecay();
         }
         ageEvents();
     }
 
+    /**
+     * Triggers life events when a specific age (defined by the child class) is reached
+     */
     public void ageEvents(){
         if (getLastAge() != getAgeYear()) {
             setLastAge(getAgeYear());
@@ -293,6 +338,10 @@ public abstract class Animal {
         }
     }
 
+    /**
+     * Checks that eating/drinking water will not be wasteful, called on every update allowing
+     * the chance to consume
+     */
     public void checkHungerThirst(){
         if (foodInventory.getSize() > 0) {
             // check that eating food wont be wasteful
@@ -301,13 +350,19 @@ public abstract class Animal {
             }
         }
         if (waterInventory.getSize() > 0) {
-            // check that drinking water wont be wasteful/
+            // check that drinking water wont be wasteful
             if (getThirst() > (double)waterInventory.getElement(0)){
                 drinkWater();
             }
         }
     }
 
+
+    /**
+     * Moves all elements of the Animal relative to the current dx and dy stored only if the next
+     * movement will not result in moving into an Obstacle, if dx and dy will lead to a collision with
+     * an Obstacle the animal will pick a new target and ignore desired items for a set number of updates
+     */
     public void move(){
         if (checkMove((int)(getImage().getTranslateX() + getImage().getCenterX() + (getDx())),
                 (int)(getImage().getTranslateY() + getImage().getCenterY() + (getDy())))) {
@@ -346,6 +401,11 @@ public abstract class Animal {
         }
     }
 
+    /**
+     * Provides the impression of growing hunger and thirst. Metabolism is used to determine the increment
+     * of hunger and thirst, thirst grows at a rate * 0.3 faster than hunger. Stats bars are resized here as
+     * new hunger, thirst and energy stats are generated
+     */
     public void hungerEnergyWaterDecay(){
         // when poisoned the animal's hunger and thirst will rise twice as quickly
         if (isPoisoned()) {
@@ -402,6 +462,11 @@ public abstract class Animal {
         getStatsBar().getBar(2).setWidth(getEnergy() * (getStatsBar().getStatBarWidth()/(double)getMaxEnergy()));
     }
 
+    /**
+     * A targeting system used by the Animal to make choices in navigating its world. If conditions are met the
+     * Animal can check he surrounding area for Food, Water or home, if none of such conditions are met the Animal
+     * will choose a random target
+     */
     public void target(){
         coolDownFood();
         coolDownFollowMain();
@@ -452,6 +517,9 @@ public abstract class Animal {
         }
     }
 
+    /**
+     * Create a localTarget directed towards the mainTarget
+     */
     public void createLocalTargetDirectedToMain(){
         double x = getMainTarget().getCircle().getCenterX() + getMainTarget().getCircle().getTranslateX();
         double y = getMainTarget().getCircle().getCenterY() + getMainTarget().getCircle().getTranslateY();
@@ -462,6 +530,10 @@ public abstract class Animal {
         setLastAngle((int)Math.toDegrees(angle));
     }
 
+    /**
+     * Create a random localTarget along the smell range circumference within a given turn angle, if too
+     * many attempts are made choose a target from all 360 degrees of direction
+     */
     public void getRandomLocalTarget(){
         Random rand = new Random();
         int randomAttemptTracker = 0;
@@ -483,6 +555,9 @@ public abstract class Animal {
         setLastAngle(anAngle);
     }
 
+    /**
+     * Get a random target within the smell range circle
+     */
     public void getRandomLocalTarget360(){
         Random rand = new Random();
         int tX, tY, anAngle;
@@ -497,19 +572,33 @@ public abstract class Animal {
         setLastAngle(anAngle);
     }
 
+
+    /**
+     * Check if a given set of coordinates are within the screen boundaries
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return boolean true if the given coordinates are within the screen boundaries
+     */
     public boolean isValidTarget(int x, int y){
-        if(x < Main.SIZE_X && x >= 0 && y < Main.SIZE_Y && y >= 25){
-            return true;
-        }
-        return false;
+        return (x < Main.SIZE_X && x >= 0 && y < Main.SIZE_Y && y >= 25);
     }
 
+    /**
+     * Gte the angle in radians of the Animals center point to the given coordintes
+     * @param targetX X coordinate of the target
+     * @param targetY Y coordinate of the target
+     * @return Angle in radians directed towards the target
+     */
     public double getAngleTo(double targetX, double targetY){
         double thisX = getImage().getCenterX() + getImage().getTranslateX();
         double thisY = getImage().getCenterY() + getImage().getTranslateY();
         return Math.atan2(targetY - thisY, targetX - thisX);
     }
 
+    /**
+     * Set dx and dy towards the localTarget
+     */
     public void directDxDy(){
         double targetX = (getLocalTarget().getCircle().getCenterX() + getLocalTarget().getCircle().getTranslateX());
         double targetY = (getLocalTarget().getCircle().getCenterY() + getLocalTarget().getCircle().getTranslateY());
@@ -518,6 +607,10 @@ public abstract class Animal {
         setDy((Math.sin(angle) * getSpeed()));
     }
 
+    /**
+     * Check the Food seen has not been eaten by another animal
+     * @return if the Food object is still available for consumption
+     */
     public boolean foodIsStillThere(){
         for(Food food : getFoodList()){
             if (food.getID() == targetFoodID){
@@ -527,6 +620,10 @@ public abstract class Animal {
         return false;
     }
 
+    /**
+     * Check the Animal seen has not been eaten by another animal
+     * @return if the Animal object is still available for consumption
+     */
     public boolean animalStillThere(){
         for(Animal animal : getAnimalList()){
             if (animal.getID() == targetFoodID){
@@ -538,6 +635,9 @@ public abstract class Animal {
         return false;
     }
 
+    /**
+     * Fight with the targeted Animal, killing it if this Animal's strength variable is greater
+     */
     public void fightAnimal() {
         if (getEnergy() > 0) {
             for (Animal animal : animalList) {
@@ -551,6 +651,10 @@ public abstract class Animal {
         }
     }
 
+    /**
+     * Check if the Animal has reached its desired Target. Dependent on which type of target was set
+     * other functions may be called, such as fightAnimal, storeFood or storeWater
+     */
     public void checkCollideLocalTarget(){
         // check the food is still there to collide with
         if (isTargetFood()) {
@@ -581,6 +685,9 @@ public abstract class Animal {
         }
     }
 
+    /**
+     * Check if the Animal is colliding with the mainTarget set
+     */
     public void checkCollideMainTarget(){
         if (Collision.overlapsEfficient(getImage(), getMainTarget().getCircle())) {
             if (Collision.overlapsAccurate(getImage(), getMainTarget().getCircle())) {
@@ -594,6 +701,10 @@ public abstract class Animal {
         }
     }
 
+    /**
+     * Check the area for Food or Animals to target Food is considered the preference as the Animal will not need
+     * to exert energy in chasing and fighting a living Animal
+     */
     public void checkFood(){
         for(Animal animal : getAnimalList()) {
             if (isInHuntList(animal.getSymbol())) {
@@ -624,6 +735,12 @@ public abstract class Animal {
         }
     }
 
+
+    /**
+     * Checks if an animal is configured to eat a given Food type
+     * @param type The first character of the Food type i.e. Fruit = 'F'
+     * @return if the Animal should target the given Food
+     */
     public boolean isInEatList(char type) {
         int indexX;
         int indexY;
@@ -655,6 +772,11 @@ public abstract class Animal {
         return getConfiguration().getEatList().get(indexX).get(indexY);
     }
 
+    /**
+     * Checks if an animal is configured to hunt a given Animal type
+     * @param type The first character of the Food type i.e. Ant = 'A'
+     * @return if the Animal should target the given Animal
+     */
     public boolean isInHuntList(char type) {
         int indexX;
         int indexY;
@@ -684,11 +806,19 @@ public abstract class Animal {
         return getConfiguration().getHuntList().get(indexX).get(indexY);
     }
 
+    /**
+     * Consume Food from the Animal's inventory and remove the element from the inventory
+     */
     public void eatFood(){
         setHunger(getHunger() - foodInventory.getElement(0));
         foodInventory.remove(0);
     }
 
+    /**
+     * Solve the age of the Animal
+     * @param year The current year
+     * @param day The current day
+     */
     public void solveAge(int year, int day){
         int ageDay = day - getDayBorn();
         int ageYear = year - getYearBorn();
@@ -700,6 +830,10 @@ public abstract class Animal {
         setAgeDay(ageDay);
     }
 
+    /**
+     * Store a Food object within the Animal's inventory if it has space for it, if it does not then leave the food
+     * or take some and resize the Food object within the world
+     */
     public void storeFood(){
         setTargetingFood(false);
         for(int i = 0; i < getFoodList().size(); i++){
@@ -733,11 +867,17 @@ public abstract class Animal {
         }
     }
 
+    /**
+     * Consume Water from the Animal's inventory and remove the element from the inventory
+     */
     public void drinkWater(){
         setThirst(getThirst() - waterInventory.getElement(0));
         waterInventory.remove(0);
     }
 
+    /**
+     * Store Water within the Animal's inventory, fill the inventory as all water sources are infinite
+     */
     public void storeWater(){
         // all water is the same so there is no need to check against the correct one
         setTargetingWater(false);
@@ -747,6 +887,9 @@ public abstract class Animal {
         }
     }
 
+    /**
+     * Set a localTarget in at the location of Water if it is seen within the area
+     */
     public void checkWater(){
         for (Water water : getWaterList()){
             if (Collision.overlapsEfficient(this.getSmellCircle(), water.getCircle())) {
@@ -760,6 +903,9 @@ public abstract class Animal {
         }
     }
 
+    /**
+     * Remove the localTarget and set all target variables to the original state
+     */
     public void removeLocalTarget(){
         setLocalTargetBool(false);
         setTargetingAnimal(false);
@@ -770,14 +916,25 @@ public abstract class Animal {
         setDy(0);
     }
 
+    /**
+     * Set the mainTarget bool to false
+     */
     public void removeMainTarget(){
         setHasMainTarget(false);
     }
 
+    /**
+     * Check the area for shelters
+     */
     public void checkShelters(){
         System.out.println("! no override found in " + getSpecies() + " !");
     }
 
+    /**
+     * Enter a shelter and complete tasks based on the reason for entering the shelter. Either; breed if
+     * another animal of the opposite sex is in the shelter also, drop off all resources or pick up resources
+     * if in a dire situation
+     */
     public void enterShelter(){
         Random rand = new Random();
         setWaitAtHome(100 + rand.nextInt(500));
@@ -855,6 +1012,9 @@ public abstract class Animal {
         }
     }
 
+    /**
+     * Exit the Animal from the shelter setting its self as visible to the scene and creating a timer to not return
+     */
     public void exitShelter(){
         setWaitAtHome(0);
         setFollowMainCoolDown(10000 + new Random().nextInt(5000));
@@ -862,74 +1022,22 @@ public abstract class Animal {
         setSelfVisibility(true);
     }
 
+    /**
+     * Set the Animal's mainTarget to the home target defined
+     */
     public void targetHome(){
         setTargetingHome(true);
         setFollowMainCoolDown(1000);
         setMainTarget(getHomeTarget());
     }
 
-    public void forget() {
-        if (homeTarget != null) {
-            Random rand = new Random();
-
-            // A higher memory provides more chances to avoid forgetting
-            if (rand.nextInt(getMemory()) == 1) {
-                // Distort home values using the memoryBiasX
-                if (getMemoryBiasX() == 1) {
-                    if (rand.nextInt(2) == 1) {
-                        if (rand.nextInt(3) == 1)
-                            getHomeTarget().setX(getHomeTarget().getX() - 1);
-                        else
-                            getHomeTarget().setX(getHomeTarget().getX() + 1);
-                    }
-                } else {
-                    if (rand.nextInt(2) == 1) {
-                        if (rand.nextInt(3) == 1)
-                            getHomeTarget().setX(getHomeTarget().getX() + 1);
-                        else
-                            getHomeTarget().setX(getHomeTarget().getX() - 1);
-                    }
-                }
-
-                // Distort home values using the memoryBiasY
-                if (getMemoryBiasY() == 1) {
-                    if (rand.nextInt(2) == 1) {
-                        if (rand.nextInt(3) == 1)
-                            getHomeTarget().setY(getHomeTarget().getY() - 1);
-                        else
-                            getHomeTarget().setY(getHomeTarget().getY() + 1);
-                    }
-                } else {
-                    if (rand.nextInt(2) == 1) {
-                        if (rand.nextInt(3) == 1)
-                            getHomeTarget().setY(getHomeTarget().getY() + 1);
-                        else
-                            getHomeTarget().setY(getHomeTarget().getY() - 1);
-                    }
-                }
-
-                // Ensure the coordinates aren't going off screen
-                if (getHomeTarget().getX() > Main.SIZE_X) {
-                    getHomeTarget().setX(Main.SIZE_X);
-                } else {
-                    if (getHomeTarget().getX() < 0) {
-                        getHomeTarget().setX(0);
-                    }
-                }
-
-                if (getHomeTarget().getY() > Main.SIZE_Y) {
-                    getHomeTarget().setY(Main.SIZE_Y);
-                } else {
-                    if (getHomeTarget().getY() < 25) {
-                        getHomeTarget().setY(25);
-                    }
-                }
-            }
-            getHomeLocation().setX(getHomeTarget().getX());
-            getHomeLocation().setY(getHomeTarget().getY());
-        }
-    }
-
+    /**
+     * Check the Animal will not collide with an Obstacle object if the the Animal were to occupy the same location as
+     * the coordinates provided
+     * @param posX X coordinate
+     * @param posY Y coordinate
+     * @return if the animal will not be colliding in the given coordinates
+     */
     public boolean checkMove(int posX, int posY){
         for(int i = 0; i < getObstacleList().size(); i++){
             if(getObstacleList().get(i).getX() - (getImage().getRadius() + getObstacleList().get(i).getImage().getRadius()) < posX &&
@@ -944,10 +1052,17 @@ public abstract class Animal {
         return true;
     }
 
+    /**
+     * Update the lable of the Animal
+     */
     public void updateText(){
         getText().setText(statistics());
     }
 
+    /**
+     * Set the Animal visibility within the root groups i.e. setSelfVisibility(false) will make the Animal invisible
+     * @param visibility value to set visibility to
+     */
     public void setSelfVisibility(boolean visibility){
         int index = 0;
         for(int i = 0; i < getAnimalList().size(); i++){
@@ -964,9 +1079,89 @@ public abstract class Animal {
         getAnimalLabelRef().getChildren().get(index).setVisible(visibility);
     }
 
+    /**
+     * Create a baby with the animal passed
+     * @param animal Animal to have a baby with
+     */
     public void createBaby(Animal animal){
-        return;
     }
+
+    public String statistics(){
+        return ("Name:\t\t\t" + getName() + "\n" +
+                "ID:\t\t\t\t" + getID() + "\n" +
+                "Gender:\t\t\t" + getGender() + "\n" +
+                "Species:\t\t\t" + getSpecies() + "\n" +
+                "Speed:\t\t\t" + String.format("%.1g", getSpeed()) + "\n" +
+                "Smell Range:\t\t" + getSmellRange() + "\n" +
+                "Metabolism:\t\t" + String.format("%.1g", getMetabolism()) + "\n" +
+                "Food Inventory: \t" + getFoodInventory().getSize() + "/" + getFoodInventory().getCapacity() + "\n" +
+                "Water Inventory:\t" + getWaterInventory().getSize() + "/" + getWaterInventory().getCapacity());
+    }
+    public String toString(){
+        return ("Name: " + getName() + "\n" +
+                "Xpos: " + getX() + "\n" +
+                "Ypos: " + getY() + "\n");
+    }
+
+    /**
+     * Give Animal a random gender
+     */
+    public void giveGender(){
+        Random rand = new Random();
+        if (rand.nextInt(2) == 1)
+            setGender('M');
+        else
+            setGender('F');
+    }
+
+    /**
+     * Give Animal a name from list of male and female names depending on the gender
+     * @param names_m List of male names
+     * @param names_f List of female names
+     */
+    public void giveName(String [] names_m, String [] names_f){
+        Random rand = new Random();
+        if (this.gender == 'M')
+            setName(names_m[rand.nextInt(names_m.length)]);
+        else
+            setName(names_f[rand.nextInt(names_f.length)]);
+    }
+
+    /**
+     * Cool down the timer to follow the mainTarget
+     */
+    public void coolDownFollowMain(){
+        setFollowMainCoolDown(getFollowMainCoolDown() - 1);
+        if(getFollowMainCoolDown() < 0){
+            setFollowMainCoolDown(0);
+        }
+    }
+
+    /**
+     * Cool down the timer to follow a foodTarget
+     */
+    public void coolDownFood(){
+        setFoodSearchCoolDown(getFoodSearchCoolDown() - 1);
+        if (getFoodSearchCoolDown() < 0){
+            setFoodSearchCoolDown(0);
+            getSmellCircle().setFill(Color.rgb(0, 100, 100));
+        }
+        else{
+            getSmellCircle().setFill(Color.rgb(100, 0, 0));
+        }
+    }
+
+    /**
+     * Cool down the timer for breeding
+     */
+    public void coolDownBreedTimer(){
+        if (getBreedTimer() <= 0){
+            setBreedTimer(0);
+        } else {
+            setBreedTimer(getBreedTimer() - 1);
+        }
+    }
+
 
     // SELF GET/SET FUNCTIONS
     public void setFoodList(ArrayList<Food> f){
@@ -1090,20 +1285,6 @@ public abstract class Animal {
         turnAngle = t;
     }
 
-    public int getHomeX(){
-        return homeX;
-    }
-    public void setHomeX(int homeX){
-        this.homeX = homeX;
-    }
-
-    public int getHomeY(){
-        return homeY;
-    }
-    public void setHomeY(int homeY){
-        this.homeY = homeY;
-    }
-
     public float getHunger(){
         return hunger;
     }
@@ -1123,27 +1304,6 @@ public abstract class Animal {
     }
     public void setMetabolism(float metabolism){
         this.metabolism = metabolism;
-    }
-
-    public int getMemory(){
-        return memory;
-    }
-    public void setMemory(int memory){
-        this.memory = memory;
-    }
-
-    public int getMemoryBiasX(){
-        return memoryBiasX;
-    }
-    public void setMemoryBiasX(int memoryBiasX){
-        this.memoryBiasX = memoryBiasX;
-    }
-
-    public int getMemoryBiasY(){
-        return memoryBiasY;
-    }
-    public void setMemoryBiasY(int memoryBiasY){
-        this.memoryBiasY = memoryBiasY;
     }
 
     public char getGender(){
@@ -1173,24 +1333,6 @@ public abstract class Animal {
         foodGroupRef = f;
     }
 
-    public void giveGender(){
-        Random rand = new Random();
-        if (rand.nextInt(2) == 1)
-            setGender('M');
-        else
-            setGender('F');
-    }
-
-    public void giveName(String [] names_m, String [] names_f){
-        Random rand = new Random();
-        if (this.gender == 'M')
-            setName(names_m[rand.nextInt(names_m.length)]);
-        else
-            setName(names_f[rand.nextInt(names_f.length)]);
-    }
-
-
-    // TARGET GET/SET FUNCTIONS
     public int getLastAngle() {
         return lastAngle;
     }
@@ -1247,36 +1389,6 @@ public abstract class Animal {
         this.mainTargetBool = mainTargetBool;
     }
 
-    // INFORMATIONAL
-    public String statistics(){
-        return ("Name:\t\t\t" + getName() + "\n" +
-                "ID:\t\t\t\t" + getID() + "\n" +
-                "Gender:\t\t\t" + getGender() + "\n" +
-                "Species:\t\t\t" + getSpecies() + "\n" +
-                "Speed:\t\t\t" + String.format("%.1g", getSpeed()) + "\n" +
-                "Smell Range:\t\t" + getSmellRange() + "\n" +
-                "Metabolism:\t\t" + String.format("%.1g", getMetabolism()) + "\n" +
-                "Food Inventory: \t" + getFoodInventory().getSize() + "/" + getFoodInventory().getCapacity() + "\n" +
-                "Water Inventory:\t" + getWaterInventory().getSize() + "/" + getWaterInventory().getCapacity());
-    }
-    public String toString(){
-        return ("Name: " + getName() + "\n" +
-                "Xpos: " + getX() + "\n" +
-                "Ypos: " + getY() + "\n");
-    }
-    public String toText(){
-        return (toString() +
-                "Species: " + getSpecies() + "\n" +
-                "Symbol: " + getSymbol() + "\n" +
-                "ID: " + getID() + "\n" +
-                "Energy: " + getEnergy() + "\n");
-    }
-    public String posString(){
-        return("x: " + (getImage().getCenterX() + getImage().getTranslateX())
-                + ", y: " + (getImage().getCenterY() + getImage().getTranslateY())
-                + ", dx: " + getDx() + ", dy: " + getDy());
-    }
-
     public Group getFoodGroupRef() {
         return foodGroupRef;
     }
@@ -1316,28 +1428,11 @@ public abstract class Animal {
         this.foodSearchCoolDown = foodSearchCoolDown;
     }
 
-    public void coolDownFood(){
-        setFoodSearchCoolDown(getFoodSearchCoolDown() - 1);
-        if (getFoodSearchCoolDown() < 0){
-            setFoodSearchCoolDown(0);
-            getSmellCircle().setFill(Color.rgb(0, 100, 100));
-        }
-        else{
-            getSmellCircle().setFill(Color.rgb(100, 0, 0));
-        }
-    }
-
     public int getFollowMainCoolDown(){
         return followMainCoolDown;
     }
     public void setFollowMainCoolDown(int followMainCoolDown){
         this.followMainCoolDown = followMainCoolDown;
-    }
-    public void coolDownFollowMain(){
-        setFollowMainCoolDown(getFollowMainCoolDown() - 1);
-        if(getFollowMainCoolDown() < 0){
-            setFollowMainCoolDown(0);
-        }
     }
 
     public void setFoodInventory(Inventory foodInventory){
@@ -1383,14 +1478,6 @@ public abstract class Animal {
         this.targetingWater = targetingWater;
     }
 
-    public int getTargetWaterID() {
-        return targetWaterID;
-    }
-
-    public void setTargetWaterID(int targetWaterID) {
-        this.targetWaterID = targetWaterID;
-    }
-
     public StatsBar getStatsBar() {
         return statsBar;
     }
@@ -1421,14 +1508,6 @@ public abstract class Animal {
 
     public void setHomeID(int homeID) {
         this.homeID = homeID;
-    }
-
-    public int getWaitInShelterTimer() {
-        return waitInShelterTimer;
-    }
-
-    public void setWaitInShelterTimer(int waitInShelterTimer) {
-        this.waitInShelterTimer = waitInShelterTimer;
     }
 
     public boolean isInShelter() {
@@ -1557,14 +1636,6 @@ public abstract class Animal {
 
     public void setBreedTimer(int breedTimer) {
         this.breedTimer = breedTimer;
-    }
-
-    public void coolDownBreedTimer(){
-        if (getBreedTimer() <= 0){
-            setBreedTimer(0);
-        } else {
-            setBreedTimer(getBreedTimer() - 1);
-        }
     }
 
     public int getStrength() {

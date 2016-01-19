@@ -14,16 +14,11 @@ import java.util.ArrayList;
 public class World {
     private Random rand = new Random();
     private Configuration configuration;
-    private int year;
-    private int day;
-    private int dayLength;
-    private int dayLengthCounter;
+    private int year, day, dayLength, dayLengthCounter;
     private WorldStatsBar worldStatsBar;
-    public static int trackFoodID = 0;
-    public static int trackAnimalID = 0;
+    public static int trackFoodID = 0, trackAnimalID = 0;
     private int shelterID = 0;
     private ArrayList<Animal> animalList = new ArrayList<>();
-    private ArrayList<Animal> animalRank = new ArrayList<>();
     private ArrayList<FoodTree> foodTreeList = new ArrayList<>();
     private ArrayList<Food> foodList = new ArrayList<>();
     private ArrayList<Water> waterList = new ArrayList<>();
@@ -196,23 +191,6 @@ public class World {
         a.addSelfToLists();
     }
 
-    public void addAnimal(String type, int x, int y){
-        if (type.equals("Ant")) {
-            Animal a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
-                    animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                    animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, configuration);
-            a.addSelfToLists();
-        } else {
-            if (type.equals("Bear")){
-                Animal a = new Bear(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
-                        animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                        animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, configuration);
-                a.addSelfToLists();
-            }
-        }
-        trackAnimalID++;
-    }
-
     public void addRandomFood(){
         Food f;
         do {
@@ -259,14 +237,6 @@ public class World {
         foodTreeLeafGroup.getChildren().add(f.getLeafCircle());
         foodTreeTrunkGroup.getChildren().add(f.getLeafCircle());
 
-        obstacleList.add(f.getTreeTrunk());
-        foodTreeTrunkGroup.getChildren().add(f.getTreeTrunk().getImage());
-    }
-
-    public void addFoodTree(int x, int y){
-        FoodTree f = new FoodTree(x, y, foodList, foodGroup, waterList, foodTreeList);
-        foodTreeList.add(f);
-        foodTreeLeafGroup.getChildren().add(f.getLeafCircle());
         obstacleList.add(f.getTreeTrunk());
         foodTreeTrunkGroup.getChildren().add(f.getTreeTrunk().getImage());
     }
@@ -415,7 +385,6 @@ public class World {
                 (int) (animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
                 (int) (animalList.get(i).getImage().getRadius()));
 
-        animalRank.add(animalList.get(i));
         animalGroup.getChildren().remove(i);
         animalSmellGroup.getChildren().remove(i);
         animalTargetGroup.getChildren().remove(i);
@@ -492,14 +461,6 @@ public class World {
         }
     }
 
-    public void printRank(){
-        for(int i = animalRank.size() - 1; i > 0 ; i--){
-            System.out.println("Rank " + (animalRank.size() - i));
-            System.out.println(animalRank.get(i).statistics());
-            System.out.println();
-        }
-    }
-
     // display features
     public void toggleSmellCircles(){
         animalSmellGroup.setVisible(!animalSmellGroup.isVisible());
@@ -563,14 +524,6 @@ public class World {
 
     public String getDateString(){
         return ("Y" + getYear() + " D" + getDay());
-    }
-
-    public WorldStatsBar getWorldStatsBar() {
-        return worldStatsBar;
-    }
-
-    public void setWorldStatsBar(WorldStatsBar worldStatsBar) {
-        this.worldStatsBar = worldStatsBar;
     }
 
     public Configuration getConfiguration() {

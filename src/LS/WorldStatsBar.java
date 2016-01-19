@@ -11,7 +11,6 @@ public class WorldStatsBar {
     private Group group = new Group();
     private Rectangle backBar;
     private Text date;
-    private Group rootRef;
 
     public WorldStatsBar(){
 
@@ -49,15 +48,6 @@ public class WorldStatsBar {
 
     public void setBackBar(Rectangle backBar) {
         this.backBar = backBar;
-    }
-
-
-    public Group getRootRef() {
-        return rootRef;
-    }
-
-    public void setRootRef(Group rootRef) {
-        this.rootRef = rootRef;
     }
 
     public Group getGroup() {
