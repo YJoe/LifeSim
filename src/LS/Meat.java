@@ -10,7 +10,7 @@ public class Meat extends Food{
     private int baseSize = 2;
     private Color colour = Color.rgb(100, 0, 0);
 
-    public Meat(int x, int y, int id, String type){
+    public Meat(String type, int x, int y, int id){
         super(x, y, id, type);
         setImage(new Circle(getX(), getY(), baseSize + rand.nextInt(3)));
         getImage().setFill(colour);
@@ -18,7 +18,7 @@ public class Meat extends Food{
         setSize((int)(getImage().getRadius()));
     }
 
-    public Meat(int x, int y, int id, int size, String type){
+    public Meat(String type, int x, int y, int id, int size){
         super(x, y, id, type);
         setImage(new Circle(getX(), getY(), size));
         getImage().setFill(colour);

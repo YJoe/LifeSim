@@ -218,7 +218,7 @@ public class World {
         Meat f;
         do {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
-            f = new Meat(x, y, trackFoodID, "Meat");
+            f = new Meat("Meat", x, y, trackFoodID);
         }while(overlapsAnything(f.getImage()));
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());
@@ -228,19 +228,23 @@ public class World {
     public void addFood(String type, int x, int y, int size){
         Meat f;
         if (type.equals("Ant")){
-            f = new DeadAnt(x, y, trackFoodID, size);
+            f = new Meat(type, x, y, trackFoodID, size);
+            f.getImage().setFill(Color.rgb(50, 50, 50));
         } else {
             if (type.equals("Lizard")) {
-                f = new DeadAnt(x, y, trackFoodID, size);
+                f = new Meat(type, x, y, trackFoodID, size);
+                f.getImage().setFill(Color.rgb(0, 150, 40));
             } else {
                 if (type.equals("Bear")) {
-                    f = new DeadBear(x, y, trackFoodID, size);
+                    f = new Meat(type, x, y, trackFoodID, size);
+                    f.getImage().setFill(Color.rgb(200, 100, 0));
                 } else {
                     if (type.equals("Eagle")){
-                        f = new DeadEagle(x, y, trackFoodID, size);
+                        f = new Meat(type, x, y, trackFoodID, size);
+                        f.getImage().setFill(Color.rgb(200, 200, 200));
                     }
                     else{
-                        f = new Meat(x, y, trackFoodID, size, "QuestionableMeat");
+                        f = new Meat(type, x, y, trackFoodID, size);
                     }
                 }
             }
