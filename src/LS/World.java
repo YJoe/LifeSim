@@ -328,16 +328,16 @@ public class World {
         do {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
             if (type.equals("AntHill")) {
-                s = new AntHill(x, y, shelterID);
+                s = new Shelter(type, x, y, 200, 10, shelterID, Color.rgb(220, 200, 160));
             } else {
                 if (type.equals("RockShelter")) {
-                    s = new RockShelter(x, y, shelterID);
+                    s = new Shelter(type, x, y, 200, 10, shelterID, Color.rgb(100, 100, 10));
                 } else {
                     if (type.equals("Cave")) {
-                        s = new Cave(x, y, shelterID);
+                        s = new Shelter(type, x, y, 200, 10, shelterID, Color.rgb(150, 150, 170));
                     } else {
                         if (type.equals("Nest")) {
-                            s = new Nest(x, y, shelterID);
+                            s = new Shelter(type, x, y, 200, 10, shelterID, Color.rgb(130, 100, 60));
                         }
                         else{
                             System.out.println("Error creating shelter");

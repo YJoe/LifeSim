@@ -5,7 +5,7 @@ import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 
-public abstract class Shelter {
+public class Shelter {
     private int x, y, ID;
     private String type;
     private StatsBar statsBar;
@@ -13,7 +13,7 @@ public abstract class Shelter {
     private Inventory foodInventory, waterInventory;
     protected ArrayList<Animal> shelteredAnimals = new ArrayList<>();
 
-    public Shelter(int x, int y, int inventorySizeC, int inventorySizeS, int ID, String type){
+    public Shelter(String type, int x, int y, int inventorySizeC, int inventorySizeS, int ID, Color colour){
         setX(x);
         setY(y);
         setType(type);
@@ -27,6 +27,7 @@ public abstract class Shelter {
 
         // Create Circle for shelter
         setImage(new Circle(getX(), getY(), 30));
+        getImage().setFill(colour);
 
         // Set the unique ID of the shelter
         setID(ID);
