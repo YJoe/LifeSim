@@ -224,7 +224,11 @@ public class SimulationMenu {
         population.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                populationGraph();
+                if(getCurrentWorld() != null) {
+                    populationGraph();
+                } else {
+                    errorWindow("No world loaded");
+                }
             }
         });
 
@@ -327,7 +331,7 @@ public class SimulationMenu {
     }
 
     public void newConfiguration(){
-        FoodChain foodChain = null;
+
         Stage stage = new Stage();
         stage.setTitle("New Configuration");
         GridPane grid = new GridPane();
@@ -549,7 +553,6 @@ public class SimulationMenu {
                         huntList.get(i).add(huntsBoxes.get(i).get(j).isSelected());
                     }
                 }
-                FoodChain foodChain = new FoodChain(eatList, huntList);
 
                 Configuration configuration;
 
@@ -570,7 +573,7 @@ public class SimulationMenu {
 
                     configuration = new Configuration(ants, lizards, bears, eagles,
                             aHomes, lHomes, bHomes, eHomes,
-                            meat, trees, rocks, pools, foodChain);
+                            meat, trees, rocks, pools, eatList, huntList);
                     setConfiguration(configuration);
                     createWorld();
                     stage.close();
@@ -649,7 +652,7 @@ public class SimulationMenu {
             huntElements.add(new ArrayList<>());
             for(int j = 0; j < 4; j++){
                 huntElements.get(i).add(new CheckBox());
-                huntElements.get(i).get(j).setSelected(getConfiguration().getFoodChain().getHuntList().get(i).get(j));
+                huntElements.get(i).get(j).setSelected(getConfiguration().getHuntList().get(i).get(j));
                 grid.add(huntElements.get(i).get(j), i + 6, j + 3);
             }
         }
@@ -675,7 +678,7 @@ public class SimulationMenu {
             eatElements.add(new ArrayList<>());
             for(int j = 0; j < 4; j++){
                 eatElements.get(i).add(new CheckBox());
-                eatElements.get(i).get(j).setSelected(getConfiguration().getFoodChain().getEatList().get(i).get(j));
+                eatElements.get(i).get(j).setSelected(getConfiguration().getEatList().get(i).get(j));
                 grid.add(eatElements.get(i).get(j), i + 6 , j + 10);
             }
         }
@@ -835,10 +838,10 @@ public class SimulationMenu {
 
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
-                        new PieChart.Data("Ants", ants),
-                        new PieChart.Data("Lizards", lizards),
-                        new PieChart.Data("Bears", bears),
-                        new PieChart.Data("Eagles", eagles));
+                        new PieChart.Data("Ants: " + ants, ants),
+                        new PieChart.Data("Lizards: " + lizards, lizards),
+                        new PieChart.Data("Bears: " + bears, bears),
+                        new PieChart.Data("Eagles: " + eagles, eagles));
         final PieChart chart = new PieChart(pieChartData);
         chart.setTitle("Population");
 
@@ -867,9 +870,13 @@ public class SimulationMenu {
                     }
                 }
 
+                chart.getData().get(0).setName("Ants: " + ants);
                 chart.getData().get(0).setPieValue(ants);
+                chart.getData().get(1).setName("Lizards: " + lizards);
                 chart.getData().get(1).setPieValue(lizards);
+                chart.getData().get(2).setName("Bears: " + bears);
                 chart.getData().get(2).setPieValue(bears);
+                chart.getData().get(3).setName("Eagles: " + eagles);
                 chart.getData().get(3).setPieValue(eagles);
             }
         });
@@ -1230,7 +1237,7 @@ public class SimulationMenu {
             huntElements.add(new ArrayList<>());
             for(int j = 0; j < 4; j++){
                 huntElements.get(i).add(new CheckBox());
-                huntElements.get(i).get(j).setSelected(getConfiguration().getFoodChain().getHuntList().get(i).get(j));
+                huntElements.get(i).get(j).setSelected(getConfiguration().getHuntList().get(i).get(j));
                 grid.add(huntElements.get(i).get(j), i + 1, j + 3);
             }
         }
@@ -1258,7 +1265,7 @@ public class SimulationMenu {
             eatElements.add(new ArrayList<>());
             for(int j = 0; j < 4; j++){
                 eatElements.get(i).add(new CheckBox());
-                eatElements.get(i).get(j).setSelected(getConfiguration().getFoodChain().getEatList().get(i).get(j));
+                eatElements.get(i).get(j).setSelected(getConfiguration().getEatList().get(i).get(j));
                 grid.add(eatElements.get(i).get(j), i + 1 , j + 10);
             }
         }
@@ -1290,12 +1297,12 @@ public class SimulationMenu {
             public void handle(ActionEvent event) {
                 for(int i = 0; i < 4; i++){
                     for(int j = 0; j < 4; j++){
-                        huntElements.get(i).get(j).setSelected(getConfiguration().getFoodChain().getHuntList().get(i).get(j));
+                        huntElements.get(i).get(j).setSelected(getConfiguration().getHuntList().get(i).get(j));
                     }
                 }
                 for(int i = 0; i < 5; i++){
                     for(int j = 0; j < 4; j++){
-                        eatElements.get(i).get(j).setSelected(getConfiguration().getFoodChain().getEatList().get(i).get(j));
+                        eatElements.get(i).get(j).setSelected(getConfiguration().getEatList().get(i).get(j));
                     }
                 }
             }
@@ -1322,7 +1329,8 @@ public class SimulationMenu {
                         foodChainHuntList.get(i).add(huntElements.get(i).get(j).isSelected());
                     }
                 }
-                getConfiguration().setFoodChain(new FoodChain(foodChainEatList, foodChainHuntList));
+                getConfiguration().setEatList(foodChainEatList);
+                getConfiguration().setHuntList(foodChainHuntList);
             }
         });
 

@@ -1,6 +1,7 @@
 package LS;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Configuration implements Serializable{
     private int ants;
@@ -15,12 +16,13 @@ public class Configuration implements Serializable{
     private int foodTrees;
     private int obstacleCount;
     private int poolCount;
-    private FoodChain foodChain;
+    private ArrayList<ArrayList<Boolean>> eatList = new ArrayList<>();
+    private ArrayList<ArrayList<Boolean>> huntList = new ArrayList<>();
 
     public Configuration(int ants, int lizards, int bears, int eagles,
                          int antHillCount, int rockShelterCount, int caves, int nests,
                          int foodCount, int foodTrees, int obstacleCount,  int poolCount,
-                         FoodChain foodChain){
+                         ArrayList<ArrayList<Boolean>> eatList, ArrayList<ArrayList<Boolean>> huntList){
         setAnts(ants);
         setLizards(lizards);
         setBears(bears);
@@ -33,7 +35,8 @@ public class Configuration implements Serializable{
         setFoodTrees(foodTrees);
         setObstacleCount(obstacleCount);
         setPoolCount(poolCount);
-        setFoodChain(foodChain);
+        setEatList(eatList);
+        setHuntList(huntList);
     }
 
     public int getAnts() {
@@ -132,11 +135,19 @@ public class Configuration implements Serializable{
         this.nests = nests;
     }
 
-    public FoodChain getFoodChain() {
-        return foodChain;
+    public ArrayList<ArrayList<Boolean>> getEatList() {
+        return eatList;
     }
 
-    public void setFoodChain(FoodChain foodChain) {
-        this.foodChain = foodChain;
+    public void setEatList(ArrayList<ArrayList<Boolean>> eatList) {
+        this.eatList = eatList;
+    }
+
+    public ArrayList<ArrayList<Boolean>> getHuntList() {
+        return huntList;
+    }
+
+    public void setHuntList(ArrayList<ArrayList<Boolean>> huntList) {
+        this.huntList = huntList;
     }
 }

@@ -652,7 +652,7 @@ public abstract class Animal {
             indexY = 3;
         else return false;
 
-        return getConfiguration().getFoodChain().getEatList().get(indexX).get(indexY);
+        return getConfiguration().getEatList().get(indexX).get(indexY);
     }
 
     public boolean isInHuntList(char type) {
@@ -681,7 +681,7 @@ public abstract class Animal {
             indexY = 3;
         else return false;
 
-        return getConfiguration().getFoodChain().getHuntList().get(indexX).get(indexY);
+        return getConfiguration().getHuntList().get(indexX).get(indexY);
     }
 
     public void eatFood(){
