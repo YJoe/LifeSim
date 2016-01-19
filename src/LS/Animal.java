@@ -164,7 +164,7 @@ public abstract class Animal {
      * @param name Name of the Animal
      * @param speed Speed at which the Animal can move
      * @param metabolism Rate at which the Animals hunger and thirst grow
-     * @param strength Strrngth of the Animal used to determine the winner of fights and size of an
+     * @param strength Strength of the Animal used to determine the winner of fights and size of an
      *                 Animal's inventory space
      * @param smell The range at which the Animal can perceive its world
      * @param size Body size of the Animal
@@ -1084,6 +1084,22 @@ public abstract class Animal {
      * @param animal Animal to have a baby with
      */
     public void createBaby(Animal animal){
+        int x = (int) (getImage().getCenterX() + getImage().getTranslateX()), y = (int) (getImage().getCenterY() + getImage().getTranslateY());
+        int smellRange = (getSmellRange() + animal.getSmellRange()) / 2;
+        int size = (int)((getSize() + animal.getSize()) / 2);
+        float speed = (float) (getSpeed() + animal.getSpeed()) / 2;
+        float metabolism = (getMetabolism() + animal.getMetabolism()) / 2;
+        int strength = (getStrength() + animal.getStrength()) / 2;
+
+        //int x, int y, char gender, String name, double speed, float metabolism, int strength, int smell, int size
+
+        char gender;
+        if(new Random().nextInt(2) == 1){
+            gender = 'M';
+        } else {
+            gender = 'F';
+        }
+        getWorldRef().addAnimal(getSpecies(), x, y, gender, getName() + "Jr", speed, metabolism, strength, smellRange, size);
     }
 
     public String statistics(){

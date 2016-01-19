@@ -15,7 +15,6 @@ public class World {
     private Random rand = new Random();
     private Configuration configuration;
     private int year, day, dayLength, dayLengthCounter;
-    private WorldStatsBar worldStatsBar;
     public static int trackFoodID = 0, trackAnimalID = 0;
     private int shelterID = 0;
     private ArrayList<Animal> animalList = new ArrayList<>();
