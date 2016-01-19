@@ -721,7 +721,7 @@ public abstract class Animal {
                                 getFoodList().get(i).getImage().setRadius(getFoodList().get(i).getImage().getRadius() - foodInventory.getSlotMax());
                             }
                         }
-                        while (foodInventory.size < foodInventory.getCapacity() && getFoodList().get(i).getImage().getRadius() > -1);
+                        while (foodInventory.getSize() < foodInventory.getCapacity() && getFoodList().get(i).getImage().getRadius() > -1);
                         if (getFoodList().get(i).getImage().getRadius() < 1) {
                             getFoodGroupRef().getChildren().remove(i);
                             getFoodList().remove(i);
