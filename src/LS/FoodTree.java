@@ -57,7 +57,7 @@ public class FoodTree {
 
         Food f;
         do {
-            f = new Fruit(rand.nextInt(xRange) + xMin, rand.nextInt(yRange) + yMin, World.trackFoodID);
+            f = new Food("Fruit", rand.nextInt(xRange) + xMin, rand.nextInt(yRange) + yMin, World.trackFoodID, rand.nextInt(2) + 2, Color.rgb(255, 0, 0));
         } while (   !Collision.overlapsAccurate(f.getImage(), getLeafCircle()) ||
                     Collision.overlapsAccurate(f.getImage(), getTreeTrunk().getImage()) ||
                     collidesWithWater(f.getImage()) || !isInScreen(f.getImage()) ||

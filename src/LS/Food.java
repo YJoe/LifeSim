@@ -5,7 +5,7 @@ import javafx.scene.shape.Circle;
 
 import java.util.Random;
 
-public abstract class Food {
+public class Food {
     private int x;
     private int y;
     private int id;
@@ -17,13 +17,17 @@ public abstract class Food {
     private boolean poisonous;
     private Circle image;
 
-    public Food(int xIn, int yIn, int id, String type){
+    public Food(String type, int xIn, int yIn, int id, int size, Color colour){
         setX(xIn);
         setY(yIn);
         setID(id);
         setDecay(0);
         setDecayMax(new Random().nextInt(1000) + 2000);
         setType(type);
+        setImage(new Circle(getX(), getY(), size));
+        getImage().setFill(colour);
+        setCal(size * 4);
+        setSize(size);
         setPoisonous(false);
     }
     

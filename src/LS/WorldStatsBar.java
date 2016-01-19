@@ -11,9 +11,6 @@ public class WorldStatsBar {
     private Group group = new Group();
     private Rectangle backBar;
     private Text date;
-    private Text animalCount;
-    private Text foodCount;
-    private Text shelterCount;
     private Group rootRef;
 
     public WorldStatsBar(){
@@ -29,33 +26,9 @@ public class WorldStatsBar {
         getDate().setTranslateY(Main.SIZE_Y + 35);
         getDate().setFill(Color.rgb(200, 200, 200));
 
-        // create animal counter
-        setAnimalCount(new Text());
-        getAnimalCount().setFont(Font.font ("Verdana", 15));
-        getAnimalCount().setTranslateX(215);
-        getAnimalCount().setTranslateY(Main.SIZE_Y + 21);
-        getAnimalCount().setFill(Color.rgb(200, 200, 200));
-
-        // create food counter
-        setFoodCount(new Text());
-        getFoodCount().setFont(Font.font("Verdana", 15));
-        getFoodCount().setTranslateX(215);
-        getFoodCount().setTranslateY(Main.SIZE_Y + 40);
-        getFoodCount().setFill(Color.rgb(200, 200, 200));
-
-        // create shelter counter
-        setShelterCount(new Text());
-        getShelterCount().setFont(Font.font("Verdana", 15));
-        getShelterCount().setTranslateX(350);
-        getShelterCount().setTranslateY(Main.SIZE_Y + 21);
-        getShelterCount().setFill(Color.rgb(200, 200, 200));
-
         // add everything to the root group
         group.getChildren().add(getBackBar());
         group.getChildren().add(getDate());
-        group.getChildren().add(getAnimalCount());
-        group.getChildren().add(getFoodCount());
-        group.getChildren().add(getShelterCount());
     }
 
     public Text getDate() {
@@ -78,41 +51,6 @@ public class WorldStatsBar {
         this.backBar = backBar;
     }
 
-    public Text getAnimalCount() {
-        return animalCount;
-    }
-
-    public void setAnimalCount(Text animalCount) {
-        this.animalCount = animalCount;
-    }
-
-    public void setAnimalCountString(int animalCount) {
-        getAnimalCount().setText("Animals: " + animalCount);
-    }
-
-    public Text getFoodCount() {
-        return foodCount;
-    }
-
-    public void setFoodCount(Text foodCount) {
-        this.foodCount = foodCount;
-    }
-
-    public void setFoodCountString(int foodCount){
-        getFoodCount().setText("Food " + foodCount);
-    }
-
-    public Text getShelterCount() {
-        return shelterCount;
-    }
-
-    public void setShelterCount(Text shelterCount) {
-        this.shelterCount = shelterCount;
-    }
-
-    public void setShelterCountString(int shelterCount){
-        getShelterCount().setText("Shelters " + shelterCount);
-    }
 
     public Group getRootRef() {
         return rootRef;
