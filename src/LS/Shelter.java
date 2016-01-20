@@ -5,6 +5,10 @@ import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 
+/**
+ * Shelter creates an object within the world in which Animals can;
+ * enter, store food, breed within and exit.
+ */
 public class Shelter {
     private int x, y, ID;
     private String type;
@@ -13,6 +17,16 @@ public class Shelter {
     private Inventory foodInventory, waterInventory;
     protected ArrayList<Animal> shelteredAnimals = new ArrayList<>();
 
+    /**
+     * Constructor for Shelter generating an object or Animals to interact with
+     * @param type The type of Shelter i.e. "AntHill" or "Nest"
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param inventorySizeC Max slots within the inventory
+     * @param inventorySizeS Slot size of inventory spaces
+     * @param ID Unique ID
+     * @param colour Colour of the Shelter to create
+     */
     public Shelter(String type, int x, int y, int inventorySizeC, int inventorySizeS, int ID, Color colour){
         setX(x);
         setY(y);
@@ -33,7 +47,9 @@ public class Shelter {
         setID(ID);
     }
 
-    // Main functions
+    /**
+     * Update the stats bar of the Shelter representing accurately the inventory size
+     */
     public void update(){
         getStatsBar().getBar(0).setWidth(getFoodInventory().getSize() * ((float)getStatsBar().getStatBarWidth() / (float)getFoodInventory().getCapacity()));
         getStatsBar().getBar(1).setWidth(getWaterInventory().getSize() * ((float)getStatsBar().getStatBarWidth() / (float)getWaterInventory().getCapacity()));

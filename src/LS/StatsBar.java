@@ -5,6 +5,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 
+/**
+ * StatsBar is a configurable visualisation of any amount of stats of an entity
+ * specifically within LifeSim StatsBar is used within Animals and Shelter in order to
+ * represent thirst, hunger, energy, food inventory and water inventory.
+ */
 public class StatsBar {
     private int statBarWidth = 50;
     private int statBarHeight = 4;
@@ -13,6 +18,11 @@ public class StatsBar {
     private Rectangle backBar;
     private ArrayList<Rectangle> bars = new ArrayList<>();
 
+    /**
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param barCount The amount of statistics to monitor
+     */
     public StatsBar(int x, int y, int barCount){
         // Create a backBar to display the other information on
         setBackBar(new Rectangle(x, y, getStatBarWidth() + 4, (getStatBarHeight() * barCount) + (getStatBarSpacing() * (barCount + 1))));

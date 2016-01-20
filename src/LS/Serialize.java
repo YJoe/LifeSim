@@ -2,7 +2,18 @@ package LS;
 
 import java.io.*;
 
+/**
+ * Serialize consists of static functions allowing the saving and loading of serialised
+ * files, used within the SimulationMenu this allows the user to define their own
+ * Configuration files
+ */
 public class Serialize {
+    /**
+     * A static function used to Serialise the given Configuration with the given name to the defined
+     * file path
+     * @param configuration Configuration to save
+     * @param fileName Name of the configuration to save under
+     */
     public static void serialize(Configuration configuration, String fileName){
         try{
             FileOutputStream fileOut = new FileOutputStream("LifeSim/SavedWorlds/" + fileName + ".ser");
@@ -16,6 +27,11 @@ public class Serialize {
         }
     }
 
+    /**
+     * A static function used to deserialize a given file path returning a Configuration object
+     * @param file File path to load
+     * @return A Configuration object
+     */
     public static Configuration deserialize(File file){
         Configuration configuration;
         try {

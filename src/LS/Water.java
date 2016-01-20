@@ -2,15 +2,23 @@ package LS;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-
 import java.util.Random;
 
+/**
+ * Water creates a circle of blue in which Animals can take Water from a WaterHazard Obstacle is
+ * also generated at the given location
+ */
 public class Water {
     private int x;
     private int y;
     private int size;
     private Circle circle;
 
+    /**
+     * Constructor for Water generating two Circles at the given location
+     * @param x X coordinate
+     * @param y Y coordinate
+     */
     public Water(int x, int y){
         Random rand = new Random();
         this.x = x;

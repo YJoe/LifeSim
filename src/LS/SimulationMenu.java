@@ -1429,7 +1429,8 @@ public class SimulationMenu {
     }
 
     /**
-     * Create a new world from the current Configuration
+     * Create a new world from the current Configuration and set it to the current World clear the root and
+     * add everything back to the root after
      */
     public void createWorld(){
         // clear everything from the root
