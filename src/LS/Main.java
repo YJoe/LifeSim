@@ -44,7 +44,6 @@ public class Main extends Application {
 
         // Create menu system object
         SimulationMenu menu = new SimulationMenu(primaryStage, root);
-        menu.getWorldStatsBar();
         menu.togglePaused();
 
         // Create key press handler for scene
@@ -99,11 +98,12 @@ public class Main extends Application {
                 if (menu.getCurrentWorld() != null) {
                     if (!menu.isPaused()) {
                         menu.getCurrentWorld().update();
-                        menu.getWorldStatsBar().setDateString(menu.getCurrentWorld().getDateString());
+                        menu.getDate().setText(menu.getCurrentWorld().getDateString());
                     }
                 } else {
                     menu.getRoot().getChildren().clear();
-                    menu.getRoot().getChildren().add(menu.getWorldStatsBar().getGroup());
+                    menu.getRoot().getChildren().add(menu.getBackBar());
+                    menu.getRoot().getChildren().add(menu.getDate());
                     Text notLoaded = new Text("NO WORLD LOADED");
                     notLoaded.setTranslateX(10);
                     notLoaded.setTranslateY(Main.SIZE_Y + 38);

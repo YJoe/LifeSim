@@ -189,6 +189,7 @@ public abstract class Animal {
                   ArrayList<Shelter> shelterList, Group animalSmellRef, Group animalStatsRef, Group animalLabelRef,
                   Group animalTargetRef, Group animalHomeLocationRef, Configuration configuration, Color colour){
 
+        // Set all attributes
         setSpecies(speciesIn);
         setSymbol(symbolIn);
         setID(IDIn);

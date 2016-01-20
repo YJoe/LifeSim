@@ -7,7 +7,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
@@ -17,43 +16,43 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.awt.*;
-import java.awt.geom.Arc2D;
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/**
+ * SimulationMenu holds the MenuBar and ToolBar options and controls the execution of the world
+ */
 public class SimulationMenu {
     private MenuBar menuBar;
     private Group root;
-    private WorldStatsBar worldStatsBar;
+    private Rectangle backBar;
+    private Text date;
     private Configuration configuration;
     private World currentWorld;
     private Group buttonGroup = new Group();
     private Button reset, view, play;
     private boolean isPaused = false;
 
+    /**
+     * Con structor of the Simulation menu
+     * @param primaryStage The primary stage of the GU, used here to set the length of the MenuBar
+     * @param root The root node in which all other nodes will be attached
+     */
     public SimulationMenu(Stage primaryStage, Group root){
         //Top Menu Bar
         menuBar = new MenuBar();
         menuBar.setOpacity(1);
         setRoot(root);
-        setWorldStatsBar(new WorldStatsBar());
-        root.getChildren().add(getWorldStatsBar().getGroup());
-        root.getChildren().add(getButtonGroup());
 
         // create buttons
         setReset(new Button("Reset"));
@@ -88,6 +87,21 @@ public class SimulationMenu {
                 }
             }
         });
+
+        // create backBar
+        setBackBar(new Rectangle(0, Main.SIZE_Y, Main.SIZE_X, 50));
+        getBackBar().setFill(Color.rgb(50, 50, 50));
+
+        // create date
+        setDate(new Text());
+        getDate().setFont(Font.font ("Verdana", 30));
+        getDate().setTranslateX(185);
+        getDate().setTranslateY(Main.SIZE_Y + 35);
+        getDate().setFill(Color.rgb(200, 200, 200));
+
+        getRoot().getChildren().add(getBackBar());
+        getRoot().getChildren().add(getDate());
+
 
         // File
         javafx.scene.control.Menu file = new javafx.scene.control.Menu("File");
@@ -280,6 +294,11 @@ public class SimulationMenu {
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
     }
 
+    /**
+     * A basic Window, loaded when the user attempts an invalid action. The window holds an error message
+     * to display to the user
+     * @param message The message to display, describing to some extent where the user went wrong
+     */
     public void errorWindow(String message){
         Stage stage = new Stage();
         GridPane grid = new GridPane();
@@ -311,7 +330,9 @@ public class SimulationMenu {
         stage.showAndWait();
     }
 
-    // Load file functions
+    /**
+     * Open file explorer and load a configuration to the application
+     */
     public void openConfiguration(){
         // Create a new stage
         Stage stage = new Stage();
@@ -325,11 +346,19 @@ public class SimulationMenu {
         loadConfiguration(file);
     }
 
+    /**
+     * Set the Configuration to the loaded file path and create a new world from it
+     * @param filePath The path to the desired file
+     */
     public void loadConfiguration(File filePath) {
         setConfiguration(Serialize.deserialize(filePath));
         createWorld();
     }
 
+    /**
+     * Create a new Configuration, prompting the user to input the desired entity quantities
+     * and the desired food chain
+     */
     public void newConfiguration(){
 
         Stage stage = new Stage();
@@ -633,6 +662,9 @@ public class SimulationMenu {
         stage.showAndWait();
     }
 
+    /**
+     * Open a window displaying the current Configuration
+     */
     public void viewConfiguration(){
         Stage stage = new Stage();
 
@@ -738,6 +770,9 @@ public class SimulationMenu {
         stage.showAndWait();
     }
 
+    /**
+     * Display a window of buttons used to toggle the visibility of world elements
+     */
     public void view(){
         Stage stage = new Stage();
         Group viewRoot = new Group();
@@ -788,11 +823,16 @@ public class SimulationMenu {
         stage.showAndWait();
     }
 
-    // Save file functions
+    /**
+     * Serialize the current configuration with the name "MyWorld" as a default
+     */
     public void saveConfiguration(){
         Serialize.serialize(getConfiguration(), "MyWorld");
     }
 
+    /**
+     * Serialize the current configuration with with a user defined file name
+     */
     public void saveConfigurationAs(){
         Stage stage = new Stage();
         stage.setTitle("Save");
@@ -817,7 +857,7 @@ public class SimulationMenu {
             @Override
             public void handle(ActionEvent e) {
                 try{
-                    saveConfiguration(textBox.getText());
+                    Serialize.serialize(getConfiguration(), textBox.getText());
                     stage.close();
                 }
                 catch(NumberFormatException e1){
@@ -833,11 +873,10 @@ public class SimulationMenu {
         stage.showAndWait();
     }
 
-    public void saveConfiguration(String name){
-        Serialize.serialize(getConfiguration(), name);
-    }
-
-    // Graph
+    /**
+     * Display a PieChart presenting the current World population data, with an update button allowing the user to
+     * update the PieChart without reopening the window
+     */
     public void populationGraph(){
         Stage stage = new Stage();
         GridPane grid = new GridPane();
@@ -921,7 +960,9 @@ public class SimulationMenu {
         stage.show();
     }
 
-    // edit
+    /**
+     * Prompt the user with a window to add an Animal to the current World
+     */
     public void addAnimal(){
         Stage stage = new Stage();
         GridPane grid = new GridPane();
@@ -1044,6 +1085,10 @@ public class SimulationMenu {
         stage.showAndWait();
     }
 
+    /**
+     * Prompt the user with a window to enter an ID and remove the given Animal from the current World,
+     * if there is no animal an error message will be shown
+     */
     public void removeAnimal(){
         Stage stage = new Stage();
         GridPane grid = new GridPane();
@@ -1098,6 +1143,10 @@ public class SimulationMenu {
         stage.showAndWait();
     }
 
+    /**
+     * Prompt the user with a window allowing then to enter the ID of an Animal and edit its attributes, if
+     * there is no animal an error message will be shown
+     */
     public void editAnimal(){
         // Animal editor
         Stage stage = new Stage();
@@ -1192,6 +1241,10 @@ public class SimulationMenu {
         stage.showAndWait();
     }
 
+    /**
+     * Prompt the user with a window in which an ID will be entered, then displaying the current attributes of
+     * the Animal, if there is no animal an error message will be shown
+     */
     public void viewAnimalStats(){
         Stage stage = new Stage();
         GridPane grid = new GridPane();
@@ -1246,6 +1299,9 @@ public class SimulationMenu {
         stage.showAndWait();
     }
 
+    /**
+     * Prompt the user with a window allowing them to change the current foodChain of the current World
+     */
     public void editFoodChain(){
         Stage stage = new Stage();
         GridPane grid = new GridPane();
@@ -1372,10 +1428,9 @@ public class SimulationMenu {
         stage.showAndWait();
     }
 
-    public MenuBar getMenuBar() {
-        return menuBar;
-    }
-
+    /**
+     * Create a new world from the current Configuration
+     */
     public void createWorld(){
         // clear everything from the root
         getRoot().getChildren().clear();
@@ -1391,8 +1446,13 @@ public class SimulationMenu {
 
         // add the menu bar back in
         getRoot().getChildren().add(getMenuBar());
-        getRoot().getChildren().add(getWorldStatsBar().getGroup());
+        getRoot().getChildren().add(getBackBar());
+        getRoot().getChildren().add(getDate());
         getRoot().getChildren().add(getButtonGroup());
+    }
+
+    public MenuBar getMenuBar() {
+        return menuBar;
     }
 
     public World getCurrentWorld() {
@@ -1431,14 +1491,6 @@ public class SimulationMenu {
         return isPaused;
     }
 
-    public WorldStatsBar getWorldStatsBar() {
-        return worldStatsBar;
-    }
-
-    public void setWorldStatsBar(WorldStatsBar worldStatsBar) {
-        this.worldStatsBar = worldStatsBar;
-    }
-
     public Button getReset() {
         return reset;
     }
@@ -1467,7 +1519,19 @@ public class SimulationMenu {
         return buttonGroup;
     }
 
-    public void setButtonGroup(Group buttonGroup) {
-        this.buttonGroup = buttonGroup;
+    public Text getDate() {
+        return date;
+    }
+
+    public void setDate(Text date) {
+        this.date = date;
+    }
+
+    public Rectangle getBackBar() {
+        return backBar;
+    }
+
+    public void setBackBar(Rectangle backBar) {
+        this.backBar = backBar;
     }
 }
