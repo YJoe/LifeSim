@@ -29,6 +29,7 @@ public class StatsBar {
         getBackBar().setFill(Color.rgb(50, 50, 50));
         getBackBar().setX(getBackBar().getX() - (getStatBarWidth() /2) - 2);
         getBackBar().setY(getBackBar().getY() + 8);
+        // Add it to the root group
         statsBarGroup.getChildren().add(getBackBar());
 
         // create all rectangles with sizes and spacing

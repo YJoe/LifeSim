@@ -227,7 +227,6 @@ public class SimulationMenu {
         displayMapInfo.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                System.out.println("was clicked");
             }
         });
 
@@ -281,16 +280,19 @@ public class SimulationMenu {
             }
         });
 
+        // Add all menu elements to the MenuBar
         menuBar.getMenus().add(file);
         menuBar.getMenus().add(edit);
         menuBar.getMenus().add(view);
         menuBar.getMenus().add(graph);
         menuBar.getMenus().add(simulate);
 
+        // Add the buttons to the button group
         getButtonGroup().getChildren().add(getPlay());
         getButtonGroup().getChildren().add(getView());
         getButtonGroup().getChildren().add(getReset());
 
+        // set the width of the menu bar to stay the same size as the screen width
         menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
     }
 
@@ -300,6 +302,7 @@ public class SimulationMenu {
      * @param message The message to display, describing to some extent where the user went wrong
      */
     public void errorWindow(String message){
+        // Create a stage and grid pane
         Stage stage = new Stage();
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -307,15 +310,18 @@ public class SimulationMenu {
         grid.setVgap(5);
         grid.setPadding(new Insets(5, 5, 5, 5));
 
+        // define th error text
         Text errorText = new Text("ERROR:");
         errorText.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
         errorText.setFill(Color.RED);
         grid.add(errorText, 0, 0);
 
+        // define the message to display
         Text messageText = new Text(message);
         messageText.setFont(new Font("Verdana", 15));
         grid.add(messageText, 1, 0);
 
+        // define the dismissing button
         Button okay = new Button("Okay");
         grid.add(okay, 1, 1);
         okay.setOnAction(new EventHandler<ActionEvent>() {
@@ -325,6 +331,7 @@ public class SimulationMenu {
             }
         });
 
+        // add the grid to the scene
         Scene scene = new Scene(grid, 250, 100);
         stage.setScene(scene);
         stage.showAndWait();
@@ -337,12 +344,17 @@ public class SimulationMenu {
         // Create a new stage
         Stage stage = new Stage();
 
+        // open FileChooser and load the file selected by the user
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Simulation Configuration File");
+        // set the directory to the Saved worlds folder
         File existDirectory = new File(System.getProperty("user.dir") + "/LifeSim/SavedWorlds");
         fileChooser.setInitialDirectory(existDirectory);
+
+        // set the filePath to the return of the fileChooser
         File file = fileChooser.showOpenDialog(stage);
 
+        // Load the configuration
         loadConfiguration(file);
     }
 
@@ -360,7 +372,7 @@ public class SimulationMenu {
      * and the desired food chain
      */
     public void newConfiguration(){
-
+        // Define a stage in which all elements generated below will be displayed
         Stage stage = new Stage();
         stage.setTitle("New Configuration");
         GridPane grid = new GridPane();
@@ -460,12 +472,13 @@ public class SimulationMenu {
         hBox.getChildren().add(defaults);
         grid.add(hBox1, 14, 15, 7, 1);
 
+        // FoodChain text
         Text foodChainText = new Text("Food Chain");
         foodChainText.setFont(Font.font("Verdana", FontWeight.NORMAL, 20));
         grid.add(foodChainText, 10, 0, 5, 1);
 
-        Text key = new Text("Key: \nA = Ants\nL = Lizards\nB = Bears\nE = Eagles");
-        grid.add(key, 20, 5, 1, 4);
+        Text key = new Text("Key: \nA = Ants\nL = Lizards\nB = Bears\nE = Eagles\nF = Fruit");
+        grid.add(key, 20, 4, 1, 4);
 
         Text huntList = new Text("Hunt List");
         grid.add(huntList, 10, 1);
@@ -488,6 +501,7 @@ public class SimulationMenu {
         Text eagles = new Text("Eagles");
         grid.add(eagles, 11, 5);
 
+        // Add all checkBoxes to the grid
         ArrayList<ArrayList<CheckBox>> huntsBoxes = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             huntsBoxes.add(new ArrayList<>());
@@ -520,6 +534,7 @@ public class SimulationMenu {
         Text eEagles = new Text("Eagles");
         grid.add(eEagles, 11, 10);
 
+        // Add all checkBoxes to the grid
         ArrayList<ArrayList<CheckBox>> eatsBoxes = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             eatsBoxes.add(new ArrayList<>());
@@ -533,9 +548,12 @@ public class SimulationMenu {
         if(getCurrentWorld() != null) {
             grid.add(current, 0, 15, 3, 1);
         }
+
+        // Set action for current button
         current.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                // set all text boxes to the current configuration stats
                 antsBox.setText(getConfiguration().getAnts() + "");
                 antsHomeBox.setText(getConfiguration().getAntHillCount() + "");
                 lizardsBox.setText(getConfiguration().getLizards() + "");
@@ -549,6 +567,7 @@ public class SimulationMenu {
                 rocksBox.setText(getConfiguration().getObstacleCount() + "");
                 waterBox.setText(getConfiguration().getPoolCount() + "");
 
+                // Load the checkBoxes to the current configuration
                 for(int i = 0; i < 5; i++){
                     for(int j = 0; j < 4; j++){
                         eatsBoxes.get(i).get(j).setSelected(getConfiguration().getEatList().get(i).get(j));
@@ -562,10 +581,11 @@ public class SimulationMenu {
             }
         });
 
+        // Set action for default button
         defaults.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent e){
-
+                // load the default configuration
                 for(int i = 0; i < 4; i++){
                     for (int j = 0; j < 4; j++){
                         if ((i == 0 && j == 1) ||
@@ -575,6 +595,7 @@ public class SimulationMenu {
                             huntsBoxes.get(i).get(j).setSelected(false);
                     }
                 }
+                // load the default configuration
                 for(int i = 0; i < 5; i++){
                     for (int j = 0; j < 4; j++){
                         if ((i != 0 && j == 0) ||
@@ -589,6 +610,7 @@ public class SimulationMenu {
             }
         });
 
+        // Set action for submit button
         submit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -616,6 +638,8 @@ public class SimulationMenu {
                     }
                 }
 
+                // Store all variables into the variables defined above
+
                 Configuration configuration;
 
                 try {
@@ -636,6 +660,7 @@ public class SimulationMenu {
                     configuration = new Configuration(ants, lizards, bears, eagles,
                             aHomes, lHomes, bHomes, eHomes,
                             meat, trees, rocks, pools, eatList, huntList);
+                    // Create a configuration and reload the world
                     setConfiguration(configuration);
                     createWorld();
                     stage.close();
@@ -657,6 +682,7 @@ public class SimulationMenu {
             }
         });
 
+        // Set the scene and pass the grid
         Scene scene = new Scene(grid, 800, 400);
         stage.setScene(scene);
         stage.showAndWait();
@@ -666,8 +692,8 @@ public class SimulationMenu {
      * Open a window displaying the current Configuration
      */
     public void viewConfiguration(){
+        // create a stage and grid pane used to display to the user the entire configuration
         Stage stage = new Stage();
-
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.TOP_CENTER);
         grid.setHgap(5);
@@ -693,6 +719,7 @@ public class SimulationMenu {
         eatList.setFont(headings);
         grid.add(eatList, 5, 8, 4, 1);
 
+        // Set the animal text ot the relevant information
         Text ants = new Text("Animals: " + getConfiguration().getAnts());
         Text antHill = new Text("AntHills: " + getConfiguration().getAntHillCount());
         Text lizards = new Text("Lizards: " + getConfiguration().getLizards());
@@ -702,16 +729,19 @@ public class SimulationMenu {
         Text eagles = new Text("Eagles: " + getConfiguration().getEagles());
         Text nests = new Text("Nests: " + getConfiguration().getNests());
 
+        // Define array lists to hold all info
         ArrayList<Text> info = new ArrayList<>();
         info.add(ants); info.add(antHill); info.add(lizards);
         info.add(rockShelters); info.add(bears); info.add(caves);
         info.add(eagles); info.add(nests);
 
+        // Add all text elements to the grid pane
         for (int i = 0; i < info.size(); i++){
             info.get(i).setFont(smallText);
             grid.add(info.get(i), 0, i + 2);
         }
 
+        // Add all hunt elements to the grid pane
         ArrayList<ArrayList<CheckBox>> huntElements = new ArrayList<>();
         for(int i = 0; i < 4; i++){
             huntElements.add(new ArrayList<>());
@@ -722,6 +752,7 @@ public class SimulationMenu {
             }
         }
 
+        // Create the labels denoting the section of the checkboxes is where
         ArrayList<Text> huntListText= new ArrayList<>();
         huntListText.add(new Text("A"));
         huntListText.add(new Text("L"));
@@ -738,6 +769,7 @@ public class SimulationMenu {
             grid.add(huntListText.get(i), 5, i - 1);
         }
 
+        // add all eat elements to the grid pane
         ArrayList<ArrayList<CheckBox>> eatElements = new ArrayList<>();
         for(int i = 0; i < 5; i++){
             eatElements.add(new ArrayList<>());
@@ -748,6 +780,7 @@ public class SimulationMenu {
             }
         }
 
+        // Create the labels denoting the section of the checkboxes is where
         ArrayList<Text> eatListText= new ArrayList<>();
         eatListText.add(new Text("A"));
         eatListText.add(new Text("L"));
@@ -765,6 +798,7 @@ public class SimulationMenu {
             grid.add(eatListText.get(i), 5, i + 5);
         }
 
+        // Set the scene and pass the grid pane
         Scene scene = new Scene(grid, 300, 340);
         stage.setScene(scene);
         stage.showAndWait();
@@ -834,6 +868,7 @@ public class SimulationMenu {
      * Serialize the current configuration with with a user defined file name
      */
     public void saveConfigurationAs(){
+        // Create the stage and grid pane
         Stage stage = new Stage();
         stage.setTitle("Save");
         GridPane grid = new GridPane();
@@ -842,32 +877,39 @@ public class SimulationMenu {
         grid.setVgap(5);
         grid.setPadding(new Insets(5, 5, 5, 5));
 
+        // define the text to display
         Label saveAs = new Label("Save as");
         grid.add(saveAs, 0, 1);
         TextField textBox = new TextField();
         grid.add(textBox, 1, 1);
 
+        // define the create button
         Button btn = new Button("Create");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(btn);
         grid.add(hbBtn, 1, 3);
 
+        // set the action of the create button
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+                // Try to serialize the configuration in the file path
                 try{
                     Serialize.serialize(getConfiguration(), textBox.getText());
                     stage.close();
                 }
                 catch(NumberFormatException e1){
-                    Label invalidlabel = new Label("Incorrect information entered");
-                    invalidlabel.setFont(Font.font("Verdana", 15));
-                    invalidlabel.setTextFill(Color.RED);
-                    grid.add(invalidlabel, 0, 9);
+                    // Display an error message
+                    Label invalidLabel = new Label("Incorrect information entered");
+                    invalidLabel.setFont(Font.font("Verdana", 15));
+                    invalidLabel.setTextFill(Color.RED);
+                    grid.add(invalidLabel, 0, 9);
                 }
             }
         });
+
+        // set the scene passing the grid
         Scene scene = new Scene(grid, 250, 90);
         stage.setScene(scene);
         stage.showAndWait();
@@ -878,6 +920,8 @@ public class SimulationMenu {
      * update the PieChart without reopening the window
      */
     public void populationGraph(){
+        // Use JavaFX's Pie chart functionality to display the current population of the world
+        // Set the stage and create a grid pane
         Stage stage = new Stage();
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.TOP_CENTER);
@@ -890,6 +934,7 @@ public class SimulationMenu {
 
         int ants = 0, lizards = 0, bears = 0, eagles = 0;
 
+        // Count the amount of Animals in given types
         for(int i = 0; i < getCurrentWorld().getAnimalList().size(); i++){
             if (getCurrentWorld().getAnimalList().get(i).getSpecies().equals("Ant")){
                 ants++;
@@ -908,21 +953,22 @@ public class SimulationMenu {
             }
         }
 
+        // Create a list to pass to the PieChart
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
                         new PieChart.Data("Ants: " + ants, ants),
                         new PieChart.Data("Lizards: " + lizards, lizards),
                         new PieChart.Data("Bears: " + bears, bears),
                         new PieChart.Data("Eagles: " + eagles, eagles));
+        // Create a PieCart passing the data collected
         final PieChart chart = new PieChart(pieChartData);
         chart.setTitle("Population");
 
-
+        // Create a button to let the user update the stats
         Button update = new Button("Update");
         update.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("hi");
                 int ants = 0, lizards = 0, bears = 0, eagles = 0;
                 for(int i = 0; i < getCurrentWorld().getAnimalList().size(); i++){
                     if (getCurrentWorld().getAnimalList().get(i).getSpecies().equals("Ant")){
@@ -953,9 +999,9 @@ public class SimulationMenu {
             }
         });
 
+        // add elements to the grid
         grid.add(chart, 0, 0);
         grid.add(update, 0, 1);
-        System.out.println(ants + " " + lizards + " " + bears + " " + eagles);
         stage.setScene(scene);
         stage.show();
     }
@@ -964,6 +1010,7 @@ public class SimulationMenu {
      * Prompt the user with a window to add an Animal to the current World
      */
     public void addAnimal(){
+        // Create a stage and grid pane
         Stage stage = new Stage();
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
@@ -974,18 +1021,21 @@ public class SimulationMenu {
         Text title = new Text("Add an animal");
         title.setFont(Font.font("Verdana", FontWeight.NORMAL, 20));
 
+        // Define the combo box detailing the type of Animal
         Text speciesText = new Text("Species: ");
         ComboBox<String> species = new ComboBox<>(
                 FXCollections.observableArrayList("Ant", "Lizard", "Bear", "Eagle"));
         species.getSelectionModel().select(0);
         species.setPrefWidth(150);
 
+        // Define the Gender comboBox
         Text genderText = new Text("Gender: ");
         ComboBox<String> gender = new ComboBox<>(
                 FXCollections.observableArrayList("M", "F"));
         gender.getSelectionModel().select(0);
         gender.setPrefWidth(150);
 
+        // Define all text and fields for the input of information
         Text nameText = new Text("Name: ");
         TextField name = new TextField();
         Text xText = new Text("X: ");
@@ -1003,6 +1053,7 @@ public class SimulationMenu {
         Text sizeText = new Text("Size: ");
         TextField size = new TextField();
 
+        // define the buttons to display to GUI and set on action for each
         Button add = new Button("Add Animal");
         grid.add(add, 1, 11);
         add.setOnAction(new EventHandler<ActionEvent>() {
@@ -1035,7 +1086,7 @@ public class SimulationMenu {
                     stage.close();
                 }
                 catch(NumberFormatException n){
-                    System.out.println("sozza m9");
+                    n.printStackTrace();
                 }
             }
         });
@@ -1059,6 +1110,7 @@ public class SimulationMenu {
         Text extraInfo = new Text("(A single blank field will load\n the default of the animal)");
         grid.add(extraInfo, 0, 12, 3, 2);
 
+        // Add all elements to the grid
         grid.add(title, 0, 0, 2, 1);
         grid.add(speciesText,0, 1);
         grid.add(species, 1, 1);
@@ -1090,6 +1142,7 @@ public class SimulationMenu {
      * if there is no animal an error message will be shown
      */
     public void removeAnimal(){
+        // Create a stage and grid in which each element will be added to
         Stage stage = new Stage();
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.TOP_CENTER);
@@ -1111,11 +1164,13 @@ public class SimulationMenu {
         text.setFont(new Font("Verdana", 10));
         grid.add(text, 0, 4, 4, 10);
 
+        // set action for remove
         remove.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 int id;
                 boolean found = false;
+                // Try to find the animal index by ID
                 try {
                     id = Integer.parseInt(field.getText());
                 }
@@ -1123,6 +1178,7 @@ public class SimulationMenu {
                     id = -1;
                 }
                 for(int i = 0; i < getCurrentWorld().getAnimalList().size(); i++) {
+                    // if it was found then kill the selected Animal
                     if (getCurrentWorld().getAnimalList().get(i).getID() == id) {
                         getCurrentWorld().getAnimalList().get(i).setEnergy(-10);
                         text.setText("Animal " + i + " will be killed in the next update");
@@ -1246,6 +1302,7 @@ public class SimulationMenu {
      * the Animal, if there is no animal an error message will be shown
      */
     public void viewAnimalStats(){
+        // Create a stage and grid pane of in which to display the information
         Stage stage = new Stage();
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.TOP_CENTER);
@@ -1253,6 +1310,7 @@ public class SimulationMenu {
         grid.setVgap(5);
         grid.setPadding(new Insets(5, 5, 5, 5));
 
+        // Define elements to add to the grid pane
         Text title = new Text("Animal Stats");
         title.setFont(new Font("Verdana", 20));
         grid.add(title, 0, 0, 5, 1);
@@ -1260,6 +1318,7 @@ public class SimulationMenu {
         TextField field = new TextField("Animal ID");
         grid.add(field, 0, 1);
 
+        // Define the button to view the information
         Button go = new Button("View");
         grid.add(go, 1, 1);
 
@@ -1267,10 +1326,12 @@ public class SimulationMenu {
         text.setFont(new Font("Verdana", 10));
         grid.add(text, 0, 4, 4, 10);
 
+        // Set action of view button
         go.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                int id = 0;
+                int id;
+                // try to parse the integer to the id int
                 boolean found = false;
                 try {
                     id = Integer.parseInt(field.getText());
@@ -1279,10 +1340,10 @@ public class SimulationMenu {
                     id = -1;
                 }
                 for(int i = 0; i < getCurrentWorld().getAnimalList().size(); i++) {
+                    // if the ID was found then display the information for such Animal
                     if (getCurrentWorld().getAnimalList().get(i).getID() == id) {
                         text.setText(getCurrentWorld().getAnimalList().get(i).statistics());
                         text.setFill(Color.BLACK);
-                        System.out.println(getCurrentWorld().getAnimalList().get(i).getName());
                         found = true;
                         break;
                     }
@@ -1303,6 +1364,8 @@ public class SimulationMenu {
      * Prompt the user with a window allowing them to change the current foodChain of the current World
      */
     public void editFoodChain(){
+        // Create a scene and grid pane in which to display the current food chain on
+        // and allow the user to edit and set the configuration
         Stage stage = new Stage();
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.TOP_CENTER);
@@ -1321,16 +1384,21 @@ public class SimulationMenu {
         eatList.setFont(headings);
         grid.add(eatList, 0, 8, 4, 1);
 
+        // Create an array list of lists holding check boxes
         ArrayList<ArrayList<CheckBox>> huntElements = new ArrayList<>();
         for(int i = 0; i < 4; i++){
+            // Add another list
             huntElements.add(new ArrayList<>());
             for(int j = 0; j < 4; j++){
+                // Add a checkBox to the list
                 huntElements.get(i).add(new CheckBox());
                 huntElements.get(i).get(j).setSelected(getConfiguration().getHuntList().get(i).get(j));
+                // Add the element to the grid
                 grid.add(huntElements.get(i).get(j), i + 1, j + 3);
             }
         }
 
+        // Define the grid labels and add them to the gridPane
         ArrayList<Text> huntListText= new ArrayList<>();
         huntListText.add(new Text("A"));
         huntListText.add(new Text("L"));
@@ -1349,16 +1417,20 @@ public class SimulationMenu {
             grid.add(huntListText.get(i), 0, i - 1);
         }
 
+        // Create an array list of lists holding check boxes
         ArrayList<ArrayList<CheckBox>> eatElements = new ArrayList<>();
         for(int i = 0; i < 5; i++){
+            // Add another list
             eatElements.add(new ArrayList<>());
             for(int j = 0; j < 4; j++){
+                // Add a checkBox to the list
                 eatElements.get(i).add(new CheckBox());
                 eatElements.get(i).get(j).setSelected(getConfiguration().getEatList().get(i).get(j));
                 grid.add(eatElements.get(i).get(j), i + 1 , j + 10);
             }
         }
 
+        // Define the grid labels and add them to the gridPane
         ArrayList<Text> eatListText= new ArrayList<>();
         eatListText.add(new Text("A"));
         eatListText.add(new Text("L"));
@@ -1378,12 +1450,15 @@ public class SimulationMenu {
             grid.add(eatListText.get(i), 0, i + 5);
         }
 
+        // Define buttons
         Button restore = new Button("Restore");
         grid.add(restore, 1, 17, 3, 1);
 
+        // Set on action for restore
         restore.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                // assign the configuration eat and hunt elements to the relative checkBoxes
                 for(int i = 0; i < 4; i++){
                     for(int j = 0; j < 4; j++){
                         huntElements.get(i).get(j).setSelected(getConfiguration().getHuntList().get(i).get(j));
@@ -1400,9 +1475,11 @@ public class SimulationMenu {
         Button set = new Button("Set");
         grid.add(set, 4, 17, 3, 1);
 
+        // set on action for set
         set.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                // Set the configuration to the detailed statistics input by the user
                 ArrayList<ArrayList<Boolean>> foodChainEatList = new ArrayList<>();
                 ArrayList<ArrayList<Boolean>> foodChainHuntList = new ArrayList<>();
 

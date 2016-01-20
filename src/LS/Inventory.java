@@ -2,7 +2,7 @@ package LS;
 
 /**
  * Inventory allows for a fixed length and size array to be implemented within Animals and Shelters.
- * Each element within the array must be <= the slotMax
+ * Each element within the array must be less than or equal to the slotMax
  */
 public class Inventory{
     private int capacity;
@@ -15,6 +15,7 @@ public class Inventory{
      * @param slotMax The maximum size value accepted to the inventory
      */
     public Inventory(int capacity, int slotMax){
+        // set all attributes
         this.capacity = capacity;
         this.size = 0;
         this.array = new int [capacity];
@@ -27,8 +28,11 @@ public class Inventory{
      * @return if the element was added successfully
      */
     public boolean add(int value){
+        // if there is space within the inventory
         if(size < capacity){
+            // if the value is less than or equal to the slot max
             if (value <= slotMax) {
+                // add the value to the array
                 array[size] = value;
                 size++;
                 return true;
@@ -41,6 +45,7 @@ public class Inventory{
      * Clear all elements from the Inventory
      */
     public void empty(){
+        // remove all elements from the Inventory
         for(int i = 0; i < size; i++){
             remove(i);
         }
@@ -52,6 +57,7 @@ public class Inventory{
      * @param index The index of the element to remove
      */
     public void remove(int index){
+        // remove a single element at the given index
         for(int i = index; i < size - 1; i++){
             array[i] = array[i + 1];
         }

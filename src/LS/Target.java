@@ -18,6 +18,7 @@ public class Target {
      * @param y Y coordinate
      */
     public Target(int x, int y){
+        // Set attributes
         setX(x);
         setY(y);
         setCircle(new Circle(getX(), getY(), 5));
@@ -29,6 +30,7 @@ public class Target {
      * @param circle The Circle node to target
      */
     public Target(Circle circle){
+        // Set attributes
         setCircle(circle);
         setX((int)getCircle().getCenterX());
         setY((int)getCircle().getCenterY());

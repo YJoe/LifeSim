@@ -96,11 +96,13 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event){
                 if (menu.getCurrentWorld() != null) {
+                    // if the menu is paused run the world
                     if (!menu.isPaused()) {
                         menu.getCurrentWorld().update();
                         menu.getDate().setText(menu.getCurrentWorld().getDateString());
                     }
                 } else {
+                    // display the "NO WORLD LOADED" text in the bottom left corner
                     menu.getRoot().getChildren().clear();
                     menu.getRoot().getChildren().add(menu.getBackBar());
                     menu.getRoot().getChildren().add(menu.getDate());
@@ -115,8 +117,9 @@ public class Main extends Application {
             }
         });
 
-        // Some other stuff
+        // TimeLine creation
         TimelineBuilder.create().cycleCount(javafx.animation.Animation.INDEFINITE).keyFrames(frame).build().play();
+        // Set the scene of the primary stage
         primaryStage.setScene(scene);
         primaryStage.show();
     }

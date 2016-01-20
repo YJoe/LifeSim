@@ -29,6 +29,7 @@ public class Food {
      * @param colour Colour of Food object
      */
     public Food(String type, int xIn, int yIn, int id, int size, Color colour){
+        // Set all attributes
         setX(xIn);
         setY(yIn);
         setID(id);
@@ -46,7 +47,9 @@ public class Food {
      * Update the Food's decay, slowly becoming poison after time
      */
     public void update(){
+        // If the food is not poison and add to the decay counter
         if (!isPoisonous()) {
+            // If the food has reached its turning point set poisonous to true
             if (getDecay() > getDecayMax()) {
                 setPoisonous(true);
                 getImage().setFill(Color.rgb(0, 0, 0));

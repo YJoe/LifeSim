@@ -131,8 +131,12 @@ public class Lizard extends Animal{
                 configuration, Color.rgb(0, 150, 40));
     }
 
+    /**
+     * Override function for check shelters specific to the Lizard
+     */
     @Override
     public void checkShelters(){
+        // loop for all shelters and check if a shelter of the correct type was found
         for(int i = 0; i < getShelterList().size(); i++){
             if(getShelterList().get(i).getType().equals("RockShelter")) {
                 if (Collision.overlapsEfficient(getSmellCircle(), getShelterList().get(i).getImage())) {

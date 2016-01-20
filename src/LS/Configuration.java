@@ -43,6 +43,7 @@ public class Configuration implements Serializable{
                          int antHillCount, int rockShelterCount, int caves, int nests,
                          int foodCount, int foodTrees, int obstacleCount,  int poolCount,
                          ArrayList<ArrayList<Boolean>> eatList, ArrayList<ArrayList<Boolean>> huntList){
+        // Set all attributes
         setAnts(ants);
         setLizards(lizards);
         setBears(bears);

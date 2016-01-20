@@ -20,6 +20,7 @@ public class Water {
      * @param y Y coordinate
      */
     public Water(int x, int y){
+        // Set attributes
         Random rand = new Random();
         this.x = x;
         this.y = y;

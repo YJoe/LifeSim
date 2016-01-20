@@ -21,6 +21,7 @@ public class Obstacle {
      * @param colour Colour of the Obstacle to create
      */
     public Obstacle(String type, int x, int y, int size, Color colour){
+        // Set all attributes
         setX(x);
         setY(y);
         setType(type);

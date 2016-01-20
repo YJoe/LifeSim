@@ -42,6 +42,7 @@ public class World {
      * @param configuration The variable set that will define the properties of the World
      */
     public World(Group root, Configuration configuration){
+        // Set attributes
         trackAnimalID = 0;
         trackFoodID = 0;
         setDay(0);
@@ -50,6 +51,7 @@ public class World {
         setDayLengthCounter(0);
         setConfiguration(configuration);
 
+        // Add all group elements to the root
         root.getChildren().add(shelterGroup);
         root.getChildren().add(shelterStatsGroup);
         root.getChildren().add(waterGroup);
@@ -64,19 +66,7 @@ public class World {
         root.getChildren().add(foodTreeTrunkGroup);
         root.getChildren().add(foodTreeLeafGroup);
 
-        //setWorldStatsBar(new WorldStatsBar(root));
-        //getWorldStatsBar().setDateString(getDateString());
-        //getWorldStatsBar().setAnimalCountString(configuration.getAnts() +
-        //                                        configuration.getLizards() +
-        //                                        configuration.getBears() +
-        //                                        configuration.getEagles());
-        //getWorldStatsBar().setFoodCountString(configuration.getFoodCount());
-        //getWorldStatsBar().setShelterCountString(configuration.getAntHillCount() +
-        //                                            configuration.getRockShelterCount() +
-        //                                            configuration.getCaves() +
-        //                                            configuration.getNests());
-
-
+        // Add the relative element dependent on the count provided by the Configuration
         for(int i = 0; i < configuration.getPoolCount(); i++){
             addRandomPool();
         }
@@ -120,8 +110,11 @@ public class World {
      * @param type the type of Animal wanted i.e. "Ant" or "Lizard"
      */
     public void addRandomAnimal(String type){
+        // Define an Animal
         Animal a;
+        // Confirm the type of animal and generate an animal of the correct type
         if (type.equals("Ant")) {
+            // A do while loop of which its terminating condition is that that it was generated in a valid place
             do {
                 int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                 a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
@@ -131,6 +124,7 @@ public class World {
             a.addSelfToLists();
         } else {
             if (type.equals("Lizard")) {
+                // A do while loop of which its terminating condition is that that it was generated in a valid place
                 do {
                     int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                     a = new Lizard(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
@@ -140,6 +134,7 @@ public class World {
                 a.addSelfToLists();
             } else {
                 if (type.equals("Bear")){
+                    // A do while loop of which its terminating condition is that that it was generated in a valid place
                     do {
                         int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
                         a = new Bear(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
@@ -148,6 +143,7 @@ public class World {
                     } while (overlapsAnything(a.getImage()));
                     a.addSelfToLists();
                 }else {
+                    // A do while loop of which its terminating condition is that that it was generated in a valid place
                     if (type.equals("Eagle")){
                         do {
                             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
@@ -179,6 +175,7 @@ public class World {
      */
     public void addAnimal(String type, int x, int y, char gender, String name, double speed, float metabolism, int strength, int smell, int size){
         Animal a = null;
+        // Check the type of Animal wanted to be created and create the relevant object passing all attributes
         if (type.equals("Ant")){
             a = new Ant(x, y, gender, name, speed, metabolism, strength, smell, size, trackAnimalID, getDay(), getYear(),
                     foodGroup, animalGroup, waterGroup, this, animalList, foodList, waterList, obstacleList, shelterList,
@@ -215,10 +212,12 @@ public class World {
      */
     public void addRandomFood(){
         Food f;
+        // A do while loop of which its terminating condition is that that it was generated in a valid place
         do {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
             f = new Food("Meat", x, y, trackFoodID, rand.nextInt(4) + 3, Color.rgb(0, 0, 0));
         }while(overlapsAnything(f.getImage()));
+        // Add food to all lists
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());
         trackFoodID++;
@@ -233,6 +232,7 @@ public class World {
      */
     public void addFood(String type, int x, int y, int size){
         Food f;
+        // create a food object of the type relevant to the animal that was passed
         if (type.equals("Ant")){
             f = new Food(type, x, y, trackFoodID, size, Color.rgb(50, 50, 50));
         } else {
@@ -251,6 +251,7 @@ public class World {
                 }
             }
         }
+        // Add food to all lists
         foodList.add(f);
         foodGroup.getChildren().add(f.getImage());
         trackFoodID++;
@@ -260,11 +261,12 @@ public class World {
      * Add a food generating tree in a random location within the World
      */
     public void addRandomFoodTree(){
-        int x, y;
         FoodTree f;
+        // A do while loop of which its terminating condition is that that it was generated in a valid place
         do {
             f = new FoodTree(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y) + 25, foodList, foodGroup, waterList, foodTreeList);
         } while(overlapsAnything(f.getTreeTrunk().getImage()));
+        // Add food tree elements to all lists
         foodTreeList.add(f);
         foodTreeLeafGroup.getChildren().add(f.getLeafCircle());
         foodTreeTrunkGroup.getChildren().add(f.getLeafCircle());
@@ -278,19 +280,24 @@ public class World {
      */
     public void addRandomPool(){
         int waterCount = rand.nextInt(5) + 2;
-        // add one water to base other water positions on
+        // Add one water to base other water positions on
         waterList.add(new Water(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y) + 25));
         int PSize = waterList.size();
+        // Add the first water element to the group
         waterGroup.getChildren().add(waterList.get(PSize - 1).getCircle());
+        // Add a water hazard in the same place but slightly smaller
         addWaterHazard( waterList.get(PSize - 1).getX(),
                         waterList.get(PSize - 1).getY(),
                         waterList.get(PSize - 1).getSize() - 10);
 
+        // Create a random angle to create the next circle
         int angleDeg = rand.nextInt(360);
 
+        // loop for the amount of water to add
         for(int i = 0; i < waterCount; i++){
             int attempt = 0, newX, newY;
             Water w;
+            // A do while loop of which its terminating condition is that that it was generated in a valid place
             do {
                 if (attempt > 0){
                     angleDeg = rand.nextInt(360);
@@ -306,12 +313,15 @@ public class World {
                 w = new Water(newX, newY);
             } while(newX > Main.SIZE_X || newX < 0 || newY > Main.SIZE_Y || newY < 25 || !overlapsAnything(w.getCircle()));
             waterList.add(w);
+            // Add the water hazard over the newly created pool element
             addWaterHazard( waterList.get(i + PSize).getX(),
                             waterList.get(i + PSize).getY(),
                             waterList.get(i + PSize).getSize() - 10);
 
+            // Find an angle within 120 degrees to create the next water
             angleDeg += rand.nextInt(120) - 60;
 
+            // truncate the angle
             if(angleDeg > 360){
                 angleDeg -= 360;
             } else{
@@ -319,6 +329,7 @@ public class World {
                     angleDeg += 360;
                 }
             }
+            // add the water to the water list
             waterGroup.getChildren().add(waterList.get(i + PSize).getCircle());
         }
     }
@@ -329,6 +340,8 @@ public class World {
      */
     public void addRandomShelter(String type){
         Shelter s;
+        // Add a shelter determined by the type passed to it
+        // A do while loop of which its terminating condition is that that it was generated in a valid place
         do {
             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
             if (type.equals("AntHill")) {
@@ -351,6 +364,7 @@ public class World {
                 }
             }
         } while(overlapsAnything(s.getImage()));
+        // Add the shelter to the lists
         shelterID++;
         shelterList.add(s);
         shelterGroup.getChildren().add(s.getImage());
@@ -362,6 +376,7 @@ public class World {
      */
     public void addRandomObstacle(){
         Obstacle o;
+        // A do while loop of which its terminating condition is that that it was generated in a valid place
         do {
             o = new Obstacle("Rock", rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y) + 25, rand.nextInt(10) + 10, Color.rgb(150, 150, 150));
         } while(overlapsAnything(o.getImage()));
@@ -376,7 +391,9 @@ public class World {
      * @param size The size of the Water object
      */
     public void addWaterHazard(int x, int y, int size){
+        // Create a WaterHazard in the desired location
         Obstacle o = new Obstacle("WaterHazard", x, y, size, Color.rgb(50, 50, 200));
+        // Add it to the lists
         obstacleList.add(o);
         obstacleGroup.getChildren().add(o.getImage());
     }
@@ -387,48 +404,61 @@ public class World {
      * @return if the Circle passed collides with any other Circle
      */
     public boolean overlapsAnything(Circle c1){
+        // Loop for all animals
         for(Animal animal : animalList){
             if (Collision.overlapsEfficient(c1, animal.getImage())){
                 if (Collision.overlapsAccurate(c1, animal.getImage())) {
+                    // Return  true if a collision was recorded
                     return true;
                 }
             }
         }
+        // Loop for all obstacles
         for(Obstacle obstacle : obstacleList){
             if (Collision.overlapsEfficient(c1, obstacle.getImage())){
                 if (Collision.overlapsAccurate(c1, obstacle.getImage())) {
+                    // Return  true if a collision was recorded
                     return true;
                 }
             }
         }
+        // Loop for all food
         for(Food food : foodList){
             if (Collision.overlapsEfficient(c1, food.getImage())){
                 if (Collision.overlapsAccurate(c1, food.getImage())) {
+                    // Return  true if a collision was recorded
                     return true;
                 }
             }
         }
+        // Loop for all water
         for(Water water : waterList){
             if (Collision.overlapsEfficient(c1, water.getCircle())){
                 if (Collision.overlapsAccurate(c1, water.getCircle())) {
+                    // Return  true if a collision was recorded
                     return true;
                 }
             }
         }
+        // loop for all foodTrees
         for(FoodTree foodTree : foodTreeList){
             if (Collision.overlapsEfficient(c1, foodTree.getTreeTrunk().getImage())){
                 if (Collision.overlapsAccurate(c1, foodTree.getTreeTrunk().getImage())){
+                    // Return  true if a collision was recorded
                     return true;
                 }
             }
         }
+        // Loop for all shelters
         for(Shelter shelter : shelterList){
             if (Collision.overlapsEfficient(c1, shelter.getImage())){
                 if (Collision.overlapsAccurate(c1, shelter.getImage())){
+                    // Return  true if a collision was recorded
                     return true;
                 }
             }
         }
+        // Return false if no collision was made
         return false;
     }
 
@@ -437,10 +467,12 @@ public class World {
      * @param i index of the Animal to kill
      */
     public void killAnimal(int i){
+        // Add a food element with the relevant type in the same location as the Animal
         addFood(getAnimalList().get(i).getSpecies(), (int) (animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
                 (int) (animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
                 (int) (animalList.get(i).getImage().getRadius()));
 
+        // Remove the animal from all lists and groups
         animalGroup.getChildren().remove(i);
         animalSmellGroup.getChildren().remove(i);
         animalTargetGroup.getChildren().remove(i);
@@ -453,14 +485,18 @@ public class World {
      * Update the World, calling the update for all elements within the World
      */
     public void update(){
+        // Update the world clock and update the Animal ages
         updateClock();
         ageAnimals();
 
         // call update for all animals
         for (int i = 0; i < animalList.size(); i++) {
+            // Update each Animal
             animalList.get(i).update();
             for(int j = 0; j < animalList.size(); j++){
+                // Check all animal health to in case a fight has killed an animal
                 if (animalList.get(j).getEnergy() <= 0) {
+                    // Step back in the update ensuring no animal was skipped as the list moves back
                     killAnimal(j);
                     j--;
                     i--;
@@ -488,10 +524,15 @@ public class World {
      * Update and increment the date of the World
      */
     public void updateClock(){
+        // Increment the day length counter
         setDayLengthCounter(getDayLengthCounter() + 1);
+        // If a day has passed
         if (getDayLengthCounter() >= getDayLength()){
+            // Reset the day length counter
             setDayLengthCounter(0);
+            // Increment the day counter
             setDay(getDay() + 1);
+            // if 365 days have passed, increment the year counter
             if (getDay() > 365){
                 setDay(0);
                 setYear(getYear() + 1);
@@ -502,54 +543,50 @@ public class World {
     /**
      * Age all animals solving the new age using the World's current date
      */
-    public void ageAnimals(){
+    public void ageAnimals() {
+        // Call the update to age all animals
         for(Animal animal : getAnimalList()){
             animal.solveAge(getYear(), getDay());
         }
     }
 
     public void toggleSmellCircles(){
+        // Set the visibility of the group to the opposite of the group visibility
         animalSmellGroup.setVisible(!animalSmellGroup.isVisible());
     }
 
     public void toggleTargetSquares(){
+        // Set the visibility of the group to the opposite of the group visibility
         animalTargetGroup.setVisible(!animalTargetGroup.isVisible());
     }
 
     public void toggleStatBars(){
+        // Set the visibility of the group to the opposite of the group visibility
         animalStatsGroup.setVisible(!animalStatsGroup.isVisible());
     }
 
     public void toggleHomeSquares(){
+        // Set the visibility of the group to the opposite of the group visibility
         animalHomeLocationGroup.setVisible(!animalHomeLocationGroup.isVisible());
     }
 
     public void toggleShelterStatBars(){
+        // Set the visibility of the group to the opposite of the group visibility
         shelterStatsGroup.setVisible(!shelterStatsGroup.isVisible());
     }
 
     public void toggleAnimalLabels(){
+        // Set the visibility of the group to the opposite of the group visibility
         animalLabelGroup.setVisible(!animalLabelGroup.isVisible());
     }
 
     public void toggleAnimals(){
+        // Set the visibility of the group to the opposite of the group visibility
         animalGroup.setVisible(!animalGroup.isVisible());
     }
 
     public ArrayList<Animal> getAnimalList(){
         return animalList;
-    }
-    public ArrayList<Food> getFoodList(){
-        return foodList;
-    }
-    public ArrayList<Water> getWaterList(){
-        return waterList;
-    }
-    public ArrayList<Shelter> getShelterList() {
-        return shelterList;
-    }
-    public ArrayList<Obstacle> getObstacleList(){
-        return obstacleList;
     }
 
     public int getYear() {

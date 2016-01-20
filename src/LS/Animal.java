@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
  * classes Ant, Bear, Eagle and Lizard.
  */
 public abstract class Animal {
+    // All constructor parameters
     private Group foodGroupRef, waterGroupRef, animalGroupRef, animalSmellRef, animalStatsRef, animalLabelRef,
             animalTargetRef, animalHomeLocationRef;
     private float size, metabolism, hunger = 0, thirst = 0;
@@ -74,6 +75,7 @@ public abstract class Animal {
                   ArrayList<Shelter> shelterList, Group animalSmellRef, Group animalStatsRef, Group animalLabelRef,
                   Group animalTargetRef, Group animalHomeLocationRef, Configuration configuration){
 
+        // Set all passed attributes to the object
         setSpecies(speciesIn);
         setSymbol(symbolIn);
         setID(IDIn);
@@ -97,7 +99,7 @@ public abstract class Animal {
         setAnimalHomeLocationRef(animalHomeLocationRef);
         setConfiguration(configuration);
 
-        // Create stats bars
+        // Create stats bar and set the colour of each bar
         setStatsBar(new StatsBar(x, y, 3));
         getStatsBar().getBar(0).setFill(Color.rgb(255, 100, 100));
         getStatsBar().getBar(1).setFill(Color.rgb(100, 100, 255));
@@ -142,8 +144,6 @@ public abstract class Animal {
 
         // Set targeting animal default
         setTargetingAnimal(false);
-
-        setFollowMainCoolDown(10000 + new Random().nextInt(5000));
     }
 
     /**
@@ -181,6 +181,7 @@ public abstract class Animal {
      * @param animalTargetRef Animal target group reference, a node of the root node
      * @param animalHomeLocationRef Animal home group reference, a node of the root node
      * @param colour Color variable of the Animals body circle
+     * @param configuration Configuration in which the animal follows hunting and eating rules of
      */
     public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn,
                   char gender, String name, double speed, float metabolism, int strength, int smell, int size,
@@ -224,10 +225,11 @@ public abstract class Animal {
         setAnimalHomeLocationRef(animalHomeLocationRef);
         setConfiguration(configuration);
 
-        // Create smell attributes
+        // Create smell attributes colouring and making slightly transparent
         setSmellCircle(new Circle(x, y, getSmellRange()));
         getSmellCircle().setFill(Color.rgb(0, 100, 100));
         getSmellCircle().setOpacity(0.3);
+        // set the path distance to the radius of the smell Circle
         setPathDistance(getSmellRange());
 
         // Create body attributes
@@ -281,15 +283,15 @@ public abstract class Animal {
 
         // Set targeting animal default
         setTargetingAnimal(false);
-
-        setFollowMainCoolDown(10000 + new Random().nextInt(5000));
     }
 
     /**
      * Adds the Animal to all lists needed to function and be visible within the world
      */
     public void addSelfToLists(){
+        // Add self to animalList
         animalList.add(this);
+        // Link all nodes to the relative roots
         getAnimalGroupRef().getChildren().add(getImage());
         getAnimalSmellRef().getChildren().add(getSmellCircle());
         getAnimalTargetRef().getChildren().add(getTargetLocation());
@@ -302,13 +304,17 @@ public abstract class Animal {
      * Updates the Animal between keyFrames, calling all functions needed to appear to live within the world
      */
     public void update(){
+        // If the animal is in the shelter
         if(isInShelter()){
+            // Cool down the wait at home timer
             setWaitAtHome(getWaitAtHome() - 1);
+            // If the cool down is 0 exit the shelter
             if (getWaitAtHome() <= 0){
                 exitShelter();
             }
         }
         else {
+            // Call functions to allow the Animal to function within the world
             updateText();
             checkHungerThirst();
             target();
@@ -316,6 +322,7 @@ public abstract class Animal {
             move();
             hungerEnergyWaterDecay();
         }
+        // Check the age of the Animal
         ageEvents();
     }
 
@@ -323,15 +330,21 @@ public abstract class Animal {
      * Triggers life events when a specific age (defined by the child class) is reached
      */
     public void ageEvents(){
+        // Check that the age has changed
         if (getLastAge() != getAgeYear()) {
+            // Set the last age of the animal
             setLastAge(getAgeYear());
+            // Check that the animal reaches various stages of life triggering events
             if (getAgeYear() >= getBreedAge()) {
+                // Allow the Animal to breed
                 setShouldBreed(true);
             }
             if (getAgeYear() >= getSpeedChangeAge()) {
+                // Slow the Animal down
                 setSpeed(getOriginalSpeed() * 0.7);
             }
             if (getAgeYear() == getMaxAge()) {
+                // Deteriorate the Animal's maxEnergy
                 setMaxEnergy(getMaxEnergy()/4);
             }
         }
@@ -342,12 +355,14 @@ public abstract class Animal {
      * the chance to consume
      */
     public void checkHungerThirst(){
+        // If the Animal has food
         if (foodInventory.getSize() > 0) {
             // check that eating food wont be wasteful
             if (getHunger() > (double)foodInventory.getElement(0)) {
                 eatFood();
             }
         }
+        // If the Animal has water
         if (waterInventory.getSize() > 0) {
             // check that drinking water wont be wasteful
             if (getThirst() > (double)waterInventory.getElement(0)){
@@ -356,39 +371,39 @@ public abstract class Animal {
         }
     }
 
-
     /**
      * Moves all elements of the Animal relative to the current dx and dy stored only if the next
      * movement will not result in moving into an Obstacle, if dx and dy will lead to a collision with
      * an Obstacle the animal will pick a new target and ignore desired items for a set number of updates
      */
     public void move(){
+        // If the animal will not be colliding with an Obstacle within the next update
         if (checkMove((int)(getImage().getTranslateX() + getImage().getCenterX() + (getDx())),
                 (int)(getImage().getTranslateY() + getImage().getCenterY() + (getDy())))) {
 
-            // body
+            // Move body
             getImage().setTranslateX(getImage().getTranslateX() + getDx());
             getImage().setTranslateY(getImage().getTranslateY() + getDy());
-            // smell
+            // Move smell
             getSmellCircle().setTranslateX(getSmellCircle().getTranslateX() + getDx());
             getSmellCircle().setTranslateY(getSmellCircle().getTranslateY() + getDy());
-            // hunger bar
+            // Move hunger bar
             getStatsBar().getBar(0).setTranslateX(getStatsBar().getBar(0).getTranslateX() + getDx());
             getStatsBar().getBar(0).setTranslateY(getStatsBar().getBar(0).getTranslateY() + getDy());
-            // thirst bar
+            // Move thirst bar
             getStatsBar().getBar(1).setTranslateX(getStatsBar().getBar(1).getTranslateX() + getDx());
             getStatsBar().getBar(1).setTranslateY(getStatsBar().getBar(1).getTranslateY() + getDy());
-            // energy bar
+            // Move energy bar
             getStatsBar().getBar(2).setTranslateX(getStatsBar().getBar(2).getTranslateX() + getDx());
             getStatsBar().getBar(2).setTranslateY(getStatsBar().getBar(2).getTranslateY() + getDy());
-            // back bar
+            // Move back bar
             getStatsBar().getBackBar().setTranslateX(getStatsBar().getBackBar().getTranslateX() + getDx());
             getStatsBar().getBackBar().setTranslateY(getStatsBar().getBackBar().getTranslateY() + getDy());
-            // label
+            // Move label
             getText().setTranslateX(getText().getTranslateX() + getDx());
             getText().setTranslateY(getText().getTranslateY() + getDy());
 
-            // move target indicator
+            // Move target indicator
             getTargetLocation().setTranslateX(getLocalTarget().getCircle().getCenterX() + getLocalTarget().getCircle().getTranslateX());
             getTargetLocation().setTranslateY(getLocalTarget().getCircle().getCenterY() + getLocalTarget().getCircle().getTranslateY());
         } else {
@@ -456,6 +471,7 @@ public abstract class Animal {
             setThirst(0);
         }
 
+        // Adjust the stats bar lengths
         getStatsBar().getBar(0).setWidth(getHunger() * (getStatsBar().getStatBarWidth()/10));
         getStatsBar().getBar(1).setWidth(getThirst() * (getStatsBar().getStatBarWidth()/10));
         getStatsBar().getBar(2).setWidth(getEnergy() * (getStatsBar().getStatBarWidth()/(double)getMaxEnergy()));
@@ -467,6 +483,7 @@ public abstract class Animal {
      * will choose a random target
      */
     public void target(){
+        // Cool down all elements that hinder targeting
         coolDownFood();
         coolDownFollowMain();
         coolDownBreedTimer();
@@ -478,30 +495,38 @@ public abstract class Animal {
                 createLocalTargetDirectedToMain();
             }
         } else {
+            // If there is no main target to follow
             if (!hasLocalTarget()){
                 getRandomLocalTarget();
             }
 
+            // If the Animal is not targeting food and is not targeting an Animal to hunt and the Animal food search
+            // cool down is equals 0 and the Animal has space in the inventory to pick food up
             if ((!isTargetFood() && !isTargetingAnimal()) && getFoodSearchCoolDown() == 0 && foodInventory.getSize() < foodInventory.getCapacity()) {
                 checkFood();
             }
+            // If the Animal is not targeting water and has space to pick up water
             if (!isTargetingWater() && waterInventory.getSize() < waterInventory.getCapacity()){
                 checkWater();
             }
+            // If the Animal does not have a home
             if (homeTarget == null){
                 checkShelters();
             }
+            // If the animal has a home and has inventory items to drop off and relative cool downs are active
             if (homeTarget != null && waterInventory.getSize() == waterInventory.getCapacity()
                     && foodInventory.getSize() == foodInventory.getCapacity() && getFoodSearchCoolDown() == 0
                     && getFollowMainCoolDown() == 0){
                 targetHome();
             }
+            // If the Animal has a home and is set to breed and is allowed to target home
             if (homeTarget != null && isShouldBreed() && getBreedTimer() == 0  && getFoodSearchCoolDown() == 0
                     && getFollowMainCoolDown() == 0){
                 targetHome();
             }
+            // If the Animal has a home and can go home and is thirsty and without water or is hungry and without food
             if (homeTarget != null && getFollowMainCoolDown() == 0){
-                if (waterInventory.getSize() == 0 && getThirst() == 10){
+                if (waterInventory.getSize() == 0 && getThirst() == 10) {
                     targetHome();
                     checkWater();
                 }
@@ -510,6 +535,7 @@ public abstract class Animal {
                     checkFood();
                 }
             }
+            // If the Animal has a local target
             if (hasLocalTarget()){
                 checkCollideLocalTarget();
             }
@@ -520,11 +546,15 @@ public abstract class Animal {
      * Create a localTarget directed towards the mainTarget
      */
     public void createLocalTargetDirectedToMain(){
+        // Define the center X and Y points of the Main Target
         double x = getMainTarget().getCircle().getCenterX() + getMainTarget().getCircle().getTranslateX();
         double y = getMainTarget().getCircle().getCenterY() + getMainTarget().getCircle().getTranslateY();
+        // Define the angle towards the Target coordinates
         double angle = getAngleTo(x, y);
+        // Create a LocalTarget in the direction of the Main Target
         int tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + getPathDistance() * Math.cos(angle));
         int tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + getPathDistance() * Math.sin(angle));
+        // Set the local target and store the last angle used
         setLocalTarget(new Target(tX, tY));
         setLastAngle((int)Math.toDegrees(angle));
     }
@@ -534,9 +564,12 @@ public abstract class Animal {
      * many attempts are made choose a target from all 360 degrees of direction
      */
     public void getRandomLocalTarget(){
+        // Define variables to be used within the function
         Random rand = new Random();
         int randomAttemptTracker = 0;
         int anAngle, tX, tY, path = getPathDistance();
+        // Run a do while loop in which a target will be picked, the terminating condition is that
+        // the target is not in an invalid location.
         do{
             if (randomAttemptTracker < getTurnAngle() * 2){
                 anAngle = rand.nextInt(getTurnAngle() * 2) + getLastAngle() - getTurnAngle();
@@ -546,7 +579,9 @@ public abstract class Animal {
                 anAngle = rand.nextInt(360);
                 path = rand.nextInt(getPathDistance());
             }
+            // convert angle to radians
             double angle = Math.toRadians(anAngle);
+            // Set the new Target x and y
             tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + path * Math.cos(angle));
             tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + path * Math.sin(angle));
         } while(!isValidTarget(tX, tY));
@@ -558,19 +593,23 @@ public abstract class Animal {
      * Get a random target within the smell range circle
      */
     public void getRandomLocalTarget360(){
+        // Define variables to be used within the function
         Random rand = new Random();
         int tX, tY, anAngle;
+        // Run a do while in which the terminating condition is that the Target location is a valid target
         do {
+            // Pick a random angle in degrees
             anAngle = rand.nextInt(360);
+            // Convert to radians
             double angleRad = Math.toRadians(anAngle);
             int path = rand.nextInt(getPathDistance());
+            // Solve the new Target location
             tX = (int) ((getImage().getCenterX() + getImage().getTranslateX()) + path * Math.cos(angleRad));
             tY = (int) ((getImage().getCenterY() + getImage().getTranslateY()) + path * Math.sin(angleRad));
         }while (!isValidTarget(tX, tY));
         setLocalTarget(new Target(tX, tY));
         setLastAngle(anAngle);
     }
-
 
     /**
      * Check if a given set of coordinates are within the screen boundaries
@@ -590,8 +629,10 @@ public abstract class Animal {
      * @return Angle in radians directed towards the target
      */
     public double getAngleTo(double targetX, double targetY){
+        // Get the center points of the Animal
         double thisX = getImage().getCenterX() + getImage().getTranslateX();
         double thisY = getImage().getCenterY() + getImage().getTranslateY();
+        // Return the arc tan of the difference between the points
         return Math.atan2(targetY - thisY, targetX - thisX);
     }
 
@@ -599,9 +640,12 @@ public abstract class Animal {
      * Set dx and dy towards the localTarget
      */
     public void directDxDy(){
+        // Work out the Target x and y center
         double targetX = (getLocalTarget().getCircle().getCenterX() + getLocalTarget().getCircle().getTranslateX());
         double targetY = (getLocalTarget().getCircle().getCenterY() + getLocalTarget().getCircle().getTranslateY());
+        // Get the angle in radians
         double angle = getAngleTo(targetX, targetY);
+        // Set the directions in which the Animal needs to move
         setDx((Math.cos(angle) * getSpeed()));
         setDy((Math.sin(angle) * getSpeed()));
     }
@@ -611,8 +655,10 @@ public abstract class Animal {
      * @return if the Food object is still available for consumption
      */
     public boolean foodIsStillThere(){
+        // loop for all food elements
         for(Food food : getFoodList()){
             if (food.getID() == targetFoodID){
+                // Return true if the target food id was found
                 return true;
             }
         }
@@ -624,9 +670,11 @@ public abstract class Animal {
      * @return if the Animal object is still available for consumption
      */
     public boolean animalStillThere(){
+        // loop through all animals
         for(Animal animal : getAnimalList()){
             if (animal.getID() == targetFoodID){
                 if (Collision.overlapsEfficient(animal.getImage(), getSmellCircle())) {
+                    // return true if the animal was found within the list
                     return true;
                 }
             }
@@ -638,10 +686,13 @@ public abstract class Animal {
      * Fight with the targeted Animal, killing it if this Animal's strength variable is greater
      */
     public void fightAnimal() {
+        // check that the Animal has energy to fight
         if (getEnergy() > 0) {
+            // loop for all Animals
             for (Animal animal : animalList) {
                 if (animal.getID() == getTargetFoodID()){
                     if (animal.getStrength() <= getStrength()) {
+                        // If the animal has a better strength rating kill the other animal
                         animal.setEnergy(-10);
                         return;
                     }
@@ -661,11 +712,13 @@ public abstract class Animal {
                 removeLocalTarget();
             }
         }
+        // check the Animal is still there to collide with
         if (isTargetingAnimal()){
             if (!animalStillThere()){
                 removeLocalTarget();
             }
         }
+        // Check if the Animal is colliding wih its local target
         if (Collision.overlapsEfficient(getImage(), getLocalTarget().getCircle())) {
             if (Collision.overlapsAccurate(getImage(), getLocalTarget().getCircle())) {
                 if (isTargetingAnimal()){
@@ -679,6 +732,7 @@ public abstract class Animal {
                         }
                     }
                 }
+                // Remove the local target once task is completed
                 removeLocalTarget();
             }
         }
@@ -688,6 +742,7 @@ public abstract class Animal {
      * Check if the Animal is colliding with the mainTarget set
      */
     public void checkCollideMainTarget(){
+        // check if the Animal is colliding with its Main target
         if (Collision.overlapsEfficient(getImage(), getMainTarget().getCircle())) {
             if (Collision.overlapsAccurate(getImage(), getMainTarget().getCircle())) {
                 if (isTargetingHome()) {
@@ -705,11 +760,16 @@ public abstract class Animal {
      * to exert energy in chasing and fighting a living Animal
      */
     public void checkFood(){
+        // Check the surrounding area for Animals to target
         for(Animal animal : getAnimalList()) {
+            // check it is in its hunt list
             if (isInHuntList(animal.getSymbol())) {
+                // check the Animal is not itself
                 if (getID() != animal.getID()) {
+                    // check the Animal is within the smell range
                     if (Collision.overlapsEfficient(this.getSmellCircle(), animal.getImage())) {
                         if (Collision.overlapsAccurate(this.getSmellCircle(), animal.getImage())) {
+                            // save the information
                             setTargetingAnimal(true);
                             setTargetFoodID(animal.getID());
                             setLocalTarget(animal.getImage());
@@ -719,10 +779,14 @@ public abstract class Animal {
                 }
             }
         }
+        // Check for food within the surrounding area
         for(Food food : getFoodList()){
+            // check it is in its eat list
             if (isInEatList(food.getType().charAt(0))) {
+                // check if the food is within the smell range
                 if (Collision.overlapsEfficient(this.getSmellCircle(), food.getImage())) {
                     if (Collision.overlapsAccurate(this.getSmellCircle(), food.getImage())) {
+                        // save the information
                         setTargetingFood(true);
                         setTargetingAnimal(false);
                         setTargetFoodID(food.getID());
@@ -733,7 +797,6 @@ public abstract class Animal {
             }
         }
     }
-
 
     /**
      * Checks if an animal is configured to eat a given Food type
@@ -809,6 +872,7 @@ public abstract class Animal {
      * Consume Food from the Animal's inventory and remove the element from the inventory
      */
     public void eatFood(){
+        // give the Animal the relevant value of food stores in its inventory
         setHunger(getHunger() - foodInventory.getElement(0));
         foodInventory.remove(0);
     }
@@ -819,12 +883,14 @@ public abstract class Animal {
      * @param day The current day
      */
     public void solveAge(int year, int day){
+        // Work out the age of the Animal
         int ageDay = day - getDayBorn();
         int ageYear = year - getYearBorn();
         if (ageDay < 0){
             ageDay += 365;
             ageYear -= 1;
         }
+        // set those ages
         setAgeYear(ageYear);
         setAgeDay(ageDay);
     }
@@ -834,27 +900,35 @@ public abstract class Animal {
      * or take some and resize the Food object within the world
      */
     public void storeFood(){
+        // Store food within the Animal inventory
         setTargetingFood(false);
+        // loop for all food
         for(int i = 0; i < getFoodList().size(); i++){
+            // check to test the correct food ID
             if(getTargetFoodID() == getFoodList().get(i).getID()) {
+                // if the food is poison
                 if (getFoodList().get(i).isPoisonous()) {
                     setPoisoned(true);
+                    // Set a timer for poison to take effect
                     setPoisonTime(getFoodList().get(i).getDecay()/2);
                     getFoodGroupRef().getChildren().remove(i);
                     getFoodList().remove(i);
                 } else {
+                    // check the Animal has room to store the food item
                     if (foodInventory.getSlotMax() > getFoodList().get(i).getSize()) {
                         if (foodInventory.add(getFoodList().get(i).getSize())) {
                             getFoodGroupRef().getChildren().remove(i);
                             getFoodList().remove(i);
                         }
                     } else {
+                        // if it does not then take all it can
                         do {
                             if (foodInventory.add(foodInventory.getSlotMax())) {
                                 getFoodList().get(i).getImage().setRadius(getFoodList().get(i).getImage().getRadius() - foodInventory.getSlotMax());
                             }
                         }
                         while (foodInventory.getSize() < foodInventory.getCapacity() && getFoodList().get(i).getImage().getRadius() > -1);
+                        // if the food is too small then just remove it from the world
                         if (getFoodList().get(i).getImage().getRadius() < 1) {
                             getFoodGroupRef().getChildren().remove(i);
                             getFoodList().remove(i);
@@ -870,6 +944,7 @@ public abstract class Animal {
      * Consume Water from the Animal's inventory and remove the element from the inventory
      */
     public void drinkWater(){
+        // drink the water within the inventory
         setThirst(getThirst() - waterInventory.getElement(0));
         waterInventory.remove(0);
     }
@@ -890,13 +965,17 @@ public abstract class Animal {
      * Set a localTarget in at the location of Water if it is seen within the area
      */
     public void checkWater(){
+        // check the local area for water
         for (Water water : getWaterList()){
+            // if a collision is happening between the water and the smell range of the animal
             if (Collision.overlapsEfficient(this.getSmellCircle(), water.getCircle())) {
                 if (Collision.overlapsAccurate(this.getSmellCircle(), water.getCircle())) {
+                    // save that information
                     setTargetingWater(true);
                     setTargetingFood(false);
                     setTargetingAnimal(false);
                     setLocalTarget(water.getCircle());
+                    break;
                 }
             }
         }
@@ -906,6 +985,7 @@ public abstract class Animal {
      * Remove the localTarget and set all target variables to the original state
      */
     public void removeLocalTarget(){
+        // remove the local target of the Animal and remove any target definitions
         setLocalTargetBool(false);
         setTargetingAnimal(false);
         setTargetingFood(false);
@@ -938,10 +1018,12 @@ public abstract class Animal {
         Random rand = new Random();
         setWaitAtHome(100 + rand.nextInt(500));
         setInShelter(true);
+        // make self invisible while within the shelter
         setSelfVisibility(false);
         setTargetingHome(false);
         setFollowMainCoolDown(10000 + new Random().nextInt(5000));
 
+        // loop through all shelter
         for (int i = 0; i < getShelterList().size(); i++) {
             if (getShelterList().get(i).getID() == getHomeID()) {
                 // Check if the opposite sex is in the shelter and is also the correct age
@@ -1015,7 +1097,9 @@ public abstract class Animal {
      * Exit the Animal from the shelter setting its self as visible to the scene and creating a timer to not return
      */
     public void exitShelter(){
+        // remove the wait at home
         setWaitAtHome(0);
+        // set the cool down to follow the main target
         setFollowMainCoolDown(10000 + new Random().nextInt(5000));
         setInShelter(false);
         setSelfVisibility(true);
@@ -1038,7 +1122,9 @@ public abstract class Animal {
      * @return if the animal will not be colliding in the given coordinates
      */
     public boolean checkMove(int posX, int posY){
+        // Cycle through all obstacles
         for(int i = 0; i < getObstacleList().size(); i++){
+            // if there is a collision
             if(getObstacleList().get(i).getX() - (getImage().getRadius() + getObstacleList().get(i).getImage().getRadius()) < posX &&
                     posX < getObstacleList().get(i).getX() + (getImage().getRadius() + getObstacleList().get(i).getImage().getRadius()) &&
                     getObstacleList().get(i).getY() - (getImage().getRadius() + getObstacleList().get(i).getImage().getRadius()) < posY &&
@@ -1052,7 +1138,7 @@ public abstract class Animal {
     }
 
     /**
-     * Update the lable of the Animal
+     * Update the label of the Animal
      */
     public void updateText(){
         getText().setText(statistics());
@@ -1063,13 +1149,16 @@ public abstract class Animal {
      * @param visibility value to set visibility to
      */
     public void setSelfVisibility(boolean visibility){
+        // Set the visibility of the then
         int index = 0;
+        // loop for all animals to find the an index
         for(int i = 0; i < getAnimalList().size(); i++){
             if (getID() == getAnimalList().get(i).getID()){
                 index = i;
                 break;
             }
         }
+        // Set the animals visuals to be invisible or visible
         getAnimalGroupRef().getChildren().get(index).setVisible(visibility);
         getAnimalHomeLocationRef().getChildren().get(index).setVisible(visibility);
         getAnimalSmellRef().getChildren().get(index).setVisible(visibility);
@@ -1083,6 +1172,7 @@ public abstract class Animal {
      * @param animal Animal to have a baby with
      */
     public void createBaby(Animal animal){
+        // work out the averages of both animals to breed
         int x = (int) (getImage().getCenterX() + getImage().getTranslateX()), y = (int) (getImage().getCenterY() + getImage().getTranslateY());
         int smellRange = (getSmellRange() + animal.getSmellRange()) / 2;
         int size = (int)((getSize() + animal.getSize()) / 2);
@@ -1090,18 +1180,19 @@ public abstract class Animal {
         float metabolism = (getMetabolism() + animal.getMetabolism()) / 2;
         int strength = (getStrength() + animal.getStrength()) / 2;
 
-        //int x, int y, char gender, String name, double speed, float metabolism, int strength, int smell, int size
-
+        // create a random gender
         char gender;
         if(new Random().nextInt(2) == 1){
             gender = 'M';
         } else {
             gender = 'F';
         }
+        // add an animal to the world with the specified traits
         getWorldRef().addAnimal(getSpecies(), x, y, gender, getName() + "Jr", speed, metabolism, strength, smellRange, size);
     }
 
     public String statistics(){
+        // Return the String of the statistics
         return ("Name:\t\t\t" + getName() + "\n" +
                 "ID:\t\t\t\t" + getID() + "\n" +
                 "Gender:\t\t\t" + getGender() + "\n" +

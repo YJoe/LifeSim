@@ -21,7 +21,7 @@ public class FoodTree {
 
     /**
      * @param x X coordinate
-     * @param y Y coorcinate
+     * @param y Y coordinate
      * @param foodList World foodList reference so that food can be added to the world
      * @param foodGroup World foodGroup reference so that food can be added visually to the world
      * @param waterList World waterList so that fruit can be ensured not to generate within the pools of water
@@ -57,6 +57,7 @@ public class FoodTree {
      * i.e there is a 1/foodRate chance that a single fruit will spawn per update
      */
     public void update(){
+        // Create food if the random condition is met
         if (rand.nextInt(getFoodRate()) == 1){
             createFood();
         }
@@ -66,13 +67,17 @@ public class FoodTree {
      * Add fruit in a random location within the area of the FoodTree
      */
     public void createFood(){
+        // define the area in which to pick random values
         int xMin = (int)(getLeafCircle().getCenterX() - getLeafCircle().getRadius());
         int yMin = (int)(getLeafCircle().getCenterY() - getLeafCircle().getRadius());
 
+        // define the range in which to pick a random value
         int xRange = (int)(getLeafCircle().getRadius() * 2);
         int yRange = (int)(getLeafCircle().getRadius() * 2);
 
+        // create a food object
         Food f;
+        // run a do while loop in which the terminating condition is a valid food position
         do {
             f = new Food("Fruit", rand.nextInt(xRange) + xMin, rand.nextInt(yRange) + yMin, World.trackFoodID, rand.nextInt(2) + 2, Color.rgb(255, 0, 0));
         } while (   !Collision.overlapsAccurate(f.getImage(), getLeafCircle()) ||
@@ -80,6 +85,7 @@ public class FoodTree {
                     collidesWithWater(f.getImage()) || !isInScreen(f.getImage()) ||
                     isCollidingWithTrunk(f.getImage()));
         World.trackFoodID++;
+        // add food to the correct lists
         getFoodGroup().getChildren().add(f.getImage());
         foodList.add(f);
     }
@@ -90,8 +96,10 @@ public class FoodTree {
      * @return If the Circle collides with any Water obstacle
      */
     public boolean collidesWithWater(Circle c1){
+        // loop for all water
         for(int i = 0; i < waterList.size(); i++){
             if (Collision.overlapsAccurate(c1, waterList.get(i).getCircle())){
+                // return true if the circle collides with any Water object
                 return true;
             }
         }
@@ -104,6 +112,7 @@ public class FoodTree {
      * @return If the Circle is within the screen
      */
     public boolean isInScreen(Circle c1){
+        // return if the circle is within the screen
         return (c1.getCenterX() < Main.SIZE_X && c1.getCenterX() > 0 &&
                 c1.getCenterY() < Main.SIZE_Y && c1.getCenterY() > 25);
     }
@@ -114,9 +123,11 @@ public class FoodTree {
      * @return If the Circle is colliding with any tree trunk
      */
     public boolean isCollidingWithTrunk(Circle c1){
+        // loop for all trees
         for(FoodTree foodTree : treeList){
             if (Collision.overlapsEfficient(c1, foodTree.getTreeTrunk().getImage())){
                 if (Collision.overlapsAccurate(c1, foodTree.getTreeTrunk().getImage())){
+                    // return true if the circle overlaps any trunk
                     return true;
                 }
             }

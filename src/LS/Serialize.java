@@ -15,13 +15,16 @@ public class Serialize {
      * @param fileName Name of the configuration to save under
      */
     public static void serialize(Configuration configuration, String fileName){
+        // Try catch to check that the file saved correctly
         try{
+            // Open the output path
             FileOutputStream fileOut = new FileOutputStream("LifeSim/SavedWorlds/" + fileName + ".ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            // Write the object
             out.writeObject(configuration);
+            // Close the stream
             out.close();
             fileOut.close();
-            System.out.println("World saved");
         }catch(IOException i) {
             i.printStackTrace();
         }
@@ -33,11 +36,16 @@ public class Serialize {
      * @return A Configuration object
      */
     public static Configuration deserialize(File file){
+        // Create a configuration file
         Configuration configuration;
+        // Try and load the file to the Configuration object
         try {
+            // Create the input stream
             FileInputStream fileIn = new FileInputStream(file);
             ObjectInputStream in = new ObjectInputStream(fileIn);
+            // Store the object
             configuration = (Configuration) in.readObject();
+            // Close the input stream
             in.close();
             fileIn.close();
         }

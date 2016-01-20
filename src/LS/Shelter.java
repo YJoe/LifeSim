@@ -28,6 +28,7 @@ public class Shelter {
      * @param colour Colour of the Shelter to create
      */
     public Shelter(String type, int x, int y, int inventorySizeC, int inventorySizeS, int ID, Color colour){
+        // Set all attributes
         setX(x);
         setY(y);
         setType(type);
@@ -51,17 +52,17 @@ public class Shelter {
      * Update the stats bar of the Shelter representing accurately the inventory size
      */
     public void update(){
+        // update the stats bar lengths representing the inventory
         getStatsBar().getBar(0).setWidth(getFoodInventory().getSize() * ((float)getStatsBar().getStatBarWidth() / (float)getFoodInventory().getCapacity()));
         getStatsBar().getBar(1).setWidth(getWaterInventory().getSize() * ((float)getStatsBar().getStatBarWidth() / (float)getWaterInventory().getCapacity()));
 
+        // loop for all sheltered animals and decrement the wait at home time
         for (int i = 0; i < shelteredAnimals.size(); i++){
             shelteredAnimals.get(i).setWaitAtHome(shelteredAnimals.get(i).getWaitAtHome() - 1);
             if (shelteredAnimals.get(i).getWaitAtHome() <= 0){
+                // remove animal from the sheltered list
                 shelteredAnimals.get(i).exitShelter();
                 shelteredAnimals.remove(i);
-                // get the worlds list and add the animal to it
-                // find and set the node to visible
-                // remove the animal from sheltered list
             }
         }
     }

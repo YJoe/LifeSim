@@ -131,9 +131,12 @@ public class Bear extends Animal{
                 shelterList, animalSmellRef, animalStatsRef, animalLabelRef, animalTargetRef, animalHomeLocationRef,
                 configuration, Color.rgb(200, 100, 0));
     }
-
+    /**
+     * Override function for check shelters specific to the Bear
+     */
     @Override
     public void checkShelters(){
+        // loop for all shelters and check if a shelter of the correct type was found
         for(int i = 0; i < getShelterList().size(); i++){
             if(getShelterList().get(i).getType().equals("Cave")) {
                 if (Collision.overlapsEfficient(getSmellCircle(), getShelterList().get(i).getImage())) {

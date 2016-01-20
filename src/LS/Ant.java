@@ -132,8 +132,12 @@ public class Ant extends Animal{
                 configuration, Color.rgb(50, 50, 50));
     }
 
+    /**
+     * Override function for check shelters specific to the Ant
+     */
     @Override
     public void checkShelters(){
+        // loop for all shelters and check if a shelter of the correct type was found
         for(int i = 0; i < getShelterList().size(); i++){
             if(getShelterList().get(i).getType().equals("AntHill")) {
                 if (Collision.overlapsEfficient(getSmellCircle(), getShelterList().get(i).getImage())) {

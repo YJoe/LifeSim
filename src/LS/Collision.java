@@ -15,11 +15,15 @@ public class Collision {
      * @return If the two Circles are overlapping
      */
     public static boolean overlapsAccurate(Circle c1, Circle c2){
+        // Find the center points of both circles
         int x1pos = (int) (c1.getCenterX() + c1.getTranslateX()), y1pos = (int) (c1.getCenterY() + c1.getTranslateY());
         int x2pos = (int) (c2.getCenterX() + c2.getTranslateX()), y2pos = (int) (c2.getCenterY() + c2.getTranslateY());
 
+        // (x2-x1)^2
         double a = Math.pow(x1pos - x2pos, 2);
+        // (y1-y2)^2
         double b = Math.pow(y1pos - y2pos, 2);
+        // (r1+r2)^2
         double c = Math.pow(c1.getRadius() + c2.getRadius(), 2);
 
         // (x2-x1)^2 + (y1-y2)^2 <= (r1+r2)^2
@@ -33,8 +37,10 @@ public class Collision {
      * @return If the two Circles are overlapping
      */
     public static boolean overlapsEfficient(Circle c1, Circle c2){
+        // Find the center points of both circles
         int x1 = (int) (c1.getCenterX() + c1.getTranslateX()), y1 = (int) (c1.getCenterY() + c1.getTranslateY());
         int x2 = (int) (c2.getCenterX() + c2.getTranslateX()), y2 = (int) (c2.getCenterY() + c2.getTranslateY());
+        // find the radius of both circles
         int r1 = (int) c1.getRadius();
         int r2 = (int) c2.getRadius();
 

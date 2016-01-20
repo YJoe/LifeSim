@@ -128,8 +128,12 @@ public class Eagle extends Animal{
                 configuration, Color.rgb(200, 200, 200));
     }
 
+    /**
+     * Override function for check shelters specific to the Eagle
+     */
     @Override
     public void checkShelters(){
+        // loop for all shelters and check if a shelter of the correct type was found
         for(int i = 0; i < getShelterList().size(); i++){
             if(getShelterList().get(i).getType().equals("Nest")) {
                 if (Collision.overlapsEfficient(getSmellCircle(), getShelterList().get(i).getImage())) {
