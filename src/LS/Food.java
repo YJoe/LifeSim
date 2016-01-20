@@ -2,9 +2,12 @@ package LS;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-
 import java.util.Random;
 
+/**
+ * Food provides a generic class in which to create various Food types such as Fruits and Meats.
+ * Food objects need to be updated on every circle
+ */
 public class Food {
     private int x;
     private int y;
@@ -17,6 +20,14 @@ public class Food {
     private boolean poisonous;
     private Circle image;
 
+    /**
+     * @param type The type identifier to assign to the Food object
+     * @param xIn X coordinate
+     * @param yIn Y coordinate
+     * @param id Unique ID
+     * @param size Size of Food object
+     * @param colour Colour of Food object
+     */
     public Food(String type, int xIn, int yIn, int id, int size, Color colour){
         setX(xIn);
         setY(yIn);
@@ -30,7 +41,10 @@ public class Food {
         setSize(size);
         setPoisonous(false);
     }
-    
+
+    /**
+     * Update the Food's decay, slowly becoming poison after time
+     */
     public void update(){
         if (!isPoisonous()) {
             if (getDecay() > getDecayMax()) {

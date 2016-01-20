@@ -1,7 +1,5 @@
 package LS;
 
-
-
 import java.util.ArrayList;
 import java.util.Random;
 import javafx.scene.Group;

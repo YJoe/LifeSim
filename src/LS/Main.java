@@ -10,20 +10,32 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * Main extends javafx.application.Application providing the Graphical User Interface (GUI) for the LifeSimulator application
+ * Main consists of a static main function and an override of javafx.application.Application's start function
+ */
 public class Main extends Application {
     public static int SIZE_X = 1000, SIZE_Y = 600;
 
+    /**
+     * The main function launching the arguments passed
+     * @param args arguments to pass on to the launch function
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * Creating the GUI through creating a root Group from which all nodes will link the Scene is set and is
+     * passed to the parameter primaryStage
+     * @param primaryStage the primaryStage in which the GUI will be visible
+     */
     @Override
     public void start(Stage primaryStage) {
         // Create root group

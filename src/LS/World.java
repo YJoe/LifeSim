@@ -2,15 +2,14 @@ package LS;
 
 import java.util.Random;
 import javafx.scene.Group;
-import javafx.scene.control.TreeTableCell;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-
 import java.util.ArrayList;
 
+/**
+ * World provides a container in which various entities interact with one another and holds functions
+ * to generate Animals, Water, Food and Obstacles
+ */
 public class World {
     private Random rand = new Random();
     private Configuration configuration;
@@ -37,7 +36,11 @@ public class World {
     private Group foodTreeLeafGroup = new Group();
     private Group foodTreeTrunkGroup = new Group();
 
-    // set up the world
+    /**
+     * Generation of the World object form a given Configuration
+     * @param root The root node in which all other nodes should be added to
+     * @param configuration The variable set that will define the properties of the World
+     */
     public World(Group root, Configuration configuration){
         trackAnimalID = 0;
         trackFoodID = 0;
@@ -112,7 +115,10 @@ public class World {
         }
     }
 
-    // add to the world
+    /**
+     * Add an animal in a random position within the world
+     * @param type the type of Animal wanted i.e. "Ant" or "Lizard"
+     */
     public void addRandomAnimal(String type){
         Animal a;
         if (type.equals("Ant")) {
@@ -157,6 +163,20 @@ public class World {
         trackAnimalID++;
     }
 
+    /**
+     * Add an animal with a given set of attributes
+     * @param type The type of animal wanted i.e. "Ant" or "Lizard"
+     * @param x X coordinate
+     * @param y y Coordinate
+     * @param gender Gender of the Animal
+     * @param name Name fo the Animal
+     * @param speed Speed at which the Animal can move
+     * @param metabolism The rate at which hunger and thirst will grow
+     * @param strength Strength of the Animal used to determine the winner of fights and size of an
+     *                 Animal's inventory space
+     * @param smell The range at which the Animal can perceive its world
+     * @param size Body size of the Animal
+     */
     public void addAnimal(String type, int x, int y, char gender, String name, double speed, float metabolism, int strength, int smell, int size){
         Animal a = null;
         if (type.equals("Ant")){
@@ -190,6 +210,9 @@ public class World {
         a.addSelfToLists();
     }
 
+    /**
+     * Add a Food object of type "Meat" in a random location within the world
+     */
     public void addRandomFood(){
         Food f;
         do {
@@ -201,6 +224,13 @@ public class World {
         trackFoodID++;
     }
 
+    /**
+     * Add a specific type of Food to the World with specific coordinates and size
+     * @param type The type of food to be created i.e. "Fruit", "Ant"
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param size Size of the food object
+     */
     public void addFood(String type, int x, int y, int size){
         Food f;
         if (type.equals("Ant")){
@@ -226,6 +256,9 @@ public class World {
         trackFoodID++;
     }
 
+    /**
+     * Add a food generating tree in a random location within the World
+     */
     public void addRandomFoodTree(){
         int x, y;
         FoodTree f;
@@ -240,6 +273,9 @@ public class World {
         foodTreeTrunkGroup.getChildren().add(f.getTreeTrunk().getImage());
     }
 
+    /**
+     * Add a pool(A collection of Water objects) at a random location within the world
+     */
     public void addRandomPool(){
         int waterCount = rand.nextInt(5) + 2;
         // add one water to base other water positions on
@@ -287,6 +323,10 @@ public class World {
         }
     }
 
+    /**
+     * Add a Shelter at a random location within the World
+     * @param type The type of Shelter to be created i.e. "AntHill" or "Nest"
+     */
     public void addRandomShelter(String type){
         Shelter s;
         do {
@@ -317,6 +357,9 @@ public class World {
         shelterStatsGroup.getChildren().add(s.getStatsBar().getGroup());
     }
 
+    /**
+     * Add an Obstacle in a random location within the World
+     */
     public void addRandomObstacle(){
         Obstacle o;
         do {
@@ -326,12 +369,23 @@ public class World {
         obstacleGroup.getChildren().add(o.getImage());
     }
 
+    /**
+     * Add a Water object at a specified location within the World
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param size The size of the Water object
+     */
     public void addWaterHazard(int x, int y, int size){
         Obstacle o = new Obstacle("WaterHazard", x, y, size, Color.rgb(50, 50, 200));
         obstacleList.add(o);
         obstacleGroup.getChildren().add(o.getImage());
     }
 
+    /**
+     * Check if a Circle overlaps any other Circles within the World
+     * @param c1 The Circle to test
+     * @return if the Circle passed collides with any other Circle
+     */
     public boolean overlapsAnything(Circle c1){
         for(Animal animal : animalList){
             if (Collision.overlapsEfficient(c1, animal.getImage())){
@@ -378,7 +432,10 @@ public class World {
         return false;
     }
 
-    // remove from the world
+    /**
+     * Kill a specified Animal and remove it from the World, creating a food of the same type in its place
+     * @param i index of the Animal to kill
+     */
     public void killAnimal(int i){
         addFood(getAnimalList().get(i).getSpecies(), (int) (animalList.get(i).getImage().getCenterX() + animalList.get(i).getImage().getTranslateX()),
                 (int) (animalList.get(i).getImage().getCenterY() + animalList.get(i).getImage().getTranslateY()),
@@ -392,24 +449,9 @@ public class World {
         animalList.remove(i);
     }
 
-    // get lists
-    public ArrayList<Animal> getAnimalList(){
-        return animalList;
-    }
-    public ArrayList<Food> getFoodList(){
-        return foodList;
-    }
-    public ArrayList<Water> getWaterList(){
-        return waterList;
-    }
-    public ArrayList<Shelter> getShelterList() {
-        return shelterList;
-    }
-    public ArrayList<Obstacle> getObstacleList(){
-        return obstacleList;
-    }
-
-    // run world
+    /**
+     * Update the World, calling the update for all elements within the World
+     */
     public void update(){
         updateClock();
         ageAnimals();
@@ -442,6 +484,9 @@ public class World {
         }
     }
 
+    /**
+     * Update and increment the date of the World
+     */
     public void updateClock(){
         setDayLengthCounter(getDayLengthCounter() + 1);
         if (getDayLengthCounter() >= getDayLength()){
@@ -454,13 +499,15 @@ public class World {
         }
     }
 
+    /**
+     * Age all animals solving the new age using the World's current date
+     */
     public void ageAnimals(){
         for(Animal animal : getAnimalList()){
             animal.solveAge(getYear(), getDay());
         }
     }
 
-    // display features
     public void toggleSmellCircles(){
         animalSmellGroup.setVisible(!animalSmellGroup.isVisible());
     }
@@ -487,6 +534,22 @@ public class World {
 
     public void toggleAnimals(){
         animalGroup.setVisible(!animalGroup.isVisible());
+    }
+
+    public ArrayList<Animal> getAnimalList(){
+        return animalList;
+    }
+    public ArrayList<Food> getFoodList(){
+        return foodList;
+    }
+    public ArrayList<Water> getWaterList(){
+        return waterList;
+    }
+    public ArrayList<Shelter> getShelterList() {
+        return shelterList;
+    }
+    public ArrayList<Obstacle> getObstacleList(){
+        return obstacleList;
     }
 
     public int getYear() {

@@ -3,6 +3,10 @@ package LS;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Configuration implements java.io.serializable as it is used within the construction of
+ * World objects and needs to be saved and loaded by the user
+ */
 public class Configuration implements Serializable{
     private int ants;
     private int lizards;
@@ -19,6 +23,22 @@ public class Configuration implements Serializable{
     private ArrayList<ArrayList<Boolean>> eatList = new ArrayList<>();
     private ArrayList<ArrayList<Boolean>> huntList = new ArrayList<>();
 
+    /**
+     * @param ants Amount of Ants to create when constructing a World
+     * @param lizards Amount of Lizards to create when constructing a World
+     * @param bears Amount of Bears to create when constructing a World
+     * @param eagles Amount of Eagles to create when constructing a World
+     * @param antHillCount Amount of AntHills to create when constructing a World
+     * @param rockShelterCount Amount of RockShelters to create when constructing a World
+     * @param caves Amount of Caves to create when constructing a World
+     * @param nests Amount of Nests to create when constructing a World
+     * @param foodCount Amount of Food to create when constructing a World
+     * @param foodTrees Amount of FoodTrees to create when constructing a World
+     * @param obstacleCount Amount of Obstacles to create when constructing a World
+     * @param poolCount Amount of Pools of Water to create when constructing a World
+     * @param eatList multidimensional list holding the eating rules for Animals to follow
+     * @param huntList multidimensional list holding the hunting rules for Animals to follow
+     */
     public Configuration(int ants, int lizards, int bears, int eagles,
                          int antHillCount, int rockShelterCount, int caves, int nests,
                          int foodCount, int foodTrees, int obstacleCount,  int poolCount,
