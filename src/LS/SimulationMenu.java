@@ -19,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -102,7 +103,6 @@ public class SimulationMenu {
         getRoot().getChildren().add(getBackBar());
         getRoot().getChildren().add(getDate());
 
-
         // File
         javafx.scene.control.Menu file = new javafx.scene.control.Menu("File");
         MenuItem fileNewConfig = new MenuItem("New Configuration");
@@ -150,10 +150,10 @@ public class SimulationMenu {
         MenuItem removeLifeForm = new MenuItem("Remove Life Form");
         MenuItem addLifeForm = new MenuItem("Add Life Form");
         MenuItem editConfig = new MenuItem("Edit Configuration");
+        edit.getItems().add(editConfig);
+        edit.getItems().add(addLifeForm);
         edit.getItems().add(modifyLifeForm);
         edit.getItems().add(removeLifeForm);
-        edit.getItems().add(addLifeForm);
-        edit.getItems().add(editConfig);
         modifyLifeForm.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
@@ -199,8 +199,8 @@ public class SimulationMenu {
         MenuItem displayConfig = new MenuItem("Display Configuration");
         MenuItem displayLifeForms = new MenuItem("Display Life Form Stats");
         MenuItem displayMapInfo = new MenuItem("Display Map Stats");
-        view.getItems().add(displayConfig);
         view.getItems().add(displayLifeForms);
+        view.getItems().add(displayConfig);
         view.getItems().add(displayMapInfo);
         displayConfig.setOnAction(new EventHandler<ActionEvent>(){
             @Override
@@ -247,20 +247,10 @@ public class SimulationMenu {
 
         // Simulate
         javafx.scene.control.Menu simulate = new javafx.scene.control.Menu("Simulate");
-        MenuItem run = new MenuItem("Run");
         MenuItem pausePlay = new MenuItem("Pause/Play");
         MenuItem restart = new MenuItem("Restart");
-        MenuItem toggleMap = new MenuItem("Toggle Map");
-        simulate.getItems().add(run);
         simulate.getItems().add(pausePlay);
         simulate.getItems().add(restart);
-        simulate.getItems().add(toggleMap);
-        run.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent arg0) {
-                System.out.println("was clicked");
-            }
-        });
         pausePlay.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
@@ -273,10 +263,124 @@ public class SimulationMenu {
                 System.out.println("was  clicked");
             }
         });
-        toggleMap.setOnAction(new EventHandler<ActionEvent>(){
+
+        // Help
+        Menu help = new Menu("Help");
+        MenuItem key = new MenuItem("Key");
+        MenuItem info = new MenuItem("Info");
+        help.getItems().add(key);
+        help.getItems().add(info);
+        key.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent arg0) {
-                System.out.println("was clicked");
+            public void handle(ActionEvent event) {
+                // Create a stage and grid pane
+                Stage stage = new Stage();
+                Group root = new Group();
+
+                // define the heading
+                Text head = new Text("\nKey");
+                head.setFont(Font.font("Verdana", 20));
+                head.setTranslateX(10);
+                head.setTranslateY(10);
+                root.getChildren().add(head);
+
+                Text antText = new Text("Ant");
+                Text lizardText = new Text("Lizard");
+                Text eagleText = new Text("Eagle");
+                Text bearText = new Text("Bear");
+                antText.setTranslateX(50);lizardText.setTranslateX(50);eagleText.setTranslateX(50);bearText.setTranslateX(50);
+                antText.setTranslateY(55);lizardText.setTranslateY(105);eagleText.setTranslateY(155);bearText.setTranslateY(205);
+
+                Text rockText = new Text("Rock");
+                Text treeText = new Text("Tree");
+                Text waterText = new Text("Water");
+                Text antHillText = new Text("AntHill");
+                Text lizardRockText = new Text("RockShelter");
+                Text eagleNestText = new Text("Nest");
+                Text bearCaveText = new Text("Cave");
+
+                rockText.setTranslateX(50); treeText.setTranslateX(50); waterText.setTranslateX(50); antHillText.setTranslateX(250);
+                lizardRockText.setTranslateX(250); eagleNestText.setTranslateX(250); bearCaveText.setTranslateX(250);
+
+                rockText.setTranslateY(255); treeText.setTranslateY(305); waterText.setTranslateY(405); antHillText.setTranslateY(55);
+                lizardRockText.setTranslateY(105); eagleNestText.setTranslateY(155); bearCaveText.setTranslateY(205);
+
+                root.getChildren().addAll(rockText, treeText, waterText, antHillText, lizardRockText, eagleNestText, bearCaveText);
+
+                // Animal images
+                root.getChildren().addAll(antText, lizardText, eagleText, bearText);
+                Circle antImage = new Circle(200, 50, 2); antImage.setFill(Color.rgb(50, 50, 50));
+                Circle lizardImage = new Circle(200, 100, 5); lizardImage.setFill(Color.rgb(0, 150, 40));
+                Circle eagleImage = new Circle(200, 150, 9); eagleImage.setFill(Color.rgb(200, 200, 200));
+                Circle bearImage = new Circle(200, 200, 25); bearImage.setFill(Color.rgb(200, 100, 0));
+                root.getChildren().addAll(antImage, lizardImage, eagleImage, bearImage);
+
+                // World images
+                Circle rockImage = new Circle(200, 250, 10); rockImage.setFill(Color.rgb(150, 150, 150));
+                Circle treeBarkImage = new Circle(200, 300, 5); treeBarkImage.setFill(Color.rgb(100, 70, 30));
+                Circle treeLeafImage = new Circle(200, 300, 40); treeLeafImage.setFill(Color.rgb(0, 200, 0)); treeLeafImage.setOpacity(0.15);
+                Circle waterOuter = new Circle(200, 400, 50); waterOuter.setFill(Color.rgb(120, 120, 255));
+                Circle waterInner = new Circle(200, 400, 40); waterInner.setFill(Color.rgb(50, 50, 200));
+                root.getChildren().addAll(rockImage, treeBarkImage, treeLeafImage, waterOuter, waterInner);
+
+                // Shelter images
+                Circle antHillImage = new Circle(400, 55 , 20); antHillImage.setFill(Color.rgb(220, 200, 160));
+                Circle lizardRockImage = new Circle(400, 105, 20); lizardRockImage.setFill(Color.rgb(100, 100, 100));
+                Circle bearCaveImage = new Circle(400, 155, 20); bearCaveImage.setFill(Color.rgb(150, 150, 170));
+                Circle eagleNestImage = new Circle(400, 205, 20); eagleNestImage.setFill(Color.rgb(130, 100, 60));
+                root.getChildren().addAll(antHillImage, lizardRockImage, eagleNestImage, bearCaveImage);
+
+                // define the dismissing button
+                Button okay = new Button("Close");
+
+                okay.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        stage.close();
+                    }
+                });
+
+                // add the grid to the scene
+                Scene scene = new Scene(root, 500, 500);
+                stage.setScene(scene);
+                stage.showAndWait();
+            }
+        });
+        info.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // Create a stage and grid pane
+                Stage stage = new Stage();
+                GridPane grid = new GridPane();
+                grid.setAlignment(Pos.CENTER);
+                grid.setHgap(5);
+                grid.setVgap(5);
+                grid.setPadding(new Insets(5, 5, 5, 5));
+
+                // define the heading
+                Text head = new Text("Info");
+                head.setFont(Font.font("Verdana", 20));
+                grid.add(head, 0, 0);
+
+                // define the text
+                Text text = new Text("LifeSim\nCreated by Joe Pauley\nGitHub: YJoe\nRepository: https://github.com/YJoe/LifeSim.git");
+                text.setFont(Font.font("Verdana", 10));
+                grid.add(text, 0, 1, 2, 5);
+
+                // define the dismissing button
+                Button okay = new Button("Close");
+                grid.add(okay, 3, 6);
+                okay.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        stage.close();
+                    }
+                });
+
+                // add the grid to the scene
+                Scene scene = new Scene(grid, 350, 150);
+                stage.setScene(scene);
+                stage.showAndWait();
             }
         });
 
@@ -284,8 +388,9 @@ public class SimulationMenu {
         menuBar.getMenus().add(file);
         menuBar.getMenus().add(edit);
         menuBar.getMenus().add(view);
-        menuBar.getMenus().add(graph);
         menuBar.getMenus().add(simulate);
+        menuBar.getMenus().add(graph);
+        menuBar.getMenus().add(help);
 
         // Add the buttons to the button group
         getButtonGroup().getChildren().add(getPlay());

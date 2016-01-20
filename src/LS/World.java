@@ -348,7 +348,7 @@ public class World {
                 s = new Shelter(type, x, y, 200, 10, shelterID, Color.rgb(220, 200, 160));
             } else {
                 if (type.equals("RockShelter")) {
-                    s = new Shelter(type, x, y, 200, 10, shelterID, Color.rgb(100, 100, 10));
+                    s = new Shelter(type, x, y, 200, 10, shelterID, Color.rgb(100, 100, 100));
                 } else {
                     if (type.equals("Cave")) {
                         s = new Shelter(type, x, y, 200, 10, shelterID, Color.rgb(150, 150, 170));
