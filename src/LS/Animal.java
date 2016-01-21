@@ -807,6 +807,10 @@ public abstract class Animal {
         int indexX;
         int indexY;
 
+        if (type == 'M'){
+            return true;
+        }
+
         // Get index of animal to test
         if (type == 'A')
             indexX = 0;

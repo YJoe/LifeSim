@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class World {
     private Random rand = new Random();
     private Configuration configuration;
-    private int year, day, dayLength, dayLengthCounter;
-    public static int trackFoodID = 0, trackAnimalID = 0;
+    private int year, day, dayLength, dayLengthCounter, trackAnimalID = 0;
+    public static int trackFoodID = 0;
     private int shelterID = 0;
     private ArrayList<Animal> animalList = new ArrayList<>();
     private ArrayList<FoodTree> foodTreeList = new ArrayList<>();
@@ -204,6 +204,7 @@ public class World {
                 }
             }
         }
+        trackAnimalID++;
         a.addSelfToLists();
     }
 
