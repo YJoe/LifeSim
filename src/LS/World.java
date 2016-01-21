@@ -550,85 +550,142 @@ public class World {
         }
     }
 
+    /**
+     * Toggle the SmellCircle Group visibility
+     */
     public void toggleSmellCircles(){
         // Set the visibility of the group to the opposite of the group visibility
         animalSmellGroup.setVisible(!animalSmellGroup.isVisible());
     }
 
+    /**
+     * Toggle the TargetSquare Group visibility
+     */
     public void toggleTargetSquares(){
         // Set the visibility of the group to the opposite of the group visibility
         animalTargetGroup.setVisible(!animalTargetGroup.isVisible());
     }
 
+    /**
+     * Toggle the AnimalStatsBar Group visibility
+     */
     public void toggleStatBars(){
         // Set the visibility of the group to the opposite of the group visibility
         animalStatsGroup.setVisible(!animalStatsGroup.isVisible());
     }
 
+    /**
+     * Toggle the HomeSquare Group visibility
+     */
     public void toggleHomeSquares(){
         // Set the visibility of the group to the opposite of the group visibility
         animalHomeLocationGroup.setVisible(!animalHomeLocationGroup.isVisible());
     }
 
+    /**
+     * Toggle the ShelterStatsBar Group visibility
+     */
     public void toggleShelterStatBars(){
         // Set the visibility of the group to the opposite of the group visibility
         shelterStatsGroup.setVisible(!shelterStatsGroup.isVisible());
     }
 
+    /**
+     * Toggle the AnimalLabel Group visibility
+     */
     public void toggleAnimalLabels(){
         // Set the visibility of the group to the opposite of the group visibility
         animalLabelGroup.setVisible(!animalLabelGroup.isVisible());
     }
 
+    /**
+     * Toggle the Animal Group visibility
+     */
     public void toggleAnimals(){
         // Set the visibility of the group to the opposite of the group visibility
         animalGroup.setVisible(!animalGroup.isVisible());
     }
 
+    /**
+     * @return Animal list reference
+     */
     public ArrayList<Animal> getAnimalList(){
         return animalList;
     }
 
+    /**
+     * @return Year of the World clock
+     */
     public int getYear() {
         return year;
     }
 
+    /**
+     * @param year Year of the World clock
+     */
     public void setYear(int year) {
         this.year = year;
     }
 
+    /**
+     * @return Day of the World clock
+     */
     public int getDay() {
         return day;
     }
 
+    /**
+     * @param day Day of the World clock
+     */
     public void setDay(int day) {
         this.day = day;
     }
 
+    /**
+     * @return Length in updates of the day length
+     */
     public int getDayLength() {
         return dayLength;
     }
 
+    /**
+     * @param dayLength Length in updates of the day length
+     */
     public void setDayLength(int dayLength) {
         this.dayLength = dayLength;
     }
 
+    /**
+     * @return Counter holding the current update between zero and the DayLength
+     */
     public int getDayLengthCounter() {
         return dayLengthCounter;
     }
 
+    /**
+     * @param dayLengthCounter Counter holing current update between zero and the DayLength
+     */
     public void setDayLengthCounter(int dayLengthCounter) {
         this.dayLengthCounter = dayLengthCounter;
     }
 
+    /**
+     * @return World clock date as a String
+     */
     public String getDateString(){
         return ("Y" + getYear() + " D" + getDay());
     }
 
+    /**
+     * @return Configuration rules of the World
+     */
     public Configuration getConfiguration() {
         return configuration;
     }
 
+    /**
+     * @param configuration Configuration rules of the World
+     */
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }

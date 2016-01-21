@@ -135,46 +135,80 @@ public class FoodTree {
         return false;
     }
 
+    /**
+     * @return Circle node of the Tree canopy
+     */
     public Circle getLeafCircle() {
         return leafCircle;
     }
 
+    /**
+     * @param leafCircle Circle node of the Tree canopy
+     */
     public void setLeafCircle(Circle leafCircle) {
         this.leafCircle = leafCircle;
     }
 
+    /**
+     * @param foodList FoodList reference
+     */
     public void setFoodList(ArrayList<Food> foodList) {
         this.foodList = foodList;
     }
 
+    /**
+     * @return Food Group reference
+     */
     public Group getFoodGroup() {
         return foodGroup;
     }
 
+    /**
+     * @param foodGroup Food Group node reference
+     */
     public void setFoodGroup(Group foodGroup) {
         this.foodGroup = foodGroup;
     }
 
+    /**
+     * @return probability a food object will be generated
+     */
     public int getFoodRate() {
         return foodRate;
     }
 
+    /**
+     * @param foodRate Determines the probability of food being generated i.e. there is a 1/foodRate chance
+     *                 of food being generated on each update
+     */
     public void setFoodRate(int foodRate) {
         this.foodRate = foodRate;
     }
 
+    /**
+     * @param waterList WaterList reference
+     */
     public void setWaterList(ArrayList<Water> waterList) {
         this.waterList = waterList;
     }
 
+    /**
+     * @return TreeTrunk Obstacle
+     */
     public Obstacle getTreeTrunk() {
         return treeTrunk;
     }
 
+    /**
+     * @param treeTrunk TreeTrunk Obstacle
+     */
     public void setTreeTrunk(Obstacle treeTrunk) {
         this.treeTrunk = treeTrunk;
     }
 
+    /**
+     * @param treeList TreeList reference
+     */
     public void setTreeList(ArrayList<FoodTree> treeList) {
         this.treeList = treeList;
     }

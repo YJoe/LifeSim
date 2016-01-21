@@ -67,64 +67,114 @@ public class Shelter {
         }
     }
 
-    // Getters and setters
+    /**
+     * @return X coordinate
+     */
     public int getX(){
         return x;
     }
+
+    /**
+     * @param x X coordinate
+     */
     public void setX(int x){
         this.x = x;
     }
 
+    /**
+     * @return Y coordinate
+     */
     public int getY(){
         return y;
     }
+
+    /**
+     * @param y Y coordinate
+     */
     public void setY(int y){
         this.y = y;
     }
 
+    /**
+     * @return Circle node to visualise the Shelter
+     */
     public Circle getImage(){
         return image;
     }
+
+    /**
+     * @param image Circle node to visualise the Shelter
+     */
     public void setImage(Circle image){
         this.image = image;
     }
 
+    /**
+     * @return Food inventory storing the Animal's Food
+     */
     public Inventory getFoodInventory() {
         return foodInventory;
     }
 
+    /**
+     * @param foodInventory Food inventory
+     */
     public void setFoodInventory(Inventory foodInventory) {
         this.foodInventory = foodInventory;
     }
 
+    /**
+     * @return Water inventory storing the Animal's Water
+     */
     public Inventory getWaterInventory() {
         return waterInventory;
     }
 
+    /**
+     * @param waterInventory Water inventory
+     */
     public void setWaterInventory(Inventory waterInventory) {
         this.waterInventory = waterInventory;
     }
 
+    /**
+     * @return Shelter StatsBar
+     */
     public StatsBar getStatsBar() {
         return statsBar;
     }
 
+    /**
+     * @param statsBar Shelter StatsBar
+     */
     public void setStatsBar(StatsBar statsBar) {
         this.statsBar = statsBar;
     }
 
+    /**
+     * @return Unique ID
+     */
     public int getID() {
         return ID;
     }
 
+    /**
+     * @param ID unique ID
+     */
     public void setID(int ID) {
         this.ID = ID;
     }
 
+    /**
+     * @return Shelter type
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * @param type Shelter type
+     */
     public void setType(String type) {
         this.type = type;
     }

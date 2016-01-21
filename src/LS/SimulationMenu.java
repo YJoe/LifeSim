@@ -1634,86 +1634,149 @@ public class SimulationMenu {
         getRoot().getChildren().add(getButtonGroup());
     }
 
+    /**
+     * @return MenuBar node
+     */
     public MenuBar getMenuBar() {
         return menuBar;
     }
 
+    /**
+     * @return MenuBar node
+     */
     public World getCurrentWorld() {
         return currentWorld;
     }
 
+    /**
+     * @param currentWorld Active World
+     */
     public void setCurrentWorld(World currentWorld) {
         this.currentWorld = currentWorld;
     }
 
+    /**
+     * @return Loaded configuration
+     */
     public Configuration getConfiguration() {
         return configuration;
     }
 
+    /**
+     * @param configuration Loaded configuration
+     */
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 
+    /**
+     * @param root Root node reference
+     */
     public void setRoot(Group root) {
         this.root = root;
     }
 
+    /**
+     * @return Root node reference
+     */
     public Group getRoot(){
         return root;
     }
 
+    /**
+     * Toggle the paused variable
+     */
     public void togglePaused(){
         isPaused = !isPaused;
     }
 
+    /**
+     * @param isPaused If the World should run
+     */
     public void setPaused(boolean isPaused){
         this.isPaused = isPaused;
     }
 
+    /**
+     * @return If the World should run
+     */
     public boolean isPaused(){
         return isPaused;
     }
 
+    /**
+     * @return Reset Button
+     */
     public Button getReset() {
         return reset;
     }
 
+    /**
+     * @param reset Reset Button
+     */
     public void setReset(Button reset) {
         this.reset = reset;
     }
 
+    /**
+     * @return View Button
+     */
     public Button getView() {
         return view;
     }
 
+    /**
+     * @param view View Button
+     */
     public void setView(Button view) {
         this.view = view;
     }
 
+    /**
+     * @return Play/Pause Button
+     */
     public Button getPlay() {
         return play;
     }
 
+    /**
+     * @param play Play/Pause Button
+     */
     public void setPlay(Button play) {
         this.play = play;
     }
 
+    /**
+     * @return Group holding Button nodes
+     */
     public Group getButtonGroup() {
         return buttonGroup;
     }
 
+    /**
+     * @return Date node
+     */
     public Text getDate() {
         return date;
     }
 
+    /**
+     * @param date Date node
+     */
     public void setDate(Text date) {
         this.date = date;
     }
 
+    /**
+     * @return Back bar in which buttons are displayed
+     */
     public Rectangle getBackBar() {
         return backBar;
     }
 
+    /**
+     * @param backBar Back bar
+     */
     public void setBackBar(Rectangle backBar) {
         this.backBar = backBar;
     }

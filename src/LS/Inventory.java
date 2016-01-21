@@ -73,14 +73,23 @@ public class Inventory{
         return array[index];
     }
 
+    /**
+     * @return Maximum element size that can fit within the inventory
+     */
     public int getSlotMax(){
         return slotMax;
     }
 
+    /**
+     * @return The current amount of elements in the Inventory
+     */
     public int getSize(){
         return this.size;
     }
 
+    /**
+     * @return The maximum capacity of the Inventory
+     */
     public int getCapacity(){
         return capacity;
     }

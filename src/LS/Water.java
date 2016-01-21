@@ -29,35 +29,58 @@ public class Water {
         getCircle().setFill(Color.rgb(120, 120, 255));
     }
 
-
+    /**
+     * @return X coordinate
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * @param x X coordinate
+     */
     public void setX(int x) {
         this.x = x;
     }
 
+    /**
+     * @return Y coordinate
+     */
     public int getY() {
         return y;
     }
 
+    /**
+     * @param y Y coordinate
+     */
     public void setY(int y) {
         this.y = y;
     }
 
+    /**
+     * @return Radius of waterCircle node
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     * @param size Radius of waterCircle node
+     */
     public void setSize(int size) {
         this.size = size;
     }
 
+    /**
+     * @return WaterCircle node
+     */
     public Circle getCircle() {
         return circle;
     }
 
+    /**
+     * @param circle WaterCircle node
+     */
     public void setCircle(Circle circle) {
         this.circle = circle;
     }

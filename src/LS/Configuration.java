@@ -60,114 +60,198 @@ public class Configuration implements Serializable{
         setHuntList(huntList);
     }
 
+    /**
+     * @return Ant count
+     */
     public int getAnts() {
         return ants;
     }
 
+    /**
+     * @param ants Amount of Ants
+     */
     public void setAnts(int ants) {
         this.ants = ants;
     }
 
+    /**
+     * @return Lizard count
+     */
     public int getLizards() {
         return lizards;
     }
 
+    /**
+     * @param lizards Amount of Lizards
+     */
     public void setLizards(int lizards) {
         this.lizards = lizards;
     }
 
+    /**
+     * @return Food Count
+     */
     public int getFoodCount() {
         return foodCount;
     }
 
+    /**
+     * @param foodCount Amount of Food
+     */
     public void setFoodCount(int foodCount) {
         this.foodCount = foodCount;
     }
 
+    /**
+     * @return FoodTree count
+     */
     public int getFoodTrees() {
         return foodTrees;
     }
 
+    /**
+     * @param foodTrees Amount of FoodTrees
+     */
     public void setFoodTrees(int foodTrees) {
         this.foodTrees = foodTrees;
     }
 
+    /**
+     * @return Obstacle count
+     */
     public int getObstacleCount() {
         return obstacleCount;
     }
 
+    /**
+     * @param obstacleCount Amount of Obstacles
+     */
     public void setObstacleCount(int obstacleCount) {
         this.obstacleCount = obstacleCount;
     }
 
+    /**
+     * @return Pool count
+     */
     public int getPoolCount() {
         return poolCount;
     }
 
+    /**
+     * @param poolCount Amount of Pools
+     */
     public void setPoolCount(int poolCount) {
         this.poolCount = poolCount;
     }
 
+    /**
+     * @return AntHill count
+     */
     public int getAntHillCount() {
         return antHillCount;
     }
 
+    /**
+     * @param antHillCount Amount of AntHills
+     */
     public void setAntHillCount(int antHillCount) {
         this.antHillCount = antHillCount;
     }
 
+    /**
+     * @return RockShelter count
+     */
     public int getRockShelterCount() {
         return rockShelterCount;
     }
 
+    /**
+     * @param rockShelterCount Amount of RockShelters
+     */
     public void setRockShelterCount(int rockShelterCount) {
         this.rockShelterCount = rockShelterCount;
     }
 
+    /**
+     * @return Bear count
+     */
     public int getBears() {
         return bears;
     }
 
+    /**
+     * @param bears Amount of Bears
+     */
     public void setBears(int bears) {
         this.bears = bears;
     }
 
+    /**
+     * @return Eagle count
+     */
     public int getEagles() {
         return eagles;
     }
 
+    /**
+     * @param eagles Amount of Eagles
+     */
     public void setEagles(int eagles) {
         this.eagles = eagles;
     }
 
+    /**
+     * @return Cave count
+     */
     public int getCaves() {
         return caves;
     }
 
+    /**
+     * @param caves Amount of Caves
+     */
     public void setCaves(int caves) {
         this.caves = caves;
     }
 
+    /**
+     * @return Nest count
+     */
     public int getNests() {
         return nests;
     }
 
+    /**
+     * @param nests Amount of Nests
+     */
     public void setNests(int nests) {
         this.nests = nests;
     }
 
+    /**
+     * @return EatList rules
+     */
     public ArrayList<ArrayList<Boolean>> getEatList() {
         return eatList;
     }
 
+    /**
+     * @param eatList EatList rules
+     */
     public void setEatList(ArrayList<ArrayList<Boolean>> eatList) {
         this.eatList = eatList;
     }
 
+    /**
+     * @return HuntList rules
+     */
     public ArrayList<ArrayList<Boolean>> getHuntList() {
         return huntList;
     }
 
+    /**
+     * @param huntList HuntList rules
+     */
     public void setHuntList(ArrayList<ArrayList<Boolean>> huntList) {
         this.huntList = huntList;
     }

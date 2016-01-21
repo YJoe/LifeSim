@@ -36,23 +36,44 @@ public class Target {
         setY((int)getCircle().getCenterY());
     }
 
+    /**
+     * @return X coordinate
+     */
     public int getX(){
         return x;
     }
+
+    /**
+     * @param x X coordinate
+     */
     public void setX(int x){
         this.x = x;
     }
 
+    /**
+     * @return Y coordinate
+     */
     public int getY() {
         return y;
     }
+
+    /**
+     * @param y Y Coordinate
+     */
     public void setY(int y) {
         this.y = y;
     }
 
+    /**
+     * @return Circle node to check collisions against
+     */
     public Circle getCircle() {
         return circle;
     }
+
+    /**
+     * @param circle Circle node to check collisions against
+     */
     public void setCircle(Circle circle) {
         this.circle = circle;
     }

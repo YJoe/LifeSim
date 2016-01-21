@@ -19,66 +19,76 @@ public class StatsBar {
     private ArrayList<Rectangle> bars = new ArrayList<>();
 
     /**
-     * @param x X coordinate
-     * @param y Y coordinate
+     * @param x        X coordinate
+     * @param y        Y coordinate
      * @param barCount The amount of statistics to monitor
      */
-    public StatsBar(int x, int y, int barCount){
+    public StatsBar(int x, int y, int barCount) {
         // Create a backBar to display the other information on
         setBackBar(new Rectangle(x, y, getStatBarWidth() + 4, (getStatBarHeight() * barCount) + (getStatBarSpacing() * (barCount + 1))));
         getBackBar().setFill(Color.rgb(50, 50, 50));
-        getBackBar().setX(getBackBar().getX() - (getStatBarWidth() /2) - 2);
+        getBackBar().setX(getBackBar().getX() - (getStatBarWidth() / 2) - 2);
         getBackBar().setY(getBackBar().getY() + 8);
         // Add it to the root group
         statsBarGroup.getChildren().add(getBackBar());
 
         // create all rectangles with sizes and spacing
-        for(int i = 0; i < barCount; i++){
+        for (int i = 0; i < barCount; i++) {
             bars.add(new Rectangle(x + getStatBarSpacing(), y + (getStatBarSpacing() * (i + 1)) + (getStatBarHeight() * i), getStatBarWidth(), getStatBarHeight()));
-            bars.get(bars.size() - 1).setX(bars.get(bars.size() - 1).getX() - (getStatBarWidth() /2) - 2);
+            bars.get(bars.size() - 1).setX(bars.get(bars.size() - 1).getX() - (getStatBarWidth() / 2) - 2);
             bars.get(bars.size() - 1).setY(bars.get(bars.size() - 1).getY() + 8);
             bars.get(bars.size() - 1).setFill(Color.rgb(200, 200, 200));
             statsBarGroup.getChildren().add(bars.get(bars.size() - 1));
         }
     }
 
-    public Rectangle getBar(int index){
+    /**
+     * @param index Index of the Bar to retrieve
+     * @return Rectangle at the given index
+     */
+    public Rectangle getBar(int index) {
         return bars.get(index);
     }
 
-    public Group getGroup(){
+    /**
+     * @return StatsBar Group
+     */
+    public Group getGroup() {
         return statsBarGroup;
     }
 
+    /**
+     * @return BackBar node
+     */
     public Rectangle getBackBar() {
         return backBar;
     }
 
+    /**
+     * @param backBar BackBar node
+     */
     public void setBackBar(Rectangle backBar) {
         this.backBar = backBar;
     }
 
+    /**
+     * @return Width of the the StatsBar
+     */
     public int getStatBarWidth() {
         return statBarWidth;
     }
 
-    public void setStatBarWidth(int statBarWidth) {
-        this.statBarWidth = statBarWidth;
-    }
-
+    /**
+     * @return Height of the the StatsBar
+     */
     public int getStatBarHeight() {
         return statBarHeight;
     }
 
-    public void setStatBarHeight(int statBarHeight) {
-        this.statBarHeight = statBarHeight;
-    }
-
+    /**
+     * @return Spacing of the StatsBar elements
+     */
     public int getStatBarSpacing() {
         return statBarSpacing;
-    }
-
-    public void setStatBarSpacing(int statBarSpacing) {
-        this.statBarSpacing = statBarSpacing;
     }
 }

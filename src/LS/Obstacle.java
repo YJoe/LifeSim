@@ -30,37 +30,65 @@ public class Obstacle {
         getImage().setFill(colour);
     }
 
+    /**
+     * @return X coordinate
+     */
     public int getX(){
         return x;
     }
+
+    /**
+     * @param x X coordinate
+     */
     public void setX(int x){
         this.x = x;
     }
 
+    /**
+     * @return Y coordinate
+     */
     public int getY(){
         return y;
     }
+
+    /**
+     * @param y Y coordinate
+     */
     public void setY(int y){
         this.y = y;
     }
 
+    /**
+     * @return Size of Obstacle
+     */
     public int getSize(){
         return size;
     }
+
+    /**
+     * @param size Size of obstacle
+     */
     public void setSize(int size){
         this.size = size;
     }
 
+    /**
+     * @return Circle node representing the Obstacle
+     */
     public Circle getImage(){
         return image;
     }
+
+    /**
+     * @param image Circle node representing the Obstacle
+     */
     public void setImage(Circle image){
         this.image = image;
     }
 
-    public String getType(){
-        return this.type;
-    }
+    /**
+     * @param type Type of Obstacle
+     */
     public void setType(String type){
         this.type = type;
     }

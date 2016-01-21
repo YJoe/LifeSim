@@ -12,7 +12,6 @@ public class Food {
     private int x;
     private int y;
     private int id;
-    private int cal;
     private int size;
     private int decay;
     private String type;
@@ -38,7 +37,6 @@ public class Food {
         setType(type);
         setImage(new Circle(getX(), getY(), size));
         getImage().setFill(colour);
-        setCal(size * 4);
         setSize(size);
         setPoisonous(false);
     }
@@ -59,77 +57,128 @@ public class Food {
         }
     }
 
+    /**
+     * @return X coordinate
+     */
     public int getX() {
         return x;
     }
+
+    /**
+     * @param x X coordinate
+     */
     public void setX(int x) {
         this.x = x;
     }
 
+    /**
+     * @return Y coordinate
+     */
     public int getY() {
         return y;
     }
+
+    /**
+     * @param y Y coordinate
+     */
     public void setY(int y) {
         this.y = y;
     }
 
+    /**
+     * @return Unique Food ID
+     */
     public int getID(){
         return this.id;
     }
+
+    /**
+     * @param id Unique ID
+     */
     public void setID(int id){
         this.id = id;
     }
 
-    public int getCal() {
-        return cal;
-    }
-    public void setCal(int cal) {
-        this.cal = cal;
-    }
-
+    /**
+     * @return Size of Food
+     */
     public int getSize(){
         return size;
     }
+
+    /**
+     * @param size Size of Food
+     */
     public void setSize(int size){
         this.size = size;
     }
 
+    /**
+     * @return Circle node
+     */
     public Circle getImage() {
         return image;
     }
 
+    /**
+     * @param image Circle node used to visualise the Food
+     */
     public void setImage(Circle image) {
         this.image = image;
     }
 
+    /**
+     * @return Decay time of the Food
+     */
     public int getDecay() {
         return decay;
     }
 
+    /**
+     * @param decay Decay time of the Food
+     */
     public void setDecay(int decay) {
         this.decay = decay;
     }
 
+    /**
+     * @return If the food is poisonous
+     */
     public boolean isPoisonous() {
         return poisonous;
     }
 
+    /**
+     * @param poisonous Poison boolean
+     */
     public void setPoisonous(boolean poisonous) {
         this.poisonous = poisonous;
     }
 
+    /**
+     * @return Maximum decay value
+     */
     public int getDecayMax() {
         return decayMax;
     }
 
+    /**
+     * @param decayMax Maximum dacay value
+     */
     public void setDecayMax(int decayMax) {
         this.decayMax = decayMax;
     }
 
+    /**
+     * @return Type of food i.e. "Fruit"
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * @param type Type of Food i.e. "Fruit"
+     */
     public void setType(String type) {
         this.type = type;
     }
