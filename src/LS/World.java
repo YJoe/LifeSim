@@ -52,19 +52,19 @@ public class World {
         setConfiguration(configuration);
 
         // Add all group elements to the root
-        root.getChildren().add(shelterGroup);
-        root.getChildren().add(shelterStatsGroup);
-        root.getChildren().add(waterGroup);
-        root.getChildren().add(obstacleGroup);
-        root.getChildren().add(foodGroup);
-        root.getChildren().add(animalSmellGroup);
-        root.getChildren().add(animalGroup);
-        root.getChildren().add(animalStatsGroup);
-        root.getChildren().add(animalTargetGroup);
-        root.getChildren().add(animalHomeLocationGroup);
-        root.getChildren().add(animalLabelGroup);
-        root.getChildren().add(foodTreeTrunkGroup);
-        root.getChildren().add(foodTreeLeafGroup);
+        root.getChildren().add(getShelterGroup());
+        root.getChildren().add(getShelterStatsGroup());
+        root.getChildren().add(getWaterGroup());
+        root.getChildren().add(getObstacleGroup());
+        root.getChildren().add(getFoodGroup());
+        root.getChildren().add(getAnimalSmellGroup());
+        root.getChildren().add(getAnimalGroup());
+        root.getChildren().add(getAnimalStatsGroup());
+        root.getChildren().add(getAnimalTargetGroup());
+        root.getChildren().add(getAnimalHomeLocationGroup());
+        root.getChildren().add(getAnimalLabelGroup());
+        root.getChildren().add(getFoodTreeTrunkGroup());
+        root.getChildren().add(getFoodTreeLeafGroup());
 
         // Add the relative element dependent on the count provided by the Configuration
         for(int i = 0; i < configuration.getPoolCount(); i++){
@@ -117,9 +117,7 @@ public class World {
             // A do while loop of which its terminating condition is that that it was generated in a valid place
             do {
                 int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
-                a = new Ant(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
-                        animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                        animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, getConfiguration());
+                a = new Ant(x, y, trackAnimalID, getDay(), getYear(), this);
             } while (overlapsAnything(a.getImage()));
             a.addSelfToLists();
         } else {
@@ -127,9 +125,7 @@ public class World {
                 // A do while loop of which its terminating condition is that that it was generated in a valid place
                 do {
                     int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
-                    a = new Lizard(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
-                            animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                            animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, getConfiguration());
+                    a = new Lizard(x, y, trackAnimalID, getDay(), getYear(), this);
                 } while (overlapsAnything(a.getImage()));
                 a.addSelfToLists();
             } else {
@@ -137,9 +133,7 @@ public class World {
                     // A do while loop of which its terminating condition is that that it was generated in a valid place
                     do {
                         int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
-                        a = new Bear(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
-                                animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                                animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, getConfiguration());
+                        a = new Bear(x, y, trackAnimalID, getDay(), getYear(), this);
                     } while (overlapsAnything(a.getImage()));
                     a.addSelfToLists();
                 }else {
@@ -147,9 +141,7 @@ public class World {
                     if (type.equals("Eagle")){
                         do {
                             int x = rand.nextInt(Main.SIZE_X), y = rand.nextInt(Main.SIZE_Y) + 25;
-                            a = new Eagle(x, y, trackAnimalID, getDay(), getYear(), foodGroup, animalGroup, waterGroup, this,
-                                    animalList, foodList, waterList, obstacleList, shelterList, animalSmellGroup, animalStatsGroup,
-                                    animalLabelGroup, animalTargetGroup, animalHomeLocationGroup, getConfiguration());
+                            a = new Eagle(x, y, trackAnimalID, getDay(), getYear(), this);
                         } while (overlapsAnything(a.getImage()));
                         a.addSelfToLists();
                     }
@@ -177,29 +169,17 @@ public class World {
         Animal a = null;
         // Check the type of Animal wanted to be created and create the relevant object passing all attributes
         if (type.equals("Ant")){
-            a = new Ant(x, y, gender, name, speed, metabolism, strength, smell, size, trackAnimalID, getDay(), getYear(),
-                    foodGroup, animalGroup, waterGroup, this, animalList, foodList, waterList, obstacleList, shelterList,
-                    animalSmellGroup, animalStatsGroup, animalLabelGroup, animalTargetGroup, animalHomeLocationGroup,
-                    getConfiguration());
+            a = new Ant(x, y, gender, name, speed, metabolism, strength, smell, size, trackAnimalID, getDay(), getYear(), this);
         }
         else {
             if (type.equals("Lizard")){
-                a = new Lizard(x, y, gender, name, speed, metabolism, strength, smell, size, trackAnimalID, getDay(), getYear(),
-                        foodGroup, animalGroup, waterGroup, this, animalList, foodList, waterList, obstacleList, shelterList,
-                        animalSmellGroup, animalStatsGroup, animalLabelGroup, animalTargetGroup, animalHomeLocationGroup,
-                        getConfiguration());
+                a = new Lizard(x, y, gender, name, speed, metabolism, strength, smell, size, trackAnimalID, getDay(), getYear(), this);
             } else {
                 if (type.equals("Bear")){
-                    a = new Bear(x, y, gender, name, speed, metabolism, strength, smell, size, trackAnimalID, getDay(), getYear(),
-                            foodGroup, animalGroup, waterGroup, this, animalList, foodList, waterList, obstacleList, shelterList,
-                            animalSmellGroup, animalStatsGroup, animalLabelGroup, animalTargetGroup, animalHomeLocationGroup,
-                            getConfiguration());
+                    a = new Bear(x, y, gender, name, speed, metabolism, strength, smell, size, trackAnimalID, getDay(), getYear(), this);
                 } else {
                     if (type.equals("Eagle")){
-                        a = new Eagle(x, y, gender, name, speed, metabolism, strength, smell, size, trackAnimalID, getDay(), getYear(),
-                                foodGroup, animalGroup, waterGroup, this, animalList, foodList, waterList, obstacleList, shelterList,
-                                animalSmellGroup, animalStatsGroup, animalLabelGroup, animalTargetGroup, animalHomeLocationGroup,
-                                getConfiguration());
+                        a = new Eagle(x, y, gender, name, speed, metabolism, strength, smell, size, trackAnimalID, getDay(), getYear(), this);
                     }
                 }
             }
@@ -220,7 +200,7 @@ public class World {
         }while(overlapsAnything(f.getImage()));
         // Add food to all lists
         foodList.add(f);
-        foodGroup.getChildren().add(f.getImage());
+        getFoodGroup().getChildren().add(f.getImage());
         trackFoodID++;
     }
 
@@ -254,7 +234,7 @@ public class World {
         }
         // Add food to all lists
         foodList.add(f);
-        foodGroup.getChildren().add(f.getImage());
+        getFoodGroup().getChildren().add(f.getImage());
         trackFoodID++;
     }
 
@@ -265,15 +245,15 @@ public class World {
         FoodTree f;
         // A do while loop of which its terminating condition is that that it was generated in a valid place
         do {
-            f = new FoodTree(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y) + 25, foodList, foodGroup, waterList, foodTreeList);
+            f = new FoodTree(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y) + 25, foodList, getFoodGroup(), waterList, foodTreeList);
         } while(overlapsAnything(f.getTreeTrunk().getImage()));
         // Add food tree elements to all lists
         foodTreeList.add(f);
-        foodTreeLeafGroup.getChildren().add(f.getLeafCircle());
-        foodTreeTrunkGroup.getChildren().add(f.getLeafCircle());
+        getFoodTreeLeafGroup().getChildren().add(f.getLeafCircle());
+        getFoodTreeTrunkGroup().getChildren().add(f.getLeafCircle());
 
         obstacleList.add(f.getTreeTrunk());
-        foodTreeTrunkGroup.getChildren().add(f.getTreeTrunk().getImage());
+        getFoodTreeTrunkGroup().getChildren().add(f.getTreeTrunk().getImage());
     }
 
     /**
@@ -285,7 +265,7 @@ public class World {
         waterList.add(new Water(rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y) + 25));
         int PSize = waterList.size();
         // Add the first water element to the group
-        waterGroup.getChildren().add(waterList.get(PSize - 1).getCircle());
+        getWaterGroup().getChildren().add(waterList.get(PSize - 1).getCircle());
         // Add a water hazard in the same place but slightly smaller
         addWaterHazard( waterList.get(PSize - 1).getX(),
                         waterList.get(PSize - 1).getY(),
@@ -331,7 +311,7 @@ public class World {
                 }
             }
             // add the water to the water list
-            waterGroup.getChildren().add(waterList.get(i + PSize).getCircle());
+            getWaterGroup().getChildren().add(waterList.get(i + PSize).getCircle());
         }
     }
 
@@ -368,8 +348,8 @@ public class World {
         // Add the shelter to the lists
         shelterID++;
         shelterList.add(s);
-        shelterGroup.getChildren().add(s.getImage());
-        shelterStatsGroup.getChildren().add(s.getStatsBar().getGroup());
+        getShelterGroup().getChildren().add(s.getImage());
+        getShelterStatsGroup().getChildren().add(s.getStatsBar().getGroup());
     }
 
     /**
@@ -382,7 +362,7 @@ public class World {
             o = new Obstacle("Rock", rand.nextInt(Main.SIZE_X), rand.nextInt(Main.SIZE_Y) + 25, rand.nextInt(10) + 10, Color.rgb(150, 150, 150));
         } while(overlapsAnything(o.getImage()));
         obstacleList.add(o);
-        obstacleGroup.getChildren().add(o.getImage());
+        getObstacleGroup().getChildren().add(o.getImage());
     }
 
     /**
@@ -396,7 +376,7 @@ public class World {
         Obstacle o = new Obstacle("WaterHazard", x, y, size, Color.rgb(50, 50, 200));
         // Add it to the lists
         obstacleList.add(o);
-        obstacleGroup.getChildren().add(o.getImage());
+        getObstacleGroup().getChildren().add(o.getImage());
     }
 
     /**
@@ -474,11 +454,11 @@ public class World {
                 (int) (animalList.get(i).getImage().getRadius()));
 
         // Remove the animal from all lists and groups
-        animalGroup.getChildren().remove(i);
-        animalSmellGroup.getChildren().remove(i);
-        animalTargetGroup.getChildren().remove(i);
-        animalStatsGroup.getChildren().remove(i);
-        animalLabelGroup.getChildren().remove(i);
+        getAnimalGroup().getChildren().remove(i);
+        getAnimalSmellGroup().getChildren().remove(i);
+        getAnimalTargetGroup().getChildren().remove(i);
+        getAnimalStatsGroup().getChildren().remove(i);
+        getAnimalLabelGroup().getChildren().remove(i);
         animalList.remove(i);
     }
 
@@ -556,7 +536,7 @@ public class World {
      */
     public void toggleSmellCircles(){
         // Set the visibility of the group to the opposite of the group visibility
-        animalSmellGroup.setVisible(!animalSmellGroup.isVisible());
+        getAnimalSmellGroup().setVisible(!getAnimalSmellGroup().isVisible());
     }
 
     /**
@@ -564,7 +544,7 @@ public class World {
      */
     public void toggleTargetSquares(){
         // Set the visibility of the group to the opposite of the group visibility
-        animalTargetGroup.setVisible(!animalTargetGroup.isVisible());
+        getAnimalTargetGroup().setVisible(!getAnimalTargetGroup().isVisible());
     }
 
     /**
@@ -572,7 +552,7 @@ public class World {
      */
     public void toggleStatBars(){
         // Set the visibility of the group to the opposite of the group visibility
-        animalStatsGroup.setVisible(!animalStatsGroup.isVisible());
+        getAnimalStatsGroup().setVisible(!getAnimalStatsGroup().isVisible());
     }
 
     /**
@@ -580,7 +560,7 @@ public class World {
      */
     public void toggleHomeSquares(){
         // Set the visibility of the group to the opposite of the group visibility
-        animalHomeLocationGroup.setVisible(!animalHomeLocationGroup.isVisible());
+        getAnimalHomeLocationGroup().setVisible(!getAnimalHomeLocationGroup().isVisible());
     }
 
     /**
@@ -588,7 +568,7 @@ public class World {
      */
     public void toggleShelterStatBars(){
         // Set the visibility of the group to the opposite of the group visibility
-        shelterStatsGroup.setVisible(!shelterStatsGroup.isVisible());
+        getShelterStatsGroup().setVisible(!getShelterStatsGroup().isVisible());
     }
 
     /**
@@ -596,7 +576,7 @@ public class World {
      */
     public void toggleAnimalLabels(){
         // Set the visibility of the group to the opposite of the group visibility
-        animalLabelGroup.setVisible(!animalLabelGroup.isVisible());
+        getAnimalLabelGroup().setVisible(!getAnimalLabelGroup().isVisible());
     }
 
     /**
@@ -604,7 +584,7 @@ public class World {
      */
     public void toggleAnimals(){
         // Set the visibility of the group to the opposite of the group visibility
-        animalGroup.setVisible(!animalGroup.isVisible());
+        getAnimalGroup().setVisible(!getAnimalGroup().isVisible());
     }
 
     /**
@@ -612,6 +592,25 @@ public class World {
      */
     public ArrayList<Animal> getAnimalList(){
         return animalList;
+    }
+
+    /**
+     * @return array list of food
+     */
+    public ArrayList<Food> getFoodList(){
+        return foodList;
+    }
+
+    public ArrayList<Water> getWaterList(){
+        return waterList;
+    }
+
+    public ArrayList<Obstacle> getObstacleList(){
+        return obstacleList;
+    }
+
+    public ArrayList<Shelter> getShelterList(){
+        return shelterList;
     }
 
     /**
@@ -689,5 +688,109 @@ public class World {
      */
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+    }
+
+    public Group getAnimalGroup() {
+        return animalGroup;
+    }
+
+    public void setAnimalGroup(Group animalGroup) {
+        this.animalGroup = animalGroup;
+    }
+
+    public Group getAnimalSmellGroup() {
+        return animalSmellGroup;
+    }
+
+    public void setAnimalSmellGroup(Group animalSmellGroup) {
+        this.animalSmellGroup = animalSmellGroup;
+    }
+
+    public Group getAnimalTargetGroup() {
+        return animalTargetGroup;
+    }
+
+    public void setAnimalTargetGroup(Group animalTargetGroup) {
+        this.animalTargetGroup = animalTargetGroup;
+    }
+
+    public Group getAnimalStatsGroup() {
+        return animalStatsGroup;
+    }
+
+    public void setAnimalStatsGroup(Group animalStatsGroup) {
+        this.animalStatsGroup = animalStatsGroup;
+    }
+
+    public Group getAnimalHomeLocationGroup() {
+        return animalHomeLocationGroup;
+    }
+
+    public void setAnimalHomeLocationGroup(Group animalHomeLocationGroup) {
+        this.animalHomeLocationGroup = animalHomeLocationGroup;
+    }
+
+    public Group getAnimalLabelGroup() {
+        return animalLabelGroup;
+    }
+
+    public void setAnimalLabelGroup(Group animalLabelGroup) {
+        this.animalLabelGroup = animalLabelGroup;
+    }
+
+    public Group getShelterGroup() {
+        return shelterGroup;
+    }
+
+    public void setShelterGroup(Group shelterGroup) {
+        this.shelterGroup = shelterGroup;
+    }
+
+    public Group getShelterStatsGroup() {
+        return shelterStatsGroup;
+    }
+
+    public void setShelterStatsGroup(Group shelterStatsGroup) {
+        this.shelterStatsGroup = shelterStatsGroup;
+    }
+
+    public Group getFoodGroup() {
+        return foodGroup;
+    }
+
+    public void setFoodGroup(Group foodGroup) {
+        this.foodGroup = foodGroup;
+    }
+
+    public Group getWaterGroup() {
+        return waterGroup;
+    }
+
+    public void setWaterGroup(Group waterGroup) {
+        this.waterGroup = waterGroup;
+    }
+
+    public Group getObstacleGroup() {
+        return obstacleGroup;
+    }
+
+    public void setObstacleGroup(Group obstacleGroup) {
+        this.obstacleGroup = obstacleGroup;
+    }
+
+    public Group getFoodTreeLeafGroup() {
+        return foodTreeLeafGroup;
+    }
+
+    public void setFoodTreeLeafGroup(Group foodTreeLeafGroup) {
+        this.foodTreeLeafGroup = foodTreeLeafGroup;
+    }
+
+    public Group getFoodTreeTrunkGroup() {
+        return foodTreeTrunkGroup;
+    }
+
+    public void setFoodTreeTrunkGroup(Group foodTreeTrunkGroup) {
+        this.foodTreeTrunkGroup = foodTreeTrunkGroup;
     }
 }

@@ -1,8 +1,6 @@
 package LS;
 
-import java.util.ArrayList;
 import java.util.Random;
-import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -16,8 +14,6 @@ import javafx.scene.text.Text;
  */
 public abstract class Animal {
     // All constructor parameters
-    private Group foodGroupRef, waterGroupRef, animalGroupRef, animalSmellRef, animalStatsRef, animalLabelRef,
-            animalTargetRef, animalHomeLocationRef;
     private float size, metabolism, hunger = 0, thirst = 0;
     private int id, x, y, energy, maxEnergy, smellRange, turnAngle, pathDistance, foodSearchCoolDown,
             followMainCoolDown, waitAtHome, homeID, breedTimer, lastAngle = new Random().nextInt(360),
@@ -25,15 +21,10 @@ public abstract class Animal {
             lastAge, strength;
     private boolean localTargetBool, mainTargetBool, targetingFood, targetingWater, targetingHome,
             targetingAnimal, poisoned, inShelter, shouldBreed;
-    private double speed, originalSpeed, dx, dy;private ArrayList<Animal> animalList = new ArrayList<>();
-    private ArrayList<Food> foodList = new ArrayList<>();
-    private ArrayList<Water> waterList = new ArrayList<>();
-    private ArrayList<Shelter> shelterList = new ArrayList<>();
-    private ArrayList<Obstacle> obstacleList = new ArrayList<>();
+    private double speed, originalSpeed, dx, dy;
     public Inventory foodInventory, waterInventory;
     private Target localTarget, mainTarget, homeTarget;
     private World worldRef;
-    private Configuration configuration;
     private Circle image, smellCircle;
     private Text text;
     private StatsBar statsBar;
@@ -53,27 +44,8 @@ public abstract class Animal {
      * @param energyIn The stating and max energy of the Animal
      * @param xIn X coordinate
      * @param yIn Y coordinate
-     * @param food Food group reference, a node of the root node
-     * @param animal Animal group reference, a node of the root node
-     * @param water Water group reference, a node of the root node
-     * @param worldRef World object in which the Animal lives
-     * @param animalList List of all Animals also living in the world
-     * @param foodList List of all Food within the world
-     * @param waterList List of all Water within the world
-     * @param obstacleList List of all Obstacles within the world
-     * @param shelterList List of all Shelters within the world
-     * @param animalSmellRef Animal smellCircle group reference, a node of the root node
-     * @param animalStatsRef Animal statBar group reference, a node of the root node
-     * @param animalLabelRef Animal label group reference, a node of the root node
-     * @param animalTargetRef Animal target group reference, a node of the root node
-     * @param animalHomeLocationRef Animal home group reference, a node of the root node
-     * @param configuration Configuration in which the animal follows hunting and eating rules of
      */
-    public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn,
-                  Group food, Group animal, Group water, World worldRef, ArrayList<Animal> animalList,
-                  ArrayList<Food> foodList, ArrayList<Water> waterList, ArrayList<Obstacle> obstacleList,
-                  ArrayList<Shelter> shelterList, Group animalSmellRef, Group animalStatsRef, Group animalLabelRef,
-                  Group animalTargetRef, Group animalHomeLocationRef, Configuration configuration){
+    public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn, World world){
 
         // Set all passed attributes to the object
         setSpecies(speciesIn);
@@ -83,21 +55,7 @@ public abstract class Animal {
         setMaxEnergy(energyIn);
         setX(xIn);
         setY(yIn);
-        setFoodGroupRef(food);
-        setAnimalGroupRef(animal);
-        setWaterGroupRef(water);
-        setWorldRef(worldRef);
-        setAnimalList(animalList);
-        setFoodList(foodList);
-        setWaterList(waterList);
-        setObstacleList(obstacleList);
-        setShelterList(shelterList);
-        setAnimalSmellRef(animalSmellRef);
-        setAnimalStatsRef(animalStatsRef);
-        setAnimalLabelRef(animalLabelRef);
-        setAnimalTargetRef(animalTargetRef);
-        setAnimalHomeLocationRef(animalHomeLocationRef);
-        setConfiguration(configuration);
+        setWorldRef(world);
 
         // Create stats bar and set the colour of each bar
         setStatsBar(new StatsBar(x, y, 3));
@@ -166,29 +124,10 @@ public abstract class Animal {
      *                 Animal's inventory space
      * @param smell The range at which the Animal can perceive its world
      * @param size Body size of the Animal
-     * @param food Food group reference, a node of the root node
-     * @param animal Animal group reference, a node of the root node
-     * @param water Water group reference, a node of the root node
-     * @param worldRef World object in which the Animal lives
-     * @param animalList List of all Animals also living in the world
-     * @param foodList List of all Food within the world
-     * @param waterList List of all Water within the world
-     * @param obstacleList List of all Obstacles within the world
-     * @param shelterList List of all Shelters within the world
-     * @param animalSmellRef Animal smellCircle group reference, a node of the root node
-     * @param animalStatsRef Animal statBar group reference, a node of the root node
-     * @param animalLabelRef Animal label group reference, a node of the root node
-     * @param animalTargetRef Animal target group reference, a node of the root node
-     * @param animalHomeLocationRef Animal home group reference, a node of the root node
      * @param colour Color variable of the Animals body circle
-     * @param configuration Configuration in which the animal follows hunting and eating rules of
      */
     public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn,
-                  char gender, String name, double speed, float metabolism, int strength, int smell, int size,
-                  Group food, Group animal, Group water, World worldRef, ArrayList<Animal> animalList,
-                  ArrayList<Food> foodList, ArrayList<Water> waterList, ArrayList<Obstacle> obstacleList,
-                  ArrayList<Shelter> shelterList, Group animalSmellRef, Group animalStatsRef, Group animalLabelRef,
-                  Group animalTargetRef, Group animalHomeLocationRef, Configuration configuration, Color colour){
+                  char gender, String name, double speed, float metabolism, int strength, int smell, int size, Color colour, World world){
 
         // Set all attributes
         setSpecies(speciesIn);
@@ -209,21 +148,7 @@ public abstract class Animal {
         setStrength(strength);
         setSmellRange(smell);
         setSize(size);
-        setFoodGroupRef(food);
-        setAnimalGroupRef(animal);
-        setWaterGroupRef(water);
-        setWorldRef(worldRef);
-        setAnimalList(animalList);
-        setFoodList(foodList);
-        setWaterList(waterList);
-        setObstacleList(obstacleList);
-        setShelterList(shelterList);
-        setAnimalSmellRef(animalSmellRef);
-        setAnimalStatsRef(animalStatsRef);
-        setAnimalLabelRef(animalLabelRef);
-        setAnimalTargetRef(animalTargetRef);
-        setAnimalHomeLocationRef(animalHomeLocationRef);
-        setConfiguration(configuration);
+        setWorldRef(world);
 
         // Create smell attributes colouring and making slightly transparent
         setSmellCircle(new Circle(x, y, getSmellRange()));
@@ -290,14 +215,14 @@ public abstract class Animal {
      */
     public void addSelfToLists(){
         // Add self to animalList
-        animalList.add(this);
+        getWorldRef().getAnimalList().add(this);
         // Link all nodes to the relative roots
-        getAnimalGroupRef().getChildren().add(getImage());
-        getAnimalSmellRef().getChildren().add(getSmellCircle());
-        getAnimalTargetRef().getChildren().add(getTargetLocation());
-        getAnimalStatsRef().getChildren().add(getStatsBar().getGroup());
-        getAnimalHomeLocationRef().getChildren().add(getHomeLocation());
-        getAnimalLabelRef().getChildren().add(getText());
+        getWorldRef().getAnimalGroup().getChildren().add(getImage());
+        getWorldRef().getAnimalSmellGroup().getChildren().add(getSmellCircle());
+        getWorldRef().getAnimalTargetGroup().getChildren().add(getTargetLocation());
+        getWorldRef().getAnimalStatsGroup().getChildren().add(getStatsBar().getGroup());
+        getWorldRef().getAnimalHomeLocationGroup().getChildren().add(getHomeLocation());
+        getWorldRef().getAnimalLabelGroup().getChildren().add(getText());
     }
 
     /**
@@ -443,7 +368,7 @@ public abstract class Animal {
         }
 
         // if both fields are satisfied add to energy
-        if (getThirst() < 10 && getHunger() < 10 && getEnergy() < 1000){
+        if (getThirst() < 10 && getHunger() < 10 && getEnergy() < getMaxEnergy()){
             setEnergy(getEnergy() + 4);
         }
 
@@ -656,7 +581,7 @@ public abstract class Animal {
      */
     public boolean foodIsStillThere(){
         // loop for all food elements
-        for(Food food : getFoodList()){
+        for(Food food : getWorldRef().getFoodList()){
             if (food.getID() == targetFoodID){
                 // Return true if the target food id was found
                 return true;
@@ -671,7 +596,7 @@ public abstract class Animal {
      */
     public boolean animalStillThere(){
         // loop through all animals
-        for(Animal animal : getAnimalList()){
+        for(Animal animal : getWorldRef().getAnimalList()){
             if (animal.getID() == targetFoodID){
                 if (Collision.overlapsEfficient(animal.getImage(), getSmellCircle())) {
                     // return true if the animal was found within the list
@@ -689,7 +614,7 @@ public abstract class Animal {
         // check that the Animal has energy to fight
         if (getEnergy() > 0) {
             // loop for all Animals
-            for (Animal animal : animalList) {
+            for (Animal animal : getWorldRef().getAnimalList()) {
                 if (animal.getID() == getTargetFoodID()){
                     if (animal.getStrength() <= getStrength()) {
                         // If the animal has a better strength rating kill the other animal
@@ -761,7 +686,7 @@ public abstract class Animal {
      */
     public void checkFood(){
         // Check the surrounding area for Animals to target
-        for(Animal animal : getAnimalList()) {
+        for(Animal animal : getWorldRef().getAnimalList()) {
             // check it is in its hunt list
             if (isInHuntList(animal.getSymbol())) {
                 // check the Animal is not itself
@@ -780,7 +705,7 @@ public abstract class Animal {
             }
         }
         // Check for food within the surrounding area
-        for(Food food : getFoodList()){
+        for(Food food : getWorldRef().getFoodList()){
             // check it is in its eat list
             if (isInEatList(food.getType().charAt(0))) {
                 // check if the food is within the smell range
@@ -835,7 +760,7 @@ public abstract class Animal {
             indexY = 3;
         else return false;
 
-        return getConfiguration().getEatList().get(indexX).get(indexY);
+        return getWorldRef().getConfiguration().getEatList().get(indexX).get(indexY);
     }
 
     /**
@@ -869,7 +794,7 @@ public abstract class Animal {
             indexY = 3;
         else return false;
 
-        return getConfiguration().getHuntList().get(indexX).get(indexY);
+        return getWorldRef().getConfiguration().getHuntList().get(indexX).get(indexY);
     }
 
     /**
@@ -907,35 +832,35 @@ public abstract class Animal {
         // Store food within the Animal inventory
         setTargetingFood(false);
         // loop for all food
-        for(int i = 0; i < getFoodList().size(); i++){
+        for(int i = 0; i < getWorldRef().getFoodList().size(); i++){
             // check to test the correct food ID
-            if(getTargetFoodID() == getFoodList().get(i).getID()) {
+            if(getTargetFoodID() == getWorldRef().getFoodList().get(i).getID()) {
                 // if the food is poison
-                if (getFoodList().get(i).isPoisonous()) {
+                if (getWorldRef().getFoodList().get(i).isPoisonous()) {
                     setPoisoned(true);
                     // Set a timer for poison to take effect
-                    setPoisonTime(getFoodList().get(i).getDecay()/2);
-                    getFoodGroupRef().getChildren().remove(i);
-                    getFoodList().remove(i);
+                    setPoisonTime(getWorldRef().getFoodList().get(i).getDecay()/2);
+                    getWorldRef().getFoodGroup().getChildren().remove(i);
+                    getWorldRef().getFoodList().remove(i);
                 } else {
                     // check the Animal has room to store the food item
-                    if (foodInventory.getSlotMax() > getFoodList().get(i).getSize()) {
-                        if (foodInventory.add(getFoodList().get(i).getSize())) {
-                            getFoodGroupRef().getChildren().remove(i);
-                            getFoodList().remove(i);
+                    if (foodInventory.getSlotMax() > getWorldRef().getFoodList().get(i).getSize()) {
+                        if (foodInventory.add(getWorldRef().getFoodList().get(i).getSize())) {
+                            getWorldRef().getFoodGroup().getChildren().remove(i);
+                            getWorldRef().getFoodList().remove(i);
                         }
                     } else {
                         // if it does not then take all it can
                         do {
                             if (foodInventory.add(foodInventory.getSlotMax())) {
-                                getFoodList().get(i).getImage().setRadius(getFoodList().get(i).getImage().getRadius() - foodInventory.getSlotMax());
+                                getWorldRef().getFoodList().get(i).getImage().setRadius(getWorldRef().getFoodList().get(i).getImage().getRadius() - foodInventory.getSlotMax());
                             }
                         }
-                        while (foodInventory.getSize() < foodInventory.getCapacity() && getFoodList().get(i).getImage().getRadius() > -1);
+                        while (foodInventory.getSize() < foodInventory.getCapacity() && getWorldRef().getFoodList().get(i).getImage().getRadius() > -1);
                         // if the food is too small then just remove it from the world
-                        if (getFoodList().get(i).getImage().getRadius() < 1) {
-                            getFoodGroupRef().getChildren().remove(i);
-                            getFoodList().remove(i);
+                        if (getWorldRef().getFoodList().get(i).getImage().getRadius() < 1) {
+                            getWorldRef().getFoodGroup().getChildren().remove(i);
+                            getWorldRef().getFoodList().remove(i);
                         }
                     }
                     break;
@@ -970,7 +895,7 @@ public abstract class Animal {
      */
     public void checkWater(){
         // check the local area for water
-        for (Water water : getWaterList()){
+        for (Water water : getWorldRef().getWaterList()){
             // if a collision is happening between the water and the smell range of the animal
             if (Collision.overlapsEfficient(this.getSmellCircle(), water.getCircle())) {
                 if (Collision.overlapsAccurate(this.getSmellCircle(), water.getCircle())) {
@@ -1028,12 +953,12 @@ public abstract class Animal {
         setFollowMainCoolDown(10000 + new Random().nextInt(5000));
 
         // loop through all shelter
-        for (int i = 0; i < getShelterList().size(); i++) {
-            if (getShelterList().get(i).getID() == getHomeID()) {
+        for (int i = 0; i < getWorldRef().getShelterList().size(); i++) {
+            if (getWorldRef().getShelterList().get(i).getID() == getHomeID()) {
                 // Check if the opposite sex is in the shelter and is also the correct age
                 if (isShouldBreed()){
                     setWaitAtHome(1000 + rand.nextInt(500));
-                    for (Animal animal : getAnimalList()){
+                    for (Animal animal : getWorldRef().getAnimalList()){
                         if (animal.isInShelter()) {
                             if (animal.getGender() != getGender()) {
                                 if (animal.isShouldBreed()) {
@@ -1055,41 +980,41 @@ public abstract class Animal {
 
                 // Drop all food/ water off
                 for (int j = 0; j < foodInventory.getSize(); j++) {
-                    getShelterList().get(i).getFoodInventory().add(foodInventory.getElement(j));
+                    getWorldRef().getShelterList().get(i).getFoodInventory().add(foodInventory.getElement(j));
                 }
                 for (int j = 0; j < waterInventory.getSize(); j++) {
-                    getShelterList().get(i).getWaterInventory().add(waterInventory.getElement(j));
+                    getWorldRef().getShelterList().get(i).getWaterInventory().add(waterInventory.getElement(j));
                 }
 
-                if (getShelterList().get(i).getFoodInventory().getSize() < getShelterList().get(i).getFoodInventory().getCapacity()) {
+                if (getWorldRef().getShelterList().get(i).getFoodInventory().getSize() < getWorldRef().getShelterList().get(i).getFoodInventory().getCapacity()) {
                     foodInventory.empty();
                 }
-                if (getShelterList().get(i).getWaterInventory().getSize() < getShelterList().get(i).getFoodInventory().getCapacity()) {
+                if (getWorldRef().getShelterList().get(i).getWaterInventory().getSize() < getWorldRef().getShelterList().get(i).getFoodInventory().getCapacity()) {
                     waterInventory.empty();
                 }
 
                 // take some food and/or water
                 if (waterInventory.getSize() == 0 && getThirst() >= 10) {
                     for (int j = 0; j < getWaterInventory().getCapacity() / 2; j++) {
-                        if (getShelterList().get(i).getWaterInventory().getSize() > 1) {
-                            if (getShelterList().get(i).getWaterInventory().getElement(0) > getWaterInventory().getSlotMax()) {
+                        if (getWorldRef().getShelterList().get(i).getWaterInventory().getSize() > 1) {
+                            if (getWorldRef().getShelterList().get(i).getWaterInventory().getElement(0) > getWaterInventory().getSlotMax()) {
                                 getWaterInventory().add(getWaterInventory().getSlotMax());
                             } else {
-                                getWaterInventory().add(getShelterList().get(i).getWaterInventory().getElement(0));
+                                getWaterInventory().add(getWorldRef().getShelterList().get(i).getWaterInventory().getElement(0));
                             }
-                            getShelterList().get(i).getWaterInventory().remove(0);
+                            getWorldRef().getShelterList().get(i).getWaterInventory().remove(0);
                         }
                     }
                 }
                 if (foodInventory.getSize() == 0 && getHunger() >= 10) {
                     for (int j = 0; j < getFoodInventory().getCapacity() / 2; j++) {
-                        if (getShelterList().get(i).getFoodInventory().getSize() > 1) {
-                            if (getShelterList().get(i).getFoodInventory().getElement(0) > getFoodInventory().getSlotMax()) {
+                        if (getWorldRef().getShelterList().get(i).getFoodInventory().getSize() > 1) {
+                            if (getWorldRef().getShelterList().get(i).getFoodInventory().getElement(0) > getFoodInventory().getSlotMax()) {
                                 getFoodInventory().add(getFoodInventory().getSlotMax());
                             } else {
-                                getFoodInventory().add(getShelterList().get(i).getFoodInventory().getElement(0));
+                                getFoodInventory().add(getWorldRef().getShelterList().get(i).getFoodInventory().getElement(0));
                             }
-                            getShelterList().get(i).getFoodInventory().remove(0);
+                            getWorldRef().getShelterList().get(i).getFoodInventory().remove(0);
                         }
                     }
                 }
@@ -1127,13 +1052,13 @@ public abstract class Animal {
      */
     public boolean checkMove(int posX, int posY){
         // Cycle through all obstacles
-        for(int i = 0; i < getObstacleList().size(); i++){
+        for(int i = 0; i < getWorldRef().getObstacleList().size(); i++){
             // if there is a collision
-            if(getObstacleList().get(i).getX() - (getImage().getRadius() + getObstacleList().get(i).getImage().getRadius()) < posX &&
-                    posX < getObstacleList().get(i).getX() + (getImage().getRadius() + getObstacleList().get(i).getImage().getRadius()) &&
-                    getObstacleList().get(i).getY() - (getImage().getRadius() + getObstacleList().get(i).getImage().getRadius()) < posY &&
-                    posY < getObstacleList().get(i).getY() + (getImage().getRadius() + getObstacleList().get(i).getImage().getRadius())){
-                if (Collision.overlapsAccurate(getObstacleList().get(i).getImage(), new Circle(posX, posY, getSize()))) {
+            if(getWorldRef().getObstacleList().get(i).getX() - (getImage().getRadius() + getWorldRef().getObstacleList().get(i).getImage().getRadius()) < posX &&
+                    posX < getWorldRef().getObstacleList().get(i).getX() + (getImage().getRadius() + getWorldRef().getObstacleList().get(i).getImage().getRadius()) &&
+                    getWorldRef().getObstacleList().get(i).getY() - (getImage().getRadius() + getWorldRef().getObstacleList().get(i).getImage().getRadius()) < posY &&
+                    posY < getWorldRef().getObstacleList().get(i).getY() + (getImage().getRadius() + getWorldRef().getObstacleList().get(i).getImage().getRadius())){
+                if (Collision.overlapsAccurate(getWorldRef().getObstacleList().get(i).getImage(), new Circle(posX, posY, getSize()))) {
                     return false;
                 }
             }
@@ -1156,19 +1081,19 @@ public abstract class Animal {
         // Set the visibility of the then
         int index = 0;
         // loop for all animals to find the an index
-        for(int i = 0; i < getAnimalList().size(); i++){
-            if (getID() == getAnimalList().get(i).getID()){
+        for(int i = 0; i < getWorldRef().getAnimalList().size(); i++){
+            if (getID() == getWorldRef().getAnimalList().get(i).getID()){
                 index = i;
                 break;
             }
         }
         // Set the animals visuals to be invisible or visible
-        getAnimalGroupRef().getChildren().get(index).setVisible(visibility);
-        getAnimalHomeLocationRef().getChildren().get(index).setVisible(visibility);
-        getAnimalSmellRef().getChildren().get(index).setVisible(visibility);
-        getAnimalStatsRef().getChildren().get(index).setVisible(visibility);
-        getAnimalTargetRef().getChildren().get(index).setVisible(visibility);
-        getAnimalLabelRef().getChildren().get(index).setVisible(visibility);
+        getWorldRef().getAnimalGroup().getChildren().get(index).setVisible(visibility);
+        getWorldRef().getAnimalHomeLocationGroup().getChildren().get(index).setVisible(visibility);
+        getWorldRef().getAnimalSmellGroup().getChildren().get(index).setVisible(visibility);
+        getWorldRef().getAnimalStatsGroup().getChildren().get(index).setVisible(visibility);
+        getWorldRef().getAnimalTargetGroup().getChildren().get(index).setVisible(visibility);
+        getWorldRef().getAnimalLabelGroup().getChildren().get(index).setVisible(visibility);
     }
 
     /**
@@ -1195,6 +1120,9 @@ public abstract class Animal {
         getWorldRef().addAnimal(getSpecies(), x, y, gender, getName() + "Jr", speed, metabolism, strength, smellRange, size);
     }
 
+    /**
+     * @return A string a data describing the Animal
+     */
     public String statistics(){
         // Return the String of the statistics
         return ("Name:\t\t\t" + getName() + "\n" +
@@ -1207,6 +1135,10 @@ public abstract class Animal {
                 "Food Inventory: \t" + getFoodInventory().getSize() + "/" + getFoodInventory().getCapacity() + "\n" +
                 "Water Inventory:\t" + getWaterInventory().getSize() + "/" + getWaterInventory().getCapacity());
     }
+
+    /**
+     * @return A simplified data string describing the Animal
+     */
     public String toString(){
         return ("Name: " + getName() + "\n" +
                 "Xpos: " + getX() + "\n" +
@@ -1270,38 +1202,6 @@ public abstract class Animal {
         } else {
             setBreedTimer(getBreedTimer() - 1);
         }
-    }
-
-    /**
-     * set the array list food that is passed in and set to a private variable
-     * @param f foodList
-     */
-    public void setFoodList(ArrayList<Food> f){
-        foodList = f;
-    }
-
-    /**
-     * set the array list containing the water elements to a private variable within the class
-     * @param w waterList
-     */
-    public void setWaterList(ArrayList<Water> w){
-        waterList = w;
-    }
-
-    /**
-     *arraylist containing shelters set to a private variable
-     * @param s shelterList
-     */
-    public void setShelterList(ArrayList<Shelter> s){
-        shelterList = s;
-    }
-
-    /**
-     * set the obstacle list that is passed in to a private varibale within the class
-     * @param o obstacleList
-     */
-    public void setObstacleList(ArrayList<Obstacle> o){
-        obstacleList = o;
     }
 
     /**
@@ -1618,22 +1518,6 @@ public abstract class Animal {
     }
 
     /**
-     * set the animal group reference to a private variable within the class
-     * @param a Animal Group
-     */
-    public void setAnimalGroupRef(Group a){
-        animalGroupRef = a;
-    }
-
-    /**
-     * set the food group reference to a private variable in the class
-     * @param f Food Group
-     */
-    public void setFoodGroupRef(Group f){
-        foodGroupRef = f;
-    }
-
-    /**
      * @return last angle selected by the animal
      */
     public int getLastAngle() {
@@ -1751,13 +1635,6 @@ public abstract class Animal {
      */
     public void setHasMainTarget(boolean mainTargetBool){
         this.mainTargetBool = mainTargetBool;
-    }
-
-    /**
-     * @return the reference for a food group
-     */
-    public Group getFoodGroupRef() {
-        return foodGroupRef;
     }
 
     /**
@@ -1881,21 +1758,6 @@ public abstract class Animal {
     }
 
     /**
-     * @return return the animal group reference
-     */
-    public Group getAnimalGroupRef() {
-        return animalGroupRef;
-    }
-
-    /**
-     * set the water group reference to a private variable in the class using the group passed into the function
-     * @param waterGroupRef Water Group
-     */
-    public void setWaterGroupRef(Group waterGroupRef) {
-        this.waterGroupRef = waterGroupRef;
-    }
-
-    /**
      * @return animals thirst
      */
     public float getThirst() {
@@ -1999,97 +1861,6 @@ public abstract class Animal {
      */
     public void setInShelter(boolean inShelter) {
         this.inShelter = inShelter;
-    }
-
-    /**
-     * @return Array list where animals are stored
-     */
-    public ArrayList<Animal> getAnimalList() {
-        return animalList;
-    }
-
-    /**
-     * set the animal list to a private variable within the class
-     * @param animalList Animal list reference
-     */
-    public void setAnimalList(ArrayList<Animal> animalList) {
-        this.animalList = animalList;
-    }
-
-    /**
-     * @return Animals smell reference
-     */
-    public Group getAnimalSmellRef() {
-        return animalSmellRef;
-    }
-
-    /**
-     * set the Animals smell reference using the Group parameter
-     * @param animalSmellRef Smell circle Group
-     */
-    public void setAnimalSmellRef(Group animalSmellRef) {
-        this.animalSmellRef = animalSmellRef;
-    }
-
-    /**
-     * @return Animals statistic reference
-     */
-    public Group getAnimalStatsRef() {
-        return animalStatsRef;
-    }
-
-    /**
-     * set the animal statistics reference using the group object passed into the function
-     * @param animalStatsRef Animal statistics bar Group reference
-     */
-    public void setAnimalStatsRef(Group animalStatsRef) {
-        this.animalStatsRef = animalStatsRef;
-    }
-
-    /**
-     * @return Animals label reference
-     */
-    public Group getAnimalLabelRef() {
-        return animalLabelRef;
-    }
-
-    /**
-     * Set the AnimalLabelRef using the Group object in the parameter
-     * @param animalLabelRef Animal label Group reference
-     */
-    public void setAnimalLabelRef(Group animalLabelRef) {
-        this.animalLabelRef = animalLabelRef;
-    }
-
-    /**
-     * @return Animals target reference
-     */
-    public Group getAnimalTargetRef() {
-        return animalTargetRef;
-    }
-
-    /**
-     * set the Animals target reference to a private variable within the class
-     * @param animalTargetRef Animal Target group reference
-     */
-    public void setAnimalTargetRef(Group animalTargetRef) {
-        this.animalTargetRef = animalTargetRef;
-    }
-
-    /**
-     * @return The Animal's home location reference
-     */
-    public Group getAnimalHomeLocationRef() {
-        return animalHomeLocationRef;
-    }
-
-    /**
-     * set the animals home location reference to a private variable within the class using the group object
-     * passed into the function
-     * @param animalHomeLocationRef Home location Group
-     */
-    public void setAnimalHomeLocationRef(Group animalHomeLocationRef) {
-        this.animalHomeLocationRef = animalHomeLocationRef;
     }
 
     /**
@@ -2251,34 +2022,6 @@ public abstract class Animal {
     }
 
     /**
-     * @return array list of food
-     */
-    public ArrayList<Food> getFoodList() {
-        return foodList;
-    }
-
-    /**
-     * @return array list of water
-     */
-    public ArrayList<Water> getWaterList() {
-        return waterList;
-    }
-
-    /**
-     * @return array list of shelters
-     */
-    public ArrayList<Shelter> getShelterList() {
-        return shelterList;
-    }
-
-    /**
-     * @return array list of obstacle
-     */
-    public ArrayList<Obstacle> getObstacleList() {
-        return obstacleList;
-    }
-
-    /**
      * @return targeting an animals
      */
     public boolean isTargetingAnimal() {
@@ -2306,21 +2049,6 @@ public abstract class Animal {
      */
     public void setMaxEnergy(int maxEnergy) {
         this.maxEnergy = maxEnergy;
-    }
-
-    /**
-     * @return the configuration
-     */
-    public Configuration getConfiguration() {
-        return configuration;
-    }
-
-    /**
-     * set the configuration to a private variable using the object that is passed in to the function
-     * @param configuration The configuration rules in effect within the world
-     */
-    public void setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
     }
 
     /**

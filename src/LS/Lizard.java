@@ -23,30 +23,11 @@ public class Lizard extends Animal{
      * @param id Unique identifier for  the Animal
      * @param dayBorn The day (0 - 365) in which the Animal was born
      * @param yearBorn The year in which the Animal was born
-     * @param foodGroup Food group reference, a node of the root node
-     * @param animalGroup Animal group reference, a node of the root node
-     * @param waterGroup Water group reference, a node of the root node
-     * @param worldRef World object in which the Animal lives
-     * @param animalList List of all Animals also living in the world
-     * @param foodList List of all Food within the world
-     * @param waterList List of all Water within the world
-     * @param obstacleList List of all Obstacles within the world
-     * @param shelterList List of all Shelters within the world
-     * @param animalSmellRef Animal smellCircle group reference, a node of the root node
-     * @param animalStatsRef Animal statBar group reference, a node of the root node
-     * @param animalLabelRef Animal label group reference, a node of the root node
-     * @param animalTargetRef Animal target group reference, a node of the root node
-     * @param animalHomeLocationRef Animal home group reference, a node of the root node
-     * @param configuration Configuration in which the animal follows hunting and eating rules of
+     * @param world the World object reference
      */
-    public Lizard(int x, int y, int id, int dayBorn, int yearBorn, Group foodGroup, Group animalGroup, Group waterGroup,
-               World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
-               ArrayList<Obstacle> obstacleList, ArrayList<Shelter> shelterList, Group animalSmellRef, Group animalStatsRef, Group animalLabelRef,
-               Group animalTargetRef, Group animalHomeLocationRef, Configuration configuration){
+    public Lizard(int x, int y, int id, int dayBorn, int yearBorn, World world){
 
-        super("Lizard", 'L', id, dayBorn, yearBorn, 2000, x, y, foodGroup, animalGroup, waterGroup, worldRef, animalList,
-                foodList, waterList, obstacleList, shelterList, animalSmellRef, animalStatsRef, animalLabelRef,
-                animalTargetRef, animalHomeLocationRef, configuration);
+        super("Lizard", 'L', id, dayBorn, yearBorn, 2000, x, y, world);
 
         String [] names_m = {"Lazlo"};
         String [] names_f = {"Lizzy"};
@@ -94,21 +75,6 @@ public class Lizard extends Animal{
      * @param id Unique identifier for  the Animal
      * @param dayBorn The day (0 - 365) in which the Animal was born
      * @param yearBorn The year in which the Animal was born
-     * @param foodGroup Food group reference, a node of the root node
-     * @param animalGroup Animal group reference, a node of the root node
-     * @param waterGroup Water group reference, a node of the root node
-     * @param worldRef World object in which the Animal lives
-     * @param animalList List of all Animals also living in the world
-     * @param foodList List of all Food within the world
-     * @param waterList List of all Water within the world
-     * @param obstacleList List of all Obstacles within the world
-     * @param shelterList List of all Shelters within the world
-     * @param animalSmellRef Animal smellCircle group reference, a node of the root node
-     * @param animalStatsRef Animal statBar group reference, a node of the root node
-     * @param animalLabelRef Animal label group reference, a node of the root node
-     * @param animalTargetRef Animal target group reference, a node of the root node
-     * @param animalHomeLocationRef Animal home group reference, a node of the root node
-     * @param configuration Configuration in which the animal follows hunting and eating rules of
      * @param smell The range in which the Animal percievies its world
      * @param size The size of the Animals body
      * @param speed The speed at which the Animal can move
@@ -119,16 +85,10 @@ public class Lizard extends Animal{
      * @param name The name of the Animal
      */
     public Lizard(int x, int y, char gender, String name, double speed, float metabolism, int strength, int smell,
-                 int size, int id, int dayBorn, int yearBorn,  Group foodGroup, Group animalGroup, Group waterGroup,
-                 World worldRef, ArrayList<Animal> animalList, ArrayList<Food> foodList, ArrayList<Water> waterList,
-                 ArrayList<Obstacle> obstacleList, ArrayList<Shelter> shelterList, Group animalSmellRef,
-                 Group animalStatsRef, Group animalLabelRef, Group animalTargetRef, Group animalHomeLocationRef,
-                 Configuration configuration){
+                 int size, int id, int dayBorn, int yearBorn, World world){
 
         super("Lizard", 'L', id, dayBorn, yearBorn, 2000, x, y, gender, name, speed, metabolism, strength, smell, size,
-                foodGroup, animalGroup, waterGroup, worldRef, animalList, foodList, waterList, obstacleList,
-                shelterList, animalSmellRef, animalStatsRef, animalLabelRef, animalTargetRef, animalHomeLocationRef,
-                configuration, Color.rgb(0, 150, 40));
+               Color.rgb(0, 150, 40), world);
     }
 
     /**
@@ -137,11 +97,11 @@ public class Lizard extends Animal{
     @Override
     public void checkShelters(){
         // loop for all shelters and check if a shelter of the correct type was found
-        for(int i = 0; i < getShelterList().size(); i++){
-            if(getShelterList().get(i).getType().equals("RockShelter")) {
-                if (Collision.overlapsEfficient(getSmellCircle(), getShelterList().get(i).getImage())) {
-                    if (Collision.overlapsAccurate(getSmellCircle(), getShelterList().get(i).getImage())) {
-                        setHome(new Target(getShelterList().get(i).getX(), getShelterList().get(i).getY()), getShelterList().get(i).getID());
+        for(int i = 0; i < getWorldRef().getShelterList().size(); i++){
+            if(getWorldRef().getShelterList().get(i).getType().equals("RockShelter")) {
+                if (Collision.overlapsEfficient(getSmellCircle(), getWorldRef().getShelterList().get(i).getImage())) {
+                    if (Collision.overlapsAccurate(getSmellCircle(), getWorldRef().getShelterList().get(i).getImage())) {
+                        setHome(new Target(getWorldRef().getShelterList().get(i).getX(), getWorldRef().getShelterList().get(i).getY()), getWorldRef().getShelterList().get(i).getID());
                         break;
                     }
                 }
