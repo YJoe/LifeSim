@@ -1268,558 +1268,1098 @@ public abstract class Animal {
         }
     }
 
-
-    // SELF GET/SET FUNCTIONS
+    /**
+     * set the array list food that is passed in and set to a private variable
+     * @param f foodList
+     */
     public void setFoodList(ArrayList<Food> f){
         foodList = f;
     }
 
+    /**
+     * set the array list containing the water elements to a private variable within the class
+     * @param w waterList
+     */
     public void setWaterList(ArrayList<Water> w){
         waterList = w;
     }
 
+    /**
+     *arraylist containing shelters set to a private variable
+     * @param s shelterList
+     */
     public void setShelterList(ArrayList<Shelter> s){
         shelterList = s;
     }
 
+    /**
+     * set the obstacle list that is passed in to a private varibale within the class
+     * @param o obstacleList
+     */
     public void setObstacleList(ArrayList<Obstacle> o){
         obstacleList = o;
     }
 
+    /**
+     * @return x co-ordinate for the animal
+     */
     public int getX(){
         return x;
     }
+
+    /**
+     * The integer passed is set to the X coordinate of the Animal
+     * @param x X coordinate
+     */
     public void setX(int x){
         this.x = x;
     }
 
+    /**
+     * @return Y coordinate
+     */
     public int getY(){
         return y;
     }
+
+    /**
+     * The integer passed is set to the Y coordinate of the Animal
+     * @param y Y coordinate
+     */
     public void setY(int y){
         this.y = y;
     }
 
+    /**
+     * @return animals name
+     */
     public String getName(){
         return name;
     }
+
+    /**
+     * set the String passed to the private variable within the class
+     * @param name Animal name
+     */
     public void setName(String name){
         this.name = name;
     }
 
+    /**
+     * @return animal species
+     */
     public String getSpecies(){
         return species;
     }
+
+    /**
+     * The string species is passed as a parameter and set to a private variable
+     * @param species Species
+     */
     public void setSpecies(String species){
         this.species = species;
     }
 
+    /**
+     * @return animal symbol
+     */
     public char getSymbol(){
         return symbol;
     }
+
+    /**
+     * set the symbol of the animal by taking the parameter and setting it to a private variable
+     * @param symbol Symbol
+     */
     public void setSymbol(char symbol){
         this.symbol = symbol;
     }
 
+    /**
+     * @return animal ID
+     */
     public int getID(){
         return id;
     }
+
+    /**
+     * set Animal ID by taking the parameter and setting it to a private variable
+     * @param id Unique ID
+     */
     public void setID(int id){
         this.id = id;
     }
 
+    /**
+     * @return animal energy
+     */
     public int getEnergy(){
         return energy;
     }
+
+    /**
+     * The animal energy is set by taking the parameter and setting it to a private int within the class
+     * @param energy Animal energy value
+     */
     public void setEnergy(int energy){
         this.energy = energy;
     }
 
+    /**
+     * @return animals smell range
+     */
     public int getSmellRange() {
         return smellRange;
     }
+
+    /**
+     * Set the smell range by setting the parameter to a private variable
+     * @param smellRange Smell range of the Animal
+     */
     public void setSmellRange(int smellRange){
         this.smellRange = smellRange;
     }
 
+    /**
+     * @return animal body size
+     */
     public float getSize(){
         return size;
     }
+
+    /**
+     * set animal body size to a private variable in the animal class
+     * @param size Size of the Animal
+     */
     public void setSize(float size){
         this.size = size;
     }
 
+    /**
+     *
+     * @return animal image
+     */
     public Circle getImage() {
         return image;
     }
+
+    /**
+     * set the animal image to a private variable
+     * @param image Image of the Animal
+     */
     public void setImage(Circle image) {
         this.image = image;
     }
 
+    /**
+     * @return animals smell circle
+     */
     public Circle getSmellCircle() {
         return smellCircle;
     }
+
+    /**
+     * set the smell circle of the animal to a private variable
+     * @param smellCircle Smell circle of the Animal
+     */
     public void setSmellCircle(Circle smellCircle) {
         this.smellCircle = smellCircle;
     }
 
+    /**
+     * @return animal speed
+     */
     public double getSpeed() {
         return speed;
     }
+
+    /**
+     * set the speed of the animal to a private variable within the class
+     * @param speed Movement speed of the Animal
+     */
     public void setSpeed(double speed) {
         this.speed = speed;
     }
 
+    /**
+     * @return the change in x
+     */
     public double getDx() {
         return dx;
     }
-    public void setDx(double d) {
-        this.dx = d;
+
+    /**
+     * the change in x is set by setting the parameter to a private variable
+     * @param dx Change in X
+     */
+    public void setDx(double dx) {
+        this.dx = dx;
     }
 
+    /**
+     * @return the change in y
+     */
     public double getDy() {
         return dy;
     }
+
+    /**
+     * the change in y is set to a private variable
+     * @param dy Change in Y
+     */
     public void setDy(double dy) {
         this.dy = dy;
     }
 
+    /**
+     * @return the angle range in which the animal can choose a target
+     */
     public int getTurnAngle(){
         return turnAngle;
     }
+
+    /**
+     * set the turn angle to a private variable within the class
+     * @param t Turn angle
+     */
     public void setTurnAngle(int t){
         turnAngle = t;
     }
 
+    /**
+     * @return animal hunger
+     */
     public float getHunger(){
         return hunger;
     }
+
+    /**
+     * set the hunger value of the animal to a private variable
+     * @param hunger Hunger of the Animal
+     */
     public void setHunger(float hunger){
         this.hunger = hunger;
     }
 
+    /**
+     * @return the time the animal must wait in their shelter
+     */
     public int getWaitAtHome(){
         return waitAtHome;
     }
+
+    /**
+     * set the wait at home time to a private variable
+     * @param waitAtHome Time to wait at home
+     */
     public void setWaitAtHome(int waitAtHome){
         this.waitAtHome = waitAtHome;
     }
 
+    /**
+     * @return animals metabolism
+     */
     public float getMetabolism(){
         return metabolism;
     }
+
+    /**
+     * set the animals metabolism to a private float within the class
+     * @param metabolism Metabolism of the Animal
+     */
     public void setMetabolism(float metabolism){
         this.metabolism = metabolism;
     }
 
+    /**
+     * @return animals gender
+     */
     public char getGender(){
         return gender;
     }
+
+    /**
+     * parameter passes the animals gender into the function and is set as a private variable
+     * @param gender Gender of the Animal
+     */
     public void setGender(char gender){
         this.gender = gender;
     }
 
+    /**
+     * @return The location of he animals home
+     */
     public Rectangle getHomeLocation(){
         return homeLocation;
     }
+
+    /**
+     * set the shape of the animals home to a rectangle which is passed into the function and set to private
+     * within the class
+     * @param homeLocation Home locator
+     */
     public void setHomeLocation(Rectangle homeLocation){
         this.homeLocation = homeLocation;
     }
 
+    /**
+     * set the animals home by using the target and the ID. This function is used to set the Home target and the
+     * HomeId
+     * @param home Home Target
+     * @param ID Unique ID
+     */
     public void setHome(Target home, int ID){
         setHomeTarget(home);
         setHomeID(ID);
     }
 
+    /**
+     * set the animal group reference to a private variable within the class
+     * @param a Animal Group
+     */
     public void setAnimalGroupRef(Group a){
         animalGroupRef = a;
     }
 
+    /**
+     * set the food group reference to a private variable in the class
+     * @param f Food Group
+     */
     public void setFoodGroupRef(Group f){
         foodGroupRef = f;
     }
 
+    /**
+     * @return last angle selected by the animal
+     */
     public int getLastAngle() {
         return lastAngle;
     }
+
+    /**
+     * set the last angle to a private variable
+     * @param lastAngle Last angle moved in by the Animal
+     */
     public void setLastAngle(int lastAngle) {
         this.lastAngle = lastAngle;
     }
 
+    /**
+     * @return the distance at which a local target is placed when randomly generated
+     */
     public int getPathDistance() {
         return pathDistance;
     }
+
+    /**
+     * set the pathDistance to a private variable in the animal class
+     * @param pathDistance Distance to create a target
+     */
     public void setPathDistance(int pathDistance) {
         this.pathDistance = pathDistance;
     }
 
+    /**
+     * @return the location of the animals target
+     */
     public Rectangle getTargetLocation() {
         return targetLocation;
     }
+
+    /**
+     * The targets location, represented by a rectangle, is set to a private variable
+     * @param targetLocation Target locator
+     */
     public void setTargetLocation(Rectangle targetLocation) {
         this.targetLocation = targetLocation;
     }
 
+    /**
+     * @return if the local target has been set
+     */
     public boolean hasLocalTarget() {
         return localTargetBool;
     }
+
+    /**
+     * set the boolean localTarget to a private  boolean variable
+     * @param t local Target boolean
+     */
     public void setLocalTargetBool(boolean t){
         localTargetBool = t;
     }
 
+    /**
+     * @return if the animals local target is food
+     */
     public boolean isTargetFood(){
         return targetingFood;
     }
+
+    /**
+     * sets whether the animals local target is food to a private variable
+     * @param t Targeting food boolean
+     */
     public void setTargetingFood(boolean t){
         targetingFood = t;
     }
 
+    /**
+     * @return if the local target is the animals home
+     */
     public boolean isTargetingHome(){
         return targetingHome;
     }
+
+    /**
+     * set the animal targeting home to a boolean and a private variable
+     * @param targetingHome Targeting home boolean
+     */
     public void setTargetingHome(boolean targetingHome){
         this.targetingHome = targetingHome;
     }
 
+    /**
+     * @return the target foods ID
+     */
     public int getTargetFoodID(){
         return targetFoodID;
     }
+
+    /**
+     * set target food ID to a private variable in the class
+     * @param f Food ID
+     */
     public void setTargetFoodID(int f){
         targetFoodID = f;
     }
 
+    /**
+     * @return if an animal has a target to a home
+     */
     public boolean hasMainTarget(){
         return mainTargetBool;
     }
+
+    /**
+     * set the main target to a private variable
+     * @param mainTargetBool Main target boolean
+     */
     public void setHasMainTarget(boolean mainTargetBool){
         this.mainTargetBool = mainTargetBool;
     }
 
+    /**
+     * @return the reference for a food group
+     */
     public Group getFoodGroupRef() {
         return foodGroupRef;
     }
 
+    /**
+     * @return the local target
+     */
     public Target getLocalTarget() {
         return localTarget;
     }
+
+    /**
+     * The animals local target is a target object. If this has been set then the setLocalTargetBool setter is
+     * set to true
+     * @param localTarget Local target boolean
+     */
     public void setLocalTarget(Target localTarget) {
         this.localTarget = localTarget;
         setLocalTargetBool(true);
     }
+
+    /**
+     * a circle is passed and set as a local target which is a new target object. The localTargetBool setter is
+     * then set to  true
+     * @param circle Circle to target
+     */
     public void setLocalTarget(Circle circle) {
         this.localTarget = new Target(circle);
         setLocalTargetBool(true);
     }
 
+    /**
+     * @return the animals main target which is it's home
+     */
     public Target getMainTarget() {
         return mainTarget;
     }
+
+    /**
+     * set the main target as a private variable from the Target object that is passed in and the setHasMainTarget
+     * setter to true
+     * @param mainTarget Main Target
+     */
     public void setMainTarget(Target mainTarget) {
         this.mainTarget = mainTarget;
         setHasMainTarget(true);
     }
 
+    /**
+     * @return the animals target for their home
+     */
     public Target getHomeTarget() {
         return homeTarget;
     }
+
+    /**
+     * set the home target private variable to the target object passed into the function
+     * @param homeTarget Home Target
+     */
     public void setHomeTarget(Target homeTarget) {
         this.homeTarget = homeTarget;
     }
 
+    /**
+     * @return food search cool down time
+     */
     public int getFoodSearchCoolDown() {
         return foodSearchCoolDown;
     }
 
+    /**
+     * sets the food cool down time
+     * @param foodSearchCoolDown Timer to not search for food
+     */
     public void setFoodSearchCoolDown(int foodSearchCoolDown) {
         this.foodSearchCoolDown = foodSearchCoolDown;
     }
 
+    /**
+     * @return get follow main cool down time
+     */
     public int getFollowMainCoolDown(){
         return followMainCoolDown;
     }
+
+    /**
+     * set the followMainCoolDown time to a private integer which acts as a timer
+     * @param followMainCoolDown Timer to not search for home
+     */
     public void setFollowMainCoolDown(int followMainCoolDown){
         this.followMainCoolDown = followMainCoolDown;
     }
 
+    /**
+     * set animals food inventory to a private variable by setting it to the Inventory object that is passed in
+     * to the function
+     * @param foodInventory Inventory used by the Animal
+     */
     public void setFoodInventory(Inventory foodInventory){
         this.foodInventory = foodInventory;
     }
+
+    /**
+     * @return the animals food inventory
+     */
     public Inventory getFoodInventory(){
         return foodInventory;
     }
 
+    /**
+     * @return animals water inventory
+     */
     public Inventory getWaterInventory() {
         return waterInventory;
     }
 
+    /**
+     * set the water inventory for the animal
+     * @param waterInventory Inventory used by the Animal
+     */
     public void setWaterInventory(Inventory waterInventory) {
         this.waterInventory = waterInventory;
     }
 
+    /**
+     * @return return the animal group reference
+     */
     public Group getAnimalGroupRef() {
         return animalGroupRef;
     }
 
-    public Group getWaterGroupRef() {
-        return waterGroupRef;
-    }
-
+    /**
+     * set the water group reference to a private variable in the class using the group passed into the function
+     * @param waterGroupRef Water Group
+     */
     public void setWaterGroupRef(Group waterGroupRef) {
         this.waterGroupRef = waterGroupRef;
     }
 
+    /**
+     * @return animals thirst
+     */
     public float getThirst() {
         return thirst;
     }
 
+    /**
+     * set animal thirst to a private variable
+     * @param thirst Thirst of the Animal
+     */
     public void setThirst(float thirst) {
         this.thirst = thirst;
     }
 
+    /**
+     * @return if the animal's target is water
+     */
     public boolean isTargetingWater() {
         return targetingWater;
     }
 
+    /**
+     * set the targeting water boolean to a private variable
+     * @param targetingWater Water target boolean
+     */
     public void setTargetingWater(boolean targetingWater) {
         this.targetingWater = targetingWater;
     }
 
+    /**
+     * @return the animals statistic bars
+     */
     public StatsBar getStatsBar() {
         return statsBar;
     }
 
+    /**
+     * set the statistics bar to a private variable in the class using the statsBar object that is passed in to the
+     * function
+     * @param statsBar Stats bar of the Animal
+     */
     public void setStatsBar(StatsBar statsBar) {
         this.statsBar = statsBar;
     }
 
+    /**
+     * @return text
+     */
     public Text getText() {
         return text;
     }
 
+    /**
+     * set the animals text as a private variable using the Text object that has been passed in
+     * @param text Text
+     */
     public void setText(Text text) {
         this.text = text;
     }
 
+    /**
+     * @return the animals original speed
+     */
     public double getOriginalSpeed() {
         return originalSpeed;
     }
 
+    /**
+     * set the original speed to a private variable in the class
+     * @param originalSpeed Original speed of the Animal
+     */
     public void setOriginalSpeed(double originalSpeed) {
         this.originalSpeed = originalSpeed;
     }
 
+    /**
+     * @return home ID
+     */
     public int getHomeID() {
         return homeID;
     }
 
+    /**
+     * set the home ID to a private variable in the animal class
+     * @param homeID Unique home ID
+     */
     public void setHomeID(int homeID) {
         this.homeID = homeID;
     }
 
+    /**
+     * @return if the animal is in a shelter
+     */
     public boolean isInShelter() {
         return inShelter;
     }
 
+    /**
+     * set the variable to private within the class
+     * @param inShelter in shelter boolean
+     */
     public void setInShelter(boolean inShelter) {
         this.inShelter = inShelter;
     }
 
+    /**
+     * @return Array list where animals are stored
+     */
     public ArrayList<Animal> getAnimalList() {
         return animalList;
     }
 
+    /**
+     * set the animal list to a private variable within the class
+     * @param animalList Animal list reference
+     */
     public void setAnimalList(ArrayList<Animal> animalList) {
         this.animalList = animalList;
     }
 
+    /**
+     * @return Animals smell reference
+     */
     public Group getAnimalSmellRef() {
         return animalSmellRef;
     }
 
+    /**
+     * set the Animals smell reference using the Group parameter
+     * @param animalSmellRef Smell circle Group
+     */
     public void setAnimalSmellRef(Group animalSmellRef) {
         this.animalSmellRef = animalSmellRef;
     }
 
+    /**
+     * @return Animals statistic reference
+     */
     public Group getAnimalStatsRef() {
         return animalStatsRef;
     }
 
+    /**
+     * set the animal statistics reference using the group object passed into the function
+     * @param animalStatsRef Animal statistics bar Group reference
+     */
     public void setAnimalStatsRef(Group animalStatsRef) {
         this.animalStatsRef = animalStatsRef;
     }
 
+    /**
+     * @return Animals label reference
+     */
     public Group getAnimalLabelRef() {
         return animalLabelRef;
     }
 
+    /**
+     * Set the AnimalLabelRef using the Group object in the parameter
+     * @param animalLabelRef Animal label Group reference
+     */
     public void setAnimalLabelRef(Group animalLabelRef) {
         this.animalLabelRef = animalLabelRef;
     }
 
+    /**
+     * @return Animals target reference
+     */
     public Group getAnimalTargetRef() {
         return animalTargetRef;
     }
 
+    /**
+     * set the Animals target reference to a private variable within the class
+     * @param animalTargetRef Animal Target group reference
+     */
     public void setAnimalTargetRef(Group animalTargetRef) {
         this.animalTargetRef = animalTargetRef;
     }
 
+    /**
+     * @return The Animal's home location reference
+     */
     public Group getAnimalHomeLocationRef() {
         return animalHomeLocationRef;
     }
 
+    /**
+     * set the animals home location reference to a private variable within the class using the group object
+     * passed into the function
+     * @param animalHomeLocationRef Home location Group
+     */
     public void setAnimalHomeLocationRef(Group animalHomeLocationRef) {
         this.animalHomeLocationRef = animalHomeLocationRef;
     }
 
+    /**
+     * @return if the animal is poisoned
+     */
     public boolean isPoisoned() {
         return poisoned;
     }
 
+    /**
+     * set if the animal is poisoned as a private variable in the class
+     * @param poisoned Poisoned boolean
+     */
     public void setPoisoned(boolean poisoned) {
         this.poisoned = poisoned;
     }
 
+    /**
+     * @return amount of time animal is poisoned
+     */
     public int getPoisonTime() {
         return poisonTime;
     }
 
+    /**
+     * set poison time to a private integer within the class
+     * @param poisonTime Timer for poison to be effective within the Animal
+     */
     public void setPoisonTime(int poisonTime) {
         this.poisonTime = poisonTime;
     }
 
-    public int getAgeDay() {
-        return ageDay;
-    }
-
+    /**
+     * setAgeDay as a private integer within the class
+     * @param ageDay Age in days
+     */
     public void setAgeDay(int ageDay) {
         this.ageDay = ageDay;
     }
 
+    /**
+     * @return animals age in years
+     */
     public int getAgeYear() {
         return ageYear;
     }
 
+    /**
+     * set age year as a private variable within the class
+     * @param ageYear Age in years
+     */
     public void setAgeYear(int ageYear) {
         this.ageYear = ageYear;
     }
 
+    /**
+     * @return day the animal was born
+     */
     public int getDayBorn() {
         return dayBorn;
     }
 
+    /**
+     * set the day the animal was born as a private variable within the animal class
+     * @param dayBorn Day in which Animal was born
+     */
     public void setDayBorn(int dayBorn) {
         this.dayBorn = dayBorn;
     }
 
+    /**
+     * @return Year the animal was Born
+     */
     public int getYearBorn() {
         return yearBorn;
     }
 
+    /**
+     * set as a private variable
+     * @param yearBorn Year the Animal was Born
+     */
     public void setYearBorn(int yearBorn) {
         this.yearBorn = yearBorn;
     }
 
+    /**
+     * @return animals last age
+     */
     public int getLastAge() {
         return lastAge;
     }
 
+    /**
+     * set as a private variable within the class
+     * @param lastAge Latest age milestone
+     */
     public void setLastAge(int lastAge) {
         this.lastAge = lastAge;
     }
 
+    /**
+     * @return if the animal should breed
+     */
     public boolean isShouldBreed() {
         return shouldBreed;
     }
 
+    /**
+     * set as a private variable
+     * @param shouldBreed Should the Animal breed
+     */
     public void setShouldBreed(boolean shouldBreed) {
         this.shouldBreed = shouldBreed;
     }
 
+    /**
+     * @return breed timer
+     */
     public int getBreedTimer() {
         return breedTimer;
     }
 
+    /**
+     * set as a private variable
+     * @param breedTimer Timer to stop breeding
+     */
     public void setBreedTimer(int breedTimer) {
         this.breedTimer = breedTimer;
     }
 
+    /**
+     * @return animal strength
+     */
     public int getStrength() {
         return strength;
     }
 
+    /**
+     * set strength to a private integer
+     * @param strength Strength of the Animal
+     */
     public void setStrength(int strength) {
         this.strength = strength;
     }
 
+    /**
+     * @return World reference
+     */
     public World getWorldRef() {
         return worldRef;
     }
 
+    /**
+     * set world reference to a private variable using world object that is passed into the function
+     * @param worldRef Refernce to the World
+     */
     public void setWorldRef(World worldRef) {
         this.worldRef = worldRef;
     }
 
+    /**
+     * @return array list of food
+     */
     public ArrayList<Food> getFoodList() {
         return foodList;
     }
 
+    /**
+     * @return array list of water
+     */
     public ArrayList<Water> getWaterList() {
         return waterList;
     }
 
+    /**
+     * @return array list of shelters
+     */
     public ArrayList<Shelter> getShelterList() {
         return shelterList;
     }
 
+    /**
+     * @return array list of obstacle
+     */
     public ArrayList<Obstacle> getObstacleList() {
         return obstacleList;
     }
 
+    /**
+     * @return targeting an animals
+     */
     public boolean isTargetingAnimal() {
         return targetingAnimal;
     }
 
+    /**
+     * set to a private variable within the class
+     * @param targetingAnimal Targeting Animal boolean
+     */
     public void setTargetingAnimal(boolean targetingAnimal) {
         this.targetingAnimal = targetingAnimal;
     }
 
+    /**
+     * @return maximum energy
+     */
     public int getMaxEnergy() {
         return maxEnergy;
     }
 
+    /**
+     * set max energy to a private variable within the class
+     * @param maxEnergy Maximum energy of the Animal
+     */
     public void setMaxEnergy(int maxEnergy) {
         this.maxEnergy = maxEnergy;
     }
 
+    /**
+     * @return the configuration
+     */
     public Configuration getConfiguration() {
         return configuration;
     }
 
+    /**
+     * set the configuration to a private variable using the object that is passed in to the function
+     * @param configuration The configuration rules in effect within the world
+     */
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 
+    /**
+     * @return maximum age of the animal
+     */
     public int getMaxAge() {
         return maxAge;
     }
 
+    /**
+     * set the maximum age to a private integer within the class
+     * @param maxAge The maximum age before the Animal will die
+     */
     public void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
     }
 
+    /**
+     * @return speed change age
+     */
     public int getSpeedChangeAge() {
         return speedChangeAge;
     }
 
+    /**
+     * set to a private variable
+     * @param speedChangeAge Age at which the Animals speed will alter
+     */
     public void setSpeedChangeAge(int speedChangeAge) {
         this.speedChangeAge = speedChangeAge;
     }
 
+    /**
+     * @return animal breeding age
+     */
     public int getBreedAge() {
         return breedAge;
     }
 
+    /**
+     * set breeding age to a private integer within the class
+     * @param breedAge Age at which the Animal can breed
+     */
     public void setBreedAge(int breedAge) {
         this.breedAge = breedAge;
     }
