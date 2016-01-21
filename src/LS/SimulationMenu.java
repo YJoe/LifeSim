@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.WeakEventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -157,7 +158,12 @@ public class SimulationMenu {
         modifyLifeForm.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                editAnimal();
+                if (getCurrentWorld() != null) {
+                    editAnimal();
+                }
+                else {
+                    errorWindow("No world loaded");
+                }
             }
         });
         removeLifeForm.setOnAction(new EventHandler<ActionEvent>(){
@@ -260,7 +266,12 @@ public class SimulationMenu {
         restart.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
-                System.out.println("was  clicked");
+                if (getCurrentWorld() != null) {
+                    createWorld();
+                }
+                else{
+                    errorWindow("No world loaded");
+                }
             }
         });
 
@@ -916,8 +927,12 @@ public class SimulationMenu {
         Stage stage = new Stage();
         Group viewRoot = new Group();
 
+        // button width
+        int bW = 100;
+
         // create options
         Button smellRange = new Button("Smell Range");
+        smellRange.setPrefWidth(bW);
         smellRange.setTranslateX(5); smellRange.setTranslateY(5);
         smellRange.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -928,6 +943,7 @@ public class SimulationMenu {
         viewRoot.getChildren().add(smellRange);
 
         Button stats = new Button("Animal Stats");
+        stats.setPrefWidth(bW);
         stats.setTranslateX(5); stats.setTranslateY(35);
         stats.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -938,6 +954,7 @@ public class SimulationMenu {
         viewRoot.getChildren().add(stats);
 
         Button shelterStats = new Button("Shelter Stats");
+        shelterStats.setPrefWidth(bW);
         shelterStats.setTranslateX(5); shelterStats.setTranslateY(65);
         shelterStats.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -948,6 +965,7 @@ public class SimulationMenu {
         viewRoot.getChildren().add(shelterStats);
 
         Button targets = new Button("Targets");
+        targets.setPrefWidth(bW);
         targets.setTranslateX(5); targets.setTranslateY(95);
         targets.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -956,6 +974,28 @@ public class SimulationMenu {
             }
         });
         viewRoot.getChildren().add(targets);
+
+        Button animals = new Button("Animals");
+        animals.setPrefWidth(bW);
+        animals.setTranslateX(5); animals.setTranslateY(125);
+        animals.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getCurrentWorld().toggleAnimals();
+            }
+        });
+        viewRoot.getChildren().add(animals);
+
+        Button animalLabels = new Button("Animal Text");
+        animalLabels.setPrefWidth(bW);
+        animalLabels.setTranslateX(5); animalLabels.setTranslateY(155);
+        animalLabels.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getCurrentWorld().toggleAnimalLabels();
+            }
+        });
+        viewRoot.getChildren().add(animalLabels);
 
         Scene scene = new Scene(viewRoot, 70, 200);
         stage.setScene(scene);
