@@ -28,7 +28,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import java.io.File;
+
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -479,7 +480,7 @@ public class SimulationMenu {
      * @param filePath The path to the desired file
      */
     public void loadConfiguration(File filePath) {
-        setConfiguration(Serialize.deserialize(filePath));
+        setConfiguration(deserialize(filePath));
         createWorld();
     }
 
@@ -1006,7 +1007,7 @@ public class SimulationMenu {
      * Serialize the current configuration with the name "MyWorld" as a default
      */
     public void saveConfiguration(){
-        Serialize.serialize(getConfiguration(), "MyWorld");
+        serialize(getConfiguration(), "MyWorld");
     }
 
     /**
@@ -1041,7 +1042,7 @@ public class SimulationMenu {
             public void handle(ActionEvent e) {
                 // Try to serialize the configuration in the file path
                 try{
-                    Serialize.serialize(getConfiguration(), textBox.getText());
+                    serialize(getConfiguration(), textBox.getText());
                     stage.close();
                 }
                 catch(NumberFormatException e1){
@@ -1672,6 +1673,58 @@ public class SimulationMenu {
         getRoot().getChildren().add(getBackBar());
         getRoot().getChildren().add(getDate());
         getRoot().getChildren().add(getButtonGroup());
+    }
+
+    /**
+     * Serialise the given Configuration with the given name to the deined file path
+     * @param configuration Configuration to save
+     * @param fileName Name of the configuration to save under
+     */
+    public static void serialize(Configuration configuration, String fileName){
+        // Try catch to check that the file saved correctly
+        try{
+            // Open the output path
+            FileOutputStream fileOut = new FileOutputStream("LifeSim/SavedWorlds/" + fileName + ".ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            // Write the object
+            out.writeObject(configuration);
+            // Close the stream
+            out.close();
+            fileOut.close();
+        }catch(IOException i) {
+            i.printStackTrace();
+        }
+    }
+
+    /**
+     * Deserialize a given file path returning a Configuration object
+     * @param file File path to load
+     * @return A Configuration object
+     */
+    public static Configuration deserialize(File file){
+        // Create a configuration file
+        Configuration configuration;
+        // Try and load the file to the Configuration object
+        try {
+            // Create the input stream
+            FileInputStream fileIn = new FileInputStream(file);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            // Store the object
+            configuration = (Configuration) in.readObject();
+            // Close the input stream
+            in.close();
+            fileIn.close();
+        }
+        catch(IOException i){
+            i.printStackTrace();
+            return null;
+        }
+        catch(ClassNotFoundException c){
+            System.out.println("Configuration class not found");
+            c.printStackTrace();
+            return null;
+        }
+        return configuration;
     }
 
     /**
