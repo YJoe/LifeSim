@@ -595,20 +595,29 @@ public class World {
     }
 
     /**
-     * @return array list of food
+     * @return Array list of Food objects
      */
     public ArrayList<Food> getFoodList(){
         return foodList;
     }
 
+    /**
+     * @return Array list of Water objects
+     */
     public ArrayList<Water> getWaterList(){
         return waterList;
     }
 
+    /**
+     * @return Array list of Obstacle objects
+     */
     public ArrayList<Obstacle> getObstacleList(){
         return obstacleList;
     }
 
+    /**
+     * @return Array list of Shelter objects
+     */
     public ArrayList<Shelter> getShelterList(){
         return shelterList;
     }
@@ -690,107 +699,94 @@ public class World {
         this.configuration = configuration;
     }
 
+    /**
+     * @return Child of the root node - Animal Group
+     */
     public Group getAnimalGroup() {
         return animalGroup;
     }
 
-    public void setAnimalGroup(Group animalGroup) {
-        this.animalGroup = animalGroup;
-    }
-
+    /**
+     * @return Child of the root node - Animal Smell Group
+     */
     public Group getAnimalSmellGroup() {
         return animalSmellGroup;
     }
 
-    public void setAnimalSmellGroup(Group animalSmellGroup) {
-        this.animalSmellGroup = animalSmellGroup;
-    }
-
+    /**
+     * @return Child of the root node - Animal Target Group
+     */
     public Group getAnimalTargetGroup() {
         return animalTargetGroup;
     }
 
-    public void setAnimalTargetGroup(Group animalTargetGroup) {
-        this.animalTargetGroup = animalTargetGroup;
-    }
-
+    /**
+     * @return Child of the root node - Animal Stats Group
+     */
     public Group getAnimalStatsGroup() {
         return animalStatsGroup;
     }
 
-    public void setAnimalStatsGroup(Group animalStatsGroup) {
-        this.animalStatsGroup = animalStatsGroup;
-    }
-
+    /**
+     * @return Child of the root node - Animal Home Location Group(
+     */
     public Group getAnimalHomeLocationGroup() {
         return animalHomeLocationGroup;
     }
 
-    public void setAnimalHomeLocationGroup(Group animalHomeLocationGroup) {
-        this.animalHomeLocationGroup = animalHomeLocationGroup;
-    }
-
+    /**
+     * @return Child of the root node - Animal Label Group
+     */
     public Group getAnimalLabelGroup() {
         return animalLabelGroup;
     }
 
-    public void setAnimalLabelGroup(Group animalLabelGroup) {
-        this.animalLabelGroup = animalLabelGroup;
-    }
-
+    /**
+     * @return Child of the root node -
+     */
     public Group getShelterGroup() {
         return shelterGroup;
     }
 
-    public void setShelterGroup(Group shelterGroup) {
-        this.shelterGroup = shelterGroup;
-    }
-
+    /**
+     * @return Child of the root node - Shelter Stats Group
+     */
     public Group getShelterStatsGroup() {
         return shelterStatsGroup;
     }
 
-    public void setShelterStatsGroup(Group shelterStatsGroup) {
-        this.shelterStatsGroup = shelterStatsGroup;
-    }
-
+    /**
+     * @return Child of the root node - Food Group
+     */
     public Group getFoodGroup() {
         return foodGroup;
     }
 
-    public void setFoodGroup(Group foodGroup) {
-        this.foodGroup = foodGroup;
-    }
-
+    /**
+     * @return Child of the root node - Water Group
+     */
     public Group getWaterGroup() {
         return waterGroup;
     }
 
-    public void setWaterGroup(Group waterGroup) {
-        this.waterGroup = waterGroup;
-    }
-
+    /**
+     * @return Child of the root node - Obstacle Group
+     */
     public Group getObstacleGroup() {
         return obstacleGroup;
     }
 
-    public void setObstacleGroup(Group obstacleGroup) {
-        this.obstacleGroup = obstacleGroup;
-    }
-
+    /**
+     * @return Child of the root node - Tree Leaf Group
+     */
     public Group getFoodTreeLeafGroup() {
         return foodTreeLeafGroup;
     }
 
-    public void setFoodTreeLeafGroup(Group foodTreeLeafGroup) {
-        this.foodTreeLeafGroup = foodTreeLeafGroup;
-    }
-
+    /**
+     * @return Child of the root node - Tree Trunk Group
+     */
     public Group getFoodTreeTrunkGroup() {
         return foodTreeTrunkGroup;
-    }
-
-    public void setFoodTreeTrunkGroup(Group foodTreeTrunkGroup) {
-        this.foodTreeTrunkGroup = foodTreeTrunkGroup;
     }
 }
