@@ -12,7 +12,7 @@ import java.util.Random;
 public class Eagle extends Animal{
     private Random rand = new Random();
     private float baseSpeed = (float)(0.4), baseMetabolism = (float)(0.001);
-    private int baseSize = 5, baseTurnAngle = 30, baseStrength = 15, baseMemory = 10;
+    private int baseSize = 5, baseTurnAngle = 30, baseStrength = 5, baseMemory = 10;
     private Color bodyColour = Color.rgb(200, 200, 200);
     private Color smellColour = Color.rgb(0, 100, 100);
     private int maxAge = rand.nextInt(10) + 10, breedAge = 2, speedChangeAge = (maxAge/2) + rand.nextInt(4) - 2;
@@ -56,7 +56,7 @@ public class Eagle extends Animal{
         setMetabolism((float)(baseMetabolism + (rand.nextInt(4) * 0.0005)));
 
         // Set strength
-        setStrength(baseStrength + rand.nextInt(5));
+        setStrength(baseStrength + rand.nextInt(6));
 
         // Create food inventory
         setFoodInventory(new Inventory(getStrength()/2 + rand.nextInt(2), getStrength()/2 + (rand.nextInt(2))));

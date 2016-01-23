@@ -845,12 +845,13 @@ public class SimulationMenu {
         Text caves = new Text("BearCaves: " + getConfiguration().getCaves());
         Text eagles = new Text("Eagles: " + getConfiguration().getEagles());
         Text nests = new Text("Nests: " + getConfiguration().getNests());
+        Text pools = new Text("Pools: " + getConfiguration().getPoolCount());
 
         // Define array lists to hold all info
         ArrayList<Text> info = new ArrayList<>();
         info.add(ants); info.add(antHill); info.add(lizards);
         info.add(rockShelters); info.add(bears); info.add(caves);
-        info.add(eagles); info.add(nests);
+        info.add(eagles); info.add(nests); info.add(pools);
 
         // Add all text elements to the grid pane
         for (int i = 0; i < info.size(); i++){

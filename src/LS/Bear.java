@@ -11,8 +11,8 @@ import java.util.Random;
  */
 public class Bear extends Animal{
     private Random rand = new Random();
-    private float baseSpeed = (float)(0.2), baseMetabolism = (float)(0.003);
-    private int baseSize = 20, baseTurnAngle = 30, baseStrength = 20, baseMemory = 10;
+    private float baseSpeed = (float)(0.2), baseMetabolism = (float)(0.00001);
+    private int baseSize = 20, baseTurnAngle = 30, baseStrength = 5, baseMemory = 10;
     private Color bodyColour = Color.rgb(200, 100, 0);
     private Color smellColour = Color.rgb(0, 100, 100);
     private int maxAge = rand.nextInt(15) + 15, breedAge = 2, speedChangeAge = (maxAge/2) + rand.nextInt(4) - 2;
@@ -57,10 +57,10 @@ public class Bear extends Animal{
         setTurnAngle(baseTurnAngle + (rand.nextInt(20)));
 
         // Set a random metabolism
-        setMetabolism((float)(baseMetabolism + (rand.nextInt(4) * 0.0005)));
+        setMetabolism((float)(baseMetabolism + (rand.nextInt(4) * 0.00005)));
 
         // Set strength
-        setStrength(baseStrength + rand.nextInt(5));
+        setStrength(baseStrength + rand.nextInt(10));
 
         // Create food inventory
         setFoodInventory(new Inventory(getStrength()/2 + rand.nextInt(2), getStrength()/2 + (rand.nextInt(2))));

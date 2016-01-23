@@ -60,7 +60,7 @@ public class Lizard extends Animal{
         setMetabolism((float)(baseMetabolism + (rand.nextInt(2) * 0.0005)));
 
         // Set strength
-        setStrength(baseStrength + rand.nextInt(4));
+        setStrength(baseStrength + rand.nextInt(3));
 
         // Create food inventory
         setFoodInventory(new Inventory(getStrength()/2 + rand.nextInt(2), getStrength()/2 + (rand.nextInt(2))));

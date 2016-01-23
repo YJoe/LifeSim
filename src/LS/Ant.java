@@ -108,4 +108,16 @@ public class Ant extends Animal{
             }
         }
     }
+
+    /**
+     * Override for create baby to call multiple times, generating more babies
+     * @param animal Animal to have a baby with
+     */
+    @Override
+    public void createBaby(Animal animal){
+        int amount = rand.nextInt(3) + 1;
+        for(int i = 0; i < amount; i++){
+            super.createBaby(animal);
+        }
+    }
 }

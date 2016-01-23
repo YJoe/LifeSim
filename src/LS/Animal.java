@@ -621,6 +621,9 @@ public abstract class Animal {
                         animal.setEnergy(-10);
                         return;
                     }
+                    else {
+                        setFoodSearchCoolDown(300);
+                    }
                 }
             }
         }
