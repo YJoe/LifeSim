@@ -83,6 +83,7 @@ public class Lizard extends Animal{
      *                 Animal's inventory space
      * @param gender The gender of the Animal
      * @param name The name of the Animal
+     * @param world the World object reference
      */
     public Lizard(int x, int y, char gender, String name, double speed, float metabolism, int strength, int smell,
                  int size, int id, int dayBorn, int yearBorn, World world){

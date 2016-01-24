@@ -44,6 +44,7 @@ public abstract class Animal {
      * @param energyIn The stating and max energy of the Animal
      * @param xIn X coordinate
      * @param yIn Y coordinate
+     * @param world the World object reference
      */
     public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn, World world){
 
@@ -125,6 +126,7 @@ public abstract class Animal {
      * @param smell The range at which the Animal can perceive its world
      * @param size Body size of the Animal
      * @param colour Color variable of the Animals body circle
+     * @param world the World object reference
      */
     public Animal(String speciesIn, char symbolIn, int IDIn, int dayBorn, int yearBorn, int energyIn, int xIn, int yIn,
                   char gender, String name, double speed, float metabolism, int strength, int smell, int size, Color colour, World world){

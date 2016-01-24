@@ -205,10 +205,8 @@ public class SimulationMenu {
         javafx.scene.control.Menu view = new javafx.scene.control.Menu("View");
         MenuItem displayConfig = new MenuItem("Display Configuration");
         MenuItem displayLifeForms = new MenuItem("Display Life Form Stats");
-        MenuItem displayMapInfo = new MenuItem("Display Map Stats");
         view.getItems().add(displayLifeForms);
         view.getItems().add(displayConfig);
-        view.getItems().add(displayMapInfo);
         displayConfig.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent arg0) {
@@ -229,11 +227,6 @@ public class SimulationMenu {
                 else {
                     errorWindow("No world loaded");
                 }
-            }
-        });
-        displayMapInfo.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent arg0) {
             }
         });
 
@@ -465,7 +458,7 @@ public class SimulationMenu {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Simulation Configuration File");
         // set the directory to the Saved worlds folder
-        File existDirectory = new File(System.getProperty("user.dir") + "/LifeSim/SavedWorlds");
+        File existDirectory = new File(System.getProperty("user.dir"));
         fileChooser.setInitialDirectory(existDirectory);
 
         // set the filePath to the return of the fileChooser
@@ -1163,7 +1156,7 @@ public class SimulationMenu {
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setHgap(5);
         grid.setVgap(5);
-        Scene scene = new Scene(grid, 180, 410);
+        Scene scene = new Scene(grid, 180, 380);
 
         Text title = new Text("Add an animal");
         title.setFont(Font.font("Verdana", FontWeight.NORMAL, 20));
@@ -1216,7 +1209,7 @@ public class SimulationMenu {
                 int smellPass;
                 int sizePass;
 
-                try{
+                try {
                     genderPass = gender.getSelectionModel().getSelectedItem().charAt(0);
                     namePass = name.getText();
                     xPass = Integer.parseInt(x.getText());
@@ -1227,12 +1220,15 @@ public class SimulationMenu {
                     smellPass = Integer.parseInt(smellRange.getText());
                     sizePass = Integer.parseInt(size.getText());
 
-                    getCurrentWorld().addAnimal(species.getSelectionModel().getSelectedItem(), xPass, yPass, genderPass,
-                            namePass, speedPass, metabolismPass, strengthPass, smellPass, sizePass);
-
-                    stage.close();
-                }
-                catch(NumberFormatException n){
+                    if (speedPass > 0 && metabolismPass > 0 && xPass > 0 && xPass < Main.SIZE_X && yPass > 0 && yPass < Main.SIZE_Y
+                            && sizePass > 0 && smellPass > 0 && strengthPass > 0) {
+                        getCurrentWorld().addAnimal(species.getSelectionModel().getSelectedItem(), xPass, yPass, genderPass,
+                                namePass, speedPass, metabolismPass, strengthPass, smellPass, sizePass);
+                        stage.close();
+                    } else {
+                        errorWindow("Negative value found");
+                    }
+                } catch (NumberFormatException n) {
                     n.printStackTrace();
                 }
             }
@@ -1253,9 +1249,6 @@ public class SimulationMenu {
                 size.setText("1");
             }
         });
-
-        Text extraInfo = new Text("(A single blank field will load\n the default of the animal)");
-        grid.add(extraInfo, 0, 12, 3, 2);
 
         // Add all elements to the grid
         grid.add(title, 0, 0, 2, 1);
@@ -1341,7 +1334,7 @@ public class SimulationMenu {
             }
         });
 
-        Scene scene = new Scene(grid, 240, 200);
+        Scene scene = new Scene(grid, 240, 120);
         stage.setScene(scene);
         stage.showAndWait();
     }
@@ -1396,21 +1389,20 @@ public class SimulationMenu {
                 int id;
                 try {
                     id = Integer.parseInt(field.getText());
+                    for(int i = 0; i < getCurrentWorld().getAnimalList().size(); i++) {
+                        if (getCurrentWorld().getAnimalList().get(i).getID() == id) {
+                            textFields.get(0).setText(getCurrentWorld().getAnimalList().get(i).getName());
+                            textFields.get(1).setText(getCurrentWorld().getAnimalList().get(i).getGender() + "");
+                            textFields.get(2).setText(String.format("%.1g", getCurrentWorld().getAnimalList().get(i).getSpeed()));
+                            textFields.get(3).setText(getCurrentWorld().getAnimalList().get(i).getSmellRange() + "");
+                            textFields.get(4).setText(String.format("%.1g", getCurrentWorld().getAnimalList().get(i).getMetabolism()));
+                            textFields.get(5).setText(getCurrentWorld().getAnimalList().get(i).getStrength() + "");
+                            break;
+                        }
+                    }
                 }
                 catch(NumberFormatException n){
                     errorWindow("Animal not found");
-                    id = -1;
-                }
-                for(int i = 0; i < getCurrentWorld().getAnimalList().size(); i++) {
-                    if (getCurrentWorld().getAnimalList().get(i).getID() == id) {
-                        textFields.get(0).setText(getCurrentWorld().getAnimalList().get(i).getName());
-                        textFields.get(1).setText(getCurrentWorld().getAnimalList().get(i).getGender() + "");
-                        textFields.get(2).setText(String.format("%.1g", getCurrentWorld().getAnimalList().get(i).getSpeed()));
-                        textFields.get(3).setText(getCurrentWorld().getAnimalList().get(i).getSmellRange() + "");
-                        textFields.get(4).setText(String.format("%.1g", getCurrentWorld().getAnimalList().get(i).getMetabolism()));
-                        textFields.get(5).setText(getCurrentWorld().getAnimalList().get(i).getStrength() + "");
-                        break;
-                    }
                 }
             }
         });
@@ -1685,7 +1677,7 @@ public class SimulationMenu {
         // Try catch to check that the file saved correctly
         try{
             // Open the output path
-            FileOutputStream fileOut = new FileOutputStream("LifeSim/SavedWorlds/" + fileName + ".ser");
+            FileOutputStream fileOut = new FileOutputStream(fileName + ".ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             // Write the object
             out.writeObject(configuration);
